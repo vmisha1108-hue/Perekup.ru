@@ -432,23 +432,26 @@ function renderTaskbar(){
     if(!list) return;
     list.innerHTML = "";
 
-    Object.keys(openWindows).forEach(function(id){
-        var w = $("win-" + id);
-        if(!w) return;
-        var minimized = w.classList.contains("minimized");
+    var apps = ICONS.map(function(i){ return {id:i.id, ico:i.ico, title:i.label.replace(/<br>/g, " ")}; });
+    if(openWindows.admin) apps.push({id:"admin", ico:"⚙️", title:"Система"});
+
+    apps.forEach(function(app){
+        var w = $("win-" + app.id);
+        var running = !!openWindows[app.id];
+        var minimized = !!(w && w.classList.contains("minimized"));
         var btn = document.createElement("button");
-        btn.className = "task-btn" + (minimized ? "" : " active");
-        btn.textContent = (w.dataset.icon || "🪟") + " " + (w.dataset.title || id);
+        btn.className = "task-btn" + (running ? " running" : "") + (running && !minimized ? " active" : "");
+        btn.title = app.title;
+        btn.textContent = app.ico;
 
         btn.addEventListener("click", function(){
-            if(w.classList.contains("minimized")){
-                restoreWin(id);
+            if(!running){ openWin(app.id); return; }
+            if(minimized){
+                restoreWin(app.id);
+            }else if(Number(w.style.zIndex) === zTop){
+                minimizeWin(app.id);
             }else{
-                if(Number(w.style.zIndex) === zTop){
-                    minimizeWin(id);
-                }else{
-                    focusWin(id);
-                }
+                focusWin(app.id);
             }
         });
         list.appendChild(btn);
