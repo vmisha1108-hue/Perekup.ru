@@ -28,10 +28,9 @@ var QUICK = {
     buy:["👋 Привет","😊 Отличная машина!","🙏 Уступите, пожалуйста","😡 Ты жадный!","🤝 Согласен"],
     sell:["👋 Здравствуйте","🙏 Спасибо!","💰 Давай дороже","😡 Хватит жадничать","🤝 Согласен"]
 };
-
 /* ================= СОСТОЯНИЕ ================= */
 var balance = parseInt(localStorage.getItem("balance"),10);
-if(isNaN(balance)) balance = 1000000;
+if(isNaN(balance)) balance = 100000;
 var garage = JSON.parse(localStorage.getItem("garage") || "[]");
 var deals = parseInt(localStorage.getItem("deals"),10) || 0;
 var garageLvl = parseInt(localStorage.getItem("garageLvl"),10) || 0;
@@ -40,6 +39,7 @@ var chat = null;
 var view = "market";
 var zTop = 100;
 var openWindows = {};
+
 
 /* ================= ХЕЛПЕРЫ ================= */
 function $(id){ return document.getElementById(id); }
