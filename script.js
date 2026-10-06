@@ -1425,7 +1425,7 @@ function renderCalc(){
     if($("calcVal")) $("calcVal").textContent = calcExpr === "" ? "0" : calcExpr;
 }
 function calcEval(){
-    var e = calcExpr.replace(/×/g,"*").replace(/÷/g,"/").replace(/−/g,"-");
+    var e = calcExpr.replace(/×/g,"*").replace(/÷/g,"/").replace(/−/g,"-").replace(/(^|[^\d.])0+(\d)/g,"$1$2");
     try{
         var r = Function('"use strict";return (' + e + ')')();
         if(r === undefined || isNaN(r)) throw 0;
@@ -1440,7 +1440,7 @@ function calcEval(){
 }
 document.addEventListener("keydown", function(e){
     var wc = $("win-calc");
-    if(!wc || !wc.classList.contains("open") || wc.classList.contains("minimized")) return;
+    if(!wc || !wc.classList.contains("open") || wc.classList.contains("minimized") || /^(INPUT|TEXTAREA|SELECT)$/.test((e.target || {}).tagName)) return;
     if(/^[0-9+\-*/.()]$/.test(e.key)){ calcExpr += e.key; renderCalc(); }
     else if(e.key === "Enter"){ calcEval(); }
     else if(e.key === "Backspace"){ calcExpr = calcExpr.slice(0,-1); renderCalc(); }
