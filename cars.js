@@ -13,7 +13,7 @@ var CARS = [
     price: 281000,
     img: "",
     desc: "2.2 л дизель, механика, 465 517 км, свежее ТО, новая МКПП",
-    seller: {name: "Сергей", avatar: "🧔", personality: "kind"}
+    seller: {name: "Сергей Педик", avatar: "🧔", personality: "kind"}
   },
   {
     id: 3,
