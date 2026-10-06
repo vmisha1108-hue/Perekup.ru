@@ -978,7 +978,7 @@ function analyze(text){
         .map(function(s){ return Number(s.replace(/\s/g,"")); })
         .filter(function(n){ return n > 0; });
     var offer = nums.length ? nums[nums.length-1] : null;
-    if(offer != null && /(тыс|к\b|k\b)/.test(t) && offer < 1000) offer *= 1000;
+    if(offer != null && /(тыс|\d\s*к(\s|$)|\d\s*k\b)/.test(t) && offer < 1000) offer *= 1000;
 
     return {
         offer: offer,
