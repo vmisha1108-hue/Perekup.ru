@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Perekyp.ru</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="desktop">
+    <div class="topbar">
+        <div class="tb-logo">Perekyp<span>.ru</span></div>
+        <div class="tb-clock" id="clock">--:--</div>
+        <div class="tb-balance">💰 <span id="balance">1 000 000</span> ₽</div>
+    </div>
+
+    <div class="desk-area" id="deskArea">
+<!-- АВТОРЫНОК -->
+<div class="window" id="win-market" data-title="Авторынок" data-icon="🚗">
+    <div class="win-head" id="head-market">
+        <div class="wi">🚗</div>
+        <div class="win-title">Авторынок</div>
+        <div class="win-btns">
+            <button class="min" data-min="win-market" title="Свернуть">—</button>
+            <button class="x" data-close="win-market" title="Закрыть">✕</button>
+        </div>
+    </div>
+    <div class="resize-handle n"></div>
+    <div class="resize-handle s"></div>
+    <div class="resize-handle e"></div>
+    <div class="resize-handle w"></div>
+    <div class="resize-handle ne"></div>
+    <div class="resize-handle nw"></div>
+    <div class="resize-handle se"></div>
+    <div class="resize-handle sw"></div>
+    <div class="win-body">
+        <section class="hero">
+            <h1>Автомобильный рынок</h1>
+            <p>Торгуйся с продавцами и покупателями в живом чате.</p>
+            <div class="legend">😇 добрый · 😐 нейтральный · 😈 злой</div>
+            <div class="stats">
+                <div class="stat"><small>В гараже</small><b id="garageCount">0 / 3</b></div>
+                <div class="stat"><small>Стоимость гаража</small><b id="garageValue">0 ₽</b></div>
+                <div class="stat"><small>Сделок</small><b id="deals">0</b></div>
+            </div>
+        </section>
+        <div class="tabs">
+            <button class="tab active" id="tabMarket">🚗 Рынок</button>
+            <button class="tab" id="tabGarage">🏠 Мой гараж</button>
+        </div>
+        <div class="filters" id="filters">
+            <input id="fSearch" type="search" placeholder="🔍 Поиск по названию">
+            <select id="fSort" title="Сортировка">
+                <option value="default">По умолчанию</option>
+                <option value="price_asc">Сначала дешёвые</option>
+                <option value="price_desc">Сначала дорогие</option>
+                <option value="year_desc">Сначала новее</option>
+                <option value="year_asc">Сначала старше</option>
+                <option value="km_asc">Пробег: меньше</option>
+                <option value="km_desc">Пробег: больше</option>
+            </select>
+            <input id="fMin" type="number" min="0" placeholder="Цена от, ₽">
+            <input id="fMax" type="number" min="0" placeholder="Цена до, ₽">
+            <select id="fMood" title="Характер продавца">
+                <option value="all">Любой продавец</option>
+                <option value="kind">😇 Добрый</option>
+                <option value="neutral">😐 Нейтральный</option>
+                <option value="evil">😈 Злой</option>
+            </select>
+            <label class="f-check" id="fAffordWrap"><input type="checkbox" id="fAfford"> По карману</label>
+            <button id="fReset" class="f-reset">Сбросить</button>
+            <span class="f-count" id="fCount"></span>
+        </div>
+        <section id="content" class="grid"></section>
+    </div>
+</div>
+
+<!-- МАГАЗИН -->
+<div class="window" id="win-shop" data-title="Магазин гаражей" data-icon="🏪">
+    <div class="win-head" id="head-shop">
+        <div class="wi">🏪</div>
+        <div class="win-title">Магазин гаражей</div>
+        <div class="win-btns">
+            <button class="min" data-min="win-shop" title="Свернуть">—</button>
+            <button class="x" data-close="win-shop" title="Закрыть">✕</button>
+        </div>
+    </div>
+    <div class="resize-handle n"></div>
+    <div class="resize-handle s"></div>
+    <div class="resize-handle e"></div>
+    <div class="resize-handle w"></div>
+    <div class="resize-handle ne"></div>
+    <div class="resize-handle nw"></div>
+    <div class="resize-handle se"></div>
+    <div class="resize-handle sw"></div>
+    <div class="win-body">
+        <div class="shop-note">
+            Текущая: <b id="shopCap">3</b> · Занято: <b id="shopUsed">0</b> · Свободно: <b id="shopFree">3</b>
+        </div>
+        <div class="up-grid" id="upGrid"></div>
+    </div>
+</div>
+
+<!-- КАЛЬКУЛЯТОР -->
+<div class="window" id="win-calc" data-title="Калькулятор" data-icon="🧮">
+    <div class="win-head" id="head-calc">
+        <div class="wi">🧮</div>
+        <div class="win-title">Калькулятор</div>
+        <div class="win-btns">
+            <button class="min" data-min="win-calc" title="Свернуть">—</button>
+            <button class="x" data-close="win-calc" title="Закрыть">✕</button>
+        </div>
+    </div>
+    <div class="resize-handle n"></div>
+    <div class="resize-handle s"></div>
+    <div class="resize-handle e"></div>
+    <div class="resize-handle w"></div>
+    <div class="resize-handle ne"></div>
+    <div class="resize-handle nw"></div>
+    <div class="resize-handle se"></div>
+    <div class="resize-handle sw"></div>
+    <div class="win-body">
+        <div class="calc">
+            <div class="calc-screen">
+                <div class="calc-expr" id="calcExpr">&nbsp;</div>
+                <div class="calc-val" id="calcVal">0</div>
+            </div>
+            <div class="calc-grid" id="calcGrid"></div>
+        </div>
+    </div>
+</div>
+
+<!-- КАЛЕНДАРЬ -->
+<div class="window" id="win-calendar" data-title="Календарь" data-icon="📅">
+    <div class="win-head" id="head-calendar">
+        <div class="wi">📅</div>
+        <div class="win-title">Календарь</div>
+        <div class="win-btns">
+            <button class="min" data-min="win-calendar" title="Свернуть">—</button>
+            <button class="x" data-close="win-calendar" title="Закрыть">✕</button>
+        </div>
+    </div>
+    <div class="resize-handle n"></div>
+    <div class="resize-handle s"></div>
+    <div class="resize-handle e"></div>
+    <div class="resize-handle w"></div>
+    <div class="resize-handle ne"></div>
+    <div class="resize-handle nw"></div>
+    <div class="resize-handle se"></div>
+    <div class="resize-handle sw"></div>
+    <div class="win-body">
+        <div class="cal-head">
+            <button id="calPrev">‹</button>
+            <div class="cal-title" id="calTitle">—</div>
+            <button id="calNext">›</button>
+            <button id="calTodayBtn" style="width:auto;padding:0 14px;font-size:13px">Сегодня</button>
+        </div>
+        <div class="cal-grid" id="calGrid"></div>
+        <div class="cal-note" id="calNote">Выбери день, чтобы добавить заметку.</div>
+    </div>
+</div>
+
+<!-- СПРАВКА -->
+<div class="window" id="win-help" data-title="Справка" data-icon="❓">
+    <div class="win-head" id="head-help">
+        <div class="wi">❓</div>
+        <div class="win-title">Справка</div>
+        <div class="win-btns">
+            <button class="min" data-min="win-help" title="Свернуть">—</button>
+            <button class="x" data-close="win-help" title="Закрыть">✕</button>
+        </div>
+    </div>
+    <div class="resize-handle n"></div>
+    <div class="resize-handle s"></div>
+    <div class="resize-handle e"></div>
+    <div class="resize-handle w"></div>
+    <div class="resize-handle ne"></div>
+    <div class="resize-handle nw"></div>
+    <div class="resize-handle se"></div>
+    <div class="resize-handle sw"></div>
+    <div class="win-body" style="font-size:14px;line-height:1.65;color:#c3cbd8">
+        <p><b>🚗 Авторынок</b> — торгуйся с продавцами и покупателями.</p>
+        <p><b>💬 Сделка</b> — напиши продавцу, договорись о цене и назначь встречу. На встрече могут попросить скинуть или добавить на бензин.</p>
+        <p><b>🏪 Магазин гаражей</b> — расширяет вместимость.</p>
+        <p><b>🧮 Калькулятор</b> — быстрый счёт.</p>
+        <p><b>📅 Календарь</b> — заметки по дням.</p>
+        <p style="color:#8f98a8">Окна можно тянуть за заголовок и растягивать за края/углы.</p>
+    </div>
+</div>
+
+        <div class="desk-hint">Тащи иконки мышкой · клик открывает · окна тащатся за заголовок</div>
+    </div>
+
+    <div class="taskbar" id="taskbar">
+        <div class="taskbar-title">ОТКРЫТО:</div>
+        <div id="taskList" style="display:flex;gap:8px;flex:1"></div>
+    </div>
+</div>
+
+<!-- ОБЪЯВЛЕНИЕ -->
+<div class="overlay" id="carOverlay">
+    <div class="car-modal">
+        <button class="close car-close" id="carClose" title="Закрыть">✕</button>
+        <div class="car-modal-img" id="carModalImg"></div>
+        <div class="car-modal-body" id="carModalBody"></div>
+    </div>
+</div>
+
+<!-- ЧАТ -->
+<div class="overlay" id="overlay">
+    <div class="chat-modal">
+        <div class="chat-head">
+            <div class="ava" id="npcAva">🧔</div>
+            <div>
+                <div class="chat-name" id="npcName">Имя</div>
+                <div class="chat-tag" id="npcTag">😐 Нейтральный</div>
+            </div>
+            <button class="close" id="chatClose">✕</button>
+        </div>
+        <div class="mood-row">
+            <span>Настроение</span>
+            <div class="mood-bar"><div id="moodFill"></div></div>
+            <span id="moodVal">50</span>
+        </div>
+        <div class="deal-row" id="dealRow"></div>
+        <div class="chat-log" id="chatLog"></div>
+        <div class="stage" id="stagePanel">
+            <div class="stage-box" id="stSchedule">
+                <div class="stage-title">📅 Назначьте встречу</div>
+                <div class="stage-row">
+                    <input type="date" id="meetDate">
+                    <input type="time" id="meetTime" value="18:00">
+                    <button id="meetBtn" class="stage-btn yes">Назначить</button>
+                </div>
+            </div>
+            <div class="stage-box" id="stGo">
+                <div class="stage-title" id="stGoText"></div>
+                <button id="goBtn" class="stage-btn yes wide">🚗 Поехать на встречу</button>
+            </div>
+            <div class="stage-box" id="stEvent">
+                <div class="stage-title" id="stEventText"></div>
+                <div class="stage-note" id="stEventNote"></div>
+                <div class="stage-row">
+                    <button id="evYes" class="stage-btn yes"></button>
+                    <button id="evNo" class="stage-btn no">❌ Отказать</button>
+                </div>
+            </div>
+        </div>
+        <div class="quick" id="quick"></div>
+        <div class="offer-row" id="offerRow">
+            <input type="number" id="offerInput" placeholder="Своя цена, ₽">
+            <button id="offerBtn">Предложить</button>
+        </div>
+        <div class="chat-input" id="msgRow">
+            <input id="msgInput" placeholder="Напишите сообщение…">
+            <button id="sendBtn">Отправить</button>
+        </div>
+    </div>
+</div>
+
+<script src="cars.js"></script>
+<script src="script.js"></script>
+<script src="admin.js"></script>
+</body>
+</html>
