@@ -1506,7 +1506,7 @@ function tickClock(){
 
 /* ================= ПРИВЯЗКА СОБЫТИЙ ================= */
 function bindUI(){
-    attachResizeHandlers();
+    
 
     buildIcons();
     attachIconHandlers();
@@ -1533,14 +1533,14 @@ function bindUI(){
         btn.addEventListener("click", function(e){
             e.stopPropagation();
             e.preventDefault();
-            minimizeWin(btn.dataset.min);
+            minimizeWin(btn.dataset.min.replace("win-", ""));
         });
     });
     document.querySelectorAll("[data-close]").forEach(function(btn){
         btn.addEventListener("click", function(e){
             e.stopPropagation();
             e.preventDefault();
-            closeWin(btn.dataset.close);
+            closeWin(btn.dataset.close.replace("win-", ""));
         });
     });
 
