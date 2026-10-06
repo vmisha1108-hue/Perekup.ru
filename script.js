@@ -1632,66 +1632,7 @@ window.addEventListener("DOMContentLoaded", function(){
     renderShop();
     renderTaskbar();
 });
-/* ================= ПРИНУДИТЕЛЬНОЕ ПЕРЕТАСКИВАНИЕ ОКОН (ФИКС) ================= */
-window.addEventListener("load", function(){
-    document.querySelectorAll(".win-head").forEach(function(head){
-        // убираем возможный старый обработчик
-        head.onmousedown = null;
 
-        head.addEventListener("mousedown", function(e){
-            // не тащим, если кликнули по кнопке свернуть/закрыть
-            if(e.target.closest(".win-btns")) return;
-            if(e.target.closest("button")) return;
-            if(e.button !== undefined && e.button !== 0) return;
-
-            var win = head.closest(".window");
-            if(!win) return;
-
-            win.style.zIndex = ++zTop;
-            var rect = win.getBoundingClientRect();
-            var desk = document.getElementById("deskArea").getBoundingClientRect();
-
-            var offsetX = e.clientX - rect.left;
-            var offsetY = e.clientY - rect.top;
-
-            win.style.left = (rect.left - desk.left) + "px";
-            win.style.top  = (rect.top  - desk.top)  + "px";
-            win.dataset.hasPos = "1";
-
-            function onMove(ev){
-                var x = ev.clientX - desk.left - offsetX;
-                var y = ev.clientY - desk.top  - offsetY;
-
-                var maxX = desk.width  - win.offsetWidth;
-                var maxY = desk.height - win.offsetHeight;
-                if(x < 0) x = 0;
-                if(x > maxX) x = maxX;
-                if(y < 0) y = 0;
-                if(y > maxY) y = maxY;
-
-                win.style.left = x + "px";
-                win.style.top  = y + "px";
-            }
-
-            function onUp(){
-                document.removeEventListener("mousemove", onMove);
-                document.removeEventListener("mouseup", onUp);
-                try{
-                    localStorage.setItem("window_" + win.id.replace("win-",""), JSON.stringify({
-                        left: parseFloat(win.style.left) || 0,
-                        top:  parseFloat(win.style.top)  || 0,
-                        width: win.offsetWidth,
-                        height: win.offsetHeight
-                    }));
-                }catch(err){}
-            }
-
-            document.addEventListener("mousemove", onMove);
-            document.addEventListener("mouseup", onUp);
-            e.preventDefault();
-        });
-    });
-});
 /* ================= РЕСАЙЗ ОКОН ЗА ЛЮБУЮ ГРАНИЦУ (ФИКС) ================= */
 window.addEventListener("load", function(){
 
