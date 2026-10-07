@@ -214,5 +214,20 @@ var CARS = [
     img: "",
     desc: "4.5 л дизель, автомат, 250 000 км, рамный, 4WD",
     seller: {name: "Тимур", avatar: "🧔", personality: "evil"}
-  }
+  },
+  {id: 34, name: "Ford Focus II, 2009", price: 500000, img: "", desc: "1.6 л, механика, 181 450 км, седан, 2 владельца", seller: {name: "Андрей", avatar: "🧔", personality: "neutral"}},
+  {id: 35, name: "Daewoo Matiz, 2010", price: 49000, img: "", desc: "0.8 л, механика, 100 000 км, для доставки, на ходу", seller: {name: "Игорь", avatar: "👨", personality: "evil"}},
+  {id: 36, name: "Daewoo Matiz, 2015", price: 500000, img: "", desc: "0.8 л, автомат, 30 270 км, летняя эксплуатация, гараж", seller: {name: "Ольга", avatar: "👩", personality: "kind"}},
+  {id: 37, name: "Opel Astra H, 2008", price: 410000, img: "", desc: "1.6 л, автомат, 235 808 км, хэтчбек, 4 владельца", seller: {name: "Максим", avatar: "🧑‍🦱", personality: "neutral"}},
+  {id: 38, name: "Nissan Tiida, 2011", price: 450000, img: "", desc: "1.6 л, автомат, 254 000 км, рестайлинг, максимальная", seller: {name: "Марина", avatar: "👩‍💼", personality: "kind"}},
+  {id: 39, name: "Nissan Note, 2013", price: 290000, img: "", desc: "1.4 л, механика, 149 800 км, рестайлинг, семейный", seller: {name: "Дмитрий", avatar: "👨‍🔧", personality: "neutral"}},
+  {id: 40, name: "BYD F3, 2012", price: 245000, img: "", desc: "1.5 л, механика, 71 300 км, кожа, люк, 1 владелец", seller: {name: "Анна", avatar: "👩‍🦰", personality: "kind"}},
+  {id: 41, name: "Ford Focus II, 2008", price: 450000, img: "", desc: "1.8 л, механика, 251 109 км, хэтчбек, 3 владельца", seller: {name: "Виктор", avatar: "👨‍💼", personality: "evil"}},
+  {id: 42, name: "Lada Granta, 2017", price: 390000, img: "", desc: "1.6 л, механика, 170 979 км, лифтбек, свежая", seller: {name: "Павел", avatar: "👨‍🔧", personality: "neutral"}},
+  {id: 43, name: "Lada Priora, 2014", price: 337000, img: "", desc: "1.6 л, механика, 180 000 км, седан, без вложений", seller: {name: "Сергей", avatar: "🧔", personality: "neutral"}},
+  {id: 44, name: "Geely GC6, 2015", price: 285000, img: "", desc: "1.5 л, механика, 138 000 км, седан, китаец", seller: {name: "Ринат", avatar: "🧔", personality: "evil"}},
+  {id: 45, name: "Hyundai Solaris, 2011", price: 310000, img: "", desc: "1.4 л, механика, 288 047 км, седан, такси", seller: {name: "Люба", avatar: "👵", personality: "kind"}},
+  {id: 46, name: "Renault Logan, 2008", price: 179000, img: "", desc: "1.4 л, механика, 240 000 км, седан, неприхотливый", seller: {name: "Гоша", avatar: "🧑‍🎤", personality: "evil"}},
+  {id: 47, name: "Chevrolet Cruze, 2012", price: 370000, img: "", desc: "1.6 л, механика, 384 000 км, седан, чёрный", seller: {name: "Кирилл", avatar: "👨‍💼", personality: "neutral"}},
+  {id: 48, name: "Chevrolet Aveo, 2014", price: 499000, img: "", desc: "1.6 л, механика, без пробега, седан, от дилера", seller: {name: "Елена", avatar: "👩‍🦰", personality: "kind"}}
 ];
