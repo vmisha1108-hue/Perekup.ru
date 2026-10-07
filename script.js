@@ -31,7 +31,7 @@ var QUICK = {
 
 /* ================= СОСТОЯНИЕ ================= */
 var balance = parseInt(localStorage.getItem("balance"),10);
-if(isNaN(balance)) balance = 1000000;
+if(isNaN(balance)) balance = 100000;
 var garage = JSON.parse(localStorage.getItem("garage") || "[]");
 var deals = parseInt(localStorage.getItem("deals"),10) || 0;
 var garageLvl = parseInt(localStorage.getItem("garageLvl"),10) || 0;
@@ -40,6 +40,11 @@ var chat = null;
 var view = "market";
 var zTop = 100;
 var openWindows = {};
+
+/* память переписок: ключ "buy:<id машины>" или "sell:<id машины>" */
+var chatStore = {};
+try{ chatStore = JSON.parse(localStorage.getItem("chats") || "{}") || {}; }catch(e){ chatStore = {}; }
+var dealsFilter = "all";
 
 /* игровое время: идёт в GAME_SPEED раз быстрее реального, пока открыта страница */
 var GAME_SPEED = 10;
@@ -458,23 +463,26 @@ function renderTaskbar(){
     if(!list) return;
     list.innerHTML = "";
 
-    Object.keys(openWindows).forEach(function(id){
-        var w = $("win-" + id);
-        if(!w) return;
-        var minimized = w.classList.contains("minimized");
+    var apps = ICONS.map(function(i){ return {id:i.id, ico:i.ico, title:i.label.replace(/<br>/g, " ")}; });
+    if(openWindows.admin) apps.push({id:"admin", ico:"⚙️", title:"Система"});
+
+    apps.forEach(function(app){
+        var w = $("win-" + app.id);
+        var running = !!openWindows[app.id];
+        var minimized = !!(w && w.classList.contains("minimized"));
         var btn = document.createElement("button");
-        btn.className = "task-btn" + (minimized ? "" : " active");
-        btn.textContent = (w.dataset.icon || "🪟") + " " + (w.dataset.title || id);
+        btn.className = "task-btn" + (running ? " running" : "") + (running && !minimized ? " active" : "");
+        btn.title = app.title;
+        btn.textContent = app.ico;
 
         btn.addEventListener("click", function(){
-            if(w.classList.contains("minimized")){
-                restoreWin(id);
+            if(!running){ openWin(app.id); return; }
+            if(minimized){
+                restoreWin(app.id);
+            }else if(Number(w.style.zIndex) === zTop){
+                minimizeWin(app.id);
             }else{
-                if(Number(w.style.zIndex) === zTop){
-                    minimizeWin(id);
-                }else{
-                    focusWin(id);
-                }
+                focusWin(app.id);
             }
         });
         list.appendChild(btn);
@@ -848,11 +856,51 @@ function closeCarInfo(){
 }
 
 /* ================= ЧАТ ================= */
+/* ================= ПАМЯТЬ ПЕРЕПИСКИ ================= */
+function chatKey(c){ return c.mode + ":" + c.car.id; }
+function persistChats(){ try{ localStorage.setItem("chats", JSON.stringify(chatStore)); }catch(e){} }
+function saveChat(){
+    if(!chat || chat.done || chat.stage === "event") return;
+    chatStore[chatKey(chat)] = {
+        mode: chat.mode, carId: chat.car.id, npc: chat.npc, ask: chat.ask, bid: chat.bid,
+        log: chat.log.slice(-80), last: chat.last, stage: chat.stage, price: chat.price,
+        meet: chat.meet ? {whenMs: chat.meet.whenMs, label: chat.meet.label} : null,
+        note: chat.note, busyUsed: chat.busyUsed, pid: chat.pid
+    };
+    persistChats();
+    renderDealsTab();
+}
+function deleteChat(c){
+    var k = chatKey(c);
+    if(chatStore[k]){ delete chatStore[k]; persistChats(); renderDealsTab(); }
+}
+function deleteChatByPid(pid){
+    var ch = false;
+    Object.keys(chatStore).forEach(function(k){
+        if(chatStore[k].pid === pid){ delete chatStore[k]; ch = true; }
+    });
+    if(ch) persistChats();
+}
+function restoreChat(sv){
+    var car = CARS.find(function(c){ return c.id === sv.carId; });
+    if(!car) return null;
+    return {mode: sv.mode, car: car, npc: sv.npc, ask: sv.ask, bid: sv.bid, log: sv.log.slice(), last: sv.last || "",
+            done: false, stage: sv.stage, price: sv.price, event: null,
+            meet: sv.meet ? {when: new Date(sv.meet.whenMs), whenMs: sv.meet.whenMs, label: sv.meet.label} : null,
+            note: sv.note || null, met: false, busyUsed: !!sv.busyUsed, pid: sv.pid || null};
+}
+
 function openBuyChat(carId){
     var car = CARS.find(function(c){ return c.id === carId; });
     if(garage.length >= currentGarage().cap){ alert("❌ Нет места! Расширь гараж."); return; }
     if(garage.indexOf(carId) !== -1) return;
     if(pendingFor(carId)) return;
+
+    var sv = chatStore["buy:" + carId];
+    if(sv && !sv.pid){
+        var rc = restoreChat(sv);
+        if(rc){ chat = rc; openOverlay(); return; }
+    }
 
     var s = car.seller;
     var p = PERSONALITY[s.personality];
@@ -881,6 +929,11 @@ function openSellChat(carId, ad){
     chat = {mode:"sell", car:car, npc:npc, bid:bid, log:[], last:"", done:false, stage:"talk", price:null, event:null, meet:null, note:null, met:false, busyUsed:false, pid:null};
 
     chat.pid = ad ? ad.id : null;
+    var svs = ad ? chatStore["sell:" + carId] : null;
+    if(svs && svs.pid === ad.id){
+        var rcs = restoreChat(svs);
+        if(rcs){ chat = rcs; openOverlay(); return; }
+    }
     var opening = {
         kind:   'Здравствуйте! Увидел объявление про ' + car.name + '. Готов дать ' + money(bid) + ' 🙂',
         neutral:'Добрый день. ' + car.name + ' ещё продаётся? Даю ' + money(bid) + '.',
@@ -922,6 +975,7 @@ function sysSay(t){ chat.log.push({who:"sys", text:t}); }
 function renderChat(){
     if(!chat) return;
     if(chat.done && chat.pid){ dropPending(chat.pid); chat.pid = null; }
+    if(chat.done) deleteChat(chat); else saveChat();
     var p = PERSONALITY[chat.npc.personality];
     $("npcAva").textContent  = chat.npc.avatar;
     $("npcName").textContent = chat.npc.name;
@@ -1023,7 +1077,7 @@ function analyze(text){
         .map(function(s){ return Number(s.replace(/\s/g,"")); })
         .filter(function(n){ return n > 0; });
     var offer = nums.length ? nums[nums.length-1] : null;
-    if(offer != null && /(тыс|к\b|k\b)/.test(t) && offer < 1000) offer *= 1000;
+    if(offer != null && /(тыс|\d\s*к(\s|$)|\d\s*k\b)/.test(t) && offer < 1000) offer *= 1000;
 
     return {
         offer: offer,
@@ -1031,8 +1085,8 @@ function analyze(text){
         praise : /(красив|классн|отличн|крут|люблю|уважа|нравитс|супер|молодец|шикарн|легенд|топ)/.test(t),
         polite : /(пожалуйста|спасибо|благодар|будьте добры|извини|простите)/.test(t),
         rude   : /(дурак|тупой|идиот|дебил|отстой|дерьм|говно|плохой|обман|развод|лох|жмот|жадн|урод|заткнись)/.test(t),
-        haggle : /(скидк|дешевл|торг|уступ|дорого|сбавь|снизь|сброс|уценк|сойдемся|реальн|адекватн|подвинь)/.test(t),
-        agree  : /(согласен|согласна|беру|договорились|по рукам|идет|окей|\bок\b|давай)/.test(t),
+        haggle : /(скидк|дешевл|торг|уступ|дорого|дороже|сбавь|снизь|сброс|уценк|сойдемся|реальн|адекватн|подвинь)/.test(t),
+        agree  : /(согласен|согласна|беру|договорились|по рукам|идет|окей|\sок\s|давай)/.test(t),
         question: /\?/.test(text)
     };
 }
@@ -1105,7 +1159,7 @@ function handleMessage(text){
         return;
     }
 
-    if(intent.offer == null && intent.agree){
+    if(intent.offer == null && intent.agree && !intent.haggle){
         if(chat.mode === "buy"){
             agreePrice(chat.ask);
             renderChat();
@@ -1467,6 +1521,7 @@ function carById(id){ return CARS.find(function(c){ return c.id === id; }) || nu
 function isMeetReady(it){ return !!(ADM.smoothMeet || gameMs >= it.when); }
 
 function dropPending(id, removeNote){
+    deleteChatByPid(id);
     var it = findPending(id);
     if(!it) return;
     if(removeNote && it.note) removeCalNote(it.note);
@@ -1564,8 +1619,14 @@ function openMeetChat(id){
             stage: "go", price: it.price, event: null,
             meet: {when: new Date(it.when), whenMs: it.when, label: it.label},
             note: it.note, met: false, busyUsed: true, pid: it.id};
-    sysSay("🤝 Цена согласована: " + money(it.price));
-    sysSay("📅 Встреча: " + it.label);
+    var svm = chatStore[chatKey(chat)];
+    if(svm && svm.pid === it.id && svm.log && svm.log.length){
+        chat.log = svm.log.slice();
+        chat.last = svm.last || "";
+    }else{
+        sysSay("🤝 Цена согласована: " + money(it.price));
+        sysSay("📅 Встреча: " + it.label);
+    }
     openOverlay();
 }
 function cancelMeet(id){
@@ -1577,13 +1638,20 @@ function cancelMeet(id){
 }
 
 function dealAction(e){
-    var t = e.target.closest("[data-ad-open],[data-ad-cancel],[data-meet-go],[data-meet-cancel]");
+    var t = e.target.closest("[data-ad-open],[data-ad-cancel],[data-meet-go],[data-meet-cancel],[data-dtab],[data-chat-open],[data-chat-del]");
     if(!t || t.disabled) return false;
     var d = t.dataset;
     if(d.adOpen){ closeCarInfo(); openAdChat(d.adOpen); }
     else if(d.adCancel){ cancelAd(d.adCancel); }
     else if(d.meetGo){ openMeetChat(d.meetGo); }
     else if(d.meetCancel){ cancelMeet(d.meetCancel); }
+    else if(d.dtab){ dealsFilter = d.dtab; showDeals(); }
+    else if(d.chatOpen){ closeCarInfo(); openBuyChat(parseInt(d.chatOpen, 10)); }
+    else if(d.chatDel){
+        if(confirm("Удалить переписку?")){
+            delete chatStore[d.chatDel]; persistChats(); showDeals(); renderDealsTab();
+        }
+    }
     return true;
 }
 
@@ -1591,8 +1659,38 @@ function renderDealsTab(){
     var t = $("tabDeals");
     if(!t) return;
     var attn = pending.filter(function(it){ return it.type === "ad" ? it.ready : gameMs >= it.when; }).length;
-    t.textContent = "📋 Сделки" + (pending.length ? " · " + pending.length : "");
+    var n = dealItems().length;
+    t.textContent = "📋 Сделки" + (n ? " · " + n : "");
     t.classList.toggle("alert", attn > 0);
+}
+
+// все элементы вкладки «Сделки»: dir "in" — входящие (мы продаём), "out" — исходящие (мы покупаем)
+function dealItems(){
+    var items = [];
+    pending.forEach(function(it){
+        items.push({dir: it.mode === "sell" ? "in" : "out", html: function(){ return dealCard(it); }});
+    });
+    Object.keys(chatStore).forEach(function(k){
+        var sv = chatStore[k];
+        var car = sv ? carById(sv.carId) : null;
+        if(!car || sv.mode !== "buy" || sv.pid) return;
+        if(garage.indexOf(sv.carId) !== -1 || pendingFor(sv.carId)) return;
+        items.push({dir: "out", html: function(){ return chatCard(k, sv, car); }});
+    });
+    return items;
+}
+
+function chatCard(key, sv, car){
+    var n = sv.npc, last = "";
+    for(var i = sv.log.length - 1; i >= 0; i--){
+        if(sv.log[i].who !== "sys"){ last = sv.log[i].text; break; }
+    }
+    var body = '<div class="name">💬 ' + esc(car.name) + '</div>' +
+        '<div class="meta">' + esc(n.avatar + " " + n.name) + ' · ' + esc(shortDesc(last, 60)) + '</div>' +
+        '<div class="deal-status">' + (sv.price != null ? 'Цена согласована: ' + money(sv.price) : 'Переписка не закончена') + '</div>' +
+        '<button class="buy" data-chat-open="' + car.id + '">💬 Продолжить</button>' +
+        '<button class="deal-cancel" data-chat-del="' + esc(key) + '">Удалить переписку</button>';
+    return '<article class="card"><div class="car-img">' + carImg(car) + '</div><div class="info">' + body + '</div></article>';
 }
 
 function dealCard(it){
@@ -1629,9 +1727,21 @@ function dealCard(it){
 function showDeals(){
     view = "deals";
     setTabs("deals");
-    $("content").innerHTML = pending.length
-        ? pending.map(dealCard).join("")
-        : '<div class="empty" style="grid-column:1/-1">📋<br><br>Пока нет активных сделок.<br>Разместите машину на продажу или договоритесь о встрече.</div>';
+    var all = dealItems();
+    var nIn = all.filter(function(d){ return d.dir === "in"; }).length;
+    var nOut = all.length - nIn;
+    var shown = dealsFilter === "all" ? all : all.filter(function(d){ return d.dir === dealsFilter; });
+    var bar = '<div class="deal-tabs">' + [["all", "Все", all.length], ["in", "📥 Входящие", nIn], ["out", "📤 Исходящие", nOut]].map(function(t){
+        return '<button class="dtab' + (dealsFilter === t[0] ? ' active' : '') + '" data-dtab="' + t[0] + '">' + t[1] + ' · ' + t[2] + '</button>';
+    }).join("") + '</div>';
+    var empty = {
+        all: 'Пока нет активных сделок.<br>Разместите машину на продажу или напишите продавцу.',
+        "in": 'Входящих нет.<br>Разместите машину на продажу — покупатели напишут сюда.',
+        out: 'Исходящих нет.<br>Напишите продавцу на рынке — переписка появится здесь.'
+    }[dealsFilter];
+    $("content").innerHTML = bar + (shown.length
+        ? shown.map(function(d){ return d.html(); }).join("")
+        : '<div class="empty" style="grid-column:1/-1">📋<br><br>' + empty + '</div>');
     if($("fCount")) $("fCount").textContent = "";
     updateStats();
     updatePendingCountdowns();
@@ -1718,7 +1828,7 @@ function renderCalc(){
     if($("calcVal")) $("calcVal").textContent = calcExpr === "" ? "0" : calcExpr;
 }
 function calcEval(){
-    var e = calcExpr.replace(/×/g,"*").replace(/÷/g,"/").replace(/−/g,"-");
+    var e = calcExpr.replace(/×/g,"*").replace(/÷/g,"/").replace(/−/g,"-").replace(/(^|[^\d.])0+(\d)/g,"$1$2");
     try{
         var r = Function('"use strict";return (' + e + ')')();
         if(r === undefined || isNaN(r)) throw 0;
@@ -1733,7 +1843,7 @@ function calcEval(){
 }
 document.addEventListener("keydown", function(e){
     var wc = $("win-calc");
-    if(!wc || !wc.classList.contains("open") || wc.classList.contains("minimized")) return;
+    if(!wc || !wc.classList.contains("open") || wc.classList.contains("minimized") || /^(INPUT|TEXTAREA|SELECT)$/.test((e.target || {}).tagName)) return;
     if(/^[0-9+\-*/.()]$/.test(e.key)){ calcExpr += e.key; renderCalc(); }
     else if(e.key === "Enter"){ calcEval(); }
     else if(e.key === "Backspace"){ calcExpr = calcExpr.slice(0,-1); renderCalc(); }
@@ -2055,7 +2165,6 @@ function bindAdmin(){
 /* ================= ПРИВЯЗКА СОБЫТИЙ ================= */
 function bindUI(){
     bindAdmin();
-    attachResizeHandlers();
 
     buildIcons();
     attachIconHandlers();
@@ -2082,14 +2191,14 @@ function bindUI(){
         btn.addEventListener("click", function(e){
             e.stopPropagation();
             e.preventDefault();
-            minimizeWin(btn.dataset.min);
+            minimizeWin(btn.dataset.min.replace("win-", ""));
         });
     });
     document.querySelectorAll("[data-close]").forEach(function(btn){
         btn.addEventListener("click", function(e){
             e.stopPropagation();
             e.preventDefault();
-            closeWin(btn.dataset.close);
+            closeWin(btn.dataset.close.replace("win-", ""));
         });
     });
 
@@ -2182,66 +2291,6 @@ window.addEventListener("DOMContentLoaded", function(){
     updateStats();
     renderShop();
     renderTaskbar();
-});
-/* ================= ПРИНУДИТЕЛЬНОЕ ПЕРЕТАСКИВАНИЕ ОКОН (ФИКС) ================= */
-window.addEventListener("load", function(){
-    document.querySelectorAll(".win-head").forEach(function(head){
-        // убираем возможный старый обработчик
-        head.onmousedown = null;
-
-        head.addEventListener("mousedown", function(e){
-            // не тащим, если кликнули по кнопке свернуть/закрыть
-            if(e.target.closest(".win-btns")) return;
-            if(e.target.closest("button")) return;
-            if(e.button !== undefined && e.button !== 0) return;
-
-            var win = head.closest(".window");
-            if(!win) return;
-
-            win.style.zIndex = ++zTop;
-            var rect = win.getBoundingClientRect();
-            var desk = document.getElementById("deskArea").getBoundingClientRect();
-
-            var offsetX = e.clientX - rect.left;
-            var offsetY = e.clientY - rect.top;
-
-            win.style.left = (rect.left - desk.left) + "px";
-            win.style.top  = (rect.top  - desk.top)  + "px";
-            win.dataset.hasPos = "1";
-
-            function onMove(ev){
-                var x = ev.clientX - desk.left - offsetX;
-                var y = ev.clientY - desk.top  - offsetY;
-
-                var maxX = desk.width  - win.offsetWidth;
-                var maxY = desk.height - win.offsetHeight;
-                if(x < 0) x = 0;
-                if(x > maxX) x = maxX;
-                if(y < 0) y = 0;
-                if(y > maxY) y = maxY;
-
-                win.style.left = x + "px";
-                win.style.top  = y + "px";
-            }
-
-            function onUp(){
-                document.removeEventListener("mousemove", onMove);
-                document.removeEventListener("mouseup", onUp);
-                try{
-                    localStorage.setItem("window_" + win.id.replace("win-",""), JSON.stringify({
-                        left: parseFloat(win.style.left) || 0,
-                        top:  parseFloat(win.style.top)  || 0,
-                        width: win.offsetWidth,
-                        height: win.offsetHeight
-                    }));
-                }catch(err){}
-            }
-
-            document.addEventListener("mousemove", onMove);
-            document.addEventListener("mouseup", onUp);
-            e.preventDefault();
-        });
-    });
 });
 /* ================= РЕСАЙЗ ОКОН ЗА ЛЮБУЮ ГРАНИЦУ (ФИКС) ================= */
 window.addEventListener("load", function(){
