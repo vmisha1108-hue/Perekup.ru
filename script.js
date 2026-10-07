@@ -28,9 +28,10 @@ var QUICK = {
     buy:["👋 Привет","😊 Отличная машина!","🙏 Уступите, пожалуйста","😡 Ты жадный!","🤝 Согласен"],
     sell:["👋 Здравствуйте","🙏 Спасибо!","💰 Давай дороже","😡 Хватит жадничать","🤝 Согласен"]
 };
+
 /* ================= СОСТОЯНИЕ ================= */
 var balance = parseInt(localStorage.getItem("balance"),10);
-if(isNaN(balance)) balance = 100000;
+if(isNaN(balance)) balance = 1000000;
 var garage = JSON.parse(localStorage.getItem("garage") || "[]");
 var deals = parseInt(localStorage.getItem("deals"),10) || 0;
 var garageLvl = parseInt(localStorage.getItem("garageLvl"),10) || 0;
@@ -40,6 +41,25 @@ var view = "market";
 var zTop = 100;
 var openWindows = {};
 
+/* игровое время: идёт в GAME_SPEED раз быстрее реального, пока открыта страница */
+var GAME_SPEED = 10;
+var gameMs = parseInt(localStorage.getItem("gameMs"), 10);
+if(isNaN(gameMs) || gameMs <= 0) gameMs = Date.now();
+var lastRealMs = Date.now();
+var lastGameSave = 0;
+var lastDayKey = "";
+var lastClockStr = "";
+
+/* ожидающие дела: объявления о продаже и назначенные встречи (живут независимо от окна чата) */
+var AD_WAIT_MIN = 10 * 60000;        // покупатель находится через 10–45 игровых минут
+var AD_WAIT_MAX = 45 * 60000;
+var MEET_GRACE  = 4 * 3600000;       // на встречу можно приехать в течение 4 игровых часов после назначенного
+var pending = [];
+try{ pending = JSON.parse(localStorage.getItem("pending") || "[]") || []; }catch(e){ pending = []; }
+pending = pending.filter(function(it){
+    return it && it.id && it.type && CARS.some(function(c){ return c.id === it.carId; });
+});
+pending.forEach(function(it){ if(it.type === "meet") it.reached = gameMs >= it.when; });
 
 /* ================= ХЕЛПЕРЫ ================= */
 function $(id){ return document.getElementById(id); }
@@ -69,6 +89,7 @@ function save(){
     localStorage.setItem("deals", deals);
     localStorage.setItem("garageLvl", garageLvl);
     localStorage.setItem("notes", JSON.stringify(notes));
+    localStorage.setItem("pending", JSON.stringify(pending));
 }
 function currentGarage(){ return GARAGES[garageLvl]; }
 
@@ -86,6 +107,8 @@ function updateStats(){
         $("shopUsed").textContent = garage.length;
         $("shopFree").textContent = Math.max(0, cap - garage.length);
     }
+    if(typeof renderAdmin === "function") renderAdmin();
+    if(typeof renderDealsTab === "function") renderDealsTab();
 }
 
 /* ================= ИКОНКИ ================= */
@@ -94,6 +117,7 @@ var ICONS = [
     {id:"shop",     ico:"🏪", label:"Магазин<br>гаражей"},
     {id:"calc",     ico:"🧮", label:"Калькулятор"},
     {id:"calendar", ico:"📅", label:"Календарь"},
+    {id:"clock",    ico:"🕐", label:"Часы"},
     {id:"help",     ico:"❓", label:"Справка"}
 ];
 
@@ -356,6 +380,7 @@ function clampWindow(w){
 function openWin(id){
     var w = $("win-" + id);
     if(!w) return;
+    if(id === "admin" && !adminUnlocked){ openAdminGate(); return; }
     var desk = getDeskRect();
 
     if(!w.dataset.hasPos){
@@ -389,6 +414,7 @@ function openWin(id){
     renderTaskbar();
 
     if(id === "shop"){ renderShop(); }
+    if(id === "admin"){ renderAdmin(); }
 }
 
 function closeWin(id){
@@ -432,26 +458,23 @@ function renderTaskbar(){
     if(!list) return;
     list.innerHTML = "";
 
-    var apps = ICONS.map(function(i){ return {id:i.id, ico:i.ico, title:i.label.replace(/<br>/g, " ")}; });
-    if(openWindows.admin) apps.push({id:"admin", ico:"⚙️", title:"Система"});
-
-    apps.forEach(function(app){
-        var w = $("win-" + app.id);
-        var running = !!openWindows[app.id];
-        var minimized = !!(w && w.classList.contains("minimized"));
+    Object.keys(openWindows).forEach(function(id){
+        var w = $("win-" + id);
+        if(!w) return;
+        var minimized = w.classList.contains("minimized");
         var btn = document.createElement("button");
-        btn.className = "task-btn" + (running ? " running" : "") + (running && !minimized ? " active" : "");
-        btn.title = app.title;
-        btn.textContent = app.ico;
+        btn.className = "task-btn" + (minimized ? "" : " active");
+        btn.textContent = (w.dataset.icon || "🪟") + " " + (w.dataset.title || id);
 
         btn.addEventListener("click", function(){
-            if(!running){ openWin(app.id); return; }
-            if(minimized){
-                restoreWin(app.id);
-            }else if(Number(w.style.zIndex) === zTop){
-                minimizeWin(app.id);
+            if(w.classList.contains("minimized")){
+                restoreWin(id);
             }else{
-                focusWin(app.id);
+                if(Number(w.style.zIndex) === zTop){
+                    minimizeWin(id);
+                }else{
+                    focusWin(id);
+                }
             }
         });
         list.appendChild(btn);
@@ -636,7 +659,7 @@ function visibleCars(list){
         if(max !== null && car.price > max) return false;
         if(view === "market"){
             if(filters.mood !== "all" && car.seller.personality !== filters.mood) return false;
-            if(filters.afford && car.price > balance) return false;
+            if(filters.afford && !canAfford(car.price)) return false;
         }
         return true;
     });
@@ -662,7 +685,7 @@ function updateResultCount(shown, total){
     if($("fCount")) $("fCount").textContent = "Показано: " + shown + " из " + total;
 }
 function refreshList(){
-    if(view === "market") showMarket(); else showGarage();
+    if(view === "market") showMarket(); else if(view === "deals") showDeals(); else showGarage();
 }
 function bindFilters(){
     if(!$("fSearch")) return;
@@ -687,6 +710,9 @@ function setTabs(active){
     var tg = $("tabGarage");
     if(tm) tm.classList.toggle("active", active === "market");
     if(tg) tg.classList.toggle("active", active === "garage");
+    var td = $("tabDeals");
+    if(td) td.classList.toggle("active", active === "deals");
+    if($("filters")) $("filters").style.display = active === "deals" ? "none" : "";
     if($("fMood")) $("fMood").style.display = active === "market" ? "" : "none";
     if($("fAffordWrap")) $("fAffordWrap").style.display = active === "market" ? "" : "none";
 }
@@ -705,9 +731,7 @@ function showMarket(){
                 '<div class="more">Подробнее ›</div>' +
                 '<div class="seller">' + car.seller.avatar + ' ' + car.seller.name + ' · ' + p.label + '</div>' +
                 '<div class="price">' + money(car.price) + '</div>' +
-                '<button class="buy" data-buy="' + car.id + '" ' + (owned?'disabled':'') + '>' +
-                    (owned ? 'Уже в гараже' : '💬 Написать') +
-                '</button>' +
+                buyBtn(car, owned) +
             '</div></article>';
     }).join("");
     if(!shown.length) $("content").innerHTML = noResults();
@@ -734,7 +758,7 @@ function showGarage(){
                 '<div class="meta">' + esc(shortDesc(car.desc, 60)) + '</div>' +
                 '<div class="more">Подробнее ›</div>' +
                 '<div class="seller">Рынок: ' + money(car.price) + '</div>' +
-                '<button class="sell" data-sell="' + car.id + '">💰 Найти покупателя</button>' +
+                sellBtn(car) +
             '</div></article>';
     }).join("");
     if(!shownG.length) $("content").innerHTML = noResults();
@@ -749,7 +773,7 @@ function renderShop(){
     grid.innerHTML = GARAGES.map(function(g, i){
         var owned = i <= garageLvl;
         var current = i === garageLvl;
-        var canBuy = i === garageLvl + 1 && balance >= g.price;
+        var canBuy = i === garageLvl + 1 && canAfford(g.price);
         var btn;
         if(current) btn = '<button disabled>✓ Текущий</button>';
         else if(owned) btn = '<button disabled>Уже куплен</button>';
@@ -770,8 +794,8 @@ function renderShop(){
 function buyGarage(i){
     var g = GARAGES[i];
     if(i !== garageLvl + 1) return;
-    if(balance < g.price) return;
-    balance -= g.price;
+    if(!canAfford(g.price)) return;
+    spend(g.price);
     garageLvl = i;
     save(); renderShop(); updateStats();
     alert('✅ Куплен: ' + g.name + '\nВместимость: ' + g.cap + ' машин');
@@ -806,10 +830,9 @@ function openCarInfo(id){
 
     var action;
     if(inGarage){
-        action = '<button class="sell" data-sell="' + car.id + '">💰 Найти покупателя</button>';
+        action = sellBtn(car);
     }else{
-        action = '<button class="buy" data-buy="' + car.id + '" ' + (owned ? 'disabled' : '') + '>' +
-                 (owned ? 'Уже в гараже' : '💬 Написать') + '</button>';
+        action = buyBtn(car, owned);
     }
 
     $("carModalImg").innerHTML = carImg(car);
@@ -829,13 +852,14 @@ function openBuyChat(carId){
     var car = CARS.find(function(c){ return c.id === carId; });
     if(garage.length >= currentGarage().cap){ alert("❌ Нет места! Расширь гараж."); return; }
     if(garage.indexOf(carId) !== -1) return;
+    if(pendingFor(carId)) return;
 
     var s = car.seller;
     var p = PERSONALITY[s.personality];
     var npc = {name:s.name, avatar:s.avatar, personality:s.personality,
                mood: clamp(p.mood + rnd(-8,8), 5, 95), greeted:false};
     var ask = Math.round(car.price * p.markup / 500) * 500;
-    chat = {mode:"buy", car:car, npc:npc, ask:ask, log:[], last:"", done:false, stage:"talk", price:null, event:null, meet:null, note:null, met:false, busyUsed:false};
+    chat = {mode:"buy", car:car, npc:npc, ask:ask, log:[], last:"", done:false, stage:"talk", price:null, event:null, meet:null, note:null, met:false, busyUsed:false, pid:null};
 
     var opening = {
         kind:   'Привет! Это ' + car.name + '. Состояние отличное, отдам за ' + money(ask) + '. Что скажешь? 🙂',
@@ -846,16 +870,17 @@ function openBuyChat(carId){
     openOverlay();
 }
 
-function openSellChat(carId){
+function openSellChat(carId, ad){
     var car = CARS.find(function(c){ return c.id === carId; });
-    var b = pick(BUYERS);
+    var b = ad ? ad.npc : pick(BUYERS);
     var p = PERSONALITY[b.personality];
     var npc = {name:b.name, avatar:b.avatar, personality:b.personality,
-               mood: clamp(p.mood + rnd(-8,8), 5, 95), greeted:false};
+               mood: ad ? b.mood : clamp(p.mood + rnd(-8,8), 5, 95), greeted:false};
     var b0 = lerp(p.bMin, p.bMax, npc.mood/100);
     var bid = Math.round(car.price * (1 + b0) * 0.88 / 500) * 500;
-    chat = {mode:"sell", car:car, npc:npc, bid:bid, log:[], last:"", done:false, stage:"talk", price:null, event:null, meet:null, note:null, met:false, busyUsed:false};
+    chat = {mode:"sell", car:car, npc:npc, bid:bid, log:[], last:"", done:false, stage:"talk", price:null, event:null, meet:null, note:null, met:false, busyUsed:false, pid:null};
 
+    chat.pid = ad ? ad.id : null;
     var opening = {
         kind:   'Здравствуйте! Увидел объявление про ' + car.name + '. Готов дать ' + money(bid) + ' 🙂',
         neutral:'Добрый день. ' + car.name + ' ещё продаётся? Даю ' + money(bid) + '.',
@@ -866,7 +891,7 @@ function openSellChat(carId){
 }
 
 function openOverlay(){
-    var now = new Date();
+    var now = gameNow();
     $("meetDate").min = ymd(now);
     $("meetDate").value = ymd(new Date(now.getTime() + 86400000));
     $("meetTime").value = "18:00";
@@ -878,9 +903,17 @@ function openOverlay(){
 }
 function closeChat(){
     $("overlay").classList.remove("open");
-    if(chat && chat.note && !chat.met) removeCalNote(chat.note);
+    if(chat && chat.pid){
+        if(chat.stage === "event" && !chat.done){
+            toast("💤 Вы уехали со встречи: сделка сорвалась.");
+            dropPending(chat.pid);
+        }else if(chat.done){
+            dropPending(chat.pid);
+        }
+    }
     chat = null;
-    if(view === "market") showMarket(); else showGarage();
+    refreshList();
+    renderDealsTab();
 }
 function npcSay(t){ chat.log.push({who:"npc", text:t}); }
 function meSay(t){  chat.log.push({who:"me",  text:t}); }
@@ -888,6 +921,7 @@ function sysSay(t){ chat.log.push({who:"sys", text:t}); }
 
 function renderChat(){
     if(!chat) return;
+    if(chat.done && chat.pid){ dropPending(chat.pid); chat.pid = null; }
     var p = PERSONALITY[chat.npc.personality];
     $("npcAva").textContent  = chat.npc.avatar;
     $("npcName").textContent = chat.npc.name;
@@ -928,9 +962,17 @@ function renderChat(){
     $("stSchedule").style.display = st === "schedule" ? "block" : "none";
     $("stGo").style.display       = st === "go" ? "block" : "none";
     $("stEvent").style.display    = st === "event" ? "block" : "none";
-    if(st === "go" && chat.meet) $("stGoText").textContent = "📅 Встреча: " + chat.meet.label;
+    if(st === "go" && chat.meet){
+        var reached = ADM.smoothMeet || gameMs >= chat.meet.whenMs;
+        $("stGoText").textContent = "📅 Встреча: " + chat.meet.label;
+        $("stGoSub").innerHTML = reached
+            ? 'Пора ехать! Если опоздать больше чем на ' + Math.round(MEET_GRACE / 3600000) + ' ч, встреча сорвётся.'
+            : 'До встречи: <b><span data-until="' + chat.meet.whenMs + '"></span></b>. Можно закрыть чат: встреча сохранится во вкладке «Сделки».';
+        $("goBtn").disabled = !reached;
+        updatePendingCountdowns();
+    }
     if(st === "event" && chat.event){
-        var lack = chat.event.sign > 0 && balance < chat.price + chat.event.amount;
+        var lack = chat.event.sign > 0 && !canAfford(chat.price + chat.event.amount);
         $("stEventText").textContent = chat.event.prompt;
         $("stEventNote").textContent = lack ? "💸 Не хватает денег, чтобы согласиться." : "";
         $("evYes").textContent = chat.event.yesLabel;
@@ -981,7 +1023,7 @@ function analyze(text){
         .map(function(s){ return Number(s.replace(/\s/g,"")); })
         .filter(function(n){ return n > 0; });
     var offer = nums.length ? nums[nums.length-1] : null;
-    if(offer != null && /(тыс|\d\s*к(\s|$)|\d\s*k\b)/.test(t) && offer < 1000) offer *= 1000;
+    if(offer != null && /(тыс|к\b|k\b)/.test(t) && offer < 1000) offer *= 1000;
 
     return {
         offer: offer,
@@ -989,8 +1031,8 @@ function analyze(text){
         praise : /(красив|классн|отличн|крут|люблю|уважа|нравитс|супер|молодец|шикарн|легенд|топ)/.test(t),
         polite : /(пожалуйста|спасибо|благодар|будьте добры|извини|простите)/.test(t),
         rude   : /(дурак|тупой|идиот|дебил|отстой|дерьм|говно|плохой|обман|развод|лох|жмот|жадн|урод|заткнись)/.test(t),
-        haggle : /(скидк|дешевл|торг|уступ|дорого|дороже|сбавь|снизь|сброс|уценк|сойдемся|реальн|адекватн|подвинь)/.test(t),
-        agree  : /(согласен|согласна|беру|договорились|по рукам|идет|окей|\sок\s|давай)/.test(t),
+        haggle : /(скидк|дешевл|торг|уступ|дорого|сбавь|снизь|сброс|уценк|сойдемся|реальн|адекватн|подвинь)/.test(t),
+        agree  : /(согласен|согласна|беру|договорились|по рукам|идет|окей|\bок\b|давай)/.test(t),
         question: /\?/.test(text)
     };
 }
@@ -1048,6 +1090,7 @@ function handleMessage(text){
     intent.same = (text.trim().toLowerCase() === chat.last);
     chat.last = text.trim().toLowerCase();
     applyMood(intent);
+    if(ADM.anyPrice) chat.npc.mood = 100;
 
     if(chat.npc.mood <= 6){
         var leaves = {
@@ -1062,7 +1105,7 @@ function handleMessage(text){
         return;
     }
 
-    if(intent.offer == null && intent.agree && !intent.haggle){
+    if(intent.offer == null && intent.agree){
         if(chat.mode === "buy"){
             agreePrice(chat.ask);
             renderChat();
@@ -1086,6 +1129,7 @@ function handleMessage(text){
 function handleBuyOffer(offer){
     var car = chat.car;
     var limit = sellerLimit();
+    if(ADM.anyPrice){ agreePrice(offer); return; }
 
     if(offer < car.price * 0.3){
         npcSay(pick([
@@ -1116,7 +1160,7 @@ function handleBuyOffer(offer){
 
 function finishBuy(price){
     price = Math.round(price);
-    if(balance < price){
+    if(!canAfford(price)){
         npcSay("Без денег я машину не отдам. Зря съездили.");
         sysSay("💤 Сделка сорвалась.");
         chat.done = true;
@@ -1128,7 +1172,12 @@ function finishBuy(price){
         return;
     }
 
-    balance -= price;
+    if(garage.indexOf(chat.car.id) !== -1){
+        sysSay("ℹ️ Эта машина уже у вас.");
+        chat.done = true;
+        return;
+    }
+    spend(price);
     garage.push(chat.car.id);
     deals++;
     save();
@@ -1146,6 +1195,7 @@ function finishBuy(price){
 function handleSellAsk(price){
     var car = chat.car;
     var limit = buyerLimit();
+    if(ADM.anyPrice){ agreePrice(price); return; }
 
     if(price > car.price * 2.5){
         npcSay(pick(["Ты цену не перепутал? Это грабёж.", "За такие деньги я лучше новую возьму."]));
@@ -1233,7 +1283,7 @@ function agreePrice(price){
             sysSay("❌ В гараже нет места.");
             return;
         }
-        if(balance < price){
+        if(!canAfford(price)){
             sysSay("💸 На вашем счёте не хватает денег для такой цены. Предложите меньше.");
             return;
         }
@@ -1255,14 +1305,14 @@ function scheduleMeeting(){
     if(!ds || !ts){ sysSay("📅 Выберите дату и время встречи."); renderChat(); return; }
     var when = new Date(ds + "T" + ts);
     if(isNaN(when.getTime())){ sysSay("📅 Не удалось разобрать дату."); renderChat(); return; }
-    if(when.getTime() < Date.now()){ sysSay("📅 Это время уже прошло. Выберите другое."); renderChat(); return; }
+    if(when.getTime() < gameMs){ sysSay("📅 Это время уже прошло. Выберите другое."); renderChat(); return; }
 
     var p = chat.npc.personality;
     meSay("Давайте встретимся " + fmtMeet(when) + ".");
 
     // небольшой шанс, что продавец или покупатель занят (не больше одного раза за сделку)
     var chance = {kind:0.05, neutral:0.08, evil:0.14}[p];
-    if(!chat.busyUsed && Math.random() < chance){
+    if(!ADM.smoothMeet && !chat.busyUsed && Math.random() < chance){
         chat.busyUsed = true;
         npcSay({
             kind:   "Ой, в это время никак не получится, я занят. Давайте другой день? 🙂",
@@ -1278,18 +1328,26 @@ function scheduleMeeting(){
         neutral:"Хорошо, встретимся.",
         evil:   "Ладно. Не опаздывай."
     }[p]);
-    chat.meet = {when: when, label: fmtMeet(when)};
+    chat.meet = {when: when, whenMs: when.getTime(), label: fmtMeet(when)};
     chat.note = addCalNote(when,
         (chat.mode === "buy" ? "🚗 " : "💰 ") + pad2(when.getHours()) + ":" + pad2(when.getMinutes()) +
         " — " + (chat.mode === "buy" ? "купить " : "продать ") + chat.car.name + " (" + chat.npc.name + ")");
     sysSay("📅 Встреча назначена: " + chat.meet.label);
+    if(chat.pid) dropPending(chat.pid);
+    chat.pid = newPid();
+    pending.push({
+        id: chat.pid, type: "meet", mode: chat.mode, carId: chat.car.id,
+        npc: {name: chat.npc.name, avatar: chat.npc.avatar, personality: chat.npc.personality, mood: chat.npc.mood},
+        price: chat.price, when: chat.meet.whenMs, label: chat.meet.label, note: chat.note, reached: false
+    });
+    save();
     chat.stage = "go";
     renderChat();
 }
 
 // на встрече: покупатель или продавец может попросить скинуть или добавить
 function rollEvent(){
-    if(Math.random() > 0.65) return null;
+    if(ADM.smoothMeet || Math.random() > 0.65) return null;
     var p = chat.npc.personality;
     var price = chat.price;
     var fuel = pick([500, 1000, 1500, 2000, 3000]);
@@ -1336,6 +1394,11 @@ function rollEvent(){
 
 function goToMeeting(){
     if(!chat || chat.done || chat.stage !== "go") return;
+    if(!ADM.smoothMeet && chat.meet && gameMs < chat.meet.whenMs){
+        sysSay("⏳ Ещё рано: встреча назначена на " + chat.meet.label + ".");
+        renderChat();
+        return;
+    }
     chat.met = true;
     sysSay("🚗 Вы на месте: " + chat.car.name + ".");
     if(chat.mode === "buy") sysSay("🔍 Вы осматриваете машину: всё соответствует описанию.");
@@ -1356,7 +1419,7 @@ function agreeEvent(){
     if(!chat || chat.done || chat.stage !== "event" || !chat.event) return;
     var ev = chat.event;
     var newPrice = chat.price + ev.sign * ev.amount;
-    if(ev.sign > 0 && balance < newPrice){ renderChat(); return; }
+    if(ev.sign > 0 && !canAfford(newPrice)){ renderChat(); return; }
     meSay("Хорошо, согласен.");
     chat.price = newPrice;
     chat.event = null;
@@ -1395,6 +1458,233 @@ function completeDeal(){
     chat.stage = "done";
 }
 
+/* ================= ОЖИДАЮЩИЕ ДЕЛА (ОБЪЯВЛЕНИЯ И ВСТРЕЧИ) ================= */
+var pidSeq = 0;
+function newPid(){ return "p" + Date.now().toString(36) + (++pidSeq).toString(36) + Math.floor(Math.random() * 1e6).toString(36); }
+function findPending(id){ return pending.find(function(x){ return x.id === id; }) || null; }
+function pendingFor(carId){ return pending.find(function(x){ return x.carId === carId; }) || null; }
+function carById(id){ return CARS.find(function(c){ return c.id === id; }) || null; }
+function isMeetReady(it){ return !!(ADM.smoothMeet || gameMs >= it.when); }
+
+function dropPending(id, removeNote){
+    var it = findPending(id);
+    if(!it) return;
+    if(removeNote && it.note) removeCalNote(it.note);
+    pending = pending.filter(function(x){ return x.id !== id; });
+    save();
+}
+
+function fmtDur(ms){
+    var m = Math.max(0, Math.round(ms / 60000));
+    if(m < 1) return "меньше минуты";
+    var d = Math.floor(m / 1440), h = Math.floor((m % 1440) / 60), mm = m % 60;
+    var parts = [];
+    if(d) parts.push(d + " д");
+    if(h) parts.push(h + " ч");
+    if(mm && !d) parts.push(mm + " мин");
+    return parts.join(" ");
+}
+function updatePendingCountdowns(){
+    var els = document.querySelectorAll("[data-until]");
+    for(var i = 0; i < els.length; i++){
+        var rem = Number(els[i].getAttribute("data-until")) - gameMs;
+        els[i].textContent = rem > 0 ? fmtDur(rem) : "сейчас";
+    }
+}
+
+/* уведомления */
+function toast(text, onClick){
+    var box = $("toasts");
+    if(!box) return;
+    var el = document.createElement("div");
+    el.className = "toast";
+    el.textContent = text;
+    el.addEventListener("click", function(){ if(onClick) onClick(); el.remove(); });
+    box.appendChild(el);
+    while(box.children && box.children.length > 4) box.removeChild(box.firstChild);
+    setTimeout(function(){ if(el.parentNode) el.remove(); }, 9000);
+}
+function toastDeals(text){
+    toast(text, function(){ openWin("market"); showDeals(); });
+}
+
+/* кнопки на карточках машин */
+function buyBtn(car, owned){
+    if(owned) return '<button class="buy" disabled>Уже в гараже</button>';
+    if(pendingFor(car.id)) return '<button class="buy" disabled>📅 Встреча назначена</button>';
+    return '<button class="buy" data-buy="' + car.id + '">💬 Написать</button>';
+}
+function sellBtn(car){
+    var it = pendingFor(car.id);
+    if(!it) return '<button class="sell" data-sell="' + car.id + '">💰 Найти покупателя</button>';
+    if(it.type === "ad"){
+        if(it.ready) return '<button class="sell ready" data-ad-open="' + it.id + '">💬 Покупатель написал</button>';
+        return '<button class="sell" disabled>⏳ Ждём покупателя… <span data-until="' + it.readyAt + '"></span></button>';
+    }
+    return '<button class="sell" disabled>📅 Встреча назначена</button>';
+}
+
+/* продажа: объявление -> ожидание покупателя -> чат */
+function postAd(carId){
+    var car = carById(carId);
+    if(!car || garage.indexOf(carId) === -1) return;
+    if(pendingFor(carId)){ toast("ℹ️ По этой машине уже есть объявление или встреча."); return; }
+    var b = pick(BUYERS);
+    var p = PERSONALITY[b.personality];
+    var wait = ADM.smoothMeet ? 0 : rnd(AD_WAIT_MIN, AD_WAIT_MAX);
+    pending.push({
+        id: newPid(), type: "ad", mode: "sell", carId: carId,
+        npc: {name: b.name, avatar: b.avatar, personality: b.personality, mood: clamp(p.mood + rnd(-8, 8), 5, 95)},
+        readyAt: gameMs + wait, ready: false
+    });
+    save();
+    toast("📢 Объявление размещено: " + car.name + ". Ждём покупателя…");
+    refreshList();
+    renderDealsTab();
+}
+function openAdChat(id){
+    var it = findPending(id);
+    if(!it || it.type !== "ad" || !it.ready) return;
+    openSellChat(it.carId, it);
+}
+function cancelAd(id){
+    dropPending(id);
+    toast("Объявление снято.");
+    refreshList();
+    renderDealsTab();
+}
+
+/* встреча: возвращаемся в чат на этапе «ехать» */
+function openMeetChat(id){
+    var it = findPending(id);
+    var car = it ? carById(it.carId) : null;
+    if(!it || it.type !== "meet" || !car) return;
+    var npc = {name: it.npc.name, avatar: it.npc.avatar, personality: it.npc.personality, mood: it.npc.mood, greeted: true};
+    chat = {mode: it.mode, car: car, npc: npc, ask: it.price, bid: it.price, log: [], last: "", done: false,
+            stage: "go", price: it.price, event: null,
+            meet: {when: new Date(it.when), whenMs: it.when, label: it.label},
+            note: it.note, met: false, busyUsed: true, pid: it.id};
+    sysSay("🤝 Цена согласована: " + money(it.price));
+    sysSay("📅 Встреча: " + it.label);
+    openOverlay();
+}
+function cancelMeet(id){
+    if(!confirm("Отменить встречу? Сделка сорвётся.")) return;
+    dropPending(id, true);
+    toast("Встреча отменена.");
+    refreshList();
+    renderDealsTab();
+}
+
+function dealAction(e){
+    var t = e.target.closest("[data-ad-open],[data-ad-cancel],[data-meet-go],[data-meet-cancel]");
+    if(!t || t.disabled) return false;
+    var d = t.dataset;
+    if(d.adOpen){ closeCarInfo(); openAdChat(d.adOpen); }
+    else if(d.adCancel){ cancelAd(d.adCancel); }
+    else if(d.meetGo){ openMeetChat(d.meetGo); }
+    else if(d.meetCancel){ cancelMeet(d.meetCancel); }
+    return true;
+}
+
+function renderDealsTab(){
+    var t = $("tabDeals");
+    if(!t) return;
+    var attn = pending.filter(function(it){ return it.type === "ad" ? it.ready : gameMs >= it.when; }).length;
+    t.textContent = "📋 Сделки" + (pending.length ? " · " + pending.length : "");
+    t.classList.toggle("alert", attn > 0);
+}
+
+function dealCard(it){
+    var car = carById(it.carId);
+    if(!car) return "";
+    var n = it.npc, body;
+    if(it.type === "ad"){
+        if(it.ready){
+            body = '<div class="name">📩 ' + esc(n.avatar + " " + n.name) + ' пишет по объявлению</div>' +
+                '<div class="meta">' + esc(car.name) + '</div>' +
+                '<div class="deal-status ok">Покупатель ждёт ответа</div>' +
+                '<button class="buy" data-ad-open="' + it.id + '">💬 Ответить</button>' +
+                '<button class="deal-cancel" data-ad-cancel="' + it.id + '">Снять с продажи</button>';
+        }else{
+            body = '<div class="name">📢 ' + esc(car.name) + '</div>' +
+                '<div class="meta">Объявление размещено, покупатель пока не написал.</div>' +
+                '<div class="deal-status">Ждём покупателя: ещё около <span data-until="' + it.readyAt + '"></span></div>' +
+                '<button class="deal-cancel" data-ad-cancel="' + it.id + '">Снять с продажи</button>';
+        }
+    }else{
+        var ready = isMeetReady(it);
+        body = '<div class="name">📅 ' + (it.mode === "buy" ? "Покупка" : "Продажа") + ': ' + esc(car.name) + '</div>' +
+            '<div class="meta">' + esc(n.avatar + " " + n.name) + ' · ' + esc(it.label) + '</div>' +
+            '<div class="price">' + money(it.price) + '</div>' +
+            (ready
+                ? '<div class="deal-status ok">Пора ехать! Успейте в течение ' + Math.round(MEET_GRACE / 3600000) + ' ч.</div>'
+                : '<div class="deal-status">До встречи: <span data-until="' + it.when + '"></span></div>') +
+            '<button class="buy" data-meet-go="' + it.id + '" ' + (ready ? '' : 'disabled') + '>🚗 Поехать на встречу</button>' +
+            '<button class="deal-cancel" data-meet-cancel="' + it.id + '">Отменить встречу</button>';
+    }
+    return '<article class="card"><div class="car-img">' + carImg(car) + '</div><div class="info">' + body + '</div></article>';
+}
+
+function showDeals(){
+    view = "deals";
+    setTabs("deals");
+    $("content").innerHTML = pending.length
+        ? pending.map(dealCard).join("")
+        : '<div class="empty" style="grid-column:1/-1">📋<br><br>Пока нет активных сделок.<br>Разместите машину на продажу или договоритесь о встрече.</div>';
+    if($("fCount")) $("fCount").textContent = "";
+    updateStats();
+    updatePendingCountdowns();
+}
+
+// проверяется каждый тик игрового времени
+function tickPending(){
+    if(!pending.length) return;
+    var changed = false;
+
+    // убираем дела, потерявшие смысл (например, машину убрали из гаража)
+    var before = pending.length;
+    pending = pending.filter(function(it){
+        var inG = garage.indexOf(it.carId) !== -1;
+        return it.mode === "sell" ? inG : !inG;
+    });
+    if(pending.length !== before) changed = true;
+
+    pending.slice().forEach(function(it){
+        var car = carById(it.carId);
+        var cname = car ? car.name : "машину";
+        if(it.type === "ad"){
+            if(!it.ready && gameMs >= it.readyAt){
+                it.ready = true;
+                changed = true;
+                toastDeals("📩 " + it.npc.name + " хочет купить: " + cname + ". Нажмите, чтобы ответить.");
+            }
+        }else{
+            if(!it.reached && gameMs >= it.when){
+                it.reached = true;
+                changed = true;
+                toastDeals("🚗 Пора на встречу: " + cname + " (" + it.npc.name + ").");
+                if(chat && chat.pid === it.id) renderChat();
+            }
+            if(gameMs > it.when + MEET_GRACE){
+                dropPending(it.id, true);
+                changed = true;
+                toast("❌ Встреча сорвалась: вы не приехали вовремя (" + cname + ").");
+                if(chat && chat.pid === it.id){
+                    sysSay("💤 Вы опоздали: встреча сорвалась.");
+                    chat.done = true;
+                    chat.stage = "done";
+                    chat.pid = null;
+                    renderChat();
+                }
+            }
+        }
+    });
+
+    if(changed){ save(); refreshList(); renderDealsTab(); }
+    updatePendingCountdowns();
+}
+
 /* ================= КАЛЬКУЛЯТОР ================= */
 var CALC_KEYS = [
     ["C","red"],["←","op"],["÷","op"],["×","op"],
@@ -1428,7 +1718,7 @@ function renderCalc(){
     if($("calcVal")) $("calcVal").textContent = calcExpr === "" ? "0" : calcExpr;
 }
 function calcEval(){
-    var e = calcExpr.replace(/×/g,"*").replace(/÷/g,"/").replace(/−/g,"-").replace(/(^|[^\d.])0+(\d)/g,"$1$2");
+    var e = calcExpr.replace(/×/g,"*").replace(/÷/g,"/").replace(/−/g,"-");
     try{
         var r = Function('"use strict";return (' + e + ')')();
         if(r === undefined || isNaN(r)) throw 0;
@@ -1443,7 +1733,7 @@ function calcEval(){
 }
 document.addEventListener("keydown", function(e){
     var wc = $("win-calc");
-    if(!wc || !wc.classList.contains("open") || wc.classList.contains("minimized") || /^(INPUT|TEXTAREA|SELECT)$/.test((e.target || {}).tagName)) return;
+    if(!wc || !wc.classList.contains("open") || wc.classList.contains("minimized")) return;
     if(/^[0-9+\-*/.()]$/.test(e.key)){ calcExpr += e.key; renderCalc(); }
     else if(e.key === "Enter"){ calcEval(); }
     else if(e.key === "Backspace"){ calcExpr = calcExpr.slice(0,-1); renderCalc(); }
@@ -1462,7 +1752,7 @@ function renderCal(){
     var first = new Date(calYear, calMonth, 1);
     var startDay = (first.getDay() + 6) % 7;
     var daysInMonth = new Date(calYear, calMonth+1, 0).getDate();
-    var today = new Date();
+    var today = gameNow();
     var todayKey = calKey(today.getFullYear(), today.getMonth(), today.getDate());
     var html = DOW.map(function(d){ return '<div class="cal-dow">' + d + '</div>'; }).join("");
     for(var i=0;i<startDay;i++) html += '<div class="cal-day blank"></div>';
@@ -1486,7 +1776,7 @@ function calShift(n){
     renderCal();
 }
 function calToday(){
-    var t = new Date();
+    var t = gameNow();
     calYear = t.getFullYear();
     calMonth = t.getMonth();
     renderCal();
@@ -1501,15 +1791,271 @@ function pickDay(key){
     $("calNote").innerHTML = '<b>' + key + '</b><br>' + (notes[key] ? esc(notes[key]) : "Заметки нет.");
 }
 
-/* ================= ЧАСЫ ================= */
-function tickClock(){
-    var d = new Date();
-    if($("clock")) $("clock").textContent = String(d.getHours()).padStart(2,"0") + ":" + String(d.getMinutes()).padStart(2,"0");
+/* ================= ИГРОВОЕ ВРЕМЯ ================= */
+var DOW_FULL = ["Воскресенье","Понедельник","Вторник","Среда","Четверг","Пятница","Суббота"];
+var MONTHS_GEN = ["января","февраля","марта","апреля","мая","июня","июля","августа","сентября","октября","ноября","декабря"];
+
+function gameNow(){ return new Date(gameMs); }
+function saveGameTime(){
+    localStorage.setItem("gameMs", String(Math.round(gameMs)));
+    lastGameSave = Date.now();
+}
+
+function renderGameTime(){
+    var d = gameNow();
+    var hm = pad2(d.getHours()) + ":" + pad2(d.getMinutes());
+    if($("clock")){
+        $("clock").textContent = pad2(d.getDate()) + "." + pad2(d.getMonth() + 1) + "  " + hm;
+        $("clock").title = "Игровое время (×" + GAME_SPEED + ")";
+    }
+
+    // приложение «Часы»
+    if($("clockBig")){
+        var big = hm + ":" + pad2(d.getSeconds());
+        if(big !== lastClockStr){
+            lastClockStr = big;
+            var h = d.getHours(), m = d.getMinutes(), sec = d.getSeconds();
+            $("clockBig").textContent = big;
+            $("clockDate").textContent = DOW_FULL[d.getDay()] + ", " + d.getDate() + " " +
+                MONTHS_GEN[d.getMonth()] + " " + d.getFullYear();
+            if($("hHand")) $("hHand").setAttribute("transform", "rotate(" + ((h % 12) * 30 + m * 0.5) + ")");
+            if($("mHand")) $("mHand").setAttribute("transform", "rotate(" + (m * 6 + sec * 0.1) + ")");
+            if($("sHand")) $("sHand").setAttribute("transform", "rotate(" + (sec * 6) + ")");
+        }
+    }
+
+    // сменился игровой день — обновляем календарь
+    var key = ymd(d);
+    if(key !== lastDayKey){
+        lastDayKey = key;
+        if($("calGrid") && typeof renderCal === "function") renderCal();
+    }
+}
+
+function tickGame(){
+    var now = Date.now();
+    var delta = now - lastRealMs;
+    lastRealMs = now;
+    if(delta < 0) delta = 0;
+    if(delta > 120000) delta = 120000;   // если вкладка «спала», не прыгаем на часы вперёд
+    gameMs += delta * GAME_SPEED;
+    renderGameTime();
+    tickPending();
+    if(now - lastGameSave > 5000) saveGameTime();
+}
+
+function initGameTime(){
+    var g = $("clockTicks");
+    if(g){
+        var t = "";
+        for(var i = 0; i < 60; i++){
+            var major = i % 5 === 0;
+            t += '<line class="tick' + (major ? ' major' : '') + '" x1="0" y1="' + (major ? -80 : -86) +
+                 '" x2="0" y2="-91" transform="rotate(' + (i * 6) + ')"/>';
+        }
+        g.innerHTML = t;
+    }
+    lastRealMs = Date.now();
+    renderGameTime();
+    setInterval(tickGame, 250);
+    window.addEventListener("pagehide", saveGameTime);
+    window.addEventListener("beforeunload", saveGameTime);
+    document.addEventListener("visibilitychange", function(){ if(document.hidden) saveGameTime(); });
+}
+
+/* ================= СЛУЖЕБНОЕ ОКНО ================= */
+// Внимание: игра работает целиком в браузере, поэтому пароль здесь только «от случайных глаз».
+// Пароль в коде не хранится, только его хеш; открывается окно пятью быстрыми кликами по логотипу.
+var ADM_SALT = "perekyp:";
+var ADM_HASH = 1979982443587708;
+var adminUnlocked = false;
+var gateFails = 0, gateLockUntil = 0;
+var logoClicks = [];
+
+function hashStr(str, seed){
+    seed = seed || 0;
+    var h1 = 0xdeadbeef ^ seed, h2 = 0x41c6ce57 ^ seed;
+    for(var i = 0, ch; i < str.length; i++){
+        ch = str.charCodeAt(i);
+        h1 = Math.imul(h1 ^ ch, 2654435761);
+        h2 = Math.imul(h2 ^ ch, 1597334677);
+    }
+    h1 = Math.imul(h1 ^ (h1 >>> 16), 2246822507) ^ Math.imul(h2 ^ (h2 >>> 13), 3266489909);
+    h2 = Math.imul(h2 ^ (h2 >>> 16), 2246822507) ^ Math.imul(h1 ^ (h1 >>> 13), 3266489909);
+    return 4294967296 * (2097151 & h2) + (h1 >>> 0);
+}
+
+function loadAdminFlags(){
+    var f = {};
+    try{ f = JSON.parse(localStorage.getItem("adminFlags") || "{}") || {}; }catch(e){ f = {}; }
+    return {infMoney: !!f.infMoney, anyPrice: !!f.anyPrice, smoothMeet: !!f.smoothMeet};
+}
+var ADM = loadAdminFlags();
+function saveAdminFlags(){ localStorage.setItem("adminFlags", JSON.stringify(ADM)); }
+
+// деньги: в режиме «деньги не списываются» всегда хватает
+function canAfford(p){ return ADM.infMoney || balance >= p; }
+function spend(p){ if(!ADM.infMoney) balance -= p; }
+
+function openAdminGate(){
+    $("gatePass").value = "";
+    $("gateErr").textContent = "";
+    $("adminGate").classList.add("open");
+    setTimeout(function(){ $("gatePass").focus(); }, 40);
+}
+function closeAdminGate(){ $("adminGate").classList.remove("open"); }
+
+function tryAdminGate(){
+    var now = Date.now();
+    if(now < gateLockUntil){
+        $("gateErr").textContent = "Подождите " + Math.ceil((gateLockUntil - now) / 1000) + " с.";
+        return;
+    }
+    var pass = $("gatePass").value;
+    if(hashStr(ADM_SALT + pass) === ADM_HASH){
+        gateFails = 0;
+        adminUnlocked = true;
+        closeAdminGate();
+        openWin("admin");
+    }else{
+        gateFails++;
+        $("gatePass").value = "";
+        if(gateFails >= 3){
+            gateFails = 0;
+            gateLockUntil = now + 15000;
+            $("gateErr").textContent = "Слишком много попыток. Подождите 15 с.";
+        }else{
+            $("gateErr").textContent = "Неверный пароль.";
+        }
+    }
+}
+
+function admMsg(t){ if($("admMsg")) $("admMsg").textContent = t; }
+function admApply(){
+    save(); updateStats(); renderShop();
+    if(typeof refreshList === "function") refreshList();
+}
+
+function admMoney(mode, n){
+    n = Math.floor(Number(n));
+    if(!isFinite(n) || n < 0 || (mode !== "set" && n === 0)){ admMsg("⚠️ Введите сумму больше нуля."); return; }
+    var LIM = 1e15;
+    if(mode === "add"){ balance = Math.min(LIM, balance + n); admMsg("✅ Выдано " + money(n)); }
+    else if(mode === "sub"){ balance = Math.max(0, balance - n); admMsg("✅ Забрано " + money(n)); }
+    else { balance = Math.min(LIM, n); admMsg("✅ Баланс установлен: " + money(balance)); }
+    admApply();
+}
+function admCarAdd(id){
+    var car = CARS.find(function(c){ return c.id === id; });
+    if(!car){ admMsg("⚠️ Машина не найдена."); return; }
+    if(garage.indexOf(id) !== -1){ admMsg("ℹ️ Эта машина уже в гараже."); return; }
+    if(garage.length >= currentGarage().cap){ admMsg("⚠️ Гараж заполнен. Поднимите уровень гаража."); return; }
+    garage.push(id);
+    admMsg("✅ В гараж добавлено: " + car.name);
+    admApply();
+}
+function admCarDel(id){
+    if(garage.indexOf(id) === -1){ admMsg("ℹ️ Этой машины нет в гараже."); return; }
+    garage = garage.filter(function(x){ return x !== id; });
+    admMsg("✅ Машина убрана из гаража.");
+    admApply();
+}
+function admGarLvl(i){
+    if(!GARAGES[i]) return;
+    garageLvl = i;
+    admMsg("✅ Уровень гаража: " + GARAGES[i].name);
+    admApply();
+}
+function admReset(){
+    if(!confirm("Сбросить весь прогресс (баланс, гараж, сделки, заметки)?")) return;
+    balance = 1000000; garage = []; deals = 0; garageLvl = 0; notes = {}; pending = [];
+    save();
+    if(typeof renderCal === "function") renderCal();
+    admMsg("✅ Прогресс сброшен.");
+    admApply();
+}
+function admTime(ms){
+    ms = Number(ms);
+    if(!isFinite(ms) || ms <= 0) return;
+    gameMs += ms;
+    saveGameTime();
+    renderGameTime();
+    admMsg("✅ Время сдвинуто вперёд.");
+}
+function admLock(){
+    adminUnlocked = false;
+    closeWin("admin");
+}
+function admSetFlag(flag, on){
+    if(flag === "god"){ ADM.infMoney = ADM.anyPrice = ADM.smoothMeet = !!on; }
+    else if(flag in ADM){ ADM[flag] = !!on; }
+    saveAdminFlags();
+    admApply();
+}
+
+function renderAdmin(){
+    if($("godBadge")) $("godBadge").classList.toggle("on", !!(ADM.infMoney || ADM.anyPrice || ADM.smoothMeet));
+    if(!$("admStatus")) return;
+    $("admStatus").textContent = "Баланс: " + money(balance) + " · Гараж: " + garage.length + " / " +
+        currentGarage().cap + " · Сделок: " + deals;
+    $("admInf").checked    = !!ADM.infMoney;
+    $("admAny").checked    = !!ADM.anyPrice;
+    $("admSmooth").checked = !!ADM.smoothMeet;
+    $("admGod").checked    = !!(ADM.infMoney && ADM.anyPrice && ADM.smoothMeet);
+}
+
+function bindAdmin(){
+    var logo = document.querySelector(".tb-logo");
+    if(logo) logo.addEventListener("click", function(){
+        var now = Date.now();
+        logoClicks = logoClicks.filter(function(t){ return now - t < 2500; });
+        logoClicks.push(now);
+        if(logoClicks.length >= 5){ logoClicks = []; openWin("admin"); }
+    });
+
+    if($("admCar")) $("admCar").innerHTML = CARS.map(function(c){
+        return '<option value="' + c.id + '">' + c.id + '. ' + esc(c.name) + ' — ' + money(c.price) + '</option>';
+    }).join("");
+    if($("admGarage")) $("admGarage").innerHTML = GARAGES.map(function(g, i){
+        return '<option value="' + i + '">' + esc(g.name) + ' (' + g.cap + ' мест)</option>';
+    }).join("");
+
+    if($("gateOk")) $("gateOk").addEventListener("click", tryAdminGate);
+    if($("gateCancel")) $("gateCancel").addEventListener("click", closeAdminGate);
+    if($("gatePass")) $("gatePass").addEventListener("keydown", function(e){
+        if(e.key === "Enter"){ e.preventDefault(); tryAdminGate(); }
+        else if(e.key === "Escape"){ closeAdminGate(); }
+    });
+    if($("adminGate")) $("adminGate").addEventListener("mousedown", function(e){
+        if(e.target === $("adminGate")) closeAdminGate();
+    });
+
+    if($("adminBody")){
+        $("adminBody").addEventListener("click", function(e){
+            var b = e.target.closest("[data-adm]");
+            if(!b || !adminUnlocked) return;
+            var act = b.dataset.adm;
+            if(act === "add" || act === "sub" || act === "set") admMoney(act, $("admMoney").value);
+            else if(act === "quick") admMoney("add", b.dataset.val);
+            else if(act === "carAdd") admCarAdd(parseInt($("admCar").value, 10));
+            else if(act === "carDel") admCarDel(parseInt($("admCar").value, 10));
+            else if(act === "garLvl") admGarLvl(parseInt($("admGarage").value, 10));
+            else if(act === "time") admTime(b.dataset.ms);
+            else if(act === "reset") admReset();
+            else if(act === "lock") admLock();
+        });
+        $("adminBody").addEventListener("change", function(e){
+            var f = e.target.dataset && e.target.dataset.flag;
+            if(f && adminUnlocked) admSetFlag(f, e.target.checked);
+        });
+    }
+    renderAdmin();
 }
 
 /* ================= ПРИВЯЗКА СОБЫТИЙ ================= */
 function bindUI(){
-    
+    bindAdmin();
+    attachResizeHandlers();
 
     buildIcons();
     attachIconHandlers();
@@ -1536,22 +2082,24 @@ function bindUI(){
         btn.addEventListener("click", function(e){
             e.stopPropagation();
             e.preventDefault();
-            minimizeWin(btn.dataset.min.replace("win-", ""));
+            minimizeWin(btn.dataset.min);
         });
     });
     document.querySelectorAll("[data-close]").forEach(function(btn){
         btn.addEventListener("click", function(e){
             e.stopPropagation();
             e.preventDefault();
-            closeWin(btn.dataset.close.replace("win-", ""));
+            closeWin(btn.dataset.close);
         });
     });
 
     bindFilters();
     if($("tabMarket")) $("tabMarket").addEventListener("click", showMarket);
+    if($("tabDeals")) $("tabDeals").addEventListener("click", showDeals);
     if($("tabGarage")) $("tabGarage").addEventListener("click", showGarage);
 
     if($("content")) $("content").addEventListener("click", function(e){
+        if(dealAction(e)) return;
         var buy = e.target.closest("[data-buy]");
         if(buy && !buy.disabled){
             openBuyChat(parseInt(buy.dataset.buy,10));
@@ -1559,7 +2107,7 @@ function bindUI(){
         }
         var sell = e.target.closest("[data-sell]");
         if(sell && !sell.disabled){
-            openSellChat(parseInt(sell.dataset.sell,10));
+            postAd(parseInt(sell.dataset.sell,10));
             return;
         }
         var info = e.target.closest("[data-info]");
@@ -1571,6 +2119,7 @@ function bindUI(){
         if(e.target === $("carOverlay")) closeCarInfo();
     });
     if($("carModalBody")) $("carModalBody").addEventListener("click", function(e){
+        if(dealAction(e)) return;
         var buy = e.target.closest("[data-buy]");
         if(buy && !buy.disabled){
             closeCarInfo();
@@ -1580,7 +2129,7 @@ function bindUI(){
         var sell = e.target.closest("[data-sell]");
         if(sell && !sell.disabled){
             closeCarInfo();
-            openSellChat(parseInt(sell.dataset.sell,10));
+            postAd(parseInt(sell.dataset.sell,10));
         }
     });
     document.addEventListener("keydown", function(e){
@@ -1623,19 +2172,77 @@ window.addEventListener("DOMContentLoaded", function(){
     bindUI();
     initCalc();
 
-    var t = new Date();
+    var t = gameNow();
     calYear = t.getFullYear();
     calMonth = t.getMonth();
     renderCal();
-    tickClock();
-    setInterval(tickClock, 30000);
+    initGameTime();
 
     showMarket();
     updateStats();
     renderShop();
     renderTaskbar();
 });
+/* ================= ПРИНУДИТЕЛЬНОЕ ПЕРЕТАСКИВАНИЕ ОКОН (ФИКС) ================= */
+window.addEventListener("load", function(){
+    document.querySelectorAll(".win-head").forEach(function(head){
+        // убираем возможный старый обработчик
+        head.onmousedown = null;
 
+        head.addEventListener("mousedown", function(e){
+            // не тащим, если кликнули по кнопке свернуть/закрыть
+            if(e.target.closest(".win-btns")) return;
+            if(e.target.closest("button")) return;
+            if(e.button !== undefined && e.button !== 0) return;
+
+            var win = head.closest(".window");
+            if(!win) return;
+
+            win.style.zIndex = ++zTop;
+            var rect = win.getBoundingClientRect();
+            var desk = document.getElementById("deskArea").getBoundingClientRect();
+
+            var offsetX = e.clientX - rect.left;
+            var offsetY = e.clientY - rect.top;
+
+            win.style.left = (rect.left - desk.left) + "px";
+            win.style.top  = (rect.top  - desk.top)  + "px";
+            win.dataset.hasPos = "1";
+
+            function onMove(ev){
+                var x = ev.clientX - desk.left - offsetX;
+                var y = ev.clientY - desk.top  - offsetY;
+
+                var maxX = desk.width  - win.offsetWidth;
+                var maxY = desk.height - win.offsetHeight;
+                if(x < 0) x = 0;
+                if(x > maxX) x = maxX;
+                if(y < 0) y = 0;
+                if(y > maxY) y = maxY;
+
+                win.style.left = x + "px";
+                win.style.top  = y + "px";
+            }
+
+            function onUp(){
+                document.removeEventListener("mousemove", onMove);
+                document.removeEventListener("mouseup", onUp);
+                try{
+                    localStorage.setItem("window_" + win.id.replace("win-",""), JSON.stringify({
+                        left: parseFloat(win.style.left) || 0,
+                        top:  parseFloat(win.style.top)  || 0,
+                        width: win.offsetWidth,
+                        height: win.offsetHeight
+                    }));
+                }catch(err){}
+            }
+
+            document.addEventListener("mousemove", onMove);
+            document.addEventListener("mouseup", onUp);
+            e.preventDefault();
+        });
+    });
+});
 /* ================= РЕСАЙЗ ОКОН ЗА ЛЮБУЮ ГРАНИЦУ (ФИКС) ================= */
 window.addEventListener("load", function(){
 

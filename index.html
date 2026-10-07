@@ -12,7 +12,7 @@
     <div class="topbar">
         <div class="tb-logo">Perekyp<span>.ru</span></div>
         <div class="tb-clock" id="clock">--:--</div>
-        <div class="tb-balance">💰 <span id="balance">100 000</span> ₽</div>
+        <div class="tb-balance"><span class="tb-god" id="godBadge" title="">⚡</span>💰 <span id="balance">1 000 000</span> ₽</div>
     </div>
 
     <div class="desk-area" id="deskArea">
@@ -26,6 +26,14 @@
             <button class="x" data-close="win-market" title="Закрыть">✕</button>
         </div>
     </div>
+    <div class="resize-handle n"></div>
+    <div class="resize-handle s"></div>
+    <div class="resize-handle e"></div>
+    <div class="resize-handle w"></div>
+    <div class="resize-handle ne"></div>
+    <div class="resize-handle nw"></div>
+    <div class="resize-handle se"></div>
+    <div class="resize-handle sw"></div>
     <div class="win-body">
         <section class="hero">
             <h1>Автомобильный рынок</h1>
@@ -40,6 +48,7 @@
         <div class="tabs">
             <button class="tab active" id="tabMarket">🚗 Рынок</button>
             <button class="tab" id="tabGarage">🏠 Мой гараж</button>
+            <button class="tab" id="tabDeals">📋 Сделки</button>
         </div>
         <div class="filters" id="filters">
             <input id="fSearch" type="search" placeholder="🔍 Поиск по названию">
@@ -78,6 +87,14 @@
             <button class="x" data-close="win-shop" title="Закрыть">✕</button>
         </div>
     </div>
+    <div class="resize-handle n"></div>
+    <div class="resize-handle s"></div>
+    <div class="resize-handle e"></div>
+    <div class="resize-handle w"></div>
+    <div class="resize-handle ne"></div>
+    <div class="resize-handle nw"></div>
+    <div class="resize-handle se"></div>
+    <div class="resize-handle sw"></div>
     <div class="win-body">
         <div class="shop-note">
             Текущая: <b id="shopCap">3</b> · Занято: <b id="shopUsed">0</b> · Свободно: <b id="shopFree">3</b>
@@ -96,6 +113,14 @@
             <button class="x" data-close="win-calc" title="Закрыть">✕</button>
         </div>
     </div>
+    <div class="resize-handle n"></div>
+    <div class="resize-handle s"></div>
+    <div class="resize-handle e"></div>
+    <div class="resize-handle w"></div>
+    <div class="resize-handle ne"></div>
+    <div class="resize-handle nw"></div>
+    <div class="resize-handle se"></div>
+    <div class="resize-handle sw"></div>
     <div class="win-body">
         <div class="calc">
             <div class="calc-screen">
@@ -117,6 +142,14 @@
             <button class="x" data-close="win-calendar" title="Закрыть">✕</button>
         </div>
     </div>
+    <div class="resize-handle n"></div>
+    <div class="resize-handle s"></div>
+    <div class="resize-handle e"></div>
+    <div class="resize-handle w"></div>
+    <div class="resize-handle ne"></div>
+    <div class="resize-handle nw"></div>
+    <div class="resize-handle se"></div>
+    <div class="resize-handle sw"></div>
     <div class="win-body">
         <div class="cal-head">
             <button id="calPrev">‹</button>
@@ -126,6 +159,33 @@
         </div>
         <div class="cal-grid" id="calGrid"></div>
         <div class="cal-note" id="calNote">Выбери день, чтобы добавить заметку.</div>
+    </div>
+</div>
+
+<!-- ЧАСЫ -->
+<div class="window" id="win-clock" data-title="Часы" data-icon="🕐">
+    <div class="win-head" id="head-clock">
+        <div class="wi">🕐</div>
+        <div class="win-title">Часы</div>
+        <div class="win-btns">
+            <button class="min" data-min="win-clock" title="Свернуть">—</button>
+            <button class="x" data-close="win-clock" title="Закрыть">✕</button>
+        </div>
+    </div>
+    <div class="win-body">
+        <div class="clock-app">
+            <svg class="analog" viewBox="-100 -100 200 200">
+                <circle class="face" r="96"/>
+                <g id="clockTicks"></g>
+                <line id="hHand" class="hand hh" x1="0" y1="8" x2="0" y2="-46"/>
+                <line id="mHand" class="hand mh" x1="0" y1="10" x2="0" y2="-68"/>
+                <line id="sHand" class="hand sh" x1="0" y1="14" x2="0" y2="-76"/>
+                <circle class="pin" r="4"/>
+            </svg>
+            <div class="clock-big" id="clockBig">00:00:00</div>
+            <div class="clock-date" id="clockDate">—</div>
+            <div class="clock-note">Игровое время · идёт в 10 раз быстрее реального</div>
+        </div>
     </div>
 </div>
 
@@ -139,14 +199,93 @@
             <button class="x" data-close="win-help" title="Закрыть">✕</button>
         </div>
     </div>
-    
+    <div class="resize-handle n"></div>
+    <div class="resize-handle s"></div>
+    <div class="resize-handle e"></div>
+    <div class="resize-handle w"></div>
+    <div class="resize-handle ne"></div>
+    <div class="resize-handle nw"></div>
+    <div class="resize-handle se"></div>
+    <div class="resize-handle sw"></div>
     <div class="win-body" style="font-size:14px;line-height:1.65;color:#c3cbd8">
         <p><b>🚗 Авторынок</b> — торгуйся с продавцами и покупателями.</p>
-        <p><b>💬 Сделка</b> — напиши продавцу, договорись о цене и назначь встречу. На встрече могут попросить скинуть или добавить на бензин.</p>
+        <p><b>🕐 Часы</b> — игровое время идёт в 10 раз быстрее реального. Встречи назначаются по нему.</p>
+        <p><b>💬 Сделка</b> — напиши продавцу, договорись о цене и назначь встречу. Приехать можно только в назначенное игровое время (и не позже чем через 4 часа). На встрече могут попросить скинуть или добавить на бензин.</p>
+        <p><b>📢 Продажа</b> — разместите машину из гаража на продажу и подождите: покупатель находится не сразу. Все ожидания видны во вкладке «Сделки».</p>
         <p><b>🏪 Магазин гаражей</b> — расширяет вместимость.</p>
         <p><b>🧮 Калькулятор</b> — быстрый счёт.</p>
         <p><b>📅 Календарь</b> — заметки по дням.</p>
         <p style="color:#8f98a8">Окна можно тянуть за заголовок и растягивать за края/углы.</p>
+    </div>
+</div>
+
+<!-- СЛУЖЕБНОЕ ОКНО (без иконки на рабочем столе) -->
+<div class="window" id="win-admin" data-title="Админ" data-icon="🛠">
+    <div class="win-head" id="head-admin">
+        <div class="wi">🛠</div>
+        <div class="win-title">Админ-панель</div>
+        <div class="win-btns">
+            <button class="min" data-min="win-admin" title="Свернуть">—</button>
+            <button class="x" data-close="win-admin" title="Закрыть">✕</button>
+        </div>
+    </div>
+    <div class="win-body" id="adminBody">
+        <div class="adm-status" id="admStatus"></div>
+        <div class="adm-msg" id="admMsg"></div>
+
+        <section class="adm-sec">
+            <div class="adm-title">💰 Деньги</div>
+            <div class="adm-row">
+                <input type="number" id="admMoney" min="0" placeholder="Сумма, ₽">
+                <button class="adm-btn" data-adm="add">Выдать</button>
+                <button class="adm-btn" data-adm="sub">Забрать</button>
+                <button class="adm-btn" data-adm="set">Установить</button>
+            </div>
+            <div class="adm-row">
+                <button class="adm-btn ghost" data-adm="quick" data-val="100000">+100 тыс.</button>
+                <button class="adm-btn ghost" data-adm="quick" data-val="1000000">+1 млн</button>
+                <button class="adm-btn ghost" data-adm="quick" data-val="10000000">+10 млн</button>
+                <button class="adm-btn ghost" data-adm="quick" data-val="100000000">+100 млн</button>
+            </div>
+        </section>
+
+        <section class="adm-sec">
+            <div class="adm-title">⚡ Режим бога</div>
+            <label class="adm-toggle"><input type="checkbox" id="admGod" data-flag="god"> <b>Режим бога</b> <small>включает всё ниже сразу</small></label>
+            <label class="adm-toggle"><input type="checkbox" id="admInf" data-flag="infMoney"> Деньги не списываются <small>покупки и гаражи бесплатны</small></label>
+            <label class="adm-toggle"><input type="checkbox" id="admAny" data-flag="anyPrice"> Любая цена принимается <small>продавцы и покупатели всегда соглашаются</small></label>
+            <label class="adm-toggle"><input type="checkbox" id="admSmooth" data-flag="smoothMeet"> Встречи без помех <small>без отказов, просьб и срывов</small></label>
+        </section>
+
+        <section class="adm-sec">
+            <div class="adm-title">🚗 Машины и гараж</div>
+            <div class="adm-row">
+                <select id="admCar"></select>
+                <button class="adm-btn" data-adm="carAdd">В гараж</button>
+                <button class="adm-btn" data-adm="carDel">Убрать</button>
+            </div>
+            <div class="adm-row">
+                <select id="admGarage"></select>
+                <button class="adm-btn" data-adm="garLvl">Применить уровень</button>
+            </div>
+        </section>
+
+        <section class="adm-sec">
+            <div class="adm-title">⏱ Игровое время</div>
+            <div class="adm-row">
+                <button class="adm-btn ghost" data-adm="time" data-ms="3600000">+1 час</button>
+                <button class="adm-btn ghost" data-adm="time" data-ms="86400000">+1 день</button>
+                <button class="adm-btn ghost" data-adm="time" data-ms="604800000">+7 дней</button>
+            </div>
+        </section>
+
+        <section class="adm-sec">
+            <div class="adm-title">⚙️ Прочее</div>
+            <div class="adm-row">
+                <button class="adm-btn danger" data-adm="reset">Сбросить прогресс</button>
+                <button class="adm-btn ghost" data-adm="lock">Заблокировать панель</button>
+            </div>
+        </section>
     </div>
 </div>
 
@@ -159,6 +298,19 @@
     </div>
 </div>
 
+<!-- ВХОД В СЛУЖЕБНОЕ ОКНО -->
+<div class="overlay" id="adminGate">
+    <div class="gate-modal">
+        <div class="gate-title">🔒 Доступ</div>
+        <input type="password" id="gatePass" placeholder="Пароль" autocomplete="off">
+        <div class="gate-err" id="gateErr"></div>
+        <div class="gate-row">
+            <button id="gateOk">Войти</button>
+            <button id="gateCancel" class="ghost">Отмена</button>
+        </div>
+    </div>
+</div>
+
 <!-- ОБЪЯВЛЕНИЕ -->
 <div class="overlay" id="carOverlay">
     <div class="car-modal">
@@ -167,6 +319,9 @@
         <div class="car-modal-body" id="carModalBody"></div>
     </div>
 </div>
+
+<!-- УВЕДОМЛЕНИЯ -->
+<div class="toasts" id="toasts"></div>
 
 <!-- ЧАТ -->
 <div class="overlay" id="overlay">
@@ -197,6 +352,7 @@
             </div>
             <div class="stage-box" id="stGo">
                 <div class="stage-title" id="stGoText"></div>
+                <div class="stage-sub" id="stGoSub"></div>
                 <button id="goBtn" class="stage-btn yes wide">🚗 Поехать на встречу</button>
             </div>
             <div class="stage-box" id="stEvent">
@@ -222,6 +378,5 @@
 
 <script src="cars.js"></script>
 <script src="script.js"></script>
-<script src="admin.js"></script>
 </body>
 </html>
