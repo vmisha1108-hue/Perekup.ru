@@ -99,6 +99,7 @@ function shortDesc(t, n){
 }
 function carImg(car){
     var src = car.img || ("img/" + car.id + ".jpg");
+    if(src.indexOf("img/") === 0) src += (src.indexOf("?") === -1 ? "?" : "&") + "v=20261008-plates";
     return '<img src="' + esc(src) + '" alt="' + esc(car.name) + '" loading="lazy" ' +
            'onerror="this.outerHTML=\'🚗\'">';
 }
