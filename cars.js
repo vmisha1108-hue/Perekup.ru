@@ -837,5 +837,125 @@ var CARS = [
       "avatar": "👴",
       "personality": "neutral"
     }
+  },
+  {
+    "id": 147,
+    "name": "Toyota Chaser Tourer V, 1997",
+    "price": 1500000,
+    "img": "img/147.jpg",
+    "desc": "2.5 л, автомат, 210 000 км, 1JZ-GTE; турбина жива, резина грустит",
+    "seller": {
+      "name": "Макс",
+      "avatar": "🧑‍🎤",
+      "personality": "neutral"
+    }
+  },
+  {
+    "id": 148,
+    "name": "Toyota Supra RZ, 1996",
+    "price": 6200000,
+    "img": "img/148.jpg",
+    "desc": "3.0 л, механика, 128 000 км, 2JZ-GTE; мечта из ночных гонок",
+    "seller": {
+      "name": "Стас",
+      "avatar": "👨‍🔧",
+      "personality": "evil"
+    }
+  },
+  {
+    "id": 149,
+    "name": "Nissan Skyline GT-R V-Spec R34, 1999",
+    "price": 13500000,
+    "img": "img/149.jpg",
+    "desc": "2.6 л, механика, 86 000 км, RB26, полный привод; гаражная легенда",
+    "seller": {
+      "name": "Ринат",
+      "avatar": "🧔",
+      "personality": "neutral"
+    }
+  },
+  {
+    "id": 150,
+    "name": "Mazda RX-7 FD, 1994",
+    "price": 4700000,
+    "img": "img/150.jpg",
+    "desc": "1.3 л, механика, 112 000 км, роторный мотор; масло любит, внимание тоже",
+    "seller": {
+      "name": "Артур",
+      "avatar": "🧑‍🦱",
+      "personality": "kind"
+    }
+  },
+  {
+    "id": 151,
+    "name": "Nissan Silvia Varietta S15, 2000",
+    "price": 2900000,
+    "img": "img/151.jpg",
+    "desc": "2.0 л, автомат, 154 000 км, редкий кабриолет; крыша работает, лето ждёт",
+    "seller": {
+      "name": "Алиса",
+      "avatar": "👩‍🦰",
+      "personality": "kind"
+    }
+  },
+  {
+    "id": 152,
+    "name": "Mitsubishi Lancer Evolution VI, 1999",
+    "price": 3400000,
+    "img": "img/152.jpg",
+    "desc": "2.0 л турбо, механика, 173 000 км, 4WD; раллийное прошлое под вопросом",
+    "seller": {
+      "name": "Рустам",
+      "avatar": "👨‍🔧",
+      "personality": "evil"
+    }
+  },
+  {
+    "id": 153,
+    "name": "BMW M3 E30, 1990",
+    "price": 5500000,
+    "img": "img/153.jpg",
+    "desc": "2.3 л, механика, 198 000 км, S14; расширенные арки и характер из девяностых",
+    "seller": {
+      "name": "Герман",
+      "avatar": "👨‍💼",
+      "personality": "neutral"
+    }
+  },
+  {
+    "id": 154,
+    "name": "Ferrari F40, 1990",
+    "price": 85000000,
+    "img": "img/154.jpg",
+    "desc": "2.9 л битурбо V8, механика, 24 000 км; коллекционная редкость без лишнего комфорта",
+    "seller": {
+      "name": "Эдуард",
+      "avatar": "👨‍💼",
+      "personality": "neutral"
+    }
+  },
+  {
+    "id": 155,
+    "name": "Lamborghini Diablo, 1992",
+    "price": 28500000,
+    "img": "img/155.jpg",
+    "desc": "5.7 л V12, механика, 48 000 км; двери вверх, расходы тоже",
+    "seller": {
+      "name": "Леонид",
+      "avatar": "🧔",
+      "personality": "kind"
+    }
+  },
+  {
+    "id": 156,
+    "name": "Porsche Cayenne GTS без фары, 2008",
+    "price": 850000,
+    "img": "img/156.png",
+    "desc": "4.8 л V8, автомат, 286 000 км; одной фары нет, понты в комплекте",
+    "seller": {
+      "name": "Денис",
+      "avatar": "🧔",
+      "personality": "evil"
+    }
   }
 ];
