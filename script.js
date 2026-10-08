@@ -42,6 +42,8 @@ try{ purchasePrices = JSON.parse(localStorage.getItem("purchasePrices") || "{}")
 try{ listings = JSON.parse(localStorage.getItem("listings") || "{}") || {}; }catch(e){}
 var saleCarId = null;
 var meetingTimeEdited = false;
+var firstVisit = !localStorage.getItem("helpPromptSeen") &&
+    !["balance", "garage", "gameMs", "chats", "pending"].some(function(key){ return localStorage.getItem(key) !== null; });
 var chat = null;
 var view = "market";
 var zTop = 100;
@@ -65,8 +67,8 @@ var lastDayKey = "";
 var lastClockStr = "";
 
 /* ожидающие дела: объявления о продаже и назначенные встречи (живут независимо от окна чата) */
-var AD_WAIT_MIN = 10 * 60000;        // покупатель находится через 10–45 игровых минут
-var AD_WAIT_MAX = 45 * 60000;
+var BUYER_WAIT_MEAN = 3 * 3600000;  // случайные отклики: в среднем раз в три игровых часа
+var BUYER_TIMING_VERSION = 2;
 var MEET_GRACE  = 4 * 3600000;       // на встречу можно приехать в течение 4 игровых часов после назначенного
 var BUYER_NO_SHOW_CHANCE = 0.15;    // часть покупателей не приезжает; исход сохраняется при назначении
 var pending = [];
@@ -1695,9 +1697,11 @@ function purchaseCost(car){
 function nextBuyerDelay(listing){
     var markup = listing.price - listing.purchasePrice;
     var factor = markup > 500000 ? Math.min(8, 3 + (markup - 500000) / 500000) : 1;
-    return rnd(AD_WAIT_MIN, AD_WAIT_MAX) * factor;
+    // Экспоненциальное ожидание: возможны и тишина на несколько часов, и быстрые серии.
+    var draw = Math.min(1 - Number.EPSILON, Math.max(0, Math.random()));
+    return Math.max(60000, Math.round(-Math.log(1 - draw) * BUYER_WAIT_MEAN * factor));
 }
-function makeBuyerOffer(listing){
+function makeBuyerOffer(listing, arrivedAt){
     var b = pick(BUYERS.filter(function(b){ return b.name !== listing.lastBuyerName; }));
     var p = PERSONALITY[b.personality];
     var kind = Math.random(), price = listing.price;
@@ -1708,7 +1712,7 @@ function makeBuyerOffer(listing){
         id: newPid(), type: "ad", mode: "sell", carId: listing.carId,
         npc: {name: b.name, avatar: b.avatar, personality: b.personality, mood: clamp(p.mood + rnd(-8, 8), 5, 95)},
         listingPrice: price, bid: bid, maxBid: Math.min(Number.MAX_SAFE_INTEGER, Math.max(bid, Math.round(bid * 1.05))),
-        readyAt: gameMs, ready: true
+        readyAt: arrivedAt == null ? gameMs : arrivedAt, ready: true
     };
 }
 function removeSaleOffers(carId){
@@ -1730,26 +1734,37 @@ function tickListings(){
         if(pending.some(function(it){ return it.carId === car.id && it.type === "meet"; })) return;
         if(gameMs < listing.nextBuyerAt) return;
         var offers = pending.filter(function(it){ return it.type === "ad" && it.carId === car.id; });
-        if(offers.length < 3){
-            var offer = makeBuyerOffer(listing);
+        while(offers.length < 3 && listing.nextBuyerAt <= gameMs){
+            var arrivedAt = listing.nextBuyerAt;
+            var offer = makeBuyerOffer(listing, arrivedAt);
             pending.push(offer);
+            offers.push(offer);
             toastDeals("📩 " + offer.npc.name + " предлагает " + money(offer.bid) + " за " + car.name + ".");
+            listing.nextBuyerAt = arrivedAt + nextBuyerDelay(listing);
+            changed = true;
         }
-        listing.nextBuyerAt = gameMs + nextBuyerDelay(listing);
-        changed = true;
+        if(listing.nextBuyerAt <= gameMs){
+            listing.nextBuyerAt = gameMs + nextBuyerDelay(listing);
+            changed = true;
+        }
     });
     return changed;
 }
 function migrateSaleListings(){
     Object.keys(listings).forEach(function(key){
         var l = listings[key];
-        if(!l || !Number.isFinite(l.price) || l.price <= 0 || !carById(Number(key))) delete listings[key];
+        if(!l || !Number.isFinite(l.price) || l.price <= 0 || !carById(Number(key))){ delete listings[key]; return; }
+        if(l.buyerTimingVersion !== BUYER_TIMING_VERSION){
+            l.nextBuyerAt = gameMs + nextBuyerDelay(l);
+            l.buyerTimingVersion = BUYER_TIMING_VERSION;
+        }
     });
     pending.filter(function(it){ return it.type === "ad" && it.mode === "sell"; }).forEach(function(it){
         var car = carById(it.carId);
         if(!listings[it.carId]){
             listings[it.carId] = {carId: it.carId, price: car.price, purchasePrice: purchaseCost(car),
-                nextBuyerAt: Math.max(gameMs, it.readyAt || gameMs) + rnd(AD_WAIT_MIN, AD_WAIT_MAX)};
+                buyerTimingVersion: BUYER_TIMING_VERSION};
+            listings[it.carId].nextBuyerAt = gameMs + nextBuyerDelay(listings[it.carId]);
         }
         if(!Number.isFinite(it.bid)){
             it.bid = Math.round(car.price * 0.9);
@@ -1757,6 +1772,8 @@ function migrateSaleListings(){
             it.maxBid = Math.round(it.bid * 1.05);
         }
     });
+    // Старые записи ожидания становятся объявлениями; сообщения создаются по новому расписанию.
+    pending = pending.filter(function(it){ return it.type !== "ad" || it.ready; });
     save();
 }
 function openSaleForm(carId){
@@ -1787,7 +1804,7 @@ function postAd(carId, price){
     if(!Number.isSafeInteger(price) || price < 1){ toast("Укажите целую положительную цену в рублях."); return false; }
     if(pending.some(function(it){ return it.carId === carId && it.type === "meet"; })) return false;
     removeSaleOffers(carId);
-    var listing = {carId: carId, price: price, purchasePrice: purchaseCost(car)};
+    var listing = {carId: carId, price: price, purchasePrice: purchaseCost(car), buyerTimingVersion: BUYER_TIMING_VERSION};
     listing.nextBuyerAt = gameMs + (ADM.smoothMeet ? 0 : nextBuyerDelay(listing));
     listings[carId] = listing;
     save();
@@ -2160,6 +2177,52 @@ function saveGameTime(){
     lastGameSave = Date.now();
 }
 
+function canSleep(){
+    var hour = gameNow().getHours();
+    return (hour >= 22 || hour < 9) && !(chat && chat.met && !chat.done);
+}
+function sleepUntilMorning(){
+    advanceGameTime(Date.now());
+    if(!canSleep()){
+        renderGameTime();
+        toast(chat && chat.met && !chat.done ? "Сначала завершите встречу." : "Спать можно с 22:00 до 09:00.");
+        return false;
+    }
+    var now = gameNow(), morning = new Date(now);
+    if(now.getHours() >= 22) morning.setDate(morning.getDate() + 1);
+    morning.setHours(9, 0, 0, 0);
+    var existingMessages = pending.filter(function(it){ return it.type === "ad"; }).map(function(it){ return it.id; });
+    // Дела продолжаются ночью: обрабатываем отклики и сроки встреч по ходу сна.
+    while(gameMs < morning.getTime()){
+        gameMs = Math.min(morning.getTime(), gameMs + 15 * 60000);
+        tickPending();
+    }
+    lastRealMs = Date.now();
+    renderGameTime();
+    if(chat && chat.stage === "schedule" && !meetingTimeEdited) setMeetingDefaults();
+    saveGameTime();
+    save();
+    refreshList();
+    renderDealsTab();
+    var count = pending.filter(function(it){ return it.type === "ad" && existingMessages.indexOf(it.id) === -1; }).length;
+    toast(count ? "☀️ Вы проснулись в 09:00. Новых сообщений: " + count + "." : "☀️ Вы проснулись в 09:00. Новых сообщений нет.",
+        count ? function(){ dealsFilter = "in"; openWin("market"); showDeals(); } : null);
+    return true;
+}
+
+function closeWelcome(){
+    $("welcomeOverlay").classList.remove("open");
+    updateGameSpeed();
+}
+function offerFirstVisitHelp(){
+    if(localStorage.getItem("helpPromptSeen")) return;
+    localStorage.setItem("helpPromptSeen", "1");
+    if(!firstVisit) return;
+    $("welcomeOverlay").classList.add("open");
+    updateGameSpeed("welcome");
+    $("welcomeHelp").focus();
+}
+
 function advanceGameTime(now){
     var delta = now - lastRealMs;
     lastRealMs = now;
@@ -2188,6 +2251,11 @@ function updateGameSpeed(focusedApp){
 function renderGameTime(){
     var d = gameNow();
     var hm = pad2(d.getHours()) + ":" + pad2(d.getMinutes());
+    if($("sleepBtn")){
+        $("sleepBtn").disabled = !canSleep();
+        $("sleepStatus").textContent = chat && chat.met && !chat.done ? "Сначала завершите встречу." :
+            canSleep() ? "Можно поспать до 09:00. Сообщения продолжат приходить." : "Сон доступен с 22:00 до 09:00.";
+    }
     if($("clock")){
         $("clock").textContent = pad2(d.getDate()) + "." + pad2(d.getMonth() + 1) + "  " + hm;
         $("clock").title = "Игровое время (×" + currentGameSpeed + ")";
@@ -2447,6 +2515,12 @@ function bindAdmin(){
 /* ================= ПРИВЯЗКА СОБЫТИЙ ================= */
 function bindUI(){
     bindAdmin();
+    $("sleepBtn").addEventListener("click", sleepUntilMorning);
+    $("welcomeHelp").addEventListener("click", function(){ closeWelcome(); openWin("help"); });
+    $("welcomeLater").addEventListener("click", closeWelcome);
+    document.addEventListener("keydown", function(e){
+        if(e.key === "Escape" && $("welcomeOverlay").classList.contains("open")) closeWelcome();
+    });
 
     buildIcons();
     attachIconHandlers();
@@ -2588,6 +2662,7 @@ window.addEventListener("DOMContentLoaded", function(){
     updateStats();
     renderShop();
     renderTaskbar();
+    offerFirstVisitHelp();
 });
 /* ================= РЕСАЙЗ ОКОН ЗА ЛЮБУЮ ГРАНИЦУ (ФИКС) ================= */
 window.addEventListener("load", function(){

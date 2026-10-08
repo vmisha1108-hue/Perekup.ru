@@ -27,16 +27,18 @@ const server = http.createServer(async (request, response) => {
     }
     const browser = await chromium.launch({ executablePath, args: ['--no-sandbox'] });
     let passed = 0;
-    async function scenario(name, run) {
+    async function scenario(name, run, options = {}) {
         const context = await browser.newContext({ viewport: { width: 1280, height: 900 } });
         const page = await context.newPage();
         const errors = [];
         page.on('pageerror', error => errors.push(error.message));
-        await page.addInitScript(() => {
+        await page.addInitScript(options => {
+            if(!options.firstVisit) localStorage.setItem('helpPromptSeen', '1');
+            if(options.returningPlayer) localStorage.setItem('balance', '100000');
             window.testNow = new Date(2030, 0, 15, 12, 30, 15).getTime();
             Date.now = () => window.testNow;
             Math.random = () => 0.9;
-        });
+        }, options);
         try {
             await page.goto(url, { waitUntil: 'networkidle' });
             await run(page);
@@ -251,6 +253,96 @@ const server = http.createServer(async (request, response) => {
             await page.locator('[data-dtab="in"]').click();
             assert.equal(await page.locator('#content .card').count(), 0);
             assert.ok((await page.locator('#content').textContent()).includes('Входящих сообщений пока нет'));
+        });
+        await scenario('three quiet hours or three random buyer messages are both possible', async page => {
+            await advertise(page, 210000);
+            await page.evaluate(() => { gameMs += 3 * 3600000; tickPending(); });
+            assert.equal(await page.evaluate(() => pending.length), 0);
+            await page.evaluate(() => { Math.random = () => 0.2; postAd(1, 210000); gameMs += 3 * 3600000; tickPending(); });
+            assert.equal(await page.evaluate(() => pending.filter(it => it.type === 'ad').length), 3);
+            const delays = await page.evaluate(() => {
+                Math.random = () => 0.999;
+                const long = nextBuyerDelay(listings[1]);
+                Math.random = () => 0.01;
+                return [long, nextBuyerDelay(listings[1])];
+            });
+            assert.ok(delays[0] > 10 * 3600000);
+            assert.ok(delays[1] < 5 * 60000);
+        });
+        await scenario('sleep crosses midnight, receives night messages, and saves morning', async page => {
+            await ownCar(page);
+            const start = await page.evaluate(() => {
+                gameMs = new Date(2030, 0, 15, 22, 0).getTime();
+                Math.random = () => 0.2; postAd(1, 210000); openWin('clock'); return gameMs;
+            });
+            assert.equal(await page.locator('#sleepBtn').isDisabled(), false);
+            await page.locator('#sleepBtn').click();
+            const morning = new Date(2030, 0, 16, 9, 0).getTime();
+            assert.equal(await page.evaluate(() => gameMs), morning);
+            assert.equal(await page.locator('#sleepBtn').isDisabled(), true);
+            const arrivals = await page.evaluate(() => pending.filter(it => it.type === 'ad').map(it => it.readyAt));
+            assert.equal(arrivals.length, 3);
+            assert.ok(arrivals.every(arrived => arrived > start && arrived < morning));
+            assert.equal(await page.evaluate(() => currentGameSpeed), 120);
+            await page.evaluate(() => showDeals());
+            await page.locator('[data-dtab="in"]').click();
+            assert.equal(await page.locator('[data-ad-open]').count(), 3);
+            await page.reload({ waitUntil: 'networkidle' });
+            assert.equal(await page.evaluate(() => gameMs), morning);
+            assert.equal(await page.evaluate(() => pending.length), 3);
+        });
+        await scenario('sleep is unavailable by day and early-morning sleep ends the same day', async page => {
+            await page.evaluate(() => openWin('clock'));
+            assert.equal(await page.locator('#sleepBtn').isDisabled(), true);
+            assert.equal(await page.evaluate(() => sleepUntilMorning()), false);
+            await page.evaluate(() => { gameMs = new Date(2030, 0, 15, 8, 30).getTime(); renderGameTime(); });
+            await page.locator('#sleepBtn').click();
+            assert.equal(await page.evaluate(() => gameMs), new Date(2030, 0, 15, 9, 0).getTime());
+            await page.evaluate(() => { gameMs = new Date(2030, 0, 15, 21, 59).getTime(); renderGameTime(); });
+            assert.equal(await page.locator('#sleepBtn').isDisabled(), true);
+        });
+        await scenario('sleep still processes missed appointments', async page => {
+            await ownCar(page);
+            await page.evaluate(() => {
+                gameMs = new Date(2030, 0, 15, 22).getTime();
+                pending.push({id:'missed', type:'meet', mode:'buy', carId:2, price:281000, when:gameMs + 3600000, reached:false,
+                    npc:{name:'Сергей', avatar:'👨', personality:'neutral', mood:50}});
+                save(); openWin('clock');
+            });
+            await page.locator('#sleepBtn').click();
+            assert.equal(await page.evaluate(() => findPending('missed')), null);
+            assert.deepEqual(await page.evaluate(() => garage), [1]);
+            assert.equal(await page.evaluate(() => balance), 100000);
+        });
+        await scenario('first visit suggests Help once and opens it', async page => {
+            await page.locator('#welcomeOverlay').waitFor({state:'visible'});
+            await page.locator('#welcomeHelp').click();
+            assert.equal(await page.locator('#win-help').evaluate(el => el.classList.contains('open')), true);
+            assert.ok((await page.locator('#win-help').textContent()).includes('22:00'));
+            assert.ok((await page.locator('#win-help').textContent()).includes('три игровых часа'));
+            await page.reload({ waitUntil: 'networkidle' });
+            assert.equal(await page.locator('#welcomeOverlay').evaluate(el => el.classList.contains('open')), false);
+        }, {firstVisit:true});
+        await scenario('first visit may skip Help and existing players are not prompted', async page => {
+            await page.locator('#welcomeLater').click();
+            assert.equal(await page.locator('#welcomeOverlay').evaluate(el => el.classList.contains('open')), false);
+            assert.equal(await page.locator('#win-help').evaluate(el => el.classList.contains('open')), false);
+        }, {firstVisit:true});
+        await scenario('existing saved game does not show first-visit prompt', async page => {
+            assert.equal(await page.locator('#welcomeOverlay').evaluate(el => el.classList.contains('open')), false);
+        }, {firstVisit:true, returningPlayer:true});
+        await scenario('old buyer timing is migrated once without changing received messages', async page => {
+            await ownCar(page);
+            const next = await page.evaluate(() => {
+                listings[1] = {carId:1, price:210000, purchasePrice:95000, nextBuyerAt:gameMs + 600000};
+                pending.push(makeBuyerOffer(listings[1])); save(); return listings[1].nextBuyerAt;
+            });
+            await page.reload({ waitUntil:'networkidle' });
+            const migrated = await page.evaluate(() => listings[1].nextBuyerAt);
+            assert.ok(migrated > next);
+            assert.equal(await page.evaluate(() => pending.length), 1);
+            await page.reload({ waitUntil:'networkidle' });
+            assert.equal(await page.evaluate(() => listings[1].nextBuyerAt), migrated);
         });
         console.log(`${passed} gameplay scenarios passed`);
     } finally { await browser.close(); }
