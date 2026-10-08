@@ -100,7 +100,7 @@ function shortDesc(t, n){
 function carImg(car){
     var src = car.img || ("img/" + car.id + ".jpg");
     if(src.indexOf("img/") === 0) src += (src.indexOf("?") === -1 ? "?" : "&") + "v=20261008-plates";
-    return '<img src="' + esc(src) + '" alt="' + esc(car.name) + '" loading="lazy" ' +
+    return '<img src="' + esc(src) + '" alt="' + esc(car.name) + '"' + (car.fictional ? ' class="custom-car-photo"' : '') + ' loading="lazy" ' +
            'onerror="this.outerHTML=\'🚗\'">';
 }
 
@@ -948,7 +948,7 @@ function openCarInfo(id){
     $("carModalImg").innerHTML = carImg(car);
     $("carModalBody").innerHTML =
         '<div class="car-title">' + esc(car.name) + '</div>' +
-        '<div class="car-location">' + esc(carLocationText(car, filters.city)) + '</div>' +
+        '<div class="car-location">' + esc(carLocationText(car, filters.city)) + (car.fictional ? ' · Игровое объявление' : '') + '</div>' +
         '<div class="car-price">' + money(car.price) + '</div>' +
         specHtml + fullHtml + who +
         '<div class="car-actions">' + action + '</div>';

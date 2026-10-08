@@ -443,6 +443,9 @@ button:disabled{opacity:.4;cursor:not-allowed}
 .meeting-car{display:flex;align-items:center;gap:14px;font-weight:700;flex:none}
 #meetingCarImage{width:110px;height:74px;flex:none;border-radius:10px;overflow:hidden;background:#0f131b}
 #meetingCarImage img{width:100%;height:100%;object-fit:cover}
+.car-img img.custom-car-photo,
+.car-modal-img img.custom-car-photo,
+#meetingCarImage img.custom-car-photo{object-fit:contain}
 .meeting-steps{display:flex;gap:8px;list-style:none;margin:0;padding:0;flex:none}
 .meeting-steps li{flex:1;padding:10px 6px;border-radius:9px;background:#1b2033;color:#8992a3;font-size:12px;text-align:center}
 .meeting-steps li.current{background:#123b39;color:#a6f5ea;border:1px solid #3ee0c9}

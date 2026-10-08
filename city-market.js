@@ -1,12 +1,37 @@
 'use strict';
 
+var knownCities = Object.create(null);
+CITIES.forEach(function(city){ knownCities[city.id] = city; });
+CUSTOM_CITIES.forEach(function(city){
+    if(knownCities[city.id]) Object.assign(knownCities[city.id], city);
+    else {
+        CITIES.push(city);
+        knownCities[city.id] = city;
+    }
+});
+var moscowCity = CITIES.find(function(city){ return city.name === "Москва"; });
+CARS.forEach(function(car){
+    if(car.id >= 107 && car.id <= 146) car.cityId = moscowCity.id;
+});
+var catalogueCarIds = Object.create(null);
+CARS.forEach(function(car){ catalogueCarIds[car.id] = true; });
+REGIONAL_CARS.concat(CUSTOM_CARS).forEach(function(car){
+    if(!catalogueCarIds[car.id] && knownCities[car.cityId]){
+        catalogueCarIds[car.id] = true;
+        CARS.push(car);
+    }
+});
+var populatedCityIds = Object.create(null);
+CARS.forEach(function(car){ if(car.cityId) populatedCityIds[car.cityId] = true; });
+CITIES = CITIES.filter(function(city){ return populatedCityIds[city.id]; });
+
 var CITY_BY_ID = Object.create(null);
 var CITY_BY_LABEL = Object.create(null);
 var CITY_NAME_COUNTS = Object.create(null);
 CITIES.forEach(function(city){ CITY_NAME_COUNTS[city.name] = (CITY_NAME_COUNTS[city.name] || 0) + 1; });
 CITIES.forEach(function(city){
     CITY_BY_ID[city.id] = city;
-    city.label = CITY_NAME_COUNTS[city.name] > 1 ? city.name + " · " + city.region : city.name;
+    city.label = city.showRegion || CITY_NAME_COUNTS[city.name] > 1 ? city.name + " · " + city.region : city.name;
     CITY_BY_LABEL[city.label.toLowerCase().replace(/ё/g, "е")] = city;
 });
 
@@ -14,7 +39,10 @@ function cityNamed(name){
     return CITIES.find(function(city){ return city.name === name && CITY_NAME_COUNTS[name] === 1; }) || null;
 }
 function cityFromLabel(label){
-    return CITY_BY_LABEL[String(label || "").trim().toLowerCase().replace(/ё/g, "е")] || null;
+    var key = String(label || "").trim().toLowerCase().replace(/ё/g, "е");
+    return CITY_BY_LABEL[key] || CITIES.find(function(city){
+        return CITY_NAME_COUNTS[city.name] === 1 && city.name.toLowerCase().replace(/ё/g, "е") === key;
+    }) || null;
 }
 function carCity(car){ return CITY_BY_ID[car.cityId] || null; }
 function distanceBetweenCities(a, b){
@@ -42,16 +70,3 @@ function locationMatches(car, cityId, radius){
     var distance = distanceBetweenCities(origin, city);
     return distance !== null && distance <= Number(radius);
 }
-
-var moscowCity = cityNamed("Москва");
-CARS.forEach(function(car){
-    if(car.id >= 107 && car.id <= 146) car.cityId = moscowCity.id;
-});
-var regionalCarIds = Object.create(null);
-CARS.forEach(function(car){ regionalCarIds[car.id] = true; });
-REGIONAL_CARS.forEach(function(car){
-    if(!regionalCarIds[car.id] && CITY_BY_ID[car.cityId]){
-        regionalCarIds[car.id] = true;
-        CARS.push(car);
-    }
-});
