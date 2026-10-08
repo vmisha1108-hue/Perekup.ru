@@ -50,7 +50,7 @@ var openWindows = {};
 /* память переписок: ключ "buy:<id машины>" или "sell:<id машины>" */
 var chatStore = {};
 try{ chatStore = JSON.parse(localStorage.getItem("chats") || "{}") || {}; }catch(e){ chatStore = {}; }
-var dealsFilter = "all";
+var dealsFilter = "ads";
 
 /* Одна реальная секунда — игровая минута; активные «Часы» удваивают скорость. */
 var GAME_SPEED = 60;
@@ -1665,8 +1665,8 @@ function toast(text, onClick){
     while(box.children && box.children.length > 4) box.removeChild(box.firstChild);
     setTimeout(function(){ if(el.parentNode) el.remove(); }, 9000);
 }
-function toastDeals(text){
-    toast(text, function(){ openWin("market"); showDeals(); });
+function toastDeals(text, filter){
+    toast(text, function(){ dealsFilter = filter || "in"; openWin("market"); showDeals(); });
 }
 
 /* кнопки на карточках машин */
@@ -1818,7 +1818,7 @@ function cancelAd(id){
 }
 
 /* встреча: восстанавливаем договорённость и открываем окно по приезде */
-function openMeetChat(id){
+function openMeetChat(id, travel){
     if(!canOpenChat()) return;
     var it = findPending(id);
     var car = it ? carById(it.carId) : null;
@@ -1837,7 +1837,7 @@ function openMeetChat(id){
         sysSay("📅 Встреча: " + it.label);
     }
     openOverlay();
-    goToMeeting();
+    if(travel !== false) goToMeeting();
 }
 function cancelMeet(id){
     if(!confirm("Отменить встречу? Сделка сорвётся.")) return;
@@ -1855,7 +1855,7 @@ function cancelMeet(id){
 }
 
 function dealAction(e){
-    var t = e.target.closest("[data-ad-open],[data-ad-cancel],[data-meet-go],[data-meet-cancel],[data-dtab],[data-chat-open],[data-chat-del],[data-sale-edit],[data-listing-cancel]");
+    var t = e.target.closest("[data-ad-open],[data-ad-cancel],[data-meet-go],[data-meet-chat],[data-meet-cancel],[data-dtab],[data-chat-open],[data-chat-del],[data-sale-edit],[data-listing-cancel]");
     if(!t || t.disabled) return false;
     var d = t.dataset;
     if(d.adOpen){ closeCarInfo(); openAdChat(d.adOpen); }
@@ -1863,6 +1863,7 @@ function dealAction(e){
     else if(d.listingCancel){ cancelListing(Number(d.listingCancel)); }
     else if(d.adCancel){ cancelAd(d.adCancel); }
     else if(d.meetGo){ openMeetChat(d.meetGo); }
+    else if(d.meetChat){ openMeetChat(d.meetChat, false); }
     else if(d.meetCancel){ cancelMeet(d.meetCancel); }
     else if(d.dtab){ dealsFilter = d.dtab; showDeals(); }
     else if(d.chatOpen){ closeCarInfo(); openBuyChat(parseInt(d.chatOpen, 10)); }
@@ -1883,15 +1884,15 @@ function renderDealsTab(){
     t.classList.toggle("alert", attn > 0);
 }
 
-// все элементы вкладки «Сделки»: dir "in" — входящие (мы продаём), "out" — исходящие (мы покупаем)
+// Объявления отделены от переписок: входящие — покупатели, исходящие — продавцы.
 function dealItems(){
     var items = [];
     Object.keys(listings).forEach(function(key){
         var listing = listings[key];
-        if(pending.some(function(it){ return it.type === "meet" && it.carId === listing.carId; })) return;
-        items.push({dir:"in", html:function(){ return listingCard(listing); }});
+        items.push({dir:"ads", html:function(){ return listingCard(listing); }});
     });
     pending.forEach(function(it){
+        if(it.type === "ad" && !it.ready) return;
         items.push({dir: it.mode === "sell" ? "in" : "out", html: function(){ return dealCard(it); }});
     });
     Object.keys(chatStore).forEach(function(k){
@@ -1921,12 +1922,13 @@ function listingCard(listing){
     var car = carById(listing.carId);
     if(!car) return "";
     var count = pending.filter(function(it){ return it.type === "ad" && it.carId === car.id && it.ready; }).length;
+    var meeting = pending.some(function(it){ return it.type === "meet" && it.carId === car.id; });
     return '<article class="card"><div class="car-img">' + carImg(car) + '</div><div class="info">' +
         '<div class="name">📢 ' + esc(car.name) + '</div>' +
         '<div class="price">Цена объявления: ' + money(listing.price) + '</div>' +
-        '<div class="deal-status">' + (count ? 'Предложений покупателей: ' + count : 'Ждём покупателей') + '</div>' +
-        '<button class="buy" data-sale-edit="' + car.id + '">Изменить цену</button>' +
-        '<button class="deal-cancel" data-listing-cancel="' + car.id + '">Снять с продажи</button>' +
+        '<div class="deal-status">' + (meeting ? '📅 Встреча назначена · Отклики приостановлены' : count ? 'Предложений покупателей: ' + count : 'Ждём покупателей') + '</div>' +
+        '<button class="buy" data-sale-edit="' + car.id + '"' + (meeting ? ' disabled' : '') + '>Изменить цену</button>' +
+        '<button class="deal-cancel" data-listing-cancel="' + car.id + '"' + (meeting ? ' disabled' : '') + '>Снять с продажи</button>' +
         '</div></article>';
 }
 function dealCard(it){
@@ -1949,12 +1951,17 @@ function dealCard(it){
         }
     }else{
         var ready = isMeetReady(it);
-        body = '<div class="name">📅 ' + (it.mode === "buy" ? "Покупка" : "Продажа") + ': ' + esc(car.name) + '</div>' +
-            '<div class="meta">' + esc(n.avatar + " " + n.name) + ' · ' + esc(it.label) + '</div>' +
+        var saved = chatStore[chatKey({mode:it.mode, car:car, pid:it.id})];
+        var messages = saved && saved.log ? saved.log.filter(function(msg){ return msg.who !== "sys"; }) : [];
+        var last = messages.length ? messages[messages.length - 1].text : "Встреча назначена";
+        body = '<div class="name">💬 ' + esc(n.avatar + " " + n.name) + '</div>' +
+            '<div class="meta">' + esc(car.name) + ' · ' + esc(shortDesc(last, 60)) + '</div>' +
+            '<div class="meta">📅 ' + esc(it.label) + '</div>' +
             '<div class="price">' + money(it.price) + '</div>' +
             (ready
                 ? '<div class="deal-status ok">Пора ехать! Успейте в течение ' + Math.round(MEET_GRACE / 3600000) + ' ч.</div>'
                 : '<div class="deal-status">До встречи: <span data-until="' + it.when + '"></span></div>') +
+            '<button class="buy" data-meet-chat="' + it.id + '">💬 Открыть переписку</button>' +
             '<button class="buy" data-meet-go="' + it.id + '" ' + (ready ? '' : 'disabled') + '>🚗 Поехать на встречу</button>' +
             '<button class="deal-cancel" data-meet-cancel="' + it.id + '">Отменить встречу</button>';
     }
@@ -1965,16 +1972,18 @@ function showDeals(){
     view = "deals";
     setTabs("deals");
     var all = dealItems();
+    if(["ads", "in", "out"].indexOf(dealsFilter) === -1) dealsFilter = "ads";
+    var nAds = all.filter(function(d){ return d.dir === "ads"; }).length;
     var nIn = all.filter(function(d){ return d.dir === "in"; }).length;
-    var nOut = all.length - nIn;
-    var shown = dealsFilter === "all" ? all : all.filter(function(d){ return d.dir === dealsFilter; });
-    var bar = '<div class="deal-tabs">' + [["all", "Все", all.length], ["in", "📥 Входящие", nIn], ["out", "📤 Исходящие", nOut]].map(function(t){
+    var nOut = all.filter(function(d){ return d.dir === "out"; }).length;
+    var shown = all.filter(function(d){ return d.dir === dealsFilter; });
+    var bar = '<div class="deal-tabs">' + [["ads", "📢 Объявления", nAds], ["in", "📥 Входящие", nIn], ["out", "📤 Исходящие", nOut]].map(function(t){
         return '<button class="dtab' + (dealsFilter === t[0] ? ' active' : '') + '" data-dtab="' + t[0] + '">' + t[1] + ' · ' + t[2] + '</button>';
     }).join("") + '</div>';
     var empty = {
-        all: 'Пока нет активных сделок.<br>Разместите машину на продажу или напишите продавцу.',
-        "in": 'Входящих нет.<br>Разместите машину на продажу — покупатели напишут сюда.',
-        out: 'Исходящих нет.<br>Напишите продавцу на рынке — переписка появится здесь.'
+        ads: 'Объявлений пока нет.<br>Выставите автомобиль из гаража на продажу.',
+        "in": 'Входящих сообщений пока нет.<br>Покупатели напишут сюда по вашим объявлениям.',
+        out: 'Исходящих сообщений пока нет.<br>Напишите продавцу на рынке — переписка появится здесь.'
     }[dealsFilter];
     $("content").innerHTML = bar + (shown.length
         ? shown.map(function(d){ return d.html(); }).join("")
@@ -2013,7 +2022,7 @@ function tickPending(){
             if(!it.reached && gameMs >= it.when){
                 it.reached = true;
                 changed = true;
-                toastDeals("🚗 Пора на встречу: " + cname + " (" + it.npc.name + ").");
+                toastDeals("🚗 Пора на встречу: " + cname + " (" + it.npc.name + ").", it.mode === "sell" ? "in" : "out");
                 if(chat && chat.pid === it.id) renderChat();
             }
             if(gameMs > it.when + MEET_GRACE && !(chat && chat.pid === it.id && chat.met)){

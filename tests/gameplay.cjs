@@ -107,6 +107,7 @@ const server = http.createServer(async (request, response) => {
             const actors = await page.evaluate(() => pending.map(it => it.npc.name));
             assert.notEqual(actors[0], actors[1]); assert.notEqual(actors[1], actors[2]);
             await page.evaluate(() => showDeals());
+            await page.locator('[data-dtab="in"]').click();
             assert.equal(await page.locator('[data-ad-open]').count(), 3);
         });
         await scenario('buyers keep independent conversations', async page => {
@@ -191,6 +192,65 @@ const server = http.createServer(async (request, response) => {
             });
             assert.ok(Number.isSafeInteger(result.bid));
             assert.ok(Number.isSafeInteger(result.maxBid));
+        });
+        await scenario('Deals separates listings from incoming and outgoing messages', async page => {
+            await advertise(page, 210000);
+            const first = await offer(page), second = await offer(page, 0.8);
+            await page.evaluate(() => { openBuyChat(2); closeChat(); showDeals(); });
+            assert.match(await page.locator('[data-dtab="ads"]').textContent(), /Объявления · 1/);
+            assert.match(await page.locator('[data-dtab="in"]').textContent(), /Входящие · 2/);
+            assert.match(await page.locator('[data-dtab="out"]').textContent(), /Исходящие · 1/);
+            assert.equal(await page.locator('[data-sale-edit]').count(), 1);
+            assert.equal(await page.locator('[data-ad-open]').count(), 0);
+            await page.locator('[data-dtab="in"]').click();
+            assert.equal(await page.locator('[data-ad-open]').count(), 2);
+            assert.equal(await page.locator('[data-sale-edit]').count(), 0);
+            await page.locator('[data-ad-open="' + first + '"]').click();
+            assert.equal(await page.evaluate(() => chat.pid), first);
+            await page.locator('#chatClose').click();
+            await page.locator('[data-dtab="out"]').click();
+            assert.equal(await page.locator('[data-chat-open]').count(), 1);
+            await page.locator('[data-chat-open="2"]').click();
+            assert.equal(await page.evaluate(() => chat.car.id), 2);
+            await page.locator('#chatClose').click();
+            await page.locator('[data-dtab="ads"]').click();
+            await page.locator('.toast').evaluateAll(nodes => nodes.forEach(node => node.remove()));
+            await page.evaluate(() => toastDeals('Проверка входящего сообщения'));
+            await page.locator('.toast').click();
+            assert.equal(await page.evaluate(() => dealsFilter), 'in');
+            assert.equal(await page.locator('[data-ad-open="' + second + '"]').count(), 1);
+        });
+        await scenario('scheduled meeting remains a message thread and listing stays in Ads', async page => {
+            await advertise(page, 210000);
+            const id = await offer(page);
+            await page.evaluate(id => { Math.random = () => 0.9; openAdChat(id); agreePrice(chat.bid); renderChat(); }, id);
+            await page.locator('#meetBtn').click();
+            await page.locator('#chatClose').click();
+            await page.evaluate(() => showDeals());
+            assert.match(await page.locator('[data-dtab="ads"]').textContent(), /· 1/);
+            assert.match(await page.locator('[data-dtab="in"]').textContent(), /· 1/);
+            assert.equal(await page.locator('[data-sale-edit]').isDisabled(), true);
+            await page.locator('[data-dtab="in"]').click();
+            await page.locator('[data-meet-chat]').click();
+            assert.equal(await page.evaluate(() => chat.stage), 'go');
+            assert.equal(await page.evaluate(() => chat.met), false);
+            assert.equal(await page.evaluate(() => deals), 0);
+            assert.equal(await page.evaluate(() => balance), 100000);
+            await page.locator('#chatClose').click();
+            assert.equal(await page.locator('[data-meet-go]').count(), 1);
+        });
+        await scenario('unanswered legacy ad does not count as an incoming message', async page => {
+            await page.evaluate(() => {
+                garage = [1]; pending = [{ id:'waiting', type:'ad', mode:'sell', carId:1, ready:false, readyAt:gameMs + 3600000,
+                    npc:{name:'Сергей', avatar:'👨', personality:'kind', mood:72} }]; save();
+            });
+            await page.reload({ waitUntil: 'networkidle' });
+            await page.evaluate(() => { openWin('market'); showDeals(); });
+            assert.match(await page.locator('[data-dtab="ads"]').textContent(), /· 1/);
+            assert.match(await page.locator('[data-dtab="in"]').textContent(), /· 0/);
+            await page.locator('[data-dtab="in"]').click();
+            assert.equal(await page.locator('#content .card').count(), 0);
+            assert.ok((await page.locator('#content').textContent()).includes('Входящих сообщений пока нет'));
         });
         console.log(`${passed} gameplay scenarios passed`);
     } finally { await browser.close(); }
