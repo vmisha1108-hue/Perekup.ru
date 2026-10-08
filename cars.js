@@ -234,7 +234,7 @@ var CARS = [
     id: 91,
     name: "Toyota Corolla, 1997",
     price: 230000,
-    img: "",
+    img: "img/91.jpg",
     desc: "1.6 л, автомат, 370 000 км, универсал, 115 л.с., правый руль",
     seller: {name: "Алексей", avatar: "🧔", personality: "neutral"}
   },
@@ -242,7 +242,7 @@ var CARS = [
     id: 92,
     name: "Toyota Corolla, 2000",
     price: 185000,
-    img: "",
+    img: "img/92.jpg",
     desc: "1.3 л, механика, 380 000 км, хэтчбек, 86 л.с.",
     seller: {name: "Наталья", avatar: "👩", personality: "evil"}
   },
@@ -250,7 +250,7 @@ var CARS = [
     id: 93,
     name: "Toyota Corolla, 2003",
     price: 210000,
-    img: "",
+    img: "img/93.jpg",
     desc: "1.6 л, механика, 243 000 км, седан, 110 л.с.",
     seller: {name: "Кирилл", avatar: "👨‍💼", personality: "neutral"}
   },
@@ -258,7 +258,7 @@ var CARS = [
     id: 94,
     name: "Toyota Corolla, 2005",
     price: 290000,
-    img: "",
+    img: "img/94.jpg",
     desc: "1.4 л, механика, 268 257 км, седан",
     seller: {name: "Елена", avatar: "👩‍🦰", personality: "kind"}
   },
@@ -266,7 +266,7 @@ var CARS = [
     id: 95,
     name: "Toyota Corolla, 2006",
     price: 400000,
-    img: "",
+    img: "img/95.jpg",
     desc: "1.6 л, автомат, 132 000 км, седан",
     seller: {name: "Роман", avatar: "🧑‍🦱", personality: "neutral"}
   },
@@ -274,7 +274,7 @@ var CARS = [
     id: 96,
     name: "Toyota Corolla, 2007",
     price: 420000,
-    img: "",
+    img: "img/96.jpg",
     desc: "1.6 л, автомат, 162 783 км, седан, 124 л.с.",
     seller: {name: "Юлия", avatar: "👩‍💼", personality: "neutral"}
   },
@@ -282,7 +282,7 @@ var CARS = [
     id: 97,
     name: "Toyota Corolla, 2008",
     price: 440000,
-    img: "",
+    img: "img/97.jpg",
     desc: "1.6 л, автомат, 107 000 км, седан, 124 л.с.",
     seller: {name: "Станислав", avatar: "👨‍🔧", personality: "kind"}
   },
@@ -290,7 +290,7 @@ var CARS = [
     id: 98,
     name: "Toyota Corolla, 2009",
     price: 410000,
-    img: "",
+    img: "img/98.jpg",
     desc: "1.6 л, механика, 82 000 км, седан, 124 л.с.",
     seller: {name: "Татьяна", avatar: "👩", personality: "neutral"}
   },
@@ -298,7 +298,7 @@ var CARS = [
     id: 99,
     name: "Toyota Camry, 2002",
     price: 490000,
-    img: "",
+    img: "img/99.jpg",
     desc: "2.4 л, автомат, 480 000 км, седан, 159 л.с.",
     seller: {name: "Андрей", avatar: "🧔‍♂️", personality: "evil"}
   },
@@ -306,7 +306,7 @@ var CARS = [
     id: 100,
     name: "Toyota Camry, 2005",
     price: 500000,
-    img: "",
+    img: "img/100.jpg",
     desc: "2.4 л, автомат, 325 387 км, седан, 152 л.с.",
     seller: {name: "Михаил", avatar: "👨", personality: "neutral"}
   },
@@ -314,7 +314,7 @@ var CARS = [
     id: 101,
     name: "Toyota Avensis, 2001",
     price: 320000,
-    img: "",
+    img: "img/101.jpg",
     desc: "2.0 л, механика, 306 647 км, седан, 128 л.с.",
     seller: {name: "Дарья", avatar: "👩‍🦱", personality: "kind"}
   },
@@ -322,7 +322,7 @@ var CARS = [
     id: 102,
     name: "Toyota Avensis, 2002",
     price: 350000,
-    img: "",
+    img: "img/102.jpg",
     desc: "1.6 л, механика, 318 648 км, седан, 110 л.с.",
     seller: {name: "Кристина", avatar: "👩‍💼", personality: "neutral"}
   },
@@ -330,7 +330,7 @@ var CARS = [
     id: 103,
     name: "Toyota Avensis, 2008",
     price: 500000,
-    img: "",
+    img: "img/103.jpg",
     desc: "1.8 л, автомат, 290 000 км, седан, 129 л.с.",
     seller: {name: "Владимир", avatar: "👴", personality: "neutral"}
   },
@@ -338,7 +338,7 @@ var CARS = [
     id: 104,
     name: "Toyota RAV4, 2004",
     price: 400000,
-    img: "",
+    img: "img/104.jpg",
     desc: "2.0 л, автомат, 162 000 км, внедорожник, 135 л.с.",
     seller: {name: "Нина", avatar: "👵", personality: "kind"}
   },
@@ -346,7 +346,7 @@ var CARS = [
     id: 105,
     name: "Toyota RAV4, 2005",
     price: 500000,
-    img: "",
+    img: "img/105.jpg",
     desc: "2.0 л, автомат, 285 000 км, внедорожник, 150 л.с.",
     seller: {name: "Тимур", avatar: "🧔", personality: "evil"}
   },
@@ -354,7 +354,7 @@ var CARS = [
     id: 106,
     name: "Toyota Yaris, 2010",
     price: 350000,
-    img: "",
+    img: "img/106.jpg",
     desc: "1.3 л, автомат, 238 000 км, хэтчбек, 87 л.с.",
     seller: {name: "Марина", avatar: "👩", personality: "neutral"}
   }
