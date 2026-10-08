@@ -229,5 +229,133 @@ var CARS = [
   {id: 45, name: "Hyundai Solaris, 2011", price: 310000, img: "", desc: "1.4 л, механика, 288 047 км, седан, такси", seller: {name: "Люба", avatar: "👵", personality: "kind"}},
   {id: 46, name: "Renault Logan, 2008", price: 179000, img: "", desc: "1.4 л, механика, 240 000 км, седан, неприхотливый", seller: {name: "Гоша", avatar: "🧑‍🎤", personality: "evil"}},
   {id: 47, name: "Chevrolet Cruze, 2012", price: 370000, img: "", desc: "1.6 л, механика, 384 000 км, седан, чёрный", seller: {name: "Кирилл", avatar: "👨‍💼", personality: "neutral"}},
-  {id: 48, name: "Chevrolet Aveo, 2014", price: 499000, img: "", desc: "1.6 л, механика, без пробега, седан, от дилера", seller: {name: "Елена", avatar: "👩‍🦰", personality: "kind"}}
+  {id: 48, name: "Chevrolet Aveo, 2014", price: 499000, img: "", desc: "1.6 л, механика, без пробега, седан, от дилера", seller: {name: "Елена", avatar: "👩‍🦰", personality: "kind"}},
+  {
+    id: 91,
+    name: "Toyota Corolla, 1997",
+    price: 230000,
+    img: "",
+    desc: "1.6 л, автомат, 370 000 км, универсал, 115 л.с., правый руль",
+    seller: {name: "Алексей", avatar: "🧔", personality: "neutral"}
+  },
+  {
+    id: 92,
+    name: "Toyota Corolla, 2000",
+    price: 185000,
+    img: "",
+    desc: "1.3 л, механика, 380 000 км, хэтчбек, 86 л.с.",
+    seller: {name: "Наталья", avatar: "👩", personality: "evil"}
+  },
+  {
+    id: 93,
+    name: "Toyota Corolla, 2003",
+    price: 210000,
+    img: "",
+    desc: "1.6 л, механика, 243 000 км, седан, 110 л.с.",
+    seller: {name: "Кирилл", avatar: "👨‍💼", personality: "neutral"}
+  },
+  {
+    id: 94,
+    name: "Toyota Corolla, 2005",
+    price: 290000,
+    img: "",
+    desc: "1.4 л, механика, 268 257 км, седан",
+    seller: {name: "Елена", avatar: "👩‍🦰", personality: "kind"}
+  },
+  {
+    id: 95,
+    name: "Toyota Corolla, 2006",
+    price: 400000,
+    img: "",
+    desc: "1.6 л, автомат, 132 000 км, седан",
+    seller: {name: "Роман", avatar: "🧑‍🦱", personality: "neutral"}
+  },
+  {
+    id: 96,
+    name: "Toyota Corolla, 2007",
+    price: 420000,
+    img: "",
+    desc: "1.6 л, автомат, 162 783 км, седан, 124 л.с.",
+    seller: {name: "Юлия", avatar: "👩‍💼", personality: "neutral"}
+  },
+  {
+    id: 97,
+    name: "Toyota Corolla, 2008",
+    price: 440000,
+    img: "",
+    desc: "1.6 л, автомат, 107 000 км, седан, 124 л.с.",
+    seller: {name: "Станислав", avatar: "👨‍🔧", personality: "kind"}
+  },
+  {
+    id: 98,
+    name: "Toyota Corolla, 2009",
+    price: 410000,
+    img: "",
+    desc: "1.6 л, механика, 82 000 км, седан, 124 л.с.",
+    seller: {name: "Татьяна", avatar: "👩", personality: "neutral"}
+  },
+  {
+    id: 99,
+    name: "Toyota Camry, 2002",
+    price: 490000,
+    img: "",
+    desc: "2.4 л, автомат, 480 000 км, седан, 159 л.с.",
+    seller: {name: "Андрей", avatar: "🧔‍♂️", personality: "evil"}
+  },
+  {
+    id: 100,
+    name: "Toyota Camry, 2005",
+    price: 500000,
+    img: "",
+    desc: "2.4 л, автомат, 325 387 км, седан, 152 л.с.",
+    seller: {name: "Михаил", avatar: "👨", personality: "neutral"}
+  },
+  {
+    id: 101,
+    name: "Toyota Avensis, 2001",
+    price: 320000,
+    img: "",
+    desc: "2.0 л, механика, 306 647 км, седан, 128 л.с.",
+    seller: {name: "Дарья", avatar: "👩‍🦱", personality: "kind"}
+  },
+  {
+    id: 102,
+    name: "Toyota Avensis, 2002",
+    price: 350000,
+    img: "",
+    desc: "1.6 л, механика, 318 648 км, седан, 110 л.с.",
+    seller: {name: "Кристина", avatar: "👩‍💼", personality: "neutral"}
+  },
+  {
+    id: 103,
+    name: "Toyota Avensis, 2008",
+    price: 500000,
+    img: "",
+    desc: "1.8 л, автомат, 290 000 км, седан, 129 л.с.",
+    seller: {name: "Владимир", avatar: "👴", personality: "neutral"}
+  },
+  {
+    id: 104,
+    name: "Toyota RAV4, 2004",
+    price: 400000,
+    img: "",
+    desc: "2.0 л, автомат, 162 000 км, внедорожник, 135 л.с.",
+    seller: {name: "Нина", avatar: "👵", personality: "kind"}
+  },
+  {
+    id: 105,
+    name: "Toyota RAV4, 2005",
+    price: 500000,
+    img: "",
+    desc: "2.0 л, автомат, 285 000 км, внедорожник, 150 л.с.",
+    seller: {name: "Тимур", avatar: "🧔", personality: "evil"}
+  },
+  {
+    id: 106,
+    name: "Toyota Yaris, 2010",
+    price: 350000,
+    img: "",
+    desc: "1.3 л, автомат, 238 000 км, хэтчбек, 87 л.с.",
+    seller: {name: "Марина", avatar: "👩", personality: "neutral"}
+  }
 ];
