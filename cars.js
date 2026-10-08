@@ -357,5 +357,485 @@ var CARS = [
     img: "img/106.jpg",
     desc: "1.3 л, автомат, 238 000 км, хэтчбек, 87 л.с.",
     seller: {name: "Марина", avatar: "👩", personality: "neutral"}
+  },
+  {
+    "id": 107,
+    "name": "Lada (ВАЗ) 2106 4-speed, 1990",
+    "price": 35000,
+    "img": "img/107.jpg",
+    "desc": "Москва, 1.6 л, 75 л.с., бензин, механика, 210 000 км, нужен ремонт генератора и днища",
+    "seller": {
+      "name": "Александр",
+      "avatar": "👨",
+      "personality": "kind"
+    }
+  },
+  {
+    "id": 108,
+    "name": "Daewoo Matiz I Рестайлинг, 2004",
+    "price": 40000,
+    "img": "img/108.jpg",
+    "desc": "Москва, 0.8 л, 52 л.с., бензин, механика, 250 000 км, нет корпуса фильтра",
+    "seller": {
+      "name": "Валентина",
+      "avatar": "👩",
+      "personality": "neutral"
+    }
+  },
+  {
+    "id": 109,
+    "name": "Ford Mondeo II, 1997",
+    "price": 40000,
+    "img": "img/109.jpg",
+    "desc": "Москва, 1.8 л, 115 л.с., бензин, механика, 200 000 км, нужно варить кузов и крепление балки",
+    "seller": {
+      "name": "Борис",
+      "avatar": "🧔",
+      "personality": "evil"
+    }
+  },
+  {
+    "id": 110,
+    "name": "Nissan Expert, 1999",
+    "price": 75000,
+    "img": "img/110.jpg",
+    "desc": "Москва, 1.8 л, 125 л.с., бензин, автомат, 397 000 км, требует внимания",
+    "seller": {
+      "name": "Светлана",
+      "avatar": "👩‍💼",
+      "personality": "neutral"
+    }
+  },
+  {
+    "id": 111,
+    "name": "Chevrolet Lanos I, 2006",
+    "price": 40000,
+    "img": "img/111.jpg",
+    "desc": "Москва, 1.5 л, 86 л.с., бензин, механика, 256 000 км, на ходу, нужен ремонт",
+    "seller": {
+      "name": "Николай",
+      "avatar": "👨‍🔧",
+      "personality": "kind"
+    }
+  },
+  {
+    "id": 112,
+    "name": "Volkswagen Passat B4, 1996",
+    "price": 75000,
+    "img": "img/112.jpg",
+    "desc": "Москва, 1.6 л, 101 л.с., бензин, механика, 400 000 км, белорусские транзиты",
+    "seller": {
+      "name": "Вероника",
+      "avatar": "👩‍🦰",
+      "personality": "neutral"
+    }
+  },
+  {
+    "id": 113,
+    "name": "Toyota Camry V30, 1993",
+    "price": 87000,
+    "img": "img/113.jpg",
+    "desc": "Москва, 2.0 л, 140 л.с., бензин, автомат, 280 000 км, АКПП пинается при включении R",
+    "seller": {
+      "name": "Евгений",
+      "avatar": "👨‍💼",
+      "personality": "neutral"
+    }
+  },
+  {
+    "id": 114,
+    "name": "ГАЗ 31029 Волга, 1997",
+    "price": 49490,
+    "img": "img/114.jpg",
+    "desc": "Москва, 2.5 л, 90 л.с., бензин, механика, 70 000 км, на ходу, требует внимания",
+    "seller": {
+      "name": "Лидия",
+      "avatar": "👵",
+      "personality": "evil"
+    }
+  },
+  {
+    "id": 115,
+    "name": "Opel Vectra B, 1998",
+    "price": 95000,
+    "img": "img/115.jpg",
+    "desc": "Москва, 1.8 л, 116 л.с., бензин, автомат, 364 738 км, нет задней передачи",
+    "seller": {
+      "name": "Денис",
+      "avatar": "🧑‍🦱",
+      "personality": "kind"
+    }
+  },
+  {
+    "id": 116,
+    "name": "Mitsubishi Lancer VI, 1998",
+    "price": 100000,
+    "img": "img/116.jpg",
+    "desc": "Москва, 1.6 л, 113 л.с., бензин, механика, 264 368 км",
+    "seller": {
+      "name": "Василий",
+      "avatar": "👴",
+      "personality": "neutral"
+    }
+  },
+  {
+    "id": 117,
+    "name": "Ford Focus III, 2012",
+    "price": 649000,
+    "img": "img/117.jpg",
+    "desc": "Москва, 1.6 л, 125 л.с., бензин, робот, 130 600 км",
+    "seller": {
+      "name": "Олег",
+      "avatar": "👨",
+      "personality": "kind"
+    }
+  },
+  {
+    "id": 118,
+    "name": "Renault Logan II, 2015",
+    "price": 675000,
+    "img": "img/118.jpg",
+    "desc": "Москва, 1.6 л, 82 л.с., бензин, робот, 97 352 км",
+    "seller": {
+      "name": "Виктория",
+      "avatar": "👩",
+      "personality": "neutral"
+    }
+  },
+  {
+    "id": 119,
+    "name": "Hyundai Santa Fe Classic, 2008",
+    "price": 547800,
+    "img": "img/119.jpg",
+    "desc": "Москва, 2.0 л, 112 л.с., дизель, автомат, 146 131 км",
+    "seller": {
+      "name": "Арсений",
+      "avatar": "🧔",
+      "personality": "evil"
+    }
+  },
+  {
+    "id": 120,
+    "name": "Kia Sportage II, 2007",
+    "price": 680000,
+    "img": "img/120.jpg",
+    "desc": "Москва, 2.7 л, 175 л.с., бензин, автомат, 392 000 км",
+    "seller": {
+      "name": "Галина",
+      "avatar": "👩‍💼",
+      "personality": "neutral"
+    }
+  },
+  {
+    "id": 121,
+    "name": "Volkswagen Jetta V, 2010",
+    "price": 580000,
+    "img": "img/121.jpg",
+    "desc": "Москва, 1.6 л, 102 л.с., бензин, автомат, 267 543 км",
+    "seller": {
+      "name": "Константин",
+      "avatar": "👨‍🔧",
+      "personality": "kind"
+    }
+  },
+  {
+    "id": 122,
+    "name": "Skoda Rapid I, 2014",
+    "price": 532475,
+    "img": "img/122.jpg",
+    "desc": "Москва, 1.6 л, 105 л.с., бензин, механика, 104 192 км",
+    "seller": {
+      "name": "Полина",
+      "avatar": "👩‍🦰",
+      "personality": "neutral"
+    }
+  },
+  {
+    "id": 123,
+    "name": "Nissan Qashqai I, 2007",
+    "price": 520000,
+    "img": "img/123.jpg",
+    "desc": "Москва, 2.0 л, 141 л.с., бензин, механика, 232 000 км",
+    "seller": {
+      "name": "Леонид",
+      "avatar": "👨‍💼",
+      "personality": "neutral"
+    }
+  },
+  {
+    "id": 124,
+    "name": "Toyota Corolla X (E140, E150), 2008",
+    "price": 575000,
+    "img": "img/124.jpg",
+    "desc": "Москва, 1.6 л, 124 л.с., бензин, механика, 250 932 км",
+    "seller": {
+      "name": "Вера",
+      "avatar": "👵",
+      "personality": "evil"
+    }
+  },
+  {
+    "id": 125,
+    "name": "Chevrolet Captiva I, 2008",
+    "price": 540000,
+    "img": "img/125.jpg",
+    "desc": "Москва, 3.2 л, 230 л.с., бензин, автомат, 219 172 км",
+    "seller": {
+      "name": "Григорий",
+      "avatar": "🧑‍🦱",
+      "personality": "kind"
+    }
+  },
+  {
+    "id": 126,
+    "name": "Honda N-BOX II Рестайлинг, 2021",
+    "price": 700000,
+    "img": "img/126.jpg",
+    "desc": "Москва, 0.7 л, 58 л.с., бензин, вариатор, 38 500 км",
+    "seller": {
+      "name": "Алёна",
+      "avatar": "👴",
+      "personality": "neutral"
+    }
+  },
+  {
+    "id": 127,
+    "name": "Audi A3 II (8P) Рестайлинг 2, 2011",
+    "price": 597700,
+    "img": "img/127.jpg",
+    "desc": "Москва, 1.4 л, 125 л.с., бензин, робот, 273 296 км",
+    "seller": {
+      "name": "Фёдор",
+      "avatar": "👨",
+      "personality": "kind"
+    }
+  },
+  {
+    "id": 128,
+    "name": "Mercedes-Benz B-Класс 200 I (W245), 2008",
+    "price": 515000,
+    "img": "img/128.jpg",
+    "desc": "Москва, 2.0 л, 136 л.с., бензин, вариатор, 267 000 км",
+    "seller": {
+      "name": "Людмила",
+      "avatar": "👩",
+      "personality": "neutral"
+    }
+  },
+  {
+    "id": 129,
+    "name": "Volvo XC70 I Рестайлинг, 2005",
+    "price": 680000,
+    "img": "img/129.jpg",
+    "desc": "Москва, 2.5 л, 210 л.с., бензин, автомат, 221 096 км",
+    "seller": {
+      "name": "Ярослав",
+      "avatar": "🧔",
+      "personality": "evil"
+    }
+  },
+  {
+    "id": 130,
+    "name": "Mazda 3 II (BL), 2010",
+    "price": 600000,
+    "img": "img/130.jpg",
+    "desc": "Москва, 1.6 л, 105 л.с., бензин, автомат, 116 000 км",
+    "seller": {
+      "name": "София",
+      "avatar": "👩‍💼",
+      "personality": "neutral"
+    }
+  },
+  {
+    "id": 131,
+    "name": "Mitsubishi Outlander I, 2007",
+    "price": 535000,
+    "img": "img/131.jpg",
+    "desc": "Москва, 2.0 л, 136 л.с., бензин, механика, 228 000 км",
+    "seller": {
+      "name": "Вадим",
+      "avatar": "👨‍🔧",
+      "personality": "kind"
+    }
+  },
+  {
+    "id": 132,
+    "name": "Suzuki Grand Vitara II, 2005",
+    "price": 560000,
+    "img": "img/132.jpg",
+    "desc": "Москва, 2.0 л, 140 л.с., бензин, механика, 255 000 км",
+    "seller": {
+      "name": "Любовь",
+      "avatar": "👩‍🦰",
+      "personality": "neutral"
+    }
+  },
+  {
+    "id": 133,
+    "name": "Peugeot Partner II Рестайлинг, 2013",
+    "price": 909150,
+    "img": "img/133.jpg",
+    "desc": "Москва, 1.6 л, 120 л.с., бензин, механика, 107 637 км",
+    "seller": {
+      "name": "Семён",
+      "avatar": "👨‍💼",
+      "personality": "neutral"
+    }
+  },
+  {
+    "id": 134,
+    "name": "Opel Antara I Рестайлинг, 2012",
+    "price": 660000,
+    "img": "img/134.jpg",
+    "desc": "Москва, 2.4 л, 167 л.с., бензин, автомат, 321 670 км",
+    "seller": {
+      "name": "Ирина",
+      "avatar": "👵",
+      "personality": "evil"
+    }
+  },
+  {
+    "id": 135,
+    "name": "Citroen C-Crosser, 2011",
+    "price": 799000,
+    "img": "img/135.jpg",
+    "desc": "Москва, 2.0 л, 147 л.с., бензин, вариатор, 169 000 км",
+    "seller": {
+      "name": "Анатолий",
+      "avatar": "🧑‍🦱",
+      "personality": "kind"
+    }
+  },
+  {
+    "id": 136,
+    "name": "Land Rover Range Rover Supercharged III Рестайлинг, 2005",
+    "price": 600000,
+    "img": "img/136.jpg",
+    "desc": "Москва, 4.2 л, 396 л.с., бензин, автомат, 483 402 км",
+    "seller": {
+      "name": "Таисия",
+      "avatar": "👴",
+      "personality": "neutral"
+    }
+  },
+  {
+    "id": 137,
+    "name": "Ravon R4, 2017",
+    "price": 740000,
+    "img": "img/137.jpg",
+    "desc": "Москва, 1.5 л, 106 л.с., бензин, автомат, 93 327 км",
+    "seller": {
+      "name": "Руслан",
+      "avatar": "👨",
+      "personality": "kind"
+    }
+  },
+  {
+    "id": 138,
+    "name": "Geely Emgrand X7 I Рестайлинг 2, 2019",
+    "price": 979900,
+    "img": "img/138.jpg",
+    "desc": "Москва, 2.0 л, 139 л.с., бензин, автомат, 169 616 км",
+    "seller": {
+      "name": "Надежда",
+      "avatar": "👩",
+      "personality": "neutral"
+    }
+  },
+  {
+    "id": 139,
+    "name": "Lada (ВАЗ) Largus I, 2018",
+    "price": 560000,
+    "img": "img/139.jpg",
+    "desc": "Москва, 1.6 л, 87 л.с., бензин, механика, 136 500 км",
+    "seller": {
+      "name": "Аркадий",
+      "avatar": "🧔",
+      "personality": "evil"
+    }
+  },
+  {
+    "id": 140,
+    "name": "УАЗ Патриот I Рестайлинг, 2012",
+    "price": 575000,
+    "img": "img/140.jpg",
+    "desc": "Москва, 2.7 л, 128 л.с., бензин, механика, 99 827 км",
+    "seller": {
+      "name": "Лариса",
+      "avatar": "👩‍💼",
+      "personality": "neutral"
+    }
+  },
+  {
+    "id": 141,
+    "name": "Zotye T600, 2018",
+    "price": 740000,
+    "img": "img/141.jpg",
+    "desc": "Москва, 1.5 л, 149 л.с., бензин, механика, 132 307 км",
+    "seller": {
+      "name": "Глеб",
+      "avatar": "👨‍🔧",
+      "personality": "kind"
+    }
+  },
+  {
+    "id": 142,
+    "name": "Changan CS35, 2018",
+    "price": 726000,
+    "img": "img/142.jpg",
+    "desc": "Москва, 1.6 л, 113 л.с., бензин, автомат, 104 057 км",
+    "seller": {
+      "name": "Зоя",
+      "avatar": "👩‍🦰",
+      "personality": "neutral"
+    }
+  },
+  {
+    "id": 143,
+    "name": "SsangYong Actyon Sports II, 2012",
+    "price": 909000,
+    "img": "img/143.jpg",
+    "desc": "Москва, 2.0 л, 149 л.с., дизель, автомат, 198 468 км",
+    "seller": {
+      "name": "Виталий",
+      "avatar": "👨‍💼",
+      "personality": "neutral"
+    }
+  },
+  {
+    "id": 144,
+    "name": "Ford Focus III, 2014",
+    "price": 790000,
+    "img": "img/144.jpg",
+    "desc": "Москва, 1.6 л, 125 л.с., бензин, механика, 210 356 км",
+    "seller": {
+      "name": "Екатерина",
+      "avatar": "👵",
+      "personality": "evil"
+    }
+  },
+  {
+    "id": 145,
+    "name": "Renault Duster I Рестайлинг, 2016",
+    "price": 955150,
+    "img": "img/145.jpg",
+    "desc": "Москва, 2.0 л, 143 л.с., бензин, автомат, 123 184 км",
+    "seller": {
+      "name": "Артём",
+      "avatar": "🧑‍🦱",
+      "personality": "kind"
+    }
+  },
+  {
+    "id": 146,
+    "name": "Hyundai Solaris I, 2012",
+    "price": 575150,
+    "img": "img/146.jpg",
+    "desc": "Москва, 1.4 л, 107 л.с., бензин, автомат, 165 501 км",
+    "seller": {
+      "name": "Оксана",
+      "avatar": "👴",
+      "personality": "neutral"
+    }
   }
 ];

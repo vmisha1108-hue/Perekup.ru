@@ -1,0 +1,565 @@
+{
+  "note": "Real Moscow Auto.ru listings checked on 2026-10-08. Prices and specifications are listing data; game seller names, avatars and personalities are fictional. Photographs are stored locally.",
+  "cars": [
+    {
+      "id": 107,
+      "name": "Lada (ВАЗ) 2106 4-speed, 1990",
+      "city": "Москва",
+      "price": 35000,
+      "url": "https://auto.ru/cars/used/sale/vaz/2106/1160182488-8777a8ee/",
+      "photo": "https://avatars.avto.ru/get-autoru-vos/20309075/ae50d9abd80a2175312ee9d9447bf800/1200x900",
+      "retrieved": "2026-10-08",
+      "specifications": {
+        "Двигатель": "1.6 л, 75 л.с., бензин",
+        "Коробка": "механическая",
+        "Пробег": "210 000 км"
+      }
+    },
+    {
+      "id": 108,
+      "name": "Daewoo Matiz I Рестайлинг, 2004",
+      "city": "Москва",
+      "price": 40000,
+      "url": "https://auto.ru/cars/used/sale/daewoo/matiz/1134279496-de3b8f20/",
+      "photo": "https://avatars.avto.ru/get-autoru-vos/16348430/f1fbbb5e04460bf1e55e08e9169c9e11/1200x900",
+      "retrieved": "2026-10-08",
+      "specifications": {
+        "Двигатель": "0.8 л, 52 л.с., бензин",
+        "Коробка": "механическая",
+        "Пробег": "250 000 км"
+      }
+    },
+    {
+      "id": 109,
+      "name": "Ford Mondeo II, 1997",
+      "city": "Москва",
+      "price": 40000,
+      "url": "https://auto.ru/cars/used/sale/ford/mondeo/1130980007-57676cb6/",
+      "photo": "https://photo.auto.ru/photo/get-autoru-vos/15051405/p7sW5v4X7a_LRRstzY6X_9REOxKkhv-NCFG5orJ3kHQ0ff9z8KcEqx45zQJB6KQ74XBan4JHc8xMsz676LJIE8xud09PLdprwCJ_X29VJ927mcvM8lOU-eCU6DfAFCj3GWoYS-CNnUi8xc8eeN6mkNjrk-PiGcaIE21ngEUzgdvYn_w/1200x900",
+      "retrieved": "2026-10-08",
+      "specifications": {
+        "Двигатель": "1.8 л, 115 л.с., бензин",
+        "Коробка": "механическая",
+        "Пробег": "200 000 км"
+      }
+    },
+    {
+      "id": 110,
+      "name": "Nissan Expert, 1999",
+      "city": "Москва",
+      "price": 75000,
+      "url": "https://auto.ru/cars/used/sale/nissan/expert/1129536550-6c21ebd5/",
+      "photo": "https://avatars.avto.ru/get-autoru-vos/16149001/74050b2b10711411e1f98745750fa96e/1200x900",
+      "retrieved": "2026-10-08",
+      "specifications": {
+        "Двигатель": "1.8 л, 125 л.с., бензин",
+        "Коробка": "автоматическая",
+        "Пробег": "397 000 км"
+      }
+    },
+    {
+      "id": 111,
+      "name": "Chevrolet Lanos I, 2006",
+      "city": "Москва",
+      "price": 40000,
+      "url": "https://auto.ru/cars/used/sale/chevrolet/lanos/1133077043-4b4e4deb/",
+      "photo": "https://avatars.avto.ru/get-autoru-vos/17786981/cd817370858ccd5da5a63ee8edee80c0/1200x900",
+      "retrieved": "2026-10-08",
+      "specifications": {
+        "Двигатель": "1.5 л, 86 л.с., бензин",
+        "Коробка": "механическая",
+        "Пробег": "256 000 км"
+      }
+    },
+    {
+      "id": 112,
+      "name": "Volkswagen Passat B4, 1996",
+      "city": "Москва",
+      "price": 75000,
+      "url": "https://auto.ru/cars/used/sale/volkswagen/passat/1160175263-f67a0876/",
+      "photo": "https://avatars.avto.ru/get-autoru-vos/20140694/0ca81ced7fe1fd47fc38f5dba091505a/1200x900",
+      "retrieved": "2026-10-08",
+      "specifications": {
+        "Двигатель": "1.6 л, 101 л.с., бензин",
+        "Коробка": "механическая",
+        "Пробег": "400 000 км"
+      }
+    },
+    {
+      "id": 113,
+      "name": "Toyota Camry V30, 1993",
+      "city": "Москва",
+      "price": 87000,
+      "url": "https://auto.ru/cars/used/sale/toyota/camry/1160180362-f3c6591c/",
+      "photo": "https://avatars.avto.ru/get-autoru-vos/15073297/6d998258c155c42d4888411c9d4124ed/1200x900",
+      "retrieved": "2026-10-08",
+      "specifications": {
+        "Двигатель": "2.0 л, 140 л.с., бензин",
+        "Коробка": "автоматическая",
+        "Пробег": "280 000 км"
+      }
+    },
+    {
+      "id": 114,
+      "name": "ГАЗ 31029 Волга, 1997",
+      "city": "Москва",
+      "price": 49490,
+      "url": "https://auto.ru/cars/used/sale/gaz/31029/1129574056-52ed6c79/",
+      "photo": "https://avatars.avto.ru/get-autoru-vos/16872780/bf9f58a93c6726a2ee53770b681064c8/1200x900",
+      "retrieved": "2026-10-08",
+      "specifications": {
+        "Двигатель": "2.5 л, 90 л.с., бензин",
+        "Коробка": "механическая",
+        "Пробег": "70 000 км"
+      }
+    },
+    {
+      "id": 115,
+      "name": "Opel Vectra B, 1998",
+      "city": "Москва",
+      "price": 95000,
+      "url": "https://auto.ru/cars/used/sale/opel/vectra/1121102916-3a5d55aa/",
+      "photo": "https://avatars.avto.ru/get-autoru-vos/6671878/efd23e37ee84e2acf49da2c1a2b2bd95/1200x900",
+      "retrieved": "2026-10-08",
+      "specifications": {
+        "Двигатель": "1.8 л, 116 л.с., бензин",
+        "Коробка": "автоматическая",
+        "Пробег": "364 738 км"
+      }
+    },
+    {
+      "id": 116,
+      "name": "Mitsubishi Lancer VI, 1998",
+      "city": "Москва",
+      "price": 100000,
+      "url": "https://auto.ru/cars/used/sale/mitsubishi/lancer/1132404307-f02c0d68/",
+      "photo": "https://photo.auto.ru/photo/get-autoru-vos/17999629/hAR51gA1L55VVtjKVns4JZhoEPTLTs79k87fEMgp39b9Vds0kXsqcqVY7WScQ7mSP_3I6pU1lR9AsSd32hR9G9oT9vnlBiu4CVzg6HWdpUlImzB_2GNCaD2YcyQP-PgI5ChC_JmxSeCfPE6TE_wQ3julqCIeHLzrGNP0XdthoUsXYe0/1200x900",
+      "retrieved": "2026-10-08",
+      "specifications": {
+        "Двигатель": "1.6 л, 113 л.с., бензин",
+        "Коробка": "механическая",
+        "Пробег": "264 368 км"
+      }
+    },
+    {
+      "id": 117,
+      "name": "Ford Focus III, 2012",
+      "city": "Москва",
+      "price": 649000,
+      "url": "https://auto.ru/cars/used/sale/ford/focus/1160140653-d69b2786/",
+      "photo": "https://avatars.avto.ru/get-autoru-vos/20309075/46e188e964d21a5f7b78bc4a2842f0ef/1200x900",
+      "retrieved": "2026-10-08",
+      "specifications": {
+        "Двигатель": "1.6 л, 125 л.с., бензин",
+        "Коробка": "роботизированная",
+        "Пробег": "130 600 км"
+      }
+    },
+    {
+      "id": 118,
+      "name": "Renault Logan II, 2015",
+      "city": "Москва",
+      "price": 675000,
+      "url": "https://auto.ru/cars/used/sale/renault/logan/1160161979-ebfd7e95/",
+      "photo": "https://avatars.avto.ru/get-autoru-vos/20770109/ff1f47fd7b3ef077e13c8fc1d5a36106/1200x900",
+      "retrieved": "2026-10-08",
+      "specifications": {
+        "Двигатель": "1.6 л, 82 л.с., бензин",
+        "Коробка": "роботизированная",
+        "Пробег": "97 352 км"
+      }
+    },
+    {
+      "id": 119,
+      "name": "Hyundai Santa Fe Classic, 2008",
+      "city": "Москва",
+      "price": 547800,
+      "url": "https://auto.ru/cars/used/sale/hyundai/santa_fe/1160132003-7916e668/",
+      "photo": "https://photo.auto.ru/photo/get-autoru-vos/21167286/vEF__Wc3ocHC9-0UFVko99_8lACcdSekyUtuotzRNTykcCJLAQfYVUstjDlIvipTd7m7QZJhB52pM83G1zApMAMDX_iB9ZX_pI76M61rNrRSAwrloXBT51HDZ1b9jeZyDmUvf6-hsTHeymYPPAPyym3CIwUVBi_7ueOii2Ov1zwc3_Y/1200x900",
+      "retrieved": "2026-10-08",
+      "specifications": {
+        "Двигатель": "2.0 л, 112 л.с., дизель",
+        "Коробка": "автоматическая",
+        "Пробег": "146 131 км"
+      }
+    },
+    {
+      "id": 120,
+      "name": "Kia Sportage II, 2007",
+      "city": "Москва",
+      "price": 680000,
+      "url": "https://auto.ru/cars/used/sale/kia/sportage/1160161889-9e80e403/",
+      "photo": "https://avatars.avto.ru/get-autoru-vos/17713999/088fa7c65cc1dfb257b158c4844f4a2f/1200x900",
+      "retrieved": "2026-10-08",
+      "specifications": {
+        "Двигатель": "2.7 л, 175 л.с., бензин",
+        "Коробка": "автоматическая",
+        "Пробег": "392 000 км"
+      }
+    },
+    {
+      "id": 121,
+      "name": "Volkswagen Jetta V, 2010",
+      "city": "Москва",
+      "price": 580000,
+      "url": "https://auto.ru/cars/used/sale/volkswagen/jetta/1160132695-fc0b5121/",
+      "photo": "https://avatars.avto.ru/get-autoru-vos/18143138/ae4ada30c11d712d69b942dc47fb19cc/1200x900",
+      "retrieved": "2026-10-08",
+      "specifications": {
+        "Двигатель": "1.6 л, 102 л.с., бензин",
+        "Коробка": "автоматическая",
+        "Пробег": "267 543 км"
+      }
+    },
+    {
+      "id": 122,
+      "name": "Skoda Rapid I, 2014",
+      "city": "Москва",
+      "price": 532475,
+      "url": "https://auto.ru/cars/used/sale/skoda/rapid/1160099417-cd2df265/",
+      "photo": "https://avatars.avto.ru/get-autoru-vos/20009446/73ed343651bf6b2b19bed0e12cb28756/1200x900",
+      "retrieved": "2026-10-08",
+      "specifications": {
+        "Двигатель": "1.6 л, 105 л.с., бензин",
+        "Коробка": "механическая",
+        "Пробег": "104 192 км"
+      }
+    },
+    {
+      "id": 123,
+      "name": "Nissan Qashqai I, 2007",
+      "city": "Москва",
+      "price": 520000,
+      "url": "https://auto.ru/cars/used/sale/nissan/qashqai/1160174178-cfdba7a1/",
+      "photo": "https://avatars.avto.ru/get-autoru-vos/18129838/9bf0552c61160592240fc3f71f8e9241/1200x900",
+      "retrieved": "2026-10-08",
+      "specifications": {
+        "Двигатель": "2.0 л, 141 л.с., бензин",
+        "Коробка": "механическая",
+        "Пробег": "232 000 км"
+      }
+    },
+    {
+      "id": 124,
+      "name": "Toyota Corolla X (E140, E150), 2008",
+      "city": "Москва",
+      "price": 575000,
+      "url": "https://auto.ru/cars/used/sale/toyota/corolla/1160139405-9449cacd/",
+      "photo": "https://photo.auto.ru/photo/get-autoru-vos/20193191/nukHZjWz6RFLlix87Dx_CvEb8H1DNZ2vrYLh3SdbGA7cNeex0vPTdaK7MGNWZRRI4b0HzQQ7HDPgOEpDLFP3zaNHpiukQLdu9zLZSlg4mwzzykhqltFLeRyKeKrKz6OI3f5OAyNRCXo0ccZOJOnzwwZakKBBD6zdtgO-zLaliFCi4pU/1200x900",
+      "retrieved": "2026-10-08",
+      "specifications": {
+        "Двигатель": "1.6 л, 124 л.с., бензин",
+        "Коробка": "механическая",
+        "Пробег": "250 932 км"
+      }
+    },
+    {
+      "id": 125,
+      "name": "Chevrolet Captiva I, 2008",
+      "city": "Москва",
+      "price": 540000,
+      "url": "https://auto.ru/cars/used/sale/chevrolet/captiva/1134278270-e51b4424/",
+      "photo": "https://avatars.avto.ru/get-autoru-vos/17981265/6390e9a91d14c8433f03a6cadf8b2d04/1200x900",
+      "retrieved": "2026-10-08",
+      "specifications": {
+        "Двигатель": "3.2 л, 230 л.с., бензин",
+        "Коробка": "автоматическая",
+        "Пробег": "219 172 км"
+      }
+    },
+    {
+      "id": 126,
+      "name": "Honda N-BOX II Рестайлинг, 2021",
+      "city": "Москва",
+      "price": 700000,
+      "url": "https://auto.ru/cars/used/sale/honda/n_box/1160167524-7497cc2a/",
+      "photo": "https://avatars.avto.ru/get-autoru-vos/20951031/0dd297dda5310bfb6840e8f0235dbdd4/1200x900",
+      "retrieved": "2026-10-08",
+      "specifications": {
+        "Двигатель": "0.7 л, 58 л.с., бензин",
+        "Коробка": "вариатор",
+        "Пробег": "38 500 км"
+      }
+    },
+    {
+      "id": 127,
+      "name": "Audi A3 II (8P) Рестайлинг 2, 2011",
+      "city": "Москва",
+      "price": 597700,
+      "url": "https://auto.ru/cars/used/sale/audi/a3/1133704688-0ff3c1dc/",
+      "photo": "https://avatars.avto.ru/get-autoru-vos/2094572/02751822d3eb9a0cd90878ed009530b5/1200x900",
+      "retrieved": "2026-10-08",
+      "specifications": {
+        "Двигатель": "1.4 л, 125 л.с., бензин",
+        "Коробка": "роботизированная",
+        "Пробег": "273 296 км"
+      }
+    },
+    {
+      "id": 128,
+      "name": "Mercedes-Benz B-Класс 200 I (W245), 2008",
+      "city": "Москва",
+      "price": 515000,
+      "url": "https://auto.ru/cars/used/sale/mercedes/b_klasse/1160164219-6a8612fe/",
+      "photo": "https://avatars.avto.ru/get-autoru-vos/17909659/22569577cd0e1bad6e419630d31918ac/1200x900",
+      "retrieved": "2026-10-08",
+      "specifications": {
+        "Двигатель": "2.0 л, 136 л.с., бензин",
+        "Коробка": "вариатор",
+        "Пробег": "267 000 км"
+      }
+    },
+    {
+      "id": 129,
+      "name": "Volvo XC70 I Рестайлинг, 2005",
+      "city": "Москва",
+      "price": 680000,
+      "url": "https://auto.ru/cars/used/sale/volvo/xc70/1160181372-07c5460f/",
+      "photo": "https://avatars.avto.ru/get-autoru-vos/15548469/ebed85be50ac7019409c0b5fdb1ef094/1200x900",
+      "retrieved": "2026-10-08",
+      "specifications": {
+        "Двигатель": "2.5 л, 210 л.с., бензин",
+        "Коробка": "автоматическая",
+        "Пробег": "221 096 км"
+      }
+    },
+    {
+      "id": 130,
+      "name": "Mazda 3 II (BL), 2010",
+      "city": "Москва",
+      "price": 600000,
+      "url": "https://auto.ru/cars/used/sale/mazda/3/1160027976-8c635428/",
+      "photo": "https://avatars.avto.ru/get-autoru-vos/20829654/1796e1ef2e34634dffa10526cf99a85c/1200x900",
+      "retrieved": "2026-10-08",
+      "specifications": {
+        "Двигатель": "1.6 л, 105 л.с., бензин",
+        "Коробка": "автоматическая",
+        "Пробег": "116 000 км"
+      }
+    },
+    {
+      "id": 131,
+      "name": "Mitsubishi Outlander I, 2007",
+      "city": "Москва",
+      "price": 535000,
+      "url": "https://auto.ru/cars/used/sale/mitsubishi/outlander/1160064593-1a6a16e1/",
+      "photo": "https://avatars.avto.ru/get-autoru-vos/19851294/329bfdb1d36cc544fe9c8b845d5b6eb8/1200x900",
+      "retrieved": "2026-10-08",
+      "specifications": {
+        "Двигатель": "2.0 л, 136 л.с., бензин",
+        "Коробка": "механическая",
+        "Пробег": "228 000 км"
+      }
+    },
+    {
+      "id": 132,
+      "name": "Suzuki Grand Vitara II, 2005",
+      "city": "Москва",
+      "price": 560000,
+      "url": "https://auto.ru/cars/used/sale/suzuki/grand_vitara/1160171053-c19d78cb/",
+      "photo": "https://avatars.avto.ru/get-autoru-vos/20358835/26b8c5137810bbe2b7d9889551305866/1200x900",
+      "retrieved": "2026-10-08",
+      "specifications": {
+        "Двигатель": "2.0 л, 140 л.с., бензин",
+        "Коробка": "механическая",
+        "Пробег": "255 000 км"
+      }
+    },
+    {
+      "id": 133,
+      "name": "Peugeot Partner II Рестайлинг, 2013",
+      "city": "Москва",
+      "price": 909150,
+      "url": "https://auto.ru/cars/used/sale/peugeot/partner/1160180256-f996f38d/",
+      "photo": "https://avatars.avto.ru/get-autoru-vos/15548469/d45cb3a7a68123ad85d246bd4cb96390/1200x900",
+      "retrieved": "2026-10-08",
+      "specifications": {
+        "Двигатель": "1.6 л, 120 л.с., бензин",
+        "Коробка": "механическая",
+        "Пробег": "107 637 км"
+      }
+    },
+    {
+      "id": 134,
+      "name": "Opel Antara I Рестайлинг, 2012",
+      "city": "Москва",
+      "price": 660000,
+      "url": "https://auto.ru/cars/used/sale/opel/antara/1160100849-15597d1a/",
+      "photo": "https://avatars.avto.ru/get-autoru-vos/17909659/d98ce28c83e2ed346a752977251b5992/1200x900",
+      "retrieved": "2026-10-08",
+      "specifications": {
+        "Двигатель": "2.4 л, 167 л.с., бензин",
+        "Коробка": "автоматическая",
+        "Пробег": "321 670 км"
+      }
+    },
+    {
+      "id": 135,
+      "name": "Citroen C-Crosser, 2011",
+      "city": "Москва",
+      "price": 799000,
+      "url": "https://auto.ru/cars/used/sale/citroen/c_crosser/1160120667-2bc4572a/",
+      "photo": "https://avatars.avto.ru/get-autoru-vos/15317912/70663c8e72103b2e8d88e374bb97f2ba/1200x900",
+      "retrieved": "2026-10-08",
+      "specifications": {
+        "Двигатель": "2.0 л, 147 л.с., бензин",
+        "Коробка": "вариатор",
+        "Пробег": "169 000 км"
+      }
+    },
+    {
+      "id": 136,
+      "name": "Land Rover Range Rover Supercharged III Рестайлинг, 2005",
+      "city": "Москва",
+      "price": 600000,
+      "url": "https://auto.ru/cars/used/sale/land_rover/range_rover/1160140445-ae97410f/",
+      "photo": "https://avatars.avto.ru/get-autoru-vos/19297093/b06ecc88833480395323431b30238388/1200x900",
+      "retrieved": "2026-10-08",
+      "specifications": {
+        "Двигатель": "4.2 л, 396 л.с., бензин",
+        "Коробка": "автоматическая",
+        "Пробег": "483 402 км"
+      }
+    },
+    {
+      "id": 137,
+      "name": "Ravon R4, 2017",
+      "city": "Москва",
+      "price": 740000,
+      "url": "https://auto.ru/cars/used/sale/ravon/r4/1160114609-6dcff4c8/",
+      "photo": "https://photo.auto.ru/photo/get-autoru-vos/16149001/H8KVBJApXwuTztPL_wnlgK72-WhEydVa3quOqWfHoWb8QFTVEN-Xjjf84DBBRls_jLth-DLTPFUvAhKWCoohVqAmg6D9AnFVDcpLnZGvvzS5dSnE72gVgwn61J-KBWmbAxEjTscwY4XsM6XTfifNHtcnjA-cCHRCjbCVUGDyYqwdcKk/1200x900",
+      "retrieved": "2026-10-08",
+      "specifications": {
+        "Двигатель": "1.5 л, 106 л.с., бензин",
+        "Коробка": "автоматическая",
+        "Пробег": "93 327 км"
+      }
+    },
+    {
+      "id": 138,
+      "name": "Geely Emgrand X7 I Рестайлинг 2, 2019",
+      "city": "Москва",
+      "price": 979900,
+      "url": "https://auto.ru/cars/used/sale/geely/emgrand_x7/1160179660-1aa941ae/",
+      "photo": "https://avatars.avto.ru/get-autoru-vos/21058297/2d79c5d79f9de1ef0f5c1b68ed50424f/1200x900",
+      "retrieved": "2026-10-08",
+      "specifications": {
+        "Двигатель": "2.0 л, 139 л.с., бензин",
+        "Коробка": "автоматическая",
+        "Пробег": "169 616 км"
+      }
+    },
+    {
+      "id": 139,
+      "name": "Lada (ВАЗ) Largus I, 2018",
+      "city": "Москва",
+      "price": 560000,
+      "url": "https://auto.ru/cars/used/sale/vaz/largus/1160178248-f3dc1e97/",
+      "photo": "https://avatars.avto.ru/get-autoru-vos/21177414/a20758cc77271d739d29800c126183f1/1200x900",
+      "retrieved": "2026-10-08",
+      "specifications": {
+        "Двигатель": "1.6 л, 87 л.с., бензин",
+        "Коробка": "механическая",
+        "Пробег": "136 500 км"
+      }
+    },
+    {
+      "id": 140,
+      "name": "УАЗ Патриот I Рестайлинг, 2012",
+      "city": "Москва",
+      "price": 575000,
+      "url": "https://auto.ru/cars/used/sale/uaz/patriot/1160045723-ecca4747/",
+      "photo": "https://avatars.avto.ru/get-autoru-vos/13922065/09b369443414f4b3e51e026ea08ac619/1200x900",
+      "retrieved": "2026-10-08",
+      "specifications": {
+        "Двигатель": "2.7 л, 128 л.с., бензин",
+        "Коробка": "механическая",
+        "Пробег": "99 827 км"
+      }
+    },
+    {
+      "id": 141,
+      "name": "Zotye T600, 2018",
+      "city": "Москва",
+      "price": 740000,
+      "url": "https://auto.ru/cars/used/sale/zotye/t600/1160162418-3f9bfcf7/",
+      "photo": "https://avatars.avto.ru/get-autoru-vos/20289822/02da35b631a1ed7b0b997997f593c4a6/1200x900",
+      "retrieved": "2026-10-08",
+      "specifications": {
+        "Двигатель": "1.5 л, 149 л.с., бензин",
+        "Коробка": "механическая",
+        "Пробег": "132 307 км"
+      }
+    },
+    {
+      "id": 142,
+      "name": "Changan CS35, 2018",
+      "city": "Москва",
+      "price": 726000,
+      "url": "https://auto.ru/cars/used/sale/changan/cs35/1160035526-a79a0aed/",
+      "photo": "https://avatars.avto.ru/get-autoru-vos/18141476/4290dad81685804ba51bf95d8905b9c0/1200x900",
+      "retrieved": "2026-10-08",
+      "specifications": {
+        "Двигатель": "1.6 л, 113 л.с., бензин",
+        "Коробка": "автоматическая",
+        "Пробег": "104 057 км"
+      }
+    },
+    {
+      "id": 143,
+      "name": "SsangYong Actyon Sports II, 2012",
+      "city": "Москва",
+      "price": 909000,
+      "url": "https://auto.ru/cars/used/sale/ssang_yong/actyon_sport/1160179999-0ff760b1/",
+      "photo": "https://avatars.avto.ru/get-autoru-vos/20951031/39324a97ea8329eca2fa0766e06c705c/1200x900",
+      "retrieved": "2026-10-08",
+      "specifications": {
+        "Двигатель": "2.0 л, 149 л.с., дизель",
+        "Коробка": "автоматическая",
+        "Пробег": "198 468 км"
+      }
+    },
+    {
+      "id": 144,
+      "name": "Ford Focus III, 2014",
+      "city": "Москва",
+      "price": 790000,
+      "url": "https://auto.ru/cars/used/sale/ford/focus/1160181677-d643ce35/",
+      "photo": "https://avatars.avto.ru/get-autoru-vos/20360782/4ab08d5b16d44d353074cd76f89d7477/1200x900",
+      "retrieved": "2026-10-08",
+      "specifications": {
+        "Двигатель": "1.6 л, 125 л.с., бензин",
+        "Коробка": "механическая",
+        "Пробег": "210 356 км"
+      }
+    },
+    {
+      "id": 145,
+      "name": "Renault Duster I Рестайлинг, 2016",
+      "city": "Москва",
+      "price": 955150,
+      "url": "https://auto.ru/cars/used/sale/renault/duster/1160180254-c6307097/",
+      "photo": "https://avatars.avto.ru/get-autoru-vos/20132077/464211300906f5585fed2d35b7695647/1200x900",
+      "retrieved": "2026-10-08",
+      "specifications": {
+        "Двигатель": "2.0 л, 143 л.с., бензин",
+        "Коробка": "автоматическая",
+        "Пробег": "123 184 км"
+      }
+    },
+    {
+      "id": 146,
+      "name": "Hyundai Solaris I, 2012",
+      "city": "Москва",
+      "price": 575150,
+      "url": "https://auto.ru/cars/used/sale/hyundai/solaris/1160033844-23b39011/",
+      "photo": "https://avatars.avto.ru/get-autoru-vos/20341802/cc03565884763b70f16a7398dbde0e1c/1200x900",
+      "retrieved": "2026-10-08",
+      "specifications": {
+        "Двигатель": "1.4 л, 107 л.с., бензин",
+        "Коробка": "автоматическая",
+        "Пробег": "165 501 км"
+      }
+    }
+  ]
+}
