@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Perekyp.ru</title>
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="style.css?v=20261008-gameplay">
 </head>
 <body>
 
@@ -147,12 +147,11 @@
                 <g id="clockTicks"></g>
                 <line id="hHand" class="hand hh" x1="0" y1="8" x2="0" y2="-46"/>
                 <line id="mHand" class="hand mh" x1="0" y1="10" x2="0" y2="-68"/>
-                <line id="sHand" class="hand sh" x1="0" y1="14" x2="0" y2="-76"/>
                 <circle class="pin" r="4"/>
             </svg>
-            <div class="clock-big" id="clockBig">00:00:00</div>
+            <div class="clock-big" id="clockBig">00:00</div>
             <div class="clock-date" id="clockDate">—</div>
-            <div class="clock-note">Игровое время · идёт в 10 раз быстрее реального</div>
+            <div class="clock-note">1 секунда = 1 игровая минута · в активном окне часов — 2 минуты</div>
         </div>
     </div>
 </div>
@@ -169,9 +168,9 @@
     </div>
     <div class="win-body" style="font-size:14px;line-height:1.65;color:#c3cbd8">
         <p><b>🚗 Авторынок</b> — торгуйся с продавцами и покупателями.</p>
-        <p><b>🕐 Часы</b> — игровое время идёт в 10 раз быстрее реального. Встречи назначаются по нему.</p>
+        <p><b>🕐 Часы</b> — за реальную секунду проходит игровая минута, а пока окно часов активно — две минуты. При переходе в другое окно скорость возвращается к обычной. Встречи назначаются по игровому времени.</p>
         <p><b>💬 Сделка</b> — напиши продавцу, договорись о цене и назначь встречу. Приехать можно только в назначенное игровое время (и не позже чем через 4 часа). На встрече могут попросить скинуть или добавить на бензин.</p>
-        <p><b>📢 Продажа</b> — разместите машину из гаража на продажу и подождите: покупатель находится не сразу. Все ожидания видны во вкладке «Сделки».</p>
+        <p><b>📢 Продажа</b> — выберите машину в гараже и укажите свою цену. Покупатели предлагают меньше, больше или ровно указанную сумму. Предложения видны во вкладке «Сделки»; ненужные можно отклонить. При наценке больше 500 000 ₽ относительно цены покупки откликов становится меньше. Иногда покупатель не приезжает на встречу.</p>
         <p><b>🏪 Магазин гаражей</b> — расширяет вместимость.</p>
         <p><b>🧮 Калькулятор</b> — быстрый счёт.</p>
         <p><b>📅 Календарь</b> — заметки по дням.</p>
@@ -298,6 +297,21 @@
 </div>
 
 <!-- ОБЪЯВЛЕНИЕ -->
+<div class="overlay" id="saleOverlay">
+    <form class="sale-modal" id="saleForm">
+        <h2>📢 Продать автомобиль</h2>
+        <div id="saleCarName"></div>
+        <p id="salePurchase"></p>
+        <label for="salePrice">Ваша цена продажи, ₽</label>
+        <input id="salePrice" type="number" min="1" max="9007199254740991" step="1" required>
+        <p class="sale-note">Покупатели могут предложить свою цену. Наценка свыше 500 000 ₽ от цены покупки снижает число откликов.</p>
+        <div class="stage-row">
+            <button id="saleSubmit" class="stage-btn yes" type="submit">Разместить объявление</button>
+            <button id="saleCancel" class="stage-btn no" type="button">Отмена</button>
+        </div>
+    </form>
+</div>
+
 <div class="overlay" id="carOverlay">
     <div class="car-modal">
         <button class="close car-close" id="carClose" title="Закрыть">✕</button>
@@ -354,7 +368,7 @@
     </div>
 </div>
 
-<script src="cars.js"></script>
-<script src="script.js"></script>
+<script src="cars.js?v=20261008-gameplay"></script>
+<script src="script.js?v=20261008-gameplay"></script>
 </body>
 </html>
