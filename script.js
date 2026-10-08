@@ -423,6 +423,7 @@ function openWin(id){
 }
 
 function closeWin(id){
+    if(id === "meeting"){ closeChat(); return; }
     var w = $("win-" + id);
     if(!w) return;
     w.classList.remove("open");
@@ -465,6 +466,7 @@ function renderTaskbar(){
 
     var apps = ICONS.map(function(i){ return {id:i.id, ico:i.ico, title:i.label.replace(/<br>/g, " ")}; });
     if(openWindows.admin) apps.push({id:"admin", ico:"⚙️", title:"Система"});
+    if(openWindows.meeting) apps.push({id:"meeting", ico:"🤝", title:"Встреча"});
 
     apps.forEach(function(app){
         var w = $("win-" + app.id);
@@ -891,6 +893,7 @@ function restoreChat(sv){
 }
 
 function openBuyChat(carId){
+    if(!canOpenChat()) return;
     var car = CARS.find(function(c){ return c.id === carId; });
     if(garage.length >= currentGarage().cap){ alert("❌ Нет места! Расширь гараж."); return; }
     if(garage.indexOf(carId) !== -1) return;
@@ -919,6 +922,7 @@ function openBuyChat(carId){
 }
 
 function openSellChat(carId, ad){
+    if(!canOpenChat()) return;
     var car = CARS.find(function(c){ return c.id === carId; });
     var b = ad ? ad.npc : pick(BUYERS);
     var p = PERSONALITY[b.personality];
@@ -943,11 +947,23 @@ function openSellChat(carId, ad){
     openOverlay();
 }
 
-function openOverlay(){
+function canOpenChat(){
+    if(chat && chat.met && !chat.done){
+        openWin("meeting");
+        toast("🤝 Сначала завершите текущую встречу или уезжайте с неё.");
+        return false;
+    }
+    if(chat && chat.met) closeChat();
+    return true;
+}
+function setMeetingDefaults(){
     var now = gameNow();
     $("meetDate").min = ymd(now);
-    $("meetDate").value = ymd(new Date(now.getTime() + 86400000));
-    $("meetTime").value = "18:00";
+    $("meetDate").value = ymd(now);
+    $("meetTime").value = pad2(now.getHours()) + ":" + pad2(now.getMinutes());
+}
+function openOverlay(){
+    setMeetingDefaults();
     $("overlay").classList.add("open");
     $("msgInput").value = "";
     $("offerInput").value = "";
@@ -956,6 +972,9 @@ function openOverlay(){
 }
 function closeChat(){
     $("overlay").classList.remove("open");
+    $("win-meeting").classList.remove("open", "minimized");
+    delete openWindows.meeting;
+    renderTaskbar();
     if(chat && chat.pid){
         if(chat.stage === "event" && !chat.done){
             toast("💤 Вы уехали со встречи: сделка сорвалась.");
@@ -1031,6 +1050,15 @@ function renderChat(){
         $("stEventNote").textContent = lack ? "💸 Не хватает денег, чтобы согласиться." : "";
         $("evYes").textContent = chat.event.yesLabel;
         $("evYes").disabled = lack;
+    }
+    if(chat.met){
+        $("meetingTitle").textContent = "Встреча · " + chat.car.name;
+        $("meetingPerson").textContent = chat.npc.avatar + " " + chat.npc.name +
+            (chat.mode === "buy" ? " · Продавец" : " · Покупатель");
+        $("meetingDeal").textContent = "Цена сделки: " + money(chat.price);
+        $("meetingLog").innerHTML = log.innerHTML;
+        $("meetingLog").scrollTop = $("meetingLog").scrollHeight;
+        $("meetingFinish").style.display = chat.done ? "" : "none";
     }
 
     var q = $("quick");
@@ -1344,6 +1372,7 @@ function agreePrice(price){
     }
     chat.price = price;
     chat.stage = "schedule";
+    setMeetingDefaults();
     var lines = {
         kind:   'Договорились на ' + money(price) + '! Когда вам удобно встретиться? 🙂',
         neutral:'Хорошо, ' + money(price) + '. Назначьте встречу.',
@@ -1359,7 +1388,10 @@ function scheduleMeeting(){
     if(!ds || !ts){ sysSay("📅 Выберите дату и время встречи."); renderChat(); return; }
     var when = new Date(ds + "T" + ts);
     if(isNaN(when.getTime())){ sysSay("📅 Не удалось разобрать дату."); renderChat(); return; }
-    if(when.getTime() < gameMs){ sysSay("📅 Это время уже прошло. Выберите другое."); renderChat(); return; }
+    // Поля имеют точность до минуты: текущую минуту можно назначить «сейчас».
+    var currentMinute = Math.floor(gameMs / 60000) * 60000;
+    if(when.getTime() < currentMinute){ sysSay("📅 Это время уже прошло. Выберите другое."); renderChat(); return; }
+    if(when.getTime() < gameMs) when = gameNow();
 
     var p = chat.npc.personality;
     meSay("Давайте встретимся " + fmtMeet(when) + ".");
@@ -1454,6 +1486,8 @@ function goToMeeting(){
         return;
     }
     chat.met = true;
+    $("overlay").classList.remove("open");
+    openWin("meeting");
     sysSay("🚗 Вы на месте: " + chat.car.name + ".");
     if(chat.mode === "buy") sysSay("🔍 Вы осматриваете машину: всё соответствует описанию.");
     else sysSay("🔍 " + chat.npc.name + " осматривает вашу машину…");
@@ -1609,8 +1643,9 @@ function cancelAd(id){
     renderDealsTab();
 }
 
-/* встреча: возвращаемся в чат на этапе «ехать» */
+/* встреча: восстанавливаем договорённость и открываем окно по приезде */
 function openMeetChat(id){
+    if(!canOpenChat()) return;
     var it = findPending(id);
     var car = it ? carById(it.carId) : null;
     if(!it || it.type !== "meet" || !car) return;
@@ -1628,10 +1663,18 @@ function openMeetChat(id){
         sysSay("📅 Встреча: " + it.label);
     }
     openOverlay();
+    goToMeeting();
 }
 function cancelMeet(id){
     if(!confirm("Отменить встречу? Сделка сорвётся.")) return;
     dropPending(id, true);
+    if(chat && chat.pid === id){
+        sysSay("💤 Встреча отменена: сделка сорвалась.");
+        chat.done = true;
+        chat.stage = "done";
+        chat.pid = null;
+        renderChat();
+    }
     toast("Встреча отменена.");
     refreshList();
     renderDealsTab();
@@ -1776,7 +1819,7 @@ function tickPending(){
                 toastDeals("🚗 Пора на встречу: " + cname + " (" + it.npc.name + ").");
                 if(chat && chat.pid === it.id) renderChat();
             }
-            if(gameMs > it.when + MEET_GRACE){
+            if(gameMs > it.when + MEET_GRACE && !(chat && chat.pid === it.id && chat.met)){
                 dropPending(it.id, true);
                 changed = true;
                 toast("❌ Встреча сорвалась: вы не приехали вовремя (" + cname + ").");
@@ -2175,7 +2218,7 @@ function bindUI(){
             if(e.target.closest("button")) return;
             var win = head.closest(".window");
             if(!win) return;
-            startDrag(e, win.id);
+            startDrag(e, win.id.replace("win-", ""));
         });
     });
 
@@ -2257,6 +2300,7 @@ function bindUI(){
     if($("calTodayBtn")) $("calTodayBtn").addEventListener("click", calToday);
 
     if($("chatClose")) $("chatClose").addEventListener("click", closeChat);
+    if($("meetingFinish")) $("meetingFinish").addEventListener("click", closeChat);
     if($("meetBtn")) $("meetBtn").addEventListener("click", scheduleMeeting);
     if($("goBtn")) $("goBtn").addEventListener("click", goToMeeting);
     if($("evYes")) $("evYes").addEventListener("click", agreeEvent);

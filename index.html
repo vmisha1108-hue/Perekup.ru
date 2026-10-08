@@ -249,6 +249,32 @@
     </div>
 </div>
 
+<!-- ВСТРЕЧА: ОТКРЫВАЕТСЯ ТОЛЬКО ПРИ ПОЕЗДКЕ -->
+<div class="window" id="win-meeting" data-title="Встреча" data-icon="🤝">
+    <div class="win-head">
+        <div class="wi">🤝</div>
+        <div class="win-title" id="meetingTitle">Встреча</div>
+        <div class="win-btns">
+            <button class="min" data-min="win-meeting" title="Свернуть">—</button>
+            <button class="x" data-close="win-meeting" title="Уехать со встречи">✕</button>
+        </div>
+    </div>
+    <div class="win-body meeting-body">
+        <div class="meeting-person" id="meetingPerson"></div>
+        <div class="deal-row" id="meetingDeal"></div>
+        <div class="chat-log" id="meetingLog" aria-live="polite"></div>
+        <div class="stage-box" id="stEvent">
+            <div class="stage-title" id="stEventText"></div>
+            <div class="stage-note" id="stEventNote"></div>
+            <div class="stage-row">
+                <button id="evYes" class="stage-btn yes"></button>
+                <button id="evNo" class="stage-btn no">❌ Отказать</button>
+            </div>
+        </div>
+        <button id="meetingFinish" class="stage-btn yes wide">Закрыть</button>
+    </div>
+</div>
+
         <div class="desk-hint">Тащи иконки мышкой · клик открывает · окна тащатся за заголовок</div>
     </div>
 
@@ -306,7 +332,7 @@
                 <div class="stage-title">📅 Назначьте встречу</div>
                 <div class="stage-row">
                     <input type="date" id="meetDate">
-                    <input type="time" id="meetTime" value="18:00">
+                    <input type="time" id="meetTime">
                     <button id="meetBtn" class="stage-btn yes">Назначить</button>
                 </div>
             </div>
@@ -314,14 +340,6 @@
                 <div class="stage-title" id="stGoText"></div>
                 <div class="stage-sub" id="stGoSub"></div>
                 <button id="goBtn" class="stage-btn yes wide">🚗 Поехать на встречу</button>
-            </div>
-            <div class="stage-box" id="stEvent">
-                <div class="stage-title" id="stEventText"></div>
-                <div class="stage-note" id="stEventNote"></div>
-                <div class="stage-row">
-                    <button id="evYes" class="stage-btn yes"></button>
-                    <button id="evNo" class="stage-btn no">❌ Отказать</button>
-                </div>
             </div>
         </div>
         <div class="quick" id="quick"></div>
