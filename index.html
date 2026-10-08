@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Perekyp.ru</title>
-<link rel="stylesheet" href="style.css?v=20261008-meeting-stages">
+<link rel="stylesheet" href="style.css?v=20261008-cities">
 </head>
 <body>
 
@@ -44,6 +44,18 @@
         </div>
         <div class="filters" id="filters">
             <input id="fSearch" type="search" placeholder="🔍 Поиск по названию">
+            <input id="fCity" type="search" list="cityOptions" placeholder="📍 Любой город" aria-label="Город поиска" autocomplete="off">
+            <datalist id="cityOptions"></datalist>
+            <select id="fRadius" aria-label="Радиус поиска" disabled>
+                <option value="0">Только этот город</option>
+                <option value="50">В радиусе 50 км</option>
+                <option value="100">В радиусе 100 км</option>
+                <option value="200">В радиусе 200 км</option>
+                <option value="500">В радиусе 500 км</option>
+                <option value="1000">В радиусе 1 000 км</option>
+                <option value="2000">В радиусе 2 000 км</option>
+                <option value="all">По всей России</option>
+            </select>
             <select id="fSort" title="Сортировка">
                 <option value="default">По умолчанию</option>
                 <option value="price_asc">Сначала дешёвые</option>
@@ -52,6 +64,7 @@
                 <option value="year_asc">Сначала старше</option>
                 <option value="km_asc">Пробег: меньше</option>
                 <option value="km_desc">Пробег: больше</option>
+                <option value="distance_asc">Сначала ближайшие</option>
             </select>
             <input id="fMin" type="number" min="0" placeholder="Цена от, ₽">
             <input id="fMax" type="number" min="0" placeholder="Цена до, ₽">
@@ -66,6 +79,7 @@
             <span class="f-count" id="fCount"></span>
         </div>
         <section id="content" class="grid"></section>
+        <button id="marketMore" class="f-reset market-more" hidden>Показать ещё 60 машин</button>
     </div>
 </div>
 
@@ -179,6 +193,7 @@
         <p><b>🎲 Отклики покупателей</b> — приходят редко и случайно, без фиксированного интервала. За три игровых часа может не написать никто, а могут появиться три предложения. Долгая тишина тоже возможна. Активных предложений по одной машине хранится до трёх; чтобы получить новые, договоритесь о встрече или отклоните ненужные предложения.</p>
         <p><b>📋 Сделки</b> — ваши машины на продаже находятся в «Объявлениях», сообщения покупателей — во «Входящих», а переписки с продавцами — в «Исходящих». В назначенной встрече можно открыть переписку или поехать на место.</p>
         <p><b>🏪 Магазин гаражей</b> — расширяет вместимость.</p>
+        <p><b>📍 Города и радиус</b> — введите название и выберите город из списка. Можно искать только в нём, расширить радиус до 2 000 км или выбрать всю Россию. Расстояния считаются по прямой между центрами городов. Сортировка «Сначала ближайшие» доступна после выбора города. Машины без указанного города видны при поиске по всей стране без выбора города.</p>
         <p><b>🧮 Калькулятор</b> — быстрый счёт.</p>
         <p><b>📅 Календарь</b> — заметки по дням.</p>
         <p>🏁 В каталоге есть десять легендарных и редких машин с игровыми ценами и историями. <a href="photo-credits.html" target="_blank" rel="noopener" style="color:#4de0cb">Авторы и лицензии фотографий</a>.</p>
@@ -403,7 +418,10 @@
     </div>
 </div>
 
-<script src="cars.js?v=20261008-legends"></script>
-<script src="script.js?v=20261008-meeting-stages"></script>
+<script src="cars.js?v=20261008-cities"></script>
+<script src="cities.js?v=20261008-cities"></script>
+<script src="regional-cars.js?v=20261008-cities"></script>
+<script src="city-market.js?v=20261008-cities"></script>
+<script src="script.js?v=20261008-cities"></script>
 </body>
 </html>

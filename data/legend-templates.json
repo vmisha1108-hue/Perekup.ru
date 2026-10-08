@@ -1,0 +1,58 @@
+[
+  {
+    "sourceCarId": 147,
+    "name": "Toyota Chaser Tourer V, 1997",
+    "img": "img/147.jpg",
+    "desc": "2.5 л, автомат, 210 000 км, 1JZ-GTE; турбина жива, резина грустит",
+    "basePrice": 600000
+  },
+  {
+    "sourceCarId": 148,
+    "name": "Toyota Supra RZ, 1996",
+    "img": "img/148.jpg",
+    "desc": "3.0 л, механика, 128 000 км, 2JZ-GTE; мечта из ночных гонок",
+    "basePrice": 1100000
+  },
+  {
+    "sourceCarId": 149,
+    "name": "Nissan Skyline GT-R V-Spec R34, 1999",
+    "img": "img/149.jpg",
+    "desc": "2.6 л, механика, 86 000 км, RB26, полный привод; гаражная легенда",
+    "basePrice": 2800000
+  },
+  {
+    "sourceCarId": 150,
+    "name": "Mazda RX-7 FD, 1994",
+    "img": "img/150.jpg",
+    "desc": "1.3 л, механика, 112 000 км, роторный мотор; масло любит, внимание тоже",
+    "basePrice": 900000
+  },
+  {
+    "sourceCarId": 151,
+    "name": "Nissan Silvia Varietta S15, 2000",
+    "img": "img/151.jpg",
+    "desc": "2.0 л, автомат, 154 000 км, редкий кабриолет; крыша работает, лето ждёт",
+    "basePrice": 700000
+  },
+  {
+    "sourceCarId": 152,
+    "name": "Mitsubishi Lancer Evolution VI, 1999",
+    "img": "img/152.jpg",
+    "desc": "2.0 л турбо, механика, 173 000 км, 4WD; раллийное прошлое под вопросом",
+    "basePrice": 1200000
+  },
+  {
+    "sourceCarId": 153,
+    "name": "BMW M3 E30, 1990",
+    "img": "img/153.jpg",
+    "desc": "2.3 л, механика, 198 000 км, S14; расширенные арки и характер из девяностых",
+    "basePrice": 1500000
+  },
+  {
+    "sourceCarId": 156,
+    "name": "Porsche Cayenne GTS без фары, 2008",
+    "img": "img/156.png",
+    "desc": "4.8 л V8, автомат, 286 000 км; одной фары нет, понты в комплекте",
+    "basePrice": 550000
+  }
+]

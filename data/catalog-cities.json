@@ -1,0 +1,182 @@
+[
+  {
+    "id": "c2deb16a-0330-4f05-821f-1d09c93331e6",
+    "name": "Санкт-Петербург",
+    "region": "Санкт-Петербург",
+    "lat": 59.9391313,
+    "lon": 30.3159004,
+    "catalogBase": 1787000,
+    "autoRuSlug": "sankt-peterburg"
+  },
+  {
+    "id": "8dea00e3-9aab-4d8e-887c-ef2aaa546456",
+    "name": "Новосибирск",
+    "region": "Новосибирская",
+    "lat": 55.028191,
+    "lon": 82.9211489,
+    "catalogBase": 1648000,
+    "autoRuSlug": "novosibirsk"
+  },
+  {
+    "id": "2763c110-cb8b-416a-9dac-ad28a55b4402",
+    "name": "Екатеринбург",
+    "region": "Свердловская",
+    "lat": 56.8385216,
+    "lon": 60.6054911,
+    "catalogBase": 1833000,
+    "autoRuSlug": "ekaterinburg"
+  },
+  {
+    "id": "93b3df57-4c89-44df-ac42-96f05e9cd3b9",
+    "name": "Казань",
+    "region": "Татарстан",
+    "lat": 55.7943584,
+    "lon": 49.1114975,
+    "catalogBase": 1928000,
+    "autoRuSlug": "kazan"
+  },
+  {
+    "id": "555e7d61-d9a7-4ba6-9770-6caa8198c483",
+    "name": "Нижний Новгород",
+    "region": "Нижегородская",
+    "lat": 56.3240627,
+    "lon": 44.0053913,
+    "catalogBase": 1620000,
+    "autoRuSlug": "nizhniy_novgorod"
+  },
+  {
+    "id": "a376e68d-724a-4472-be7c-891bdb09ae32",
+    "name": "Челябинск",
+    "region": "Челябинская",
+    "lat": 55.1602624,
+    "lon": 61.4008078,
+    "catalogBase": 2065000,
+    "autoRuSlug": "chelyabinsk"
+  },
+  {
+    "id": "bb035cc3-1dc2-4627-9d25-a1bf2d4b936b",
+    "name": "Самара",
+    "region": "Самарская",
+    "lat": 53.1950306,
+    "lon": 50.1069518,
+    "catalogBase": 1783000,
+    "autoRuSlug": "samara"
+  },
+  {
+    "id": "140e31da-27bf-4519-9ea0-6185d681d44e",
+    "name": "Омск",
+    "region": "Омская",
+    "lat": 54.9848566,
+    "lon": 73.3674517,
+    "catalogBase": 1657000,
+    "autoRuSlug": "omsk"
+  },
+  {
+    "id": "c1cfe4b9-f7c2-423c-abfa-6ed1c05a15c5",
+    "name": "Ростов-на-Дону",
+    "region": "Ростовская",
+    "lat": 47.2224566,
+    "lon": 39.718803,
+    "catalogBase": 1758000,
+    "autoRuSlug": "rostov-na-donu"
+  },
+  {
+    "id": "7339e834-2cb4-4734-a4c7-1fca2c66e562",
+    "name": "Уфа",
+    "region": "Башкортостан",
+    "lat": 54.734944,
+    "lon": 55.9578468,
+    "catalogBase": 1063000,
+    "autoRuSlug": "ufa"
+  },
+  {
+    "id": "9b968c73-f4d4-4012-8da8-3dacd4d4c1bd",
+    "name": "Красноярск",
+    "region": "Красноярский",
+    "lat": 56.0093879,
+    "lon": 92.8524806,
+    "catalogBase": 1412000,
+    "autoRuSlug": "krasnoyarsk"
+  },
+  {
+    "id": "a309e4ce-2f36-4106-b1ca-53e0f48a6d95",
+    "name": "Пермь",
+    "region": "Пермский",
+    "lat": 58.0102583,
+    "lon": 56.2342034,
+    "catalogBase": 1707000,
+    "autoRuSlug": "perm"
+  },
+  {
+    "id": "5bf5ddff-6353-4a3d-80c4-6fb27f00c6c1",
+    "name": "Воронеж",
+    "region": "Воронежская",
+    "lat": 51.6593332,
+    "lon": 39.1969229,
+    "catalogBase": 1160000,
+    "autoRuSlug": "voronezh"
+  },
+  {
+    "id": "a52b7389-0cfe-46fb-ae15-298652a64cf8",
+    "name": "Волгоград",
+    "region": "Волгоградская",
+    "lat": 48.7070042,
+    "lon": 44.5170339,
+    "catalogBase": 1122000,
+    "autoRuSlug": "volgograd"
+  },
+  {
+    "id": "7dfa745e-aa19-4688-b121-b655c11e482f",
+    "name": "Краснодар",
+    "region": "Краснодарский",
+    "lat": 45.0401604,
+    "lon": 38.9759647,
+    "catalogBase": 1382000,
+    "autoRuSlug": "krasnodar"
+  },
+  {
+    "id": "9ae64229-9f7b-4149-b27a-d1f6ec74b5ce",
+    "name": "Тюмень",
+    "region": "Тюменская",
+    "lat": 57.1529744,
+    "lon": 65.5344099,
+    "catalogBase": 1996000,
+    "autoRuSlug": "tyumen"
+  },
+  {
+    "id": "8eeed222-72e7-47c3-ab3a-9a553c31cf72",
+    "name": "Иркутск",
+    "region": "Иркутская",
+    "lat": 52.2864036,
+    "lon": 104.2807466,
+    "catalogBase": 1224000,
+    "autoRuSlug": "irkutsk"
+  },
+  {
+    "id": "a4859da8-9977-4b62-8436-4e1b98c5d13f",
+    "name": "Хабаровск",
+    "region": "Хабаровский",
+    "lat": 48.4647258,
+    "lon": 135.0598942,
+    "catalogBase": 2016000,
+    "autoRuSlug": "khabarovsk"
+  },
+  {
+    "id": "7b6de6a5-86d0-4735-b11a-499081111af8",
+    "name": "Владивосток",
+    "region": "Приморский",
+    "lat": 43.1164904,
+    "lon": 131.8823937,
+    "catalogBase": 1718000,
+    "autoRuSlug": "vladivostok"
+  },
+  {
+    "id": "884c84a2-0141-4652-962d-8a92989b88f7",
+    "name": "Якутск",
+    "region": "Саха /Якутия/",
+    "lat": 62.0281405,
+    "lon": 129.7325887,
+    "catalogBase": 2098000,
+    "autoRuSlug": "yakutsk"
+  }
+]

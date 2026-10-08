@@ -675,7 +675,13 @@ function onWinResizeEnd(){
 }
 
 /* ================= ФИЛЬТРЫ И СОРТИРОВКА ================= */
-var filters = {q:"", sort:"default", min:"", max:"", mood:"all", afford:false};
+var filters = {q:"", sort:"default", min:"", max:"", mood:"all", afford:false, city:"", radius:"0"};
+var marketLimit = 60;
+try{
+    var savedLocation = JSON.parse(localStorage.getItem("marketLocation") || "{}");
+    if(CITY_BY_ID[savedLocation.city]) filters.city = savedLocation.city;
+    if(["0","50","100","200","500","1000","2000","all"].indexOf(String(savedLocation.radius)) !== -1) filters.radius = String(savedLocation.radius);
+}catch(e){}
 
 // год и пробег берём из названия и описания
 function carStats(car){
@@ -689,6 +695,7 @@ function carStats(car){
 
 function sortKey(car, key){
     if(key === "price") return car.price;
+    if(key === "distance") return distanceFromCity(car, filters.city);
     var st = carStats(car);
     return key === "year" ? st.year : st.km;
 }
@@ -703,13 +710,14 @@ function visibleCars(list){
         if(min !== null && car.price < min) return false;
         if(max !== null && car.price > max) return false;
         if(view === "market"){
+            if(!locationMatches(car, filters.city, filters.radius)) return false;
             if(filters.mood !== "all" && car.seller.personality !== filters.mood) return false;
             if(filters.afford && !canAfford(car.price)) return false;
         }
         return true;
     });
 
-    if(filters.sort !== "default"){
+    if(filters.sort !== "default" && (filters.sort !== "distance_asc" || (view === "market" && filters.city))){
         var parts = filters.sort.split("_");
         var key = parts[0], dir = parts[1] === "asc" ? 1 : -1;
         out.sort(function(a, b){
@@ -732,19 +740,63 @@ function updateResultCount(shown, total){
 function refreshList(){
     if(view === "market") showMarket(); else if(view === "deals") showDeals(); else showGarage();
 }
+function saveMarketLocation(){
+    localStorage.setItem("marketLocation", JSON.stringify({city:filters.city, radius:filters.radius}));
+}
+function updateLocationControls(){
+    var city = CITY_BY_ID[filters.city];
+    $("fCity").value = city ? city.label : "";
+    $("fRadius").value = filters.radius;
+    $("fRadius").disabled = !city;
+    var option = $("fSort").querySelector('option[value="distance_asc"]');
+    if(option) option.disabled = !city || view !== "market";
+}
+function applyCityInput(){
+    var label = $("fCity").value.trim(), city = cityFromLabel(label);
+    if(label && !city) return false;
+    var nextCity = city ? city.id : "";
+    if(filters.city === nextCity){
+        updateLocationControls();
+        return true;
+    }
+    filters.city = nextCity;
+    if(!city && filters.sort === "distance_asc"){
+        filters.sort = "default";
+        $("fSort").value = "default";
+    }
+    marketLimit = 60;
+    saveMarketLocation();
+    updateLocationControls();
+    refreshList();
+    return true;
+}
 function bindFilters(){
     if(!$("fSearch")) return;
-    $("fSearch").addEventListener("input", function(){ filters.q = this.value; refreshList(); });
-    $("fSort").addEventListener("change", function(){ filters.sort = this.value; refreshList(); });
-    $("fMin").addEventListener("input", function(){ filters.min = this.value; refreshList(); });
-    $("fMax").addEventListener("input", function(){ filters.max = this.value; refreshList(); });
-    $("fMood").addEventListener("change", function(){ filters.mood = this.value; refreshList(); });
-    $("fAfford").addEventListener("change", function(){ filters.afford = this.checked; refreshList(); });
+    $("cityOptions").innerHTML = CITIES.slice().sort(function(a,b){ return a.label.localeCompare(b.label,"ru"); }).map(function(city){ return '<option value="' + esc(city.label) + '"></option>'; }).join("");
+    updateLocationControls();
+    $("fCity").addEventListener("input", applyCityInput);
+    $("fCity").addEventListener("change", function(){
+        if(!applyCityInput()){
+            updateLocationControls();
+            toast("Выберите город из списка.");
+        }
+    });
+    $("fRadius").addEventListener("change", function(){ filters.radius = this.value; marketLimit = 60; saveMarketLocation(); refreshList(); });
+    $("marketMore").addEventListener("click", function(){ marketLimit += 60; showMarket(); });
+    $("fSearch").addEventListener("input", function(){ filters.q = this.value; marketLimit = 60; refreshList(); });
+    $("fSort").addEventListener("change", function(){ filters.sort = this.value; marketLimit = 60; refreshList(); });
+    $("fMin").addEventListener("input", function(){ filters.min = this.value; marketLimit = 60; refreshList(); });
+    $("fMax").addEventListener("input", function(){ filters.max = this.value; marketLimit = 60; refreshList(); });
+    $("fMood").addEventListener("change", function(){ filters.mood = this.value; marketLimit = 60; refreshList(); });
+    $("fAfford").addEventListener("change", function(){ filters.afford = this.checked; marketLimit = 60; refreshList(); });
     $("fReset").addEventListener("click", function(){
-        filters = {q:"", sort:"default", min:"", max:"", mood:"all", afford:false};
+        filters = {q:"", sort:"default", min:"", max:"", mood:"all", afford:false, city:"", radius:"0"};
+        marketLimit = 60;
         $("fSearch").value = ""; $("fSort").value = "default";
         $("fMin").value = ""; $("fMax").value = "";
         $("fMood").value = "all"; $("fAfford").checked = false;
+        saveMarketLocation();
+        updateLocationControls();
         refreshList();
     });
 }
@@ -760,18 +812,24 @@ function setTabs(active){
     if($("filters")) $("filters").style.display = active === "deals" ? "none" : "";
     if($("fMood")) $("fMood").style.display = active === "market" ? "" : "none";
     if($("fAffordWrap")) $("fAffordWrap").style.display = active === "market" ? "" : "none";
+    if($("fCity")) $("fCity").hidden = active !== "market";
+    if($("fRadius")) $("fRadius").hidden = active !== "market";
+    if($("marketMore")) $("marketMore").hidden = true;
+    updateLocationControls();
 }
 function showMarket(){
     view = "market";
     setTabs("market");
     var shown = visibleCars(CARS);
-    $("content").innerHTML = shown.map(function(car){
+    var pageCars = shown.slice(0, marketLimit);
+    $("content").innerHTML = pageCars.map(function(car){
         var owned = garage.indexOf(car.id) !== -1;
         var p = PERSONALITY[car.seller.personality];
         return '<article class="card" data-info="' + car.id + '">' +
             '<div class="car-img">' + carImg(car) + '</div>' +
             '<div class="info">' +
-                '<div class="name">' + car.name + '</div>' +
+                '<div class="name">' + esc(car.name) + '</div>' +
+                '<div class="car-location">' + esc(carLocationText(car, filters.city)) + (car.legend ? ' · 🏁 Легенда' : '') + '</div>' +
                 '<div class="meta">' + esc(shortDesc(car.desc, 60)) + '</div>' +
                 '<div class="more">Подробнее ›</div>' +
                 '<div class="seller">' + car.seller.avatar + ' ' + car.seller.name + ' · ' + p.label + '</div>' +
@@ -781,6 +839,10 @@ function showMarket(){
     }).join("");
     if(!shown.length) $("content").innerHTML = noResults();
     updateResultCount(shown.length, CARS.length);
+    if(pageCars.length < shown.length){
+        $("fCount").textContent = "Найдено: " + shown.length + " из " + CARS.length + " · на экране " + pageCars.length;
+        $("marketMore").hidden = false;
+    }
     updateStats();
 }
 function showGarage(){
@@ -885,6 +947,7 @@ function openCarInfo(id){
     $("carModalImg").innerHTML = carImg(car);
     $("carModalBody").innerHTML =
         '<div class="car-title">' + esc(car.name) + '</div>' +
+        '<div class="car-location">' + esc(carLocationText(car, filters.city)) + '</div>' +
         '<div class="car-price">' + money(car.price) + '</div>' +
         specHtml + fullHtml + who +
         '<div class="car-actions">' + action + '</div>';
