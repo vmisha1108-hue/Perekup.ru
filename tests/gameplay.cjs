@@ -66,6 +66,17 @@ const server = http.createServer(async (request, response) => {
             return pending.filter(it => it.type === 'ad').at(-1).id;
         }, random);
     }
+    async function finishInspection(page) {
+        await page.evaluate(() => { gameMs = findPending(chat.pid).flow.inspectionUntil; tickPending(); });
+        assert.equal(await page.evaluate(() => chat.stage), 'event');
+    }
+    async function beginSaleMeeting(page) {
+        await advertise(page, 210000);
+        const id = await offer(page);
+        await page.evaluate(id => { Math.random = () => 0.9; openAdChat(id); agreePrice(chat.bid); renderChat(); }, id);
+        await page.locator('#meetBtn').click();
+        await page.locator('#goBtn').click();
+    }
     try {
         await scenario('new game and reset start with 100000 and reload preserves progress', async page => {
             assert.equal(await page.evaluate(() => balance), 100000);
@@ -111,6 +122,7 @@ const server = http.createServer(async (request, response) => {
             await page.locator('#meetBtn').click();
             assert.equal(await page.evaluate(() => chat.stage), 'go');
             await page.locator('#goBtn').click();
+            await finishInspection(page);
             const finalPrice = await page.evaluate(() => chat.price + chat.event.amount);
             await page.locator('#evYes').click();
             assert.equal(await page.evaluate(() => purchasePrices[1]), finalPrice);
@@ -168,13 +180,15 @@ const server = http.createServer(async (request, response) => {
             await page.locator('#chatClose').click();
             await page.reload({ waitUntil: 'networkidle' });
             await page.evaluate(pid => openMeetChat(pid), pid);
+            assert.equal(await page.evaluate(() => chat.stage), 'waiting');
+            await page.evaluate(() => { gameMs = findPending(chat.pid).flow.arrivalAt; tickPending(); });
             assert.equal(await page.evaluate(() => chat.done), true);
             assert.equal(await page.evaluate(() => balance), 100000);
             assert.deepEqual(await page.evaluate(() => garage), [1]);
             assert.equal(await page.evaluate(() => deals), 0);
             assert.equal(await page.evaluate(() => pending.length), 0);
             assert.equal(await page.evaluate(() => listings[1].price), 210000);
-            assert.ok((await page.locator('#meetingLog').textContent()).includes('не приехал'));
+            assert.ok((await page.locator('#meetingStatus').textContent()).includes('не приехал'));
             await page.locator('#meetingFinish').click();
             await offer(page);
             assert.equal(await page.evaluate(() => pending.length), 1);
@@ -189,6 +203,8 @@ const server = http.createServer(async (request, response) => {
             await page.evaluate(() => { listings[1].nextBuyerAt = gameMs; tickPending(); });
             assert.equal(await page.evaluate(() => pending.length), 1);
             await page.locator('#goBtn').click();
+            await finishInspection(page);
+            await page.locator('#evYes').click();
             assert.deepEqual(await page.evaluate(() => garage), []);
             assert.equal(await page.evaluate(() => balance), 100000 + price);
             assert.equal(await page.evaluate(() => listings[1]), undefined);
@@ -210,6 +226,8 @@ const server = http.createServer(async (request, response) => {
             await page.evaluate(id => { openAdChat(id); agreePrice(chat.bid); renderChat(); Math.random = () => 0.3; }, id);
             await page.locator('#meetBtn').click();
             await page.locator('#goBtn').click();
+            await finishInspection(page);
+            await page.locator('#evYes').click();
             assert.equal(await page.evaluate(() => balance), 100001);
             assert.deepEqual(await page.evaluate(() => garage), []);
         });
@@ -369,6 +387,88 @@ const server = http.createServer(async (request, response) => {
             assert.equal(await page.evaluate(() => pending.length), 1);
             await page.reload({ waitUntil:'networkidle' });
             assert.equal(await page.evaluate(() => listings[1].nextBuyerAt), migrated);
+        });
+        await scenario('meeting waits, inspects, then requires an explicit decision without a chat UI', async page => {
+            await beginSaleMeeting(page);
+            assert.equal(await page.evaluate(() => chat.stage), 'waiting');
+            assert.equal(await page.locator('#win-meeting .chat-log, #win-meeting .msg, #win-meeting .chat-input').count(), 0);
+            assert.equal(await page.locator('#evYes').isVisible(), false);
+            await page.evaluate(() => { gameMs = findPending(chat.pid).flow.arrivalAt - 1; tickPending(); });
+            assert.equal(await page.evaluate(() => chat.stage), 'waiting');
+            await page.evaluate(() => { gameMs++; tickPending(); });
+            assert.equal(await page.evaluate(() => chat.stage), 'inspection');
+            assert.ok((await page.locator('#meetingStatus').textContent()).includes('Осмотр'));
+            assert.equal(await page.locator('#evYes').isVisible(), false);
+            await page.evaluate(() => { gameMs = findPending(chat.pid).flow.inspectionUntil - 1; tickPending(); });
+            assert.equal(await page.evaluate(() => chat.stage), 'inspection');
+            assert.deepEqual(await page.evaluate(() => garage), [1]);
+            assert.equal(await page.evaluate(() => balance), 100000);
+            await page.evaluate(() => { gameMs++; tickPending(); });
+            assert.equal(await page.evaluate(() => chat.stage), 'event');
+            assert.equal(await page.evaluate(() => chat.event.confirmation), true);
+            assert.equal(await page.locator('#evYes').isVisible(), true);
+            assert.deepEqual(await page.evaluate(() => garage), [1]);
+            await page.locator('#evYes').click();
+            assert.equal(await page.evaluate(() => balance), 310000);
+            assert.deepEqual(await page.evaluate(() => garage), []);
+            assert.ok((await page.locator('#meetingStatus').textContent()).includes('Сделка завершена'));
+        });
+        await scenario('active meeting and its price decision survive reload without rerolling', async page => {
+            await beginSaleMeeting(page);
+            const arrivalAt = await page.evaluate(() => findPending(chat.pid).flow.arrivalAt);
+            await page.evaluate(() => { testNow += 1000; tickGame(); });
+            await page.reload({waitUntil:'networkidle'});
+            assert.equal(await page.evaluate(() => chat.stage), 'waiting');
+            assert.equal(await page.evaluate(() => findPending(chat.pid).flow.arrivalAt), arrivalAt);
+            await page.evaluate(() => { gameMs = findPending(chat.pid).flow.arrivalAt; tickPending(); });
+            await page.reload({waitUntil:'networkidle'});
+            assert.equal(await page.evaluate(() => chat.stage), 'inspection');
+            await page.evaluate(() => { Math.random = () => 0.3; });
+            await finishInspection(page);
+            const priceEvent = await page.evaluate(() => chat.event);
+            assert.ok(priceEvent.sign < 0);
+            await page.reload({waitUntil:'networkidle'});
+            assert.equal(await page.evaluate(() => chat.stage), 'event');
+            assert.deepEqual(await page.evaluate(() => chat.event), priceEvent);
+            await page.locator('#evYes').click();
+            assert.equal(await page.evaluate(() => balance), 310000 - priceEvent.amount);
+            await page.reload({waitUntil:'networkidle'});
+            assert.equal(await page.evaluate(() => chat), null);
+            assert.equal(await page.evaluate(() => deals), 1);
+        });
+        await scenario('leaving during waiting or inspection cancels without transferring anything', async page => {
+            await beginSaleMeeting(page);
+            await page.locator('[data-close="win-meeting"]').click();
+            assert.equal(await page.evaluate(() => pending.length), 0);
+            assert.deepEqual(await page.evaluate(() => garage), [1]);
+            assert.equal(await page.evaluate(() => balance), 100000);
+            const id = await offer(page);
+            await page.evaluate(id => { Math.random = () => 0.9; openAdChat(id); agreePrice(chat.bid); renderChat(); }, id);
+            await page.locator('#meetBtn').click(); await page.locator('#goBtn').click();
+            await page.evaluate(() => { gameMs = findPending(chat.pid).flow.arrivalAt; tickPending(); });
+            assert.equal(await page.evaluate(() => chat.stage), 'inspection');
+            await page.locator('[data-close="win-meeting"]').click();
+            await page.reload({waitUntil:'networkidle'});
+            assert.equal(await page.evaluate(() => pending.length), 0);
+            assert.deepEqual(await page.evaluate(() => garage), [1]);
+            assert.equal(await page.evaluate(() => balance), 100000);
+        });
+        await scenario('refusing the unchanged-price deal keeps the car and money', async page => {
+            await beginSaleMeeting(page); await finishInspection(page);
+            await page.locator('#evNo').click();
+            assert.equal(await page.evaluate(() => chat.done), true);
+            assert.equal(await page.evaluate(() => balance), 100000);
+            assert.deepEqual(await page.evaluate(() => garage), [1]);
+            assert.equal(await page.evaluate(() => listings[1].price), 210000);
+        });
+        await scenario('rejecting a discount can complete the deal at the original price', async page => {
+            await beginSaleMeeting(page);
+            await page.evaluate(() => { Math.random = () => 0.3; }); await finishInspection(page);
+            assert.ok(await page.evaluate(() => chat.event.sign < 0));
+            await page.evaluate(() => { Math.random = () => 0.9; });
+            await page.locator('#evNo').click();
+            assert.equal(await page.evaluate(() => balance), 310000);
+            assert.deepEqual(await page.evaluate(() => garage), []);
         });
         console.log(`${passed} gameplay scenarios passed`);
     } finally { await browser.close(); }
