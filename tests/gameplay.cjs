@@ -67,6 +67,32 @@ const server = http.createServer(async (request, response) => {
         }, random);
     }
     try {
+        await scenario('new game and reset start with 100000 and reload preserves progress', async page => {
+            assert.equal(await page.evaluate(() => balance), 100000);
+            assert.ok((await page.locator('#win-help').textContent()).includes('100 000 ₽'));
+            await page.evaluate(() => { balance = 750000; deals = 4; garage = [1]; save(); });
+            await page.reload({waitUntil:'networkidle'});
+            assert.equal(await page.evaluate(() => balance), 750000);
+            page.once('dialog', dialog => dialog.accept());
+            await page.evaluate(() => admReset());
+            assert.equal(await page.evaluate(() => balance), 100000);
+            assert.deepEqual(await page.evaluate(() => garage), []);
+            await page.reload({waitUntil:'networkidle'});
+            assert.equal(await page.evaluate(() => balance), 100000);
+        });
+        await scenario('legacy empty reset million is corrected once', async page => {
+            await page.evaluate(() => { balance = 1000000; save(); localStorage.removeItem('startingBalanceVersion'); });
+            await page.reload({waitUntil:'networkidle'});
+            assert.equal(await page.evaluate(() => balance), 100000);
+            await page.reload({waitUntil:'networkidle'});
+            assert.equal(await page.evaluate(() => balance), 100000);
+        });
+        await scenario('earned million is preserved during starting-balance migration', async page => {
+            await page.evaluate(() => { balance = 1000000; deals = 2; save(); localStorage.removeItem('startingBalanceVersion'); });
+            await page.reload({waitUntil:'networkidle'});
+            assert.equal(await page.evaluate(() => balance), 1000000);
+            assert.equal(await page.evaluate(() => deals), 2);
+        });
         await scenario('clock rates and focus transitions', async page => {
             const result = await page.evaluate(() => {
                 const deltas = [], step = () => { const before = gameMs; testNow += 1000; tickGame(); deltas.push(gameMs - before); };

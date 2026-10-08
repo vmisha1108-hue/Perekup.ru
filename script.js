@@ -30,8 +30,9 @@ var QUICK = {
 };
 
 /* ================= СОСТОЯНИЕ ================= */
+var START_BALANCE = 100000;
 var balance = parseInt(localStorage.getItem("balance"),10);
-if(isNaN(balance)) balance = 100000;
+if(isNaN(balance)) balance = START_BALANCE;
 var garage = JSON.parse(localStorage.getItem("garage") || "[]");
 var deals = parseInt(localStorage.getItem("deals"),10) || 0;
 var garageLvl = parseInt(localStorage.getItem("garageLvl"),10) || 0;
@@ -111,6 +112,17 @@ function save(){
     localStorage.setItem("listings", JSON.stringify(listings));
 }
 function currentGarage(){ return GARAGES[garageLvl]; }
+
+function migrateStartingBalance(){
+    if(localStorage.getItem("startingBalanceVersion") === "1") return;
+    // Старый сброс выдавал миллион. Исправляем только пустую игру без сделок.
+    if(balance === 1000000 && deals === 0 && garageLvl === 0 && !garage.length && !pending.length &&
+        !Object.keys(listings).length && !Object.keys(chatStore).length){
+        balance = START_BALANCE;
+        localStorage.setItem("balance", String(balance));
+    }
+    localStorage.setItem("startingBalanceVersion", "1");
+}
 
 function updateStats(){
     var cap = currentGarage().cap;
@@ -2424,7 +2436,7 @@ function admGarLvl(i){
 }
 function admReset(){
     if(!confirm("Сбросить весь прогресс (баланс, гараж, сделки, заметки)?")) return;
-    balance = 1000000; garage = []; deals = 0; garageLvl = 0; notes = {}; pending = [];
+    balance = START_BALANCE; garage = []; deals = 0; garageLvl = 0; notes = {}; pending = [];
     purchasePrices = {}; listings = {}; chatStore = {};
     persistChats();
     if(chat) closeChat();
@@ -2648,6 +2660,7 @@ function bindUI(){
 
 /* ================= СТАРТ ================= */
 window.addEventListener("DOMContentLoaded", function(){
+    migrateStartingBalance();
     migrateSaleListings();
     bindUI();
     initCalc();
