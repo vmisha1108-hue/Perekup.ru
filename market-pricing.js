@@ -31,8 +31,9 @@ function initMarketSession(){
     var current = {}, moods = ['kind', 'neutral', 'evil'];
     var marketMove = 0.98 + Math.random() * 0.04;
     CARS.forEach(function(car){
-        car.basePrice = car.price;
-        car.marketPrice = estimateMarketPrice(car);
+        if(!Number.isFinite(car.basePrice)) car.basePrice = car.price;
+        if(!Number.isFinite(car.referenceMarketPrice)) car.referenceMarketPrice = estimateMarketPrice(car);
+        car.marketPrice = car.referenceMarketPrice;
         var choices = moods.filter(function(mood){ return mood !== previous[car.id]; });
         var mood = choices[Math.min(choices.length - 1, Math.floor(Math.random() * choices.length))];
         car.seller = Object.assign({}, car.seller, {personality:mood});

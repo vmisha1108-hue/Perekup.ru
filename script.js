@@ -921,6 +921,7 @@ var SELLER_NOTE = {
 function openCarInfo(id){
     var car = carById(id);
     if(!car) return;
+    $("carModalBody").dataset.carId = String(id);
     var s = car.seller;
     var p = PERSONALITY[s.personality];
     var owned = garage.indexOf(id) !== -1;
@@ -1023,12 +1024,7 @@ function openBuyChat(carId){
     chat = {mode:"buy", car:car, npc:npc, ask:ask, log:[], last:"", done:false, stage:"talk", price:null, event:null, meet:null, note:null, met:false, busyUsed:false, pid:null};
     chat.referencePrice = ask;
 
-    var opening = {
-        kind:   'Привет! Это ' + car.name + '. Состояние отличное, отдам за ' + money(ask) + '. Что скажешь? 🙂',
-        neutral:'Здравствуйте. ' + car.name + ', цена — ' + money(ask) + '. Торг возможен.',
-        evil:   car.name + '. ' + money(ask) + '. Деньги вперёд, торговаться не люблю.'
-    }[s.personality];
-    npcSay(opening);
+    npcSay(humanOpening());
     openOverlay();
 }
 
@@ -1048,16 +1044,11 @@ function openSellChat(carId, ad){
     chat.listingPrice = ad ? (ad.listingPrice || car.price) : car.price;
     chat.maxBid = ad ? (ad.maxBid || bid) : bid;
     var svs = ad ? (chatStore[chatKey(chat)] || chatStore["sell:" + carId]) : null;
-    if(svs && svs.pid === ad.id){
+    if(svs && ad && svs.pid === ad.id){
         var rcs = restoreChat(svs);
         if(rcs){ chat = rcs; openOverlay(); return; }
     }
-    var opening = {
-        kind:   'Здравствуйте! Увидел объявление про ' + car.name + '. Готов дать ' + money(bid) + ' 🙂',
-        neutral:'Добрый день. ' + car.name + ' ещё продаётся? Даю ' + money(bid) + '.',
-        evil:   'Ну чё, ' + car.name + '? Больше ' + money(bid) + ' всё равно никто не даст.'
-    }[b.personality];
-    npcSay(opening);
+    npcSay(humanOpening());
     if(chat.trade) npcSay('Предлагаю обмен на ' + carById(chat.trade.carId).name + '. ' + tradeTerms(chat.trade, bid));
     sysSay("📢 Цена в объявлении: " + money(chat.listingPrice));
     openOverlay();
@@ -1211,25 +1202,7 @@ function quickSend(i){
 }
 
 /* ================= АНАЛИЗ ================= */
-function analyze(text){
-    var t = " " + text.toLowerCase().replace(/ё/g,"е") + " ";
-    var nums = (t.match(/\d[\d\s]*/g) || [])
-        .map(function(s){ return Number(s.replace(/\s/g,"")); })
-        .filter(function(n){ return n > 0; });
-    var offer = nums.length ? nums[nums.length-1] : null;
-    if(offer != null && /(тыс|\d\s*к(\s|$)|\d\s*k\b)/.test(t) && offer < 1000) offer *= 1000;
-
-    return {
-        offer: offer,
-        greet  : /(привет|здравств|хай|добрый день|добрый вечер|доброе утро|салют|здарова)/.test(t),
-        praise : /(красив|классн|отличн|крут|люблю|уважа|нравитс|супер|молодец|шикарн|легенд|топ)/.test(t),
-        polite : /(пожалуйста|спасибо|благодар|будьте добры|извини|простите)/.test(t),
-        rude   : /(дурак|тупой|идиот|дебил|отстой|дерьм|говно|плохой|обман|развод|лох|жмот|жадн|урод|заткнись)/.test(t),
-        haggle : /(скидк|дешевл|торг|уступ|дорого|дороже|сбавь|снизь|сброс|уценк|сойдемся|реальн|адекватн|подвинь)/.test(t),
-        agree  : /(согласен|согласна|беру|договорились|по рукам|идет|окей|\sок\s|давай)/.test(t),
-        question: /\?/.test(text)
-    };
-}
+function analyze(text){ return dialogueIntent(text); }
 
 function applyMood(intent){
     var p = PERSONALITY[chat.npc.personality];
@@ -1256,25 +1229,7 @@ function buyerLimit(){
     return Math.round(chat.car.price * (1 + b));
 }
 
-function smallTalk(intent){
-    var bank = {
-        rude:   { kind:"Зачем так? 😔", neutral:"Без этого.", evil:"Полегче." },
-        praise: { kind:"Спасибо! 🙂", neutral:"Спасибо. К делу.", evil:"Неинтересно." },
-        polite: { kind:"Не за что!", neutral:"Хорошо.", evil:"Ну-ну." },
-        greet:  { kind:"Привет! 🙂", neutral:"Здравствуйте.", evil:"Чего надо?" },
-        haggle: { kind:"Давай договоримся 🤝", neutral:"Торг возможен.", evil:"Скидок не будет." },
-        question:{ kind:"Отвечу!", neutral:"Слушаю.", evil:"Меньше вопросов." },
-        def:    { kind:"Слушаю 🙂", neutral:"Итак?", evil:"Ну?" }
-    };
-    var key = "def";
-    if(intent.rude) key = "rude";
-    else if(intent.praise) key = "praise";
-    else if(intent.polite) key = "polite";
-    else if(intent.greet) key = "greet";
-    else if(intent.haggle) key = "haggle";
-    else if(intent.question) key = "question";
-    return bank[key][chat.npc.personality];
-}
+function smallTalk(intent){ return humanSmallTalk(intent); }
 
 /* ================= ДИАЛОГ ================= */
 function handleMessage(text){
@@ -1300,7 +1255,7 @@ function handleMessage(text){
         return;
     }
 
-    if(intent.offer == null && intent.agree && !intent.haggle){
+    if(intent.offer == null && intent.agree && !intent.haggle && !intent.topic && !intent.question){
         if(chat.mode === "buy"){
             agreePrice(chat.ask);
             renderChat();
@@ -1313,6 +1268,8 @@ function handleMessage(text){
     }
 
     if(intent.offer != null){
+        if(intent.adjustment) intent.offer = (chat.mode === "buy" ? chat.ask : chat.bid) + intent.adjustment * intent.offer;
+        if(!Number.isSafeInteger(intent.offer) || intent.offer < 1){ npcSay("Такая сумма не подходит. Предложите положительную цену в рублях."); renderChat(); return; }
         if(chat.mode === "buy") handleBuyOffer(intent.offer);
         else handleSellAsk(intent.offer);
     }else{
@@ -1322,15 +1279,11 @@ function handleMessage(text){
 }
 
 function handleBuyOffer(offer){
-    var car = chat.car;
     var limit = sellerLimit();
     if(ADM.anyPrice){ agreePrice(offer); return; }
 
     if(offer < (chat.referencePrice || chat.ask) * 0.3){
-        npcSay(pick([
-            "Это несерьёзно.",
-            "Ты издеваешься? За такие деньги я лучше оставлю её себе."
-        ]));
+        npcSay(dialogueTone({kind:['На такую сумму я не рассчитывал. Давайте попробуем ближе к цене объявления.','Боюсь, за столько не смогу отдать. Может, обсудим другой вариант?'],neutral:['Это слишком далеко от моей цены. Предложите сумму ближе к объявлению.','По такой сумме не сойдёмся. Мой ориентир — цена в объявлении.'],evil:['За такие деньги машину оставлю себе.','Это слишком мало. Давайте реальные предложения.']}));
         return;
     }
 
@@ -1343,14 +1296,20 @@ function handleBuyOffer(offer){
     chat.ask = Math.min(chat.ask, counter);
 
     var banks = {
-        kind:   ['Хм, ' + money(offer) + ' маловато. Давай ' + money(chat.ask) + '?',
-                 'Могу отдать за ' + money(chat.ask) + '.'],
-        neutral:[money(offer) + ' не подходит. Цена — ' + money(chat.ask) + '.',
-                 'Не сойдёмся. ' + money(chat.ask) + '.'],
-        evil:   [money(offer) + '? Ха. ' + money(chat.ask) + '.',
-                 'Не смеши. ' + money(chat.ask) + ' или ищи другого.']
+        kind:   ['Понимаю, что хочется дешевле. Давайте попробуем ' + money(chat.ask) + '?',
+                 'На ' + money(offer) + ' пока не готов. Мой вариант — ' + money(chat.ask) + '.',
+                 'Хочу, чтобы обоим было нормально. Могу предложить ' + money(chat.ask) + '.',
+                 'Давайте без спешки: ' + money(chat.ask) + ', а состояние спокойно проверите на встрече.'],
+        neutral:['Вашу сумму услышал. Сейчас могу обсуждать ' + money(chat.ask) + '.',
+                 'По ' + money(offer) + ' не договоримся. Если готовы на ' + money(chat.ask) + ', продолжим.',
+                 'Давайте ближе к делу. Мой вариант — ' + money(chat.ask) + '.',
+                 'Пока остановлюсь на ' + money(chat.ask) + '. Что скажете?'],
+        evil:   ['За ' + money(offer) + ' не отдам. Готов обсуждать ' + money(chat.ask) + '.',
+                 'Ниже ' + money(chat.ask) + ' сейчас не пойду. Мне некуда спешить.',
+                 'Ваше предложение понял, но мой вариант — ' + money(chat.ask) + '.',
+                 'За такую сумму лучше посмотрим другой вариант. Здесь пока ' + money(chat.ask) + '.']
     };
-    npcSay(pick(banks[chat.npc.personality]));
+    npcSay(dialoguePick(banks[chat.npc.personality]));
 }
 
 function finishBuy(price){
@@ -1383,8 +1342,8 @@ function finishBuy(price){
 
     var deals2 = {
         kind:   "Отлично! Держи ключи, береги её 🙂",
-        neutral:"Договорились. Документы у меня.",
-        evil:   "Забирай. И не возвращайся с претензиями."
+        neutral:"Деньги получил, спасибо. Вот ключи и документы.",
+        evil:   "Расчёт получил. Ключи и документы передаю, удачи на дороге."
     };
     npcSay(deals2[chat.npc.personality]);
     sysSay('✅ Куплено: ' + chat.car.name + ' за ' + money(price));
@@ -1417,14 +1376,20 @@ function handleSellAsk(price){
     chat.bid = Math.max(chat.bid, counter);
 
     var banks = {
-        kind:   ['Могу поднять до ' + money(chat.bid) + ' 🙂',
-                 'Давайте ' + money(chat.bid) + '?'],
-        neutral:['Максимум ' + money(chat.bid) + '.',
-                 money(chat.bid) + ', и разошлись.'],
-        evil:   ['Держи ' + money(chat.bid) + '.',
-                 'Больше ' + money(chat.bid) + ' не дам.']
+        kind:   ['Понимаю вашу цену. Со своей стороны могу предложить ' + money(chat.bid) + '.',
+                 'Давайте попробуем сойтись на ' + money(chat.bid) + '?',
+                 'Машина интересна, но бюджет тоже надо учитывать. Мой вариант ' + money(chat.bid) + '.',
+                 'Не хочу тратить ваше время: готов обсуждать ' + money(chat.bid) + '.'],
+        neutral:['Сейчас мой предел — ' + money(chat.bid) + '. Если устраивает, договоримся о встрече.',
+                 'По этой сумме не сходимся. Могу предложить ' + money(chat.bid) + '.',
+                 'Останусь на ' + money(chat.bid) + '. Дальше уже вам решать.',
+                 'Ваш вариант понял. Со своей стороны — ' + money(chat.bid) + '.'],
+        evil:   ['Больше ' + money(chat.bid) + ' пока не готов. Есть и другие варианты.',
+                 'Мой вариант ' + money(chat.bid) + '. Устраивает — обсуждаем дальше.',
+                 'По такой цене не возьму. Остановлюсь на ' + money(chat.bid) + '.',
+                 'Я рассчитывал на ' + money(chat.bid) + ', выше не планировал.']
     };
-    npcSay(pick(banks[chat.npc.personality]));
+    npcSay(dialoguePick(banks[chat.npc.personality]));
 }
 
 function finishSell(price){
@@ -1447,8 +1412,8 @@ function finishSell(price){
 
     var deals2 = {
         kind:   "Спасибо вам огромное! Буду за ней следить 🙂",
-        neutral:"Договорились. Переводите деньги.",
-        evil:   "Наконец-то. Ключи давай."
+        neutral:"Деньги перевёл, спасибо. Забираю ключи и документы.",
+        evil:   "Расчёт передал. Давайте ключи и документы, и поеду."
     };
     npcSay(deals2[chat.npc.personality]);
     sysSay('✅ Продано: ' + chat.car.name + ' за ' + money(price));
@@ -1501,11 +1466,11 @@ function agreePrice(price){
     chat.stage = "schedule";
     setMeetingDefaults();
     var lines = {
-        kind:   'Договорились на ' + money(price) + '! Когда вам удобно встретиться? 🙂',
-        neutral:'Хорошо, ' + money(price) + '. Назначьте встречу.',
-        evil:   money(price) + '. Когда приедешь?'
+        kind:   ['Хорошо, давайте на ' + money(price) + '. Когда вам удобно посмотреть машину?', 'Договорились, ' + money(price) + '. Теперь выберем время, чтобы спокойно всё осмотреть.'],
+        neutral:['По цене сошлись: ' + money(price) + '. Предложите дату и время встречи.', 'Хорошо, фиксируем ' + money(price) + '. Когда сможете приехать?'],
+        evil:   ['Ладно, ' + money(price) + '. Давайте согласуем время и проверим машину на месте.', 'На этой сумме договорились: ' + money(price) + '. Когда встречаемся?']
     };
-    npcSay(lines[chat.npc.personality]);
+    npcSay(dialoguePick(lines[chat.npc.personality]));
     sysSay("🤝 Цена согласована: " + money(price));
 }
 
@@ -2420,15 +2385,17 @@ function sleepUntilMorning(){
         gameMs = Math.min(morning.getTime(), gameMs + 15 * 60000);
         tickPending();
     }
+    initMarketSession();
     lastRealMs = Date.now();
     renderGameTime();
     if(chat && chat.stage === "schedule" && !meetingTimeEdited) setMeetingDefaults();
     saveGameTime();
     save();
     refreshList();
+    if($("carOverlay").classList.contains("open")) openCarInfo(Number($("carModalBody").dataset.carId));
     renderDealsTab();
     var count = pending.filter(function(it){ return it.type === "ad" && existingMessages.indexOf(it.id) === -1; }).length;
-    toast(count ? "☀️ Вы проснулись в 09:00. Новых сообщений: " + count + "." : "☀️ Вы проснулись в 09:00. Новых сообщений нет.",
+    toast(count ? "☀️ Вы проснулись в 09:00. Цены и настроение продавцов обновились. Новых сообщений: " + count + "." : "☀️ Вы проснулись в 09:00. Цены и настроение продавцов обновились. Новых сообщений нет.",
         count ? function(){ dealsFilter = "in"; openWin("market"); showDeals(); } : null);
     return true;
 }
