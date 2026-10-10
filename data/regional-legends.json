@@ -1,845 +1,965 @@
 {
-  "note": "Fictional bonus listings. Photos illustrate the models and are credited in photo-credits.html. IDs do not overlap real listings.",
+  "note": "Current fictional regional legends with AI-generated model illustrations.",
   "cars": [
-    {
-      "id": 1787901,
-      "name": "Toyota Chaser Tourer V, 1997",
-      "price": 600000,
-      "img": "img/147.jpg",
-      "desc": "Игровая легенда: 2.5 л, автомат, 210 000 км, 1JZ-GTE; турбина жива, резина грустит",
-      "cityId": "c2deb16a-0330-4f05-821f-1d09c93331e6",
-      "legend": true,
-      "seller": {
-        "name": "Артём",
-        "avatar": "🧔",
-        "personality": "kind"
-      }
-    },
-    {
-      "id": 1787902,
-      "name": "Toyota Supra RZ, 1996",
-      "price": 1150000,
-      "img": "img/148.jpg",
-      "desc": "Игровая легенда: 3.0 л, механика, 128 000 км, 2JZ-GTE; мечта из ночных гонок",
-      "cityId": "c2deb16a-0330-4f05-821f-1d09c93331e6",
-      "legend": true,
-      "seller": {
-        "name": "Марина",
-        "avatar": "👩‍🦰",
-        "personality": "neutral"
-      }
-    },
-    {
-      "id": 1787903,
-      "name": "Nissan Skyline GT-R V-Spec R34, 1999",
-      "price": 2900000,
-      "img": "img/149.jpg",
-      "desc": "Игровая легенда: 2.6 л, механика, 86 000 км, RB26, полный привод; гаражная легенда",
-      "cityId": "c2deb16a-0330-4f05-821f-1d09c93331e6",
-      "legend": true,
-      "seller": {
-        "name": "Игорь",
-        "avatar": "👨‍🦲",
-        "personality": "evil"
-      }
-    },
-    {
-      "id": 1648901,
-      "name": "Mazda RX-7 FD, 1994",
-      "price": 925000,
-      "img": "img/150.jpg",
-      "desc": "Игровая легенда: 1.3 л, механика, 112 000 км, роторный мотор; масло любит, внимание тоже",
-      "cityId": "8dea00e3-9aab-4d8e-887c-ef2aaa546456",
-      "legend": true,
-      "seller": {
-        "name": "Анна",
-        "avatar": "👩",
-        "personality": "kind"
-      }
-    },
-    {
-      "id": 1648902,
-      "name": "Nissan Silvia Varietta S15, 2000",
-      "price": 775000,
-      "img": "img/151.jpg",
-      "desc": "Игровая легенда: 2.0 л, автомат, 154 000 км, редкий кабриолет; крыша работает, лето ждёт",
-      "cityId": "8dea00e3-9aab-4d8e-887c-ef2aaa546456",
-      "legend": true,
-      "seller": {
-        "name": "Виктор",
-        "avatar": "👨‍💼",
-        "personality": "neutral"
-      }
-    },
-    {
-      "id": 1648903,
-      "name": "Mitsubishi Lancer Evolution VI, 1999",
-      "price": 1325000,
-      "img": "img/152.jpg",
-      "desc": "Игровая легенда: 2.0 л турбо, механика, 173 000 км, 4WD; раллийное прошлое под вопросом",
-      "cityId": "8dea00e3-9aab-4d8e-887c-ef2aaa546456",
-      "legend": true,
-      "seller": {
-        "name": "Елена",
-        "avatar": "👩",
-        "personality": "evil"
-      }
-    },
-    {
-      "id": 1833901,
-      "name": "BMW M3 E30, 1990",
-      "price": 1550000,
-      "img": "img/153.jpg",
-      "desc": "Игровая легенда: 2.3 л, механика, 198 000 км, S14; расширенные арки и характер из девяностых",
-      "cityId": "2763c110-cb8b-416a-9dac-ad28a55b4402",
-      "legend": true,
-      "seller": {
-        "name": "Сергей",
-        "avatar": "👨‍🔧",
-        "personality": "kind"
-      }
-    },
-    {
-      "id": 1833902,
-      "name": "Porsche Cayenne GTS без фары, 2008",
-      "price": 650000,
-      "img": "img/156.png",
-      "desc": "Игровая легенда: 4.8 л V8, автомат, 286 000 км; одной фары нет, понты в комплекте",
-      "cityId": "2763c110-cb8b-416a-9dac-ad28a55b4402",
-      "legend": true,
-      "seller": {
-        "name": "Вера",
-        "avatar": "👵",
-        "personality": "neutral"
-      }
-    },
-    {
-      "id": 1833903,
-      "name": "Toyota Chaser Tourer V, 1997",
-      "price": 750000,
-      "img": "img/147.jpg",
-      "desc": "Игровая легенда: 2.5 л, автомат, 210 000 км, 1JZ-GTE; турбина жива, резина грустит",
-      "cityId": "2763c110-cb8b-416a-9dac-ad28a55b4402",
-      "legend": true,
-      "seller": {
-        "name": "Алексей",
-        "avatar": "🧔",
-        "personality": "evil"
-      }
-    },
-    {
-      "id": 1928901,
-      "name": "Toyota Supra RZ, 1996",
-      "price": 1175000,
-      "img": "img/148.jpg",
-      "desc": "Игровая легенда: 3.0 л, механика, 128 000 км, 2JZ-GTE; мечта из ночных гонок",
-      "cityId": "93b3df57-4c89-44df-ac42-96f05e9cd3b9",
-      "legend": true,
-      "seller": {
-        "name": "Ольга",
-        "avatar": "👩‍💼",
-        "personality": "kind"
-      }
-    },
-    {
-      "id": 1928902,
-      "name": "Nissan Skyline GT-R V-Spec R34, 1999",
-      "price": 2925000,
-      "img": "img/149.jpg",
-      "desc": "Игровая легенда: 2.6 л, механика, 86 000 км, RB26, полный привод; гаражная легенда",
-      "cityId": "93b3df57-4c89-44df-ac42-96f05e9cd3b9",
-      "legend": true,
-      "seller": {
-        "name": "Максим",
-        "avatar": "🧑‍🦱",
-        "personality": "neutral"
-      }
-    },
-    {
-      "id": 1928903,
-      "name": "Mazda RX-7 FD, 1994",
-      "price": 1075000,
-      "img": "img/150.jpg",
-      "desc": "Игровая легенда: 1.3 л, механика, 112 000 км, роторный мотор; масло любит, внимание тоже",
-      "cityId": "93b3df57-4c89-44df-ac42-96f05e9cd3b9",
-      "legend": true,
-      "seller": {
-        "name": "Кирилл",
-        "avatar": "👨",
-        "personality": "evil"
-      }
-    },
-    {
-      "id": 1620901,
-      "name": "Nissan Silvia Varietta S15, 2000",
-      "price": 800000,
-      "img": "img/151.jpg",
-      "desc": "Игровая легенда: 2.0 л, автомат, 154 000 км, редкий кабриолет; крыша работает, лето ждёт",
-      "cityId": "555e7d61-d9a7-4ba6-9770-6caa8198c483",
-      "legend": true,
-      "seller": {
-        "name": "Дмитрий",
-        "avatar": "👨",
-        "personality": "kind"
-      }
-    },
-    {
-      "id": 1620902,
-      "name": "Mitsubishi Lancer Evolution VI, 1999",
-      "price": 1350000,
-      "img": "img/152.jpg",
-      "desc": "Игровая легенда: 2.0 л турбо, механика, 173 000 км, 4WD; раллийное прошлое под вопросом",
-      "cityId": "555e7d61-d9a7-4ba6-9770-6caa8198c483",
-      "legend": true,
-      "seller": {
-        "name": "Павел",
-        "avatar": "👨‍🔧",
-        "personality": "neutral"
-      }
-    },
-    {
-      "id": 1620903,
-      "name": "BMW M3 E30, 1990",
-      "price": 1700000,
-      "img": "img/153.jpg",
-      "desc": "Игровая легенда: 2.3 л, механика, 198 000 км, S14; расширенные арки и характер из девяностых",
-      "cityId": "555e7d61-d9a7-4ba6-9770-6caa8198c483",
-      "legend": true,
-      "seller": {
-        "name": "Роман",
-        "avatar": "👨‍💼",
-        "personality": "evil"
-      }
-    },
-    {
-      "id": 2065901,
-      "name": "Porsche Cayenne GTS без фары, 2008",
-      "price": 675000,
-      "img": "img/156.png",
-      "desc": "Игровая легенда: 4.8 л V8, автомат, 286 000 км; одной фары нет, понты в комплекте",
-      "cityId": "a376e68d-724a-4472-be7c-891bdb09ae32",
-      "legend": true,
-      "seller": {
-        "name": "Марина",
-        "avatar": "👩‍🦰",
-        "personality": "kind"
-      }
-    },
-    {
-      "id": 2065902,
-      "name": "Toyota Chaser Tourer V, 1997",
-      "price": 775000,
-      "img": "img/147.jpg",
-      "desc": "Игровая легенда: 2.5 л, автомат, 210 000 км, 1JZ-GTE; турбина жива, резина грустит",
-      "cityId": "a376e68d-724a-4472-be7c-891bdb09ae32",
-      "legend": true,
-      "seller": {
-        "name": "Игорь",
-        "avatar": "👨‍🦲",
-        "personality": "neutral"
-      }
-    },
-    {
-      "id": 2065903,
-      "name": "Toyota Supra RZ, 1996",
-      "price": 1325000,
-      "img": "img/148.jpg",
-      "desc": "Игровая легенда: 3.0 л, механика, 128 000 км, 2JZ-GTE; мечта из ночных гонок",
-      "cityId": "a376e68d-724a-4472-be7c-891bdb09ae32",
-      "legend": true,
-      "seller": {
-        "name": "Наталья",
-        "avatar": "👩‍💼",
-        "personality": "evil"
-      }
-    },
-    {
-      "id": 1783901,
-      "name": "Nissan Skyline GT-R V-Spec R34, 1999",
-      "price": 2950000,
-      "img": "img/149.jpg",
-      "desc": "Игровая легенда: 2.6 л, механика, 86 000 км, RB26, полный привод; гаражная легенда",
-      "cityId": "bb035cc3-1dc2-4627-9d25-a1bf2d4b936b",
-      "legend": true,
-      "seller": {
-        "name": "Виктор",
-        "avatar": "👨‍💼",
-        "personality": "kind"
-      }
-    },
-    {
-      "id": 1783902,
-      "name": "Mazda RX-7 FD, 1994",
-      "price": 1100000,
-      "img": "img/150.jpg",
-      "desc": "Игровая легенда: 1.3 л, механика, 112 000 км, роторный мотор; масло любит, внимание тоже",
-      "cityId": "bb035cc3-1dc2-4627-9d25-a1bf2d4b936b",
-      "legend": true,
-      "seller": {
-        "name": "Елена",
-        "avatar": "👩",
-        "personality": "neutral"
-      }
-    },
-    {
-      "id": 1783903,
-      "name": "Nissan Silvia Varietta S15, 2000",
-      "price": 950000,
-      "img": "img/151.jpg",
-      "desc": "Игровая легенда: 2.0 л, автомат, 154 000 км, редкий кабриолет; крыша работает, лето ждёт",
-      "cityId": "bb035cc3-1dc2-4627-9d25-a1bf2d4b936b",
-      "legend": true,
-      "seller": {
-        "name": "Артём",
-        "avatar": "🧔",
-        "personality": "evil"
-      }
-    },
-    {
-      "id": 1657901,
-      "name": "Mitsubishi Lancer Evolution VI, 1999",
-      "price": 1375000,
-      "img": "img/152.jpg",
-      "desc": "Игровая легенда: 2.0 л турбо, механика, 173 000 км, 4WD; раллийное прошлое под вопросом",
-      "cityId": "140e31da-27bf-4519-9ea0-6185d681d44e",
-      "legend": true,
-      "seller": {
-        "name": "Вера",
-        "avatar": "👵",
-        "personality": "kind"
-      }
-    },
-    {
-      "id": 1657902,
-      "name": "BMW M3 E30, 1990",
-      "price": 1725000,
-      "img": "img/153.jpg",
-      "desc": "Игровая легенда: 2.3 л, механика, 198 000 км, S14; расширенные арки и характер из девяностых",
-      "cityId": "140e31da-27bf-4519-9ea0-6185d681d44e",
-      "legend": true,
-      "seller": {
-        "name": "Алексей",
-        "avatar": "🧔",
-        "personality": "neutral"
-      }
-    },
-    {
-      "id": 1657903,
-      "name": "Porsche Cayenne GTS без фары, 2008",
-      "price": 825000,
-      "img": "img/156.png",
-      "desc": "Игровая легенда: 4.8 л V8, автомат, 286 000 км; одной фары нет, понты в комплекте",
-      "cityId": "140e31da-27bf-4519-9ea0-6185d681d44e",
-      "legend": true,
-      "seller": {
-        "name": "Анна",
-        "avatar": "👩",
-        "personality": "evil"
-      }
-    },
-    {
-      "id": 1758901,
-      "name": "Toyota Chaser Tourer V, 1997",
-      "price": 800000,
-      "img": "img/147.jpg",
-      "desc": "Игровая легенда: 2.5 л, автомат, 210 000 км, 1JZ-GTE; турбина жива, резина грустит",
-      "cityId": "c1cfe4b9-f7c2-423c-abfa-6ed1c05a15c5",
-      "legend": true,
-      "seller": {
-        "name": "Максим",
-        "avatar": "🧑‍🦱",
-        "personality": "kind"
-      }
-    },
-    {
-      "id": 1758902,
-      "name": "Toyota Supra RZ, 1996",
-      "price": 1350000,
-      "img": "img/148.jpg",
-      "desc": "Игровая легенда: 3.0 л, механика, 128 000 км, 2JZ-GTE; мечта из ночных гонок",
-      "cityId": "c1cfe4b9-f7c2-423c-abfa-6ed1c05a15c5",
-      "legend": true,
-      "seller": {
-        "name": "Кирилл",
-        "avatar": "👨",
-        "personality": "neutral"
-      }
-    },
-    {
-      "id": 1758903,
-      "name": "Nissan Skyline GT-R V-Spec R34, 1999",
-      "price": 3100000,
-      "img": "img/149.jpg",
-      "desc": "Игровая легенда: 2.6 л, механика, 86 000 км, RB26, полный привод; гаражная легенда",
-      "cityId": "c1cfe4b9-f7c2-423c-abfa-6ed1c05a15c5",
-      "legend": true,
-      "seller": {
-        "name": "Сергей",
-        "avatar": "👨‍🔧",
-        "personality": "evil"
-      }
-    },
     {
       "id": 1063901,
       "name": "Mazda RX-7 FD, 1994",
       "price": 1125000,
-      "img": "img/150.jpg",
-      "desc": "Игровая легенда: 1.3 л, механика, 112 000 км, роторный мотор; масло любит, внимание тоже",
+      "img": "img/fictional/1063901.jpg",
+      "desc": "1.3 л, механика, 350 000 км, ухоженный салон",
       "cityId": "7339e834-2cb4-4734-a4c7-1fca2c66e562",
       "legend": true,
       "seller": {
         "name": "Павел",
         "avatar": "👨‍🔧",
         "personality": "kind"
-      }
+      },
+      "full": "Цвет кузова — тёмно-синий. Недавно обновил тормоза и расходники, кондиционер обслужен. Город показа — Уфа. Договоримся о показе; приеду на чистой машине.",
+      "fictional": true
     },
     {
       "id": 1063902,
       "name": "Nissan Silvia Varietta S15, 2000",
       "price": 975000,
-      "img": "img/151.jpg",
-      "desc": "Игровая легенда: 2.0 л, автомат, 154 000 км, редкий кабриолет; крыша работает, лето ждёт",
+      "img": "img/fictional/1063902.jpg",
+      "desc": "2.0 л, автомат, 268 000 км, свежее обслуживание",
       "cityId": "7339e834-2cb4-4734-a4c7-1fca2c66e562",
       "legend": true,
       "seller": {
         "name": "Роман",
         "avatar": "👨‍💼",
         "personality": "neutral"
-      }
+      },
+      "full": "Цвет кузова — светло-серый. Провёл сезонное обслуживание, подготовил машину к дальней поездке. Город показа — Уфа. На осмотре расскажу о всех особенностях.",
+      "fictional": true
     },
     {
       "id": 1063903,
       "name": "Mitsubishi Lancer Evolution VI, 1999",
       "price": 1525000,
-      "img": "img/152.jpg",
-      "desc": "Игровая легенда: 2.0 л турбо, механика, 173 000 км, 4WD; раллийное прошлое под вопросом",
+      "img": "img/fictional/1063903.jpg",
+      "desc": "2.0 л турбо, механика, 4WD, 246 000 км, в заводском стиле",
       "cityId": "7339e834-2cb4-4734-a4c7-1fca2c66e562",
       "legend": true,
       "seller": {
         "name": "Ольга",
         "avatar": "👩‍💼",
         "personality": "evil"
-      }
-    },
-    {
-      "id": 1412901,
-      "name": "BMW M3 E30, 1990",
-      "price": 1750000,
-      "img": "img/153.jpg",
-      "desc": "Игровая легенда: 2.3 л, механика, 198 000 км, S14; расширенные арки и характер из девяностых",
-      "cityId": "9b968c73-f4d4-4012-8da8-3dacd4d4c1bd",
-      "legend": true,
-      "seller": {
-        "name": "Игорь",
-        "avatar": "👨‍🦲",
-        "personality": "kind"
-      }
-    },
-    {
-      "id": 1412902,
-      "name": "Porsche Cayenne GTS без фары, 2008",
-      "price": 850000,
-      "img": "img/156.png",
-      "desc": "Игровая легенда: 4.8 л V8, автомат, 286 000 км; одной фары нет, понты в комплекте",
-      "cityId": "9b968c73-f4d4-4012-8da8-3dacd4d4c1bd",
-      "legend": true,
-      "seller": {
-        "name": "Наталья",
-        "avatar": "👩‍💼",
-        "personality": "neutral"
-      }
-    },
-    {
-      "id": 1412903,
-      "name": "Toyota Chaser Tourer V, 1997",
-      "price": 950000,
-      "img": "img/147.jpg",
-      "desc": "Игровая легенда: 2.5 л, автомат, 210 000 км, 1JZ-GTE; турбина жива, резина грустит",
-      "cityId": "9b968c73-f4d4-4012-8da8-3dacd4d4c1bd",
-      "legend": true,
-      "seller": {
-        "name": "Дмитрий",
-        "avatar": "👨",
-        "personality": "evil"
-      }
-    },
-    {
-      "id": 1707901,
-      "name": "Toyota Supra RZ, 1996",
-      "price": 1375000,
-      "img": "img/148.jpg",
-      "desc": "Игровая легенда: 3.0 л, механика, 128 000 км, 2JZ-GTE; мечта из ночных гонок",
-      "cityId": "a309e4ce-2f36-4106-b1ca-53e0f48a6d95",
-      "legend": true,
-      "seller": {
-        "name": "Елена",
-        "avatar": "👩",
-        "personality": "kind"
-      }
-    },
-    {
-      "id": 1707902,
-      "name": "Nissan Skyline GT-R V-Spec R34, 1999",
-      "price": 3125000,
-      "img": "img/149.jpg",
-      "desc": "Игровая легенда: 2.6 л, механика, 86 000 км, RB26, полный привод; гаражная легенда",
-      "cityId": "a309e4ce-2f36-4106-b1ca-53e0f48a6d95",
-      "legend": true,
-      "seller": {
-        "name": "Артём",
-        "avatar": "🧔",
-        "personality": "neutral"
-      }
-    },
-    {
-      "id": 1707903,
-      "name": "Mazda RX-7 FD, 1994",
-      "price": 1275000,
-      "img": "img/150.jpg",
-      "desc": "Игровая легенда: 1.3 л, механика, 112 000 км, роторный мотор; масло любит, внимание тоже",
-      "cityId": "a309e4ce-2f36-4106-b1ca-53e0f48a6d95",
-      "legend": true,
-      "seller": {
-        "name": "Марина",
-        "avatar": "👩‍🦰",
-        "personality": "evil"
-      }
-    },
-    {
-      "id": 1160901,
-      "name": "Nissan Silvia Varietta S15, 2000",
-      "price": 1000000,
-      "img": "img/151.jpg",
-      "desc": "Игровая легенда: 2.0 л, автомат, 154 000 км, редкий кабриолет; крыша работает, лето ждёт",
-      "cityId": "5bf5ddff-6353-4a3d-80c4-6fb27f00c6c1",
-      "legend": true,
-      "seller": {
-        "name": "Алексей",
-        "avatar": "🧔",
-        "personality": "kind"
-      }
-    },
-    {
-      "id": 1160902,
-      "name": "Mitsubishi Lancer Evolution VI, 1999",
-      "price": 1550000,
-      "img": "img/152.jpg",
-      "desc": "Игровая легенда: 2.0 л турбо, механика, 173 000 км, 4WD; раллийное прошлое под вопросом",
-      "cityId": "5bf5ddff-6353-4a3d-80c4-6fb27f00c6c1",
-      "legend": true,
-      "seller": {
-        "name": "Анна",
-        "avatar": "👩",
-        "personality": "neutral"
-      }
-    },
-    {
-      "id": 1160903,
-      "name": "BMW M3 E30, 1990",
-      "price": 1900000,
-      "img": "img/153.jpg",
-      "desc": "Игровая легенда: 2.3 л, механика, 198 000 км, S14; расширенные арки и характер из девяностых",
-      "cityId": "5bf5ddff-6353-4a3d-80c4-6fb27f00c6c1",
-      "legend": true,
-      "seller": {
-        "name": "Виктор",
-        "avatar": "👨‍💼",
-        "personality": "evil"
-      }
+      },
+      "full": "Цвет кузова — светло-серый. Ухаживал за кузовом и интерьером, родные детали сохранены. Город показа — Уфа. Рассмотрю обмен и разумный торг возле машины.",
+      "fictional": true
     },
     {
       "id": 1122901,
       "name": "Porsche Cayenne GTS без фары, 2008",
       "price": 875000,
-      "img": "img/156.png",
-      "desc": "Игровая легенда: 4.8 л V8, автомат, 286 000 км; одной фары нет, понты в комплекте",
+      "img": "img/fictional/1122901.jpg",
+      "desc": "4.8 л V8, автомат, 138 000 км, нет правой фары",
       "cityId": "a52b7389-0cfe-46fb-ae15-298652a64cf8",
       "legend": true,
       "seller": {
         "name": "Кирилл",
         "avatar": "👨",
         "personality": "kind"
-      }
+      },
+      "full": "Цвет кузова — красный. Правая передняя фара отсутствует, крепления целы. Остальной кузов и салон ухожены. Город показа — Волгоград. Игровой проект под восстановление, торг на стоимость оптики.",
+      "fictional": true
     },
     {
       "id": 1122902,
       "name": "Toyota Chaser Tourer V, 1997",
       "price": 975000,
-      "img": "img/147.jpg",
-      "desc": "Игровая легенда: 2.5 л, автомат, 210 000 км, 1JZ-GTE; турбина жива, резина грустит",
+      "img": "img/fictional/1122902.jpg",
+      "desc": "2.5 л, автомат, 209 000 км, ухоженный салон",
       "cityId": "a52b7389-0cfe-46fb-ae15-298652a64cf8",
       "legend": true,
       "seller": {
         "name": "Сергей",
         "avatar": "👨‍🔧",
         "personality": "neutral"
-      }
+      },
+      "full": "Цвет кузова — серебристый. Ухаживал за кузовом и интерьером, родные детали сохранены. Город показа — Волгоград. Рассмотрю обмен и разумный торг возле машины.",
+      "fictional": true
     },
     {
       "id": 1122903,
       "name": "Toyota Supra RZ, 1996",
       "price": 1525000,
-      "img": "img/148.jpg",
-      "desc": "Игровая легенда: 3.0 л, механика, 128 000 км, 2JZ-GTE; мечта из ночных гонок",
+      "img": "img/fictional/1122903.jpg",
+      "desc": "3.0 л, механика, 341 000 км, в заводском стиле",
       "cityId": "a52b7389-0cfe-46fb-ae15-298652a64cf8",
       "legend": true,
       "seller": {
         "name": "Вера",
         "avatar": "👵",
         "personality": "evil"
-      }
+      },
+      "full": "Цвет кузова — графитовый. Аккуратные диски и небольшая губа в заводском стиле, без экстремального занижения. Город показа — Волгоград. Штатные детали отдам вместе с машиной.",
+      "fictional": true
+    },
+    {
+      "id": 1160901,
+      "name": "Nissan Silvia Varietta S15, 2000",
+      "price": 1000000,
+      "img": "img/fictional/1160901.jpg",
+      "desc": "2.0 л, автомат, 192 000 км, в заводском стиле",
+      "cityId": "5bf5ddff-6353-4a3d-80c4-6fb27f00c6c1",
+      "legend": true,
+      "seller": {
+        "name": "Алексей",
+        "avatar": "🧔",
+        "personality": "kind"
+      },
+      "full": "Цвет кузова — белый перламутр. Кузов ухоженный, подвеска проверена перед продажей. Город показа — Воронеж. Можно спокойно осмотреть на дневном свету и проверить в сервисе.",
+      "fictional": true
+    },
+    {
+      "id": 1160902,
+      "name": "Mitsubishi Lancer Evolution VI, 1999",
+      "price": 1550000,
+      "img": "img/fictional/1160902.jpg",
+      "desc": "2.0 л турбо, механика, 4WD, 268 000 км, свежее обслуживание",
+      "cityId": "5bf5ddff-6353-4a3d-80c4-6fb27f00c6c1",
+      "legend": true,
+      "seller": {
+        "name": "Анна",
+        "avatar": "👩",
+        "personality": "neutral"
+      },
+      "full": "Цвет кузова — тёмно-синий. Аккуратные диски и небольшая губа в заводском стиле, без экстремального занижения. Город показа — Воронеж. Штатные детали отдам вместе с машиной.",
+      "fictional": true
+    },
+    {
+      "id": 1160903,
+      "name": "BMW M3 E30, 1990",
+      "price": 1900000,
+      "img": "img/fictional/1160903.jpg",
+      "desc": "2.3 л, механика, 303 000 км, аккуратный кузов",
+      "cityId": "5bf5ddff-6353-4a3d-80c4-6fb27f00c6c1",
+      "legend": true,
+      "seller": {
+        "name": "Виктор",
+        "avatar": "👨‍💼",
+        "personality": "evil"
+      },
+      "full": "Цвет кузова — чёрный. Аккуратные диски и небольшая губа в заводском стиле, без экстремального занижения. Город показа — Воронеж. Штатные детали отдам вместе с машиной.",
+      "fictional": true
+    },
+    {
+      "id": 1224901,
+      "name": "Toyota Chaser Tourer V, 1997",
+      "price": 1000000,
+      "img": "img/fictional/1224901.jpg",
+      "desc": "2.5 л, автомат, 367 000 км, свежее обслуживание",
+      "cityId": "8eeed222-72e7-47c3-ab3a-9a553c31cf72",
+      "legend": true,
+      "seller": {
+        "name": "Артём",
+        "avatar": "🧔",
+        "personality": "kind"
+      },
+      "full": "Цвет кузова — белый перламутр. Салон чистый, оптика отполирована, колёса в аккуратном состоянии. Город показа — Иркутск. Продаю для следующего автомобильного проекта.",
+      "fictional": true
+    },
+    {
+      "id": 1224902,
+      "name": "Toyota Supra RZ, 1996",
+      "price": 1550000,
+      "img": "img/fictional/1224902.jpg",
+      "desc": "3.0 л, механика, 262 000 км, в заводском стиле",
+      "cityId": "8eeed222-72e7-47c3-ab3a-9a553c31cf72",
+      "legend": true,
+      "seller": {
+        "name": "Марина",
+        "avatar": "👩‍🦰",
+        "personality": "neutral"
+      },
+      "full": "Цвет кузова — графитовый. Салон чистый, оптика отполирована, колёса в аккуратном состоянии. Город показа — Иркутск. Продаю для следующего автомобильного проекта.",
+      "fictional": true
+    },
+    {
+      "id": 1224903,
+      "name": "Nissan Skyline GT-R V-Spec R34, 1999",
+      "price": 3300000,
+      "img": "img/fictional/1224903.jpg",
+      "desc": "2.6 л, механика, полный привод, 214 000 км, свежее обслуживание",
+      "cityId": "8eeed222-72e7-47c3-ab3a-9a553c31cf72",
+      "legend": true,
+      "seller": {
+        "name": "Игорь",
+        "avatar": "👨‍🦲",
+        "personality": "evil"
+      },
+      "full": "Цвет кузова — серебристый. Кузов ухоженный, подвеска проверена перед продажей. Город показа — Иркутск. Можно спокойно осмотреть на дневном свету и проверить в сервисе.",
+      "fictional": true
     },
     {
       "id": 1382901,
       "name": "Nissan Skyline GT-R V-Spec R34, 1999",
       "price": 3150000,
-      "img": "img/149.jpg",
-      "desc": "Игровая легенда: 2.6 л, механика, 86 000 км, RB26, полный привод; гаражная легенда",
+      "img": "img/fictional/1382901.jpg",
+      "desc": "2.6 л, механика, полный привод, 238 000 км, в заводском стиле",
       "cityId": "7dfa745e-aa19-4688-b121-b655c11e482f",
       "legend": true,
       "seller": {
         "name": "Роман",
         "avatar": "👨‍💼",
         "personality": "kind"
-      }
+      },
+      "full": "Цвет кузова — графитовый. Сохранил заводскую внешность, без лишних наклеек и громкого выхлопа. Город показа — Краснодар. В комплекте второй ключ и набор сезонных колёс.",
+      "fictional": true
     },
     {
       "id": 1382902,
       "name": "Mazda RX-7 FD, 1994",
       "price": 1300000,
-      "img": "img/150.jpg",
-      "desc": "Игровая легенда: 1.3 л, механика, 112 000 км, роторный мотор; масло любит, внимание тоже",
+      "img": "img/fictional/1382902.jpg",
+      "desc": "1.3 л, механика, 337 000 км, в заводском стиле",
       "cityId": "7dfa745e-aa19-4688-b121-b655c11e482f",
       "legend": true,
       "seller": {
         "name": "Ольга",
         "avatar": "👩‍💼",
         "personality": "neutral"
-      }
+      },
+      "full": "Цвет кузова — светло-серый. Салон чистый, оптика отполирована, колёса в аккуратном состоянии. Город показа — Краснодар. Продаю для следующего автомобильного проекта.",
+      "fictional": true
     },
     {
       "id": 1382903,
       "name": "Nissan Silvia Varietta S15, 2000",
       "price": 1150000,
-      "img": "img/151.jpg",
-      "desc": "Игровая легенда: 2.0 л, автомат, 154 000 км, редкий кабриолет; крыша работает, лето ждёт",
+      "img": "img/fictional/1382903.jpg",
+      "desc": "2.0 л, автомат, 270 000 км, свежее обслуживание",
       "cityId": "7dfa745e-aa19-4688-b121-b655c11e482f",
       "legend": true,
       "seller": {
         "name": "Максим",
         "avatar": "🧑‍🦱",
         "personality": "evil"
-      }
+      },
+      "full": "Цвет кузова — белый перламутр. Провёл сезонное обслуживание, подготовил машину к дальней поездке. Город показа — Краснодар. На осмотре расскажу о всех особенностях.",
+      "fictional": true
+    },
+    {
+      "id": 1412901,
+      "name": "BMW M3 E30, 1990",
+      "price": 1750000,
+      "img": "img/fictional/1412901.jpg",
+      "desc": "2.3 л, механика, 366 000 км, ухоженный салон",
+      "cityId": "9b968c73-f4d4-4012-8da8-3dacd4d4c1bd",
+      "legend": true,
+      "seller": {
+        "name": "Игорь",
+        "avatar": "👨‍🦲",
+        "personality": "kind"
+      },
+      "full": "Цвет кузова — белый перламутр. Кузов ухоженный, подвеска проверена перед продажей. Город показа — Красноярск. Можно спокойно осмотреть на дневном свету и проверить в сервисе.",
+      "fictional": true
+    },
+    {
+      "id": 1412902,
+      "name": "Porsche Cayenne GTS без фары, 2008",
+      "price": 850000,
+      "img": "img/fictional/1412902.jpg",
+      "desc": "4.8 л V8, автомат, 230 000 км, нет правой фары",
+      "cityId": "9b968c73-f4d4-4012-8da8-3dacd4d4c1bd",
+      "legend": true,
+      "seller": {
+        "name": "Наталья",
+        "avatar": "👩‍💼",
+        "personality": "neutral"
+      },
+      "full": "Цвет кузова — тёмно-синий. Правая передняя фара отсутствует, крепления целы. Остальной кузов и салон ухожены. Город показа — Красноярск. Игровой проект под восстановление, торг на стоимость оптики.",
+      "fictional": true
+    },
+    {
+      "id": 1412903,
+      "name": "Toyota Chaser Tourer V, 1997",
+      "price": 950000,
+      "img": "img/fictional/1412903.jpg",
+      "desc": "2.5 л, автомат, 274 000 км, свежее обслуживание",
+      "cityId": "9b968c73-f4d4-4012-8da8-3dacd4d4c1bd",
+      "legend": true,
+      "seller": {
+        "name": "Дмитрий",
+        "avatar": "👨",
+        "personality": "evil"
+      },
+      "full": "Цвет кузова — белый перламутр. Кузов ухоженный, подвеска проверена перед продажей. Город показа — Красноярск. Можно спокойно осмотреть на дневном свету и проверить в сервисе.",
+      "fictional": true
+    },
+    {
+      "id": 1620901,
+      "name": "Nissan Silvia Varietta S15, 2000",
+      "price": 800000,
+      "img": "img/fictional/1620901.jpg",
+      "desc": "2.0 л, автомат, 285 000 км, аккуратный кузов",
+      "cityId": "555e7d61-d9a7-4ba6-9770-6caa8198c483",
+      "legend": true,
+      "seller": {
+        "name": "Дмитрий",
+        "avatar": "👨",
+        "personality": "kind"
+      },
+      "full": "Цвет кузова — светло-серый. Провёл сезонное обслуживание, подготовил машину к дальней поездке. Город показа — Нижний Новгород. На осмотре расскажу о всех особенностях.",
+      "fictional": true
+    },
+    {
+      "id": 1620902,
+      "name": "Mitsubishi Lancer Evolution VI, 1999",
+      "price": 1350000,
+      "img": "img/fictional/1620902.jpg",
+      "desc": "2.0 л турбо, механика, 4WD, 296 000 км, ухоженный салон",
+      "cityId": "555e7d61-d9a7-4ba6-9770-6caa8198c483",
+      "legend": true,
+      "seller": {
+        "name": "Павел",
+        "avatar": "👨‍🔧",
+        "personality": "neutral"
+      },
+      "full": "Цвет кузова — графитовый. Салон чистый, оптика отполирована, колёса в аккуратном состоянии. Город показа — Нижний Новгород. Продаю для следующего автомобильного проекта.",
+      "fictional": true
+    },
+    {
+      "id": 1620903,
+      "name": "BMW M3 E30, 1990",
+      "price": 1700000,
+      "img": "img/fictional/1620903.jpg",
+      "desc": "2.3 л, механика, 259 000 км, ухоженный салон",
+      "cityId": "555e7d61-d9a7-4ba6-9770-6caa8198c483",
+      "legend": true,
+      "seller": {
+        "name": "Роман",
+        "avatar": "👨‍💼",
+        "personality": "evil"
+      },
+      "full": "Цвет кузова — серебристый. Провёл сезонное обслуживание, подготовил машину к дальней поездке. Город показа — Нижний Новгород. На осмотре расскажу о всех особенностях.",
+      "fictional": true
+    },
+    {
+      "id": 1648901,
+      "name": "Mazda RX-7 FD, 1994",
+      "price": 925000,
+      "img": "img/fictional/1648901.jpg",
+      "desc": "1.3 л, механика, 377 000 км, аккуратный кузов",
+      "cityId": "8dea00e3-9aab-4d8e-887c-ef2aaa546456",
+      "legend": true,
+      "seller": {
+        "name": "Анна",
+        "avatar": "👩",
+        "personality": "kind"
+      },
+      "full": "Цвет кузова — красный. Провёл сезонное обслуживание, подготовил машину к дальней поездке. Город показа — Новосибирск. На осмотре расскажу о всех особенностях.",
+      "fictional": true
+    },
+    {
+      "id": 1648902,
+      "name": "Nissan Silvia Varietta S15, 2000",
+      "price": 775000,
+      "img": "img/fictional/1648902.jpg",
+      "desc": "2.0 л, автомат, 241 000 км, аккуратный кузов",
+      "cityId": "8dea00e3-9aab-4d8e-887c-ef2aaa546456",
+      "legend": true,
+      "seller": {
+        "name": "Виктор",
+        "avatar": "👨‍💼",
+        "personality": "neutral"
+      },
+      "full": "Цвет кузова — чёрный. Обслуживал для себя: заменены жидкости, салон после химчистки. Город показа — Новосибирск. Показ вечером у гаража, небольшой торг при осмотре.",
+      "fictional": true
+    },
+    {
+      "id": 1648903,
+      "name": "Mitsubishi Lancer Evolution VI, 1999",
+      "price": 1325000,
+      "img": "img/fictional/1648903.jpg",
+      "desc": "2.0 л турбо, механика, 4WD, 322 000 км, свежее обслуживание",
+      "cityId": "8dea00e3-9aab-4d8e-887c-ef2aaa546456",
+      "legend": true,
+      "seller": {
+        "name": "Елена",
+        "avatar": "👩",
+        "personality": "evil"
+      },
+      "full": "Цвет кузова — графитовый. Недавно обновил тормоза и расходники, кондиционер обслужен. Город показа — Новосибирск. Договоримся о показе; приеду на чистой машине.",
+      "fictional": true
+    },
+    {
+      "id": 1657901,
+      "name": "Mitsubishi Lancer Evolution VI, 1999",
+      "price": 1375000,
+      "img": "img/fictional/1657901.jpg",
+      "desc": "2.0 л турбо, механика, 4WD, 199 000 км, свежее обслуживание",
+      "cityId": "140e31da-27bf-4519-9ea0-6185d681d44e",
+      "legend": true,
+      "seller": {
+        "name": "Вера",
+        "avatar": "👵",
+        "personality": "kind"
+      },
+      "full": "Цвет кузова — серебристый. Недавно обновил тормоза и расходники, кондиционер обслужен. Город показа — Омск. Договоримся о показе; приеду на чистой машине.",
+      "fictional": true
+    },
+    {
+      "id": 1657902,
+      "name": "BMW M3 E30, 1990",
+      "price": 1725000,
+      "img": "img/fictional/1657902.jpg",
+      "desc": "2.3 л, механика, 390 000 км, в заводском стиле",
+      "cityId": "140e31da-27bf-4519-9ea0-6185d681d44e",
+      "legend": true,
+      "seller": {
+        "name": "Алексей",
+        "avatar": "🧔",
+        "personality": "neutral"
+      },
+      "full": "Цвет кузова — графитовый. Кузов ухоженный, подвеска проверена перед продажей. Город показа — Омск. Можно спокойно осмотреть на дневном свету и проверить в сервисе.",
+      "fictional": true
+    },
+    {
+      "id": 1657903,
+      "name": "Porsche Cayenne GTS без фары, 2008",
+      "price": 825000,
+      "img": "img/fictional/1657903.jpg",
+      "desc": "4.8 л V8, автомат, 140 000 км, нет правой фары",
+      "cityId": "140e31da-27bf-4519-9ea0-6185d681d44e",
+      "legend": true,
+      "seller": {
+        "name": "Анна",
+        "avatar": "👩",
+        "personality": "evil"
+      },
+      "full": "Цвет кузова — тёмно-синий. Правая передняя фара отсутствует, крепления целы. Остальной кузов и салон ухожены. Город показа — Омск. Игровой проект под восстановление, торг на стоимость оптики.",
+      "fictional": true
+    },
+    {
+      "id": 1707901,
+      "name": "Toyota Supra RZ, 1996",
+      "price": 1375000,
+      "img": "img/fictional/1707901.jpg",
+      "desc": "3.0 л, механика, 316 000 км, ухоженный салон",
+      "cityId": "a309e4ce-2f36-4106-b1ca-53e0f48a6d95",
+      "legend": true,
+      "seller": {
+        "name": "Елена",
+        "avatar": "👩",
+        "personality": "kind"
+      },
+      "full": "Цвет кузова — чёрный. Ухаживал за кузовом и интерьером, родные детали сохранены. Город показа — Пермь. Рассмотрю обмен и разумный торг возле машины.",
+      "fictional": true
+    },
+    {
+      "id": 1707902,
+      "name": "Nissan Skyline GT-R V-Spec R34, 1999",
+      "price": 3125000,
+      "img": "img/fictional/1707902.jpg",
+      "desc": "2.6 л, механика, полный привод, 260 000 км, аккуратный кузов",
+      "cityId": "a309e4ce-2f36-4106-b1ca-53e0f48a6d95",
+      "legend": true,
+      "seller": {
+        "name": "Артём",
+        "avatar": "🧔",
+        "personality": "neutral"
+      },
+      "full": "Цвет кузова — серебристый. Аккуратные диски и небольшая губа в заводском стиле, без экстремального занижения. Город показа — Пермь. Штатные детали отдам вместе с машиной.",
+      "fictional": true
+    },
+    {
+      "id": 1707903,
+      "name": "Mazda RX-7 FD, 1994",
+      "price": 1275000,
+      "img": "img/fictional/1707903.jpg",
+      "desc": "1.3 л, механика, 225 000 км, ухоженный салон",
+      "cityId": "a309e4ce-2f36-4106-b1ca-53e0f48a6d95",
+      "legend": true,
+      "seller": {
+        "name": "Марина",
+        "avatar": "👩‍🦰",
+        "personality": "evil"
+      },
+      "full": "Цвет кузова — тёмно-синий. Обслуживал для себя: заменены жидкости, салон после химчистки. Город показа — Пермь. Показ вечером у гаража, небольшой торг при осмотре.",
+      "fictional": true
+    },
+    {
+      "id": 1718901,
+      "name": "BMW M3 E30, 1990",
+      "price": 1950000,
+      "img": "img/fictional/1718901.jpg",
+      "desc": "2.3 л, механика, 308 000 км, аккуратный кузов",
+      "cityId": "7b6de6a5-86d0-4735-b11a-499081111af8",
+      "legend": true,
+      "seller": {
+        "name": "Сергей",
+        "avatar": "👨‍🔧",
+        "personality": "kind"
+      },
+      "full": "Цвет кузова — белый перламутр. Обслуживал для себя: заменены жидкости, салон после химчистки. Город показа — Владивосток. Показ вечером у гаража, небольшой торг при осмотре.",
+      "fictional": true
+    },
+    {
+      "id": 1718902,
+      "name": "Porsche Cayenne GTS без фары, 2008",
+      "price": 1050000,
+      "img": "img/fictional/1718902.jpg",
+      "desc": "4.8 л V8, автомат, 141 000 км, нет правой фары",
+      "cityId": "7b6de6a5-86d0-4735-b11a-499081111af8",
+      "legend": true,
+      "seller": {
+        "name": "Вера",
+        "avatar": "👵",
+        "personality": "neutral"
+      },
+      "full": "Цвет кузова — светло-серый. Правая передняя фара отсутствует, крепления целы. Остальной кузов и салон ухожены. Город показа — Владивосток. Игровой проект под восстановление, торг на стоимость оптики.",
+      "fictional": true
+    },
+    {
+      "id": 1718903,
+      "name": "Toyota Chaser Tourer V, 1997",
+      "price": 1150000,
+      "img": "img/fictional/1718903.jpg",
+      "desc": "2.5 л, автомат, 277 000 км, свежее обслуживание",
+      "cityId": "7b6de6a5-86d0-4735-b11a-499081111af8",
+      "legend": true,
+      "seller": {
+        "name": "Алексей",
+        "avatar": "🧔",
+        "personality": "evil"
+      },
+      "full": "Цвет кузова — графитовый. Салон чистый, оптика отполирована, колёса в аккуратном состоянии. Город показа — Владивосток. Продаю для следующего автомобильного проекта.",
+      "fictional": true
+    },
+    {
+      "id": 1758901,
+      "name": "Toyota Chaser Tourer V, 1997",
+      "price": 800000,
+      "img": "img/fictional/1758901.jpg",
+      "desc": "2.5 л, автомат, 277 000 км, ухоженный салон",
+      "cityId": "c1cfe4b9-f7c2-423c-abfa-6ed1c05a15c5",
+      "legend": true,
+      "seller": {
+        "name": "Максим",
+        "avatar": "🧑‍🦱",
+        "personality": "kind"
+      },
+      "full": "Цвет кузова — белый перламутр. Недавно обновил тормоза и расходники, кондиционер обслужен. Город показа — Ростов-на-Дону. Договоримся о показе; приеду на чистой машине.",
+      "fictional": true
+    },
+    {
+      "id": 1758902,
+      "name": "Toyota Supra RZ, 1996",
+      "price": 1350000,
+      "img": "img/fictional/1758902.jpg",
+      "desc": "3.0 л, механика, 223 000 км, аккуратный кузов",
+      "cityId": "c1cfe4b9-f7c2-423c-abfa-6ed1c05a15c5",
+      "legend": true,
+      "seller": {
+        "name": "Кирилл",
+        "avatar": "👨",
+        "personality": "neutral"
+      },
+      "full": "Цвет кузова — графитовый. Кузов ухоженный, подвеска проверена перед продажей. Город показа — Ростов-на-Дону. Можно спокойно осмотреть на дневном свету и проверить в сервисе.",
+      "fictional": true
+    },
+    {
+      "id": 1758903,
+      "name": "Nissan Skyline GT-R V-Spec R34, 1999",
+      "price": 3100000,
+      "img": "img/fictional/1758903.jpg",
+      "desc": "2.6 л, механика, полный привод, 193 000 км, ухоженный салон",
+      "cityId": "c1cfe4b9-f7c2-423c-abfa-6ed1c05a15c5",
+      "legend": true,
+      "seller": {
+        "name": "Сергей",
+        "avatar": "👨‍🔧",
+        "personality": "evil"
+      },
+      "full": "Цвет кузова — графитовый. Ухаживал за кузовом и интерьером, родные детали сохранены. Город показа — Ростов-на-Дону. Рассмотрю обмен и разумный торг возле машины.",
+      "fictional": true
+    },
+    {
+      "id": 1783901,
+      "name": "Nissan Skyline GT-R V-Spec R34, 1999",
+      "price": 2950000,
+      "img": "img/fictional/1783901.jpg",
+      "desc": "2.6 л, механика, полный привод, 299 000 км, в заводском стиле",
+      "cityId": "bb035cc3-1dc2-4627-9d25-a1bf2d4b936b",
+      "legend": true,
+      "seller": {
+        "name": "Виктор",
+        "avatar": "👨‍💼",
+        "personality": "kind"
+      },
+      "full": "Цвет кузова — графитовый. Недавно обновил тормоза и расходники, кондиционер обслужен. Город показа — Самара. Договоримся о показе; приеду на чистой машине.",
+      "fictional": true
+    },
+    {
+      "id": 1783902,
+      "name": "Mazda RX-7 FD, 1994",
+      "price": 1100000,
+      "img": "img/fictional/1783902.jpg",
+      "desc": "1.3 л, механика, 259 000 км, в заводском стиле",
+      "cityId": "bb035cc3-1dc2-4627-9d25-a1bf2d4b936b",
+      "legend": true,
+      "seller": {
+        "name": "Елена",
+        "avatar": "👩",
+        "personality": "neutral"
+      },
+      "full": "Цвет кузова — чёрный. Провёл сезонное обслуживание, подготовил машину к дальней поездке. Город показа — Самара. На осмотре расскажу о всех особенностях.",
+      "fictional": true
+    },
+    {
+      "id": 1783903,
+      "name": "Nissan Silvia Varietta S15, 2000",
+      "price": 950000,
+      "img": "img/fictional/1783903.jpg",
+      "desc": "2.0 л, автомат, 225 000 км, ухоженный салон",
+      "cityId": "bb035cc3-1dc2-4627-9d25-a1bf2d4b936b",
+      "legend": true,
+      "seller": {
+        "name": "Артём",
+        "avatar": "🧔",
+        "personality": "evil"
+      },
+      "full": "Цвет кузова — серебристый. Салон чистый, оптика отполирована, колёса в аккуратном состоянии. Город показа — Самара. Продаю для следующего автомобильного проекта.",
+      "fictional": true
+    },
+    {
+      "id": 1787901,
+      "name": "Toyota Chaser Tourer V, 1997",
+      "price": 600000,
+      "img": "img/fictional/1787901.jpg",
+      "desc": "2.5 л, автомат, 233 000 км, свежее обслуживание",
+      "cityId": "c2deb16a-0330-4f05-821f-1d09c93331e6",
+      "legend": true,
+      "seller": {
+        "name": "Артём",
+        "avatar": "🧔",
+        "personality": "kind"
+      },
+      "full": "Цвет кузова — графитовый. Провёл сезонное обслуживание, подготовил машину к дальней поездке. Город показа — Санкт-Петербург. На осмотре расскажу о всех особенностях.",
+      "fictional": true
+    },
+    {
+      "id": 1787902,
+      "name": "Toyota Supra RZ, 1996",
+      "price": 1150000,
+      "img": "img/fictional/1787902.jpg",
+      "desc": "3.0 л, механика, 279 000 км, в заводском стиле",
+      "cityId": "c2deb16a-0330-4f05-821f-1d09c93331e6",
+      "legend": true,
+      "seller": {
+        "name": "Марина",
+        "avatar": "👩‍🦰",
+        "personality": "neutral"
+      },
+      "full": "Цвет кузова — серебристый. Ухаживал за кузовом и интерьером, родные детали сохранены. Город показа — Санкт-Петербург. Рассмотрю обмен и разумный торг возле машины.",
+      "fictional": true
+    },
+    {
+      "id": 1787903,
+      "name": "Nissan Skyline GT-R V-Spec R34, 1999",
+      "price": 2900000,
+      "img": "img/fictional/1787903.jpg",
+      "desc": "2.6 л, механика, полный привод, 254 000 км, свежее обслуживание",
+      "cityId": "c2deb16a-0330-4f05-821f-1d09c93331e6",
+      "legend": true,
+      "seller": {
+        "name": "Игорь",
+        "avatar": "👨‍🦲",
+        "personality": "evil"
+      },
+      "full": "Цвет кузова — красный. Салон чистый, оптика отполирована, колёса в аккуратном состоянии. Город показа — Санкт-Петербург. Продаю для следующего автомобильного проекта.",
+      "fictional": true
+    },
+    {
+      "id": 1833901,
+      "name": "BMW M3 E30, 1990",
+      "price": 1550000,
+      "img": "img/fictional/1833901.jpg",
+      "desc": "2.3 л, механика, 351 000 км, аккуратный кузов",
+      "cityId": "2763c110-cb8b-416a-9dac-ad28a55b4402",
+      "legend": true,
+      "seller": {
+        "name": "Сергей",
+        "avatar": "👨‍🔧",
+        "personality": "kind"
+      },
+      "full": "Цвет кузова — светло-серый. Провёл сезонное обслуживание, подготовил машину к дальней поездке. Город показа — Екатеринбург. На осмотре расскажу о всех особенностях.",
+      "fictional": true
+    },
+    {
+      "id": 1833902,
+      "name": "Porsche Cayenne GTS без фары, 2008",
+      "price": 650000,
+      "img": "img/fictional/1833902.jpg",
+      "desc": "4.8 л V8, автомат, 185 000 км, нет правой фары",
+      "cityId": "2763c110-cb8b-416a-9dac-ad28a55b4402",
+      "legend": true,
+      "seller": {
+        "name": "Вера",
+        "avatar": "👵",
+        "personality": "neutral"
+      },
+      "full": "Цвет кузова — зелёный. Правая передняя фара отсутствует, крепления целы. Остальной кузов и салон ухожены. Город показа — Екатеринбург. Игровой проект под восстановление, торг на стоимость оптики.",
+      "fictional": true
+    },
+    {
+      "id": 1833903,
+      "name": "Toyota Chaser Tourer V, 1997",
+      "price": 750000,
+      "img": "img/fictional/1833903.jpg",
+      "desc": "2.5 л, автомат, 339 000 км, свежее обслуживание",
+      "cityId": "2763c110-cb8b-416a-9dac-ad28a55b4402",
+      "legend": true,
+      "seller": {
+        "name": "Алексей",
+        "avatar": "🧔",
+        "personality": "evil"
+      },
+      "full": "Цвет кузова — серебристый. Аккуратные диски и небольшая губа в заводском стиле, без экстремального занижения. Город показа — Екатеринбург. Штатные детали отдам вместе с машиной.",
+      "fictional": true
+    },
+    {
+      "id": 1928901,
+      "name": "Toyota Supra RZ, 1996",
+      "price": 1175000,
+      "img": "img/fictional/1928901.jpg",
+      "desc": "3.0 л, механика, 210 000 км, в заводском стиле",
+      "cityId": "93b3df57-4c89-44df-ac42-96f05e9cd3b9",
+      "legend": true,
+      "seller": {
+        "name": "Ольга",
+        "avatar": "👩‍💼",
+        "personality": "kind"
+      },
+      "full": "Цвет кузова — чёрный. Салон чистый, оптика отполирована, колёса в аккуратном состоянии. Город показа — Казань. Продаю для следующего автомобильного проекта.",
+      "fictional": true
+    },
+    {
+      "id": 1928902,
+      "name": "Nissan Skyline GT-R V-Spec R34, 1999",
+      "price": 2925000,
+      "img": "img/fictional/1928902.jpg",
+      "desc": "2.6 л, механика, полный привод, 324 000 км, в заводском стиле",
+      "cityId": "93b3df57-4c89-44df-ac42-96f05e9cd3b9",
+      "legend": true,
+      "seller": {
+        "name": "Максим",
+        "avatar": "🧑‍🦱",
+        "personality": "neutral"
+      },
+      "full": "Цвет кузова — зелёный. Кузов ухоженный, подвеска проверена перед продажей. Город показа — Казань. Можно спокойно осмотреть на дневном свету и проверить в сервисе.",
+      "fictional": true
+    },
+    {
+      "id": 1928903,
+      "name": "Mazda RX-7 FD, 1994",
+      "price": 1075000,
+      "img": "img/fictional/1928903.jpg",
+      "desc": "1.3 л, механика, 312 000 км, свежее обслуживание",
+      "cityId": "93b3df57-4c89-44df-ac42-96f05e9cd3b9",
+      "legend": true,
+      "seller": {
+        "name": "Кирилл",
+        "avatar": "👨",
+        "personality": "evil"
+      },
+      "full": "Цвет кузова — зелёный. Провёл сезонное обслуживание, подготовил машину к дальней поездке. Город показа — Казань. На осмотре расскажу о всех особенностях.",
+      "fictional": true
     },
     {
       "id": 1996901,
       "name": "Mitsubishi Lancer Evolution VI, 1999",
       "price": 1575000,
-      "img": "img/152.jpg",
-      "desc": "Игровая легенда: 2.0 л турбо, механика, 173 000 км, 4WD; раллийное прошлое под вопросом",
+      "img": "img/fictional/1996901.jpg",
+      "desc": "2.0 л турбо, механика, 4WD, 274 000 км, свежее обслуживание",
       "cityId": "9ae64229-9f7b-4149-b27a-d1f6ec74b5ce",
       "legend": true,
       "seller": {
         "name": "Наталья",
         "avatar": "👩‍💼",
         "personality": "kind"
-      }
+      },
+      "full": "Цвет кузова — белый перламутр. Аккуратные диски и небольшая губа в заводском стиле, без экстремального занижения. Город показа — Тюмень. Штатные детали отдам вместе с машиной.",
+      "fictional": true
     },
     {
       "id": 1996902,
       "name": "BMW M3 E30, 1990",
       "price": 1925000,
-      "img": "img/153.jpg",
-      "desc": "Игровая легенда: 2.3 л, механика, 198 000 км, S14; расширенные арки и характер из девяностых",
+      "img": "img/fictional/1996902.jpg",
+      "desc": "2.3 л, механика, 389 000 км, аккуратный кузов",
       "cityId": "9ae64229-9f7b-4149-b27a-d1f6ec74b5ce",
       "legend": true,
       "seller": {
         "name": "Дмитрий",
         "avatar": "👨",
         "personality": "neutral"
-      }
+      },
+      "full": "Цвет кузова — белый перламутр. Сохранил заводскую внешность, без лишних наклеек и громкого выхлопа. Город показа — Тюмень. В комплекте второй ключ и набор сезонных колёс.",
+      "fictional": true
     },
     {
       "id": 1996903,
       "name": "Porsche Cayenne GTS без фары, 2008",
       "price": 1025000,
-      "img": "img/156.png",
-      "desc": "Игровая легенда: 4.8 л V8, автомат, 286 000 км; одной фары нет, понты в комплекте",
+      "img": "img/fictional/1996903.jpg",
+      "desc": "4.8 л V8, автомат, 204 000 км, нет правой фары",
       "cityId": "9ae64229-9f7b-4149-b27a-d1f6ec74b5ce",
       "legend": true,
       "seller": {
         "name": "Павел",
         "avatar": "👨‍🔧",
         "personality": "evil"
-      }
-    },
-    {
-      "id": 1224901,
-      "name": "Toyota Chaser Tourer V, 1997",
-      "price": 1000000,
-      "img": "img/147.jpg",
-      "desc": "Игровая легенда: 2.5 л, автомат, 210 000 км, 1JZ-GTE; турбина жива, резина грустит",
-      "cityId": "8eeed222-72e7-47c3-ab3a-9a553c31cf72",
-      "legend": true,
-      "seller": {
-        "name": "Артём",
-        "avatar": "🧔",
-        "personality": "kind"
-      }
-    },
-    {
-      "id": 1224902,
-      "name": "Toyota Supra RZ, 1996",
-      "price": 1550000,
-      "img": "img/148.jpg",
-      "desc": "Игровая легенда: 3.0 л, механика, 128 000 км, 2JZ-GTE; мечта из ночных гонок",
-      "cityId": "8eeed222-72e7-47c3-ab3a-9a553c31cf72",
-      "legend": true,
-      "seller": {
-        "name": "Марина",
-        "avatar": "👩‍🦰",
-        "personality": "neutral"
-      }
-    },
-    {
-      "id": 1224903,
-      "name": "Nissan Skyline GT-R V-Spec R34, 1999",
-      "price": 3300000,
-      "img": "img/149.jpg",
-      "desc": "Игровая легенда: 2.6 л, механика, 86 000 км, RB26, полный привод; гаражная легенда",
-      "cityId": "8eeed222-72e7-47c3-ab3a-9a553c31cf72",
-      "legend": true,
-      "seller": {
-        "name": "Игорь",
-        "avatar": "👨‍🦲",
-        "personality": "evil"
-      }
+      },
+      "full": "Цвет кузова — тёмно-синий. Правая передняя фара отсутствует, крепления целы. Остальной кузов и салон ухожены. Город показа — Тюмень. Игровой проект под восстановление, торг на стоимость оптики.",
+      "fictional": true
     },
     {
       "id": 2016901,
       "name": "Mazda RX-7 FD, 1994",
       "price": 1325000,
-      "img": "img/150.jpg",
-      "desc": "Игровая легенда: 1.3 л, механика, 112 000 км, роторный мотор; масло любит, внимание тоже",
+      "img": "img/fictional/2016901.jpg",
+      "desc": "1.3 л, механика, 247 000 км, аккуратный кузов",
       "cityId": "a4859da8-9977-4b62-8436-4e1b98c5d13f",
       "legend": true,
       "seller": {
         "name": "Анна",
         "avatar": "👩",
         "personality": "kind"
-      }
+      },
+      "full": "Цвет кузова — красный. Салон чистый, оптика отполирована, колёса в аккуратном состоянии. Город показа — Хабаровск. Продаю для следующего автомобильного проекта.",
+      "fictional": true
     },
     {
       "id": 2016902,
       "name": "Nissan Silvia Varietta S15, 2000",
       "price": 1175000,
-      "img": "img/151.jpg",
-      "desc": "Игровая легенда: 2.0 л, автомат, 154 000 км, редкий кабриолет; крыша работает, лето ждёт",
+      "img": "img/fictional/2016902.jpg",
+      "desc": "2.0 л, автомат, 222 000 км, ухоженный салон",
       "cityId": "a4859da8-9977-4b62-8436-4e1b98c5d13f",
       "legend": true,
       "seller": {
         "name": "Виктор",
         "avatar": "👨‍💼",
         "personality": "neutral"
-      }
+      },
+      "full": "Цвет кузова — серебристый. Недавно обновил тормоза и расходники, кондиционер обслужен. Город показа — Хабаровск. Договоримся о показе; приеду на чистой машине.",
+      "fictional": true
     },
     {
       "id": 2016903,
       "name": "Mitsubishi Lancer Evolution VI, 1999",
       "price": 1725000,
-      "img": "img/152.jpg",
-      "desc": "Игровая легенда: 2.0 л турбо, механика, 173 000 км, 4WD; раллийное прошлое под вопросом",
+      "img": "img/fictional/2016903.jpg",
+      "desc": "2.0 л турбо, механика, 4WD, 209 000 км, ухоженный салон",
       "cityId": "a4859da8-9977-4b62-8436-4e1b98c5d13f",
       "legend": true,
       "seller": {
         "name": "Елена",
         "avatar": "👩",
         "personality": "evil"
-      }
+      },
+      "full": "Цвет кузова — красный. Салон чистый, оптика отполирована, колёса в аккуратном состоянии. Город показа — Хабаровск. Продаю для следующего автомобильного проекта.",
+      "fictional": true
     },
     {
-      "id": 1718901,
-      "name": "BMW M3 E30, 1990",
-      "price": 1950000,
-      "img": "img/153.jpg",
-      "desc": "Игровая легенда: 2.3 л, механика, 198 000 км, S14; расширенные арки и характер из девяностых",
-      "cityId": "7b6de6a5-86d0-4735-b11a-499081111af8",
-      "legend": true,
-      "seller": {
-        "name": "Сергей",
-        "avatar": "👨‍🔧",
-        "personality": "kind"
-      }
-    },
-    {
-      "id": 1718902,
+      "id": 2065901,
       "name": "Porsche Cayenne GTS без фары, 2008",
-      "price": 1050000,
-      "img": "img/156.png",
-      "desc": "Игровая легенда: 4.8 л V8, автомат, 286 000 км; одной фары нет, понты в комплекте",
-      "cityId": "7b6de6a5-86d0-4735-b11a-499081111af8",
+      "price": 675000,
+      "img": "img/fictional/2065901.jpg",
+      "desc": "4.8 л V8, автомат, 160 000 км, нет правой фары",
+      "cityId": "a376e68d-724a-4472-be7c-891bdb09ae32",
       "legend": true,
       "seller": {
-        "name": "Вера",
-        "avatar": "👵",
-        "personality": "neutral"
-      }
+        "name": "Марина",
+        "avatar": "👩‍🦰",
+        "personality": "kind"
+      },
+      "full": "Цвет кузова — белый перламутр. Правая передняя фара отсутствует, крепления целы. Остальной кузов и салон ухожены. Город показа — Челябинск. Игровой проект под восстановление, торг на стоимость оптики.",
+      "fictional": true
     },
     {
-      "id": 1718903,
+      "id": 2065902,
       "name": "Toyota Chaser Tourer V, 1997",
-      "price": 1150000,
-      "img": "img/147.jpg",
-      "desc": "Игровая легенда: 2.5 л, автомат, 210 000 км, 1JZ-GTE; турбина жива, резина грустит",
-      "cityId": "7b6de6a5-86d0-4735-b11a-499081111af8",
+      "price": 775000,
+      "img": "img/fictional/2065902.jpg",
+      "desc": "2.5 л, автомат, 284 000 км, аккуратный кузов",
+      "cityId": "a376e68d-724a-4472-be7c-891bdb09ae32",
       "legend": true,
       "seller": {
-        "name": "Алексей",
-        "avatar": "🧔",
+        "name": "Игорь",
+        "avatar": "👨‍🦲",
+        "personality": "neutral"
+      },
+      "full": "Цвет кузова — белый перламутр. Провёл сезонное обслуживание, подготовил машину к дальней поездке. Город показа — Челябинск. На осмотре расскажу о всех особенностях.",
+      "fictional": true
+    },
+    {
+      "id": 2065903,
+      "name": "Toyota Supra RZ, 1996",
+      "price": 1325000,
+      "img": "img/fictional/2065903.jpg",
+      "desc": "3.0 л, механика, 321 000 км, аккуратный кузов",
+      "cityId": "a376e68d-724a-4472-be7c-891bdb09ae32",
+      "legend": true,
+      "seller": {
+        "name": "Наталья",
+        "avatar": "👩‍💼",
         "personality": "evil"
-      }
+      },
+      "full": "Цвет кузова — графитовый. Салон чистый, оптика отполирована, колёса в аккуратном состоянии. Город показа — Челябинск. Продаю для следующего автомобильного проекта.",
+      "fictional": true
     },
     {
       "id": 2098901,
       "name": "Toyota Supra RZ, 1996",
       "price": 1575000,
-      "img": "img/148.jpg",
-      "desc": "Игровая легенда: 3.0 л, механика, 128 000 км, 2JZ-GTE; мечта из ночных гонок",
+      "img": "img/fictional/2098901.jpg",
+      "desc": "3.0 л, механика, 348 000 км, свежее обслуживание",
       "cityId": "884c84a2-0141-4652-962d-8a92989b88f7",
       "legend": true,
       "seller": {
         "name": "Ольга",
         "avatar": "👩‍💼",
         "personality": "kind"
-      }
+      },
+      "full": "Цвет кузова — светло-серый. Провёл сезонное обслуживание, подготовил машину к дальней поездке. Город показа — Якутск. На осмотре расскажу о всех особенностях.",
+      "fictional": true
     },
     {
       "id": 2098902,
       "name": "Nissan Skyline GT-R V-Spec R34, 1999",
       "price": 3325000,
-      "img": "img/149.jpg",
-      "desc": "Игровая легенда: 2.6 л, механика, 86 000 км, RB26, полный привод; гаражная легенда",
+      "img": "img/fictional/2098902.jpg",
+      "desc": "2.6 л, механика, полный привод, 272 000 км, ухоженный салон",
       "cityId": "884c84a2-0141-4652-962d-8a92989b88f7",
       "legend": true,
       "seller": {
         "name": "Максим",
         "avatar": "🧑‍🦱",
         "personality": "neutral"
-      }
+      },
+      "full": "Цвет кузова — светло-серый. Недавно обновил тормоза и расходники, кондиционер обслужен. Город показа — Якутск. Договоримся о показе; приеду на чистой машине.",
+      "fictional": true
     },
     {
       "id": 2098903,
       "name": "Mazda RX-7 FD, 1994",
       "price": 1475000,
-      "img": "img/150.jpg",
-      "desc": "Игровая легенда: 1.3 л, механика, 112 000 км, роторный мотор; масло любит, внимание тоже",
+      "img": "img/fictional/2098903.jpg",
+      "desc": "1.3 л, механика, 337 000 км, свежее обслуживание",
       "cityId": "884c84a2-0141-4652-962d-8a92989b88f7",
       "legend": true,
       "seller": {
         "name": "Кирилл",
         "avatar": "👨",
         "personality": "evil"
-      }
+      },
+      "full": "Цвет кузова — белый перламутр. Кузов ухоженный, подвеска проверена перед продажей. Город показа — Якутск. Можно спокойно осмотреть на дневном свету и проверить в сервисе.",
+      "fictional": true
     }
   ]
 }

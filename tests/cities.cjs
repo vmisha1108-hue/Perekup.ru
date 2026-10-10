@@ -14,6 +14,16 @@ assert.equal(data.CITIES.length, 25);
 assert.equal(Object.keys(data.CITY_BY_LABEL).length, 25);
 assert.equal(data.CARS.length, 837);
 assert.equal(data.CUSTOM_CARS.length, 69);
+assert.ok(data.CARS.every(car => car.fictional && typeof car.full === 'string' && car.full.length > 0));
+const generatedPhotos = JSON.parse(fs.readFileSync(path.join(root, 'data/fictional-photo-sources.json'))).photos;
+assert.equal(generatedPhotos.length, 768);
+assert.equal(new Set(generatedPhotos.map(photo => photo.id)).size, 768);
+assert.equal(new Set(generatedPhotos.map(photo => photo.img)).size, 768);
+for(const photo of generatedPhotos){
+    const car = data.CARS.find(car => car.id === photo.id);
+    assert.ok(car && car.img === photo.img, 'New illustration matches its car ID');
+    assert.ok(photo.size[0] >= 300 && photo.size[1] >= 300);
+}
 assert.equal(new Set(data.CARS.map(car => car.id)).size, data.CARS.length);
 const targets = JSON.parse(fs.readFileSync(path.join(root, 'data/catalog-cities.json')));
 const sources = JSON.parse(fs.readFileSync(path.join(root, 'data/regional-sources.json'))).cars;
@@ -24,10 +34,16 @@ for(const city of targets){
     assert.equal(real.length, 30, city.name);
     assert.ok(new Set(real.map(car => car.brand)).size >= 8, city.name + ' brand variety');
     assert.ok(real.every(car => car.city === city.name && car.price >= 10000 && car.price <= 10000000));
+    for(const previous of real){
+        const current = data.CARS.find(car => car.id === previous.id);
+        assert.equal(current.name, previous.name);
+        assert.equal(current.price, previous.price);
+        assert.equal(current.cityId, previous.cityId);
+    }
     assert.equal(data.REGIONAL_CARS.filter(car => car.cityId === city.id && car.legend).length, 3);
 }
-for(const car of [...data.REGIONAL_CARS, ...data.CUSTOM_CARS]){
-    assert.ok(data.CITY_BY_ID[car.cityId]);
+for(const car of data.CARS){
+    if(car.cityId) assert.ok(data.CITY_BY_ID[car.cityId]);
     assert.ok(car.desc.length <= 120);
     assert.ok(Number.isSafeInteger(car.price) && car.price > 0);
     assert.ok(fs.existsSync(path.join(root, car.img)), car.img);
@@ -57,7 +73,7 @@ assert.ok(data.distanceBetweenCities(magdagachi, aldan) > 500 && data.distanceBe
 assert.equal(data.locationMatches({cityId:aldan.id}, magdagachi.id, '500'), false);
 assert.equal(data.locationMatches({cityId:aldan.id}, magdagachi.id, '1000'), true);
 assert.equal(data.locationMatches({}, moscow.id, 'all'), false);
-console.log('PASS catalogue: 837 cars, 69 additions, 25 populated places, no empty cities and known distances');
+console.log('PASS fictional catalogue: 837 cars, 768 replacement illustrations, preserved regional models/prices, 25 populated places');
 
 const types = {'.html':'text/html', '.js':'text/javascript', '.css':'text/css', '.jpg':'image/jpeg', '.png':'image/png'};
 const server = http.createServer((req, res) => {
@@ -149,7 +165,7 @@ const server = http.createServer((req, res) => {
         assert.ok(await page.locator('#fRadius').isDisabled());
         const city = targets.find(c => c.name === 'Новосибирск');
         const car = data.REGIONAL_CARS.find(c => c.cityId === city.id && !c.legend && c.price <= 100000);
-        assert.ok(car, 'An affordable real car in Novosibirsk');
+        assert.ok(car, 'An affordable fictional car in Novosibirsk');
         await page.locator('#fCity').fill(city.name);
         await page.locator('#content [data-buy="' + car.id + '"]').click();
         assert.equal(await page.evaluate(() => chat && chat.car.id), car.id);
