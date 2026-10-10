@@ -925,6 +925,8 @@ function openCarInfo(id){
     var p = PERSONALITY[s.personality];
     var owned = garage.indexOf(id) !== -1;
     var inGarage = (view === "garage");
+    var infoPrice = owned ? (listings[id] ? listings[id].price : car.marketPrice || car.price) : car.price;
+    var assessment = priceAssessment(car, infoPrice);
 
     var specs = String(car.desc || "").split(",").map(function(x){ return x.trim(); }).filter(Boolean);
     var specHtml = specs.length
@@ -949,8 +951,8 @@ function openCarInfo(id){
     $("carModalBody").innerHTML =
         '<div class="car-title">' + esc(car.name) + '</div>' +
         '<div class="car-location">' + esc(carLocationText(car, filters.city)) + (car.fictional ? ' · Игровое объявление' : '') + '</div>' +
-        '<div class="car-price">' + money(car.price) + '</div>' +
-        '<div class="price-assessment"><span class="price-badge ' + priceAssessment(car).tone + '">' + priceAssessment(car).label + '</span>' +
+        '<div class="car-price">' + money(infoPrice) + '</div>' +
+        '<div class="price-assessment"><span class="price-badge ' + assessment.tone + '">' + assessment.label + '</span>' +
         '<span>Оценка рынка: ' + money(car.marketPrice || car.price) + '</span></div>' +
         specHtml + fullHtml + who +
         '<div class="car-actions">' + action + '</div>';

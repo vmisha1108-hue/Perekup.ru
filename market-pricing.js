@@ -44,8 +44,8 @@ function initMarketSession(){
     });
     localStorage.setItem('sellerSessionMoods', JSON.stringify(current));
 }
-function priceAssessment(car){
-    var ratio = car.price / (car.marketPrice || car.price);
+function priceAssessment(car, askingPrice){
+    var ratio = (askingPrice == null ? car.price : askingPrice) / (car.marketPrice || car.price);
     return ratio < 0.95 ? {label:'Ниже рынка', tone:'below'}
         : ratio > 1.07 ? {label:'Выше рынка', tone:'above'} : {label:'Хорошая цена', tone:'fair'};
 }

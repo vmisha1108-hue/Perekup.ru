@@ -138,6 +138,9 @@ const server = http.createServer(async (request, response) => {
             await page.reload({ waitUntil: 'networkidle' });
             assert.equal(await page.evaluate(() => listings[1].price), 210000);
             assert.equal(await page.evaluate(() => listings[1].purchasePrice), 95000);
+            await page.evaluate(() => openCarInfo(1));
+            assert.ok((await page.locator('#carModalBody .car-price').textContent()).includes('210'));
+            assert.equal(await page.locator('#carModalBody .price-badge').textContent(), 'Выше рынка');
         });
         await scenario('different buyers offer more, less, or asking price', async page => {
             await advertise(page, 210000);
