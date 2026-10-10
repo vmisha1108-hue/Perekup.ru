@@ -53,7 +53,7 @@ function dialogueTone(lines){
 }
 function dialogueCar(){ return chat.trade ? carById(chat.trade.carId) : chat.car; }
 function dialogueFacts(topic){
-    var car = dialogueCar(), desc = String(car.desc || ''), full = String(car.full || '');
+    var car = dialogueCar(), desc = vehicleDesc(car), full = String(car.full || '');
     if(topic === 'mileage'){
         var mileage = /(\d[\d\s]*)\s*км/i.exec(desc);
         return mileage ? 'В объявлении указан пробег ' + mileage[1].trim() + ' км. По состоянию лучше судить на осмотре, одним пробегом тут не обойтись.' : 'Точный пробег сейчас не назову. Сверим одометр и состояние машины при осмотре.';
@@ -81,7 +81,7 @@ function humanSmallTalk(intent){
         if(facts) return dialogueTone({kind:['Конечно, расскажу. ' + facts, facts + ' Если есть конкретный вопрос, спрашивайте.'],neutral:[facts, 'По этому поводу: ' + facts],evil:['Коротко: ' + facts, facts + ' Остальное при осмотре.']});
         if(intent.topic === 'trade') return chat.trade ? dialoguePick([tradeTerms(chat.trade, chat.price == null ? chat.bid : chat.price) + '. Обе машины посмотрим до обмена.','Предлагаю ' + dialogueCar().name + '. ' + tradeTerms(chat.trade, chat.price == null ? chat.bid : chat.price)]) : dialoguePick(['В этой сделке обсуждаем деньги. По обмену пока подходящего варианта нет.','Пока без обмена. Если появится подходящее предложение, его можно будет обсудить отдельно.']);
         if(intent.topic === 'meeting'){
-            var city = carCity(chat.car);
+            var city = meetingCity(chat.mode,chat.car.id);
             return dialoguePick([(city ? 'Машина находится в городе ' + city.name + '. ' : '') + 'Сначала договоримся по цене, потом выберем время встречи. На месте спокойно осмотрите машину.','Осмотр устроим. Если ' + price + ' вас устраивает, согласуем встречу; если нет — предложите свою цену.']);
         }
         if(intent.topic === 'reason') return chat.mode === 'buy' ? dialoguePick(['Хочу сменить машину, поэтому и выставил. Спешки нет, но с реальным покупателем готов договориться.','Присматриваю другой вариант. Эту хочу передать человеку, который понимает, что покупает.']) : dialoguePick(['Ищу машину для себя. Хочется понимать, во что потом придётся вкладываться.','Подбираю подходящий вариант, смотрю состояние и цену вместе.']);

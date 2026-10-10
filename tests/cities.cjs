@@ -142,9 +142,12 @@ const server = http.createServer((req, res) => {
 
         await page.locator('#fCity').fill('Москва');
         await page.locator('#fRadius').selectOption('0');
-        assert.equal(await page.locator('#content .card').count(), 40);
+        assert.equal(await page.locator('#content .card').count(), 60);
+        await page.locator('#marketMore').click();
+        assert.equal(await page.locator('#content .card').count(), 108);
         await page.locator('#fRadius').selectOption('500');
         await page.locator('#fSort').selectOption('distance_asc');
+        await page.locator('#marketMore').click();
         const near = await page.evaluate(() => Array.from(document.querySelectorAll('#content [data-info]')).map(el => { const car = carById(+el.dataset.info); return {city:carCity(car).name, distance:distanceFromCity(car,filters.city)}; }));
         assert.ok(near.some(car => car.city === 'Нижний Новгород'));
         assert.ok(near.every(car => car.city !== 'Санкт-Петербург' && car.distance <= 500));
@@ -167,6 +170,8 @@ const server = http.createServer((req, res) => {
         const car = await page.evaluate(id => CARS.find(c => c.cityId === id && !c.legend && c.price <= 100000), city.id);
         assert.ok(car, 'An affordable fictional car in Novosibirsk');
         await page.locator('#fCity').fill(city.name);
+        // This catalogue test starts the player here; journey constraints are covered by travel.cjs.
+        await page.evaluate(id => { transport.cityId = id; save(); }, city.id);
         await page.locator('#content [data-buy="' + car.id + '"]').click();
         assert.equal(await page.evaluate(() => chat && chat.car.id), car.id);
         await page.evaluate(() => { agreePrice(chat.car.price); renderChat(); });
@@ -201,6 +206,7 @@ const server = http.createServer((req, res) => {
         await fresh.evaluate(() => openWin('market'));
         const starter = await fresh.evaluate(id => CUSTOM_CARS.find(car => car.cityId === id && car.price <= 100000), aldan.id);
         assert.ok(starter, 'An affordable current offer in Aldan');
+        await fresh.evaluate(id => { transport.cityId = id; save(); }, aldan.id);
         await fresh.locator('#fCity').fill('Алдан');
         await fresh.locator('#fRadius').selectOption('0');
         await fresh.locator('#content [data-buy="' + starter.id + '"]').click();

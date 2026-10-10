@@ -11,7 +11,7 @@ CUSTOM_CITIES.forEach(function(city){
 });
 var moscowCity = CITIES.find(function(city){ return city.name === "Москва"; });
 CARS.forEach(function(car){
-    if(car.id >= 107 && car.id <= 146) car.cityId = moscowCity.id;
+    if(!car.cityId || (car.id >= 107 && car.id <= 146)) car.cityId = moscowCity.id;
 });
 var catalogueCarIds = Object.create(null);
 CARS.forEach(function(car){ catalogueCarIds[car.id] = true; });

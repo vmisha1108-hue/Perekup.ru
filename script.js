@@ -17,7 +17,7 @@ var PERSONALITY = {
     evil:    {label:"😈 Злой",        mood:30, markup:1.12, dMin:-0.08, dMax: 0.04, bMin:-0.20, bMax:-0.02, rudeness:12, praise:4,  polite:2}
 };
 var GARAGES = [
-    {cap:3,  price:0,       name:"Гараж «Стартовый»",   desc:"Три места."},
+    {cap:1,  price:0,       name:"Гараж «Стартовый»",   desc:"Одно место в Москве. Остальные машины — в бесплатном дворе."},
     {cap:5,  price:300000,  name:"Гараж «Расширенный»", desc:"Пять мест."},
     {cap:8,  price:800000,  name:"Гараж «Профи»",       desc:"Восемь мест."},
     {cap:12, price:2000000, name:"Гараж «Ангар»",       desc:"Двенадцать мест."},
@@ -105,6 +105,7 @@ function carImg(car){
 }
 
 function save(){
+    saveTransport();
     localStorage.setItem("balance", balance);
     localStorage.setItem("garage", JSON.stringify(garage));
     localStorage.setItem("deals", deals);
@@ -130,7 +131,7 @@ function migrateStartingBalance(){
 function updateStats(){
     var cap = currentGarage().cap;
     if($("balance")) $("balance").textContent = balance.toLocaleString("ru-RU");
-    if($("garageCount")) $("garageCount").textContent = garage.length + " / " + cap;
+    if($("garageCount")) $("garageCount").textContent = homeOccupancy() + " / " + cap;
     if($("garageValue")) $("garageValue").textContent = money(garage.reduce(function(s,id){
         var c = carById(id);
         return s + (c?(c.marketPrice || c.price):0);
@@ -138,8 +139,8 @@ function updateStats(){
     if($("deals")) $("deals").textContent = deals;
     if($("shopCap")){
         $("shopCap").textContent  = cap;
-        $("shopUsed").textContent = garage.length;
-        $("shopFree").textContent = Math.max(0, cap - garage.length);
+        $("shopUsed").textContent = homeOccupancy();
+        $("shopFree").textContent = Math.max(0, cap - homeOccupancy());
     }
     if(typeof renderAdmin === "function") renderAdmin();
     if(typeof renderDealsTab === "function") renderDealsTab();
@@ -152,7 +153,9 @@ var ICONS = [
     {id:"calc",     ico:"🧮", label:"Калькулятор"},
     {id:"calendar", ico:"📅", label:"Календарь"},
     {id:"clock",    ico:"🕐", label:"Часы"},
-    {id:"help",     ico:"❓", label:"Справка"}
+    {id:"help",     ico:"❓", label:"Справка"},
+    {id:"travel",   ico:"🧳", label:"Переезд"},
+    {id:"garage",   ico:"🏠", label:"Гараж"}
 ];
 
 function loadIconPositions(){
@@ -448,6 +451,8 @@ function openWin(id){
     saveWindowState(id, w);
     renderTaskbar();
 
+    if(id === "travel"){ renderTravel(); }
+    if(id === "garage"){ renderGarageApp(); }
     if(id === "shop"){ renderShop(); }
     if(id === "admin"){ renderAdmin(); }
 }
@@ -480,6 +485,8 @@ function restoreWin(id){
     clampWindow(w);
     w.style.zIndex = ++zTop;
     updateGameSpeed(id);
+    if(id === "travel") renderTravel();
+    if(id === "garage") renderGarageApp();
     renderTaskbar();
 }
 
@@ -686,11 +693,12 @@ try{
 
 // год и пробег берём из названия и описания
 function carStats(car){
-    if(car._st) return car._st;
+    var extra = transport && transport.odometers[car.id] || 0;
+    if(car._st && car._st.extra === extra) return car._st;
     var ym = /,?\s*((?:19|20)\d{2})\s*$/.exec(car.name || "");
     var km = /(\d[\d\s]*)\s*км/i.exec(car.desc || "");
     var kmv = km ? parseInt(km[1].replace(/\s/g, ""), 10) : (/нов/i.test(car.desc || "") ? 0 : null);
-    car._st = {year: ym ? parseInt(ym[1], 10) : null, km: kmv};
+    car._st = {year: ym ? parseInt(ym[1], 10) : null, km: kmv === null ? null : kmv + extra, extra:extra};
     return car._st;
 }
 
@@ -831,7 +839,7 @@ function showMarket(){
             '<div class="info">' +
                 '<div class="name">' + esc(car.name) + '</div>' +
                 '<div class="car-location">' + esc(carLocationText(car, filters.city)) + (car.legend ? ' · 🏁 Легенда' : '') + '</div>' +
-                '<div class="meta">' + esc(shortDesc(car.desc, 60)) + '</div>' +
+                '<div class="meta">' + esc(shortDesc(vehicleDesc(car), 60)) + '</div>' +
                 '<div class="more">Подробнее ›</div>' +
                 '<div class="seller">' + car.seller.avatar + ' ' + car.seller.name + ' · ' + p.label + '</div>' +
                 '<div class="price">' + money(car.price) + '</div>' +
@@ -863,10 +871,11 @@ function showGarage(){
             '<div class="car-img">' + carImg(car) + '</div>' +
             '<div class="info">' +
                 '<div class="name">' + car.name + '</div>' +
-                '<div class="meta">' + esc(shortDesc(car.desc, 60)) + '</div>' +
+                '<div class="meta">' + esc(shortDesc(vehicleDesc(car), 60)) + '</div>' +
                 '<div class="more">Подробнее ›</div>' +
                 '<div class="seller">Рынок: ' + money(car.marketPrice || car.price) + '</div>' +
                 '<div class="seller">Куплено за: ' + money(purchaseCost(car)) + '</div>' +
+                '<div class="meta">📍 ' + esc(locationText(car.id)) + '</div>' +
                 (listings[car.id] ? '<div class="price">Продажа: ' + money(listings[car.id].price) + '</div>' : '') +
                 sellBtn(car) +
             '</div></article>';
@@ -898,8 +907,8 @@ function renderShop(){
     }).join("");
     var cap = currentGarage().cap;
     if($("shopCap")) $("shopCap").textContent  = cap;
-    if($("shopUsed")) $("shopUsed").textContent = garage.length;
-    if($("shopFree")) $("shopFree").textContent = Math.max(0, cap - garage.length);
+    if($("shopUsed")) $("shopUsed").textContent = homeOccupancy();
+    if($("shopFree")) $("shopFree").textContent = Math.max(0, cap - homeOccupancy());
 }
 function buyGarage(i){
     var g = GARAGES[i];
@@ -907,6 +916,7 @@ function buyGarage(i){
     if(!canAfford(g.price)) return;
     spend(g.price);
     garageLvl = i;
+    rebalanceHome();
     save(); renderShop(); updateStats();
     alert('✅ Куплен: ' + g.name + '\nВместимость: ' + g.cap + ' машин');
 }
@@ -925,11 +935,11 @@ function openCarInfo(id){
     var s = car.seller;
     var p = PERSONALITY[s.personality];
     var owned = garage.indexOf(id) !== -1;
-    var inGarage = (view === "garage");
+    var inGarage = owned;
     var infoPrice = owned ? (listings[id] ? listings[id].price : car.marketPrice || car.price) : car.price;
     var assessment = priceAssessment(car, infoPrice);
 
-    var specs = String(car.desc || "").split(",").map(function(x){ return x.trim(); }).filter(Boolean);
+    var specs = vehicleDesc(car).split(",").map(function(x){ return x.trim(); }).filter(Boolean);
     var specHtml = specs.length
         ? '<ul class="car-specs">' + specs.map(function(x){ return '<li>' + esc(x) + '</li>'; }).join("") + '</ul>'
         : '';
@@ -951,12 +961,13 @@ function openCarInfo(id){
     $("carModalImg").innerHTML = carImg(car);
     $("carModalBody").innerHTML =
         '<div class="car-title">' + esc(car.name) + '</div>' +
-        '<div class="car-location">' + esc(carLocationText(car, filters.city)) + (car.fictional ? ' · Игровое объявление' : '') + '</div>' +
+        '<div class="car-location">' + esc(owned ? locationText(id) : carLocationText(car, filters.city)) + (car.fictional ? ' · Игровое объявление' : '') + '</div>' +
         '<div class="car-price">' + money(infoPrice) + '</div>' +
         '<div class="price-assessment"><span class="price-badge ' + assessment.tone + '">' + assessment.label + '</span>' +
         '<span>Оценка рынка: ' + money(car.marketPrice || car.price) + '</span></div>' +
         specHtml + fullHtml + who +
-        '<div class="car-actions">' + action + '</div>';
+        '<div class="car-actions">' + action + '</div>' +
+        (!owned && !car.exchangeOnly && !meetingHere("buy",id) ? '<div class="journey-note">Для покупки нужно приехать в ' + esc(meetingCity("buy",id).name) + '. Можно заранее написать продавцу и согласовать время.</div><button class="buy" data-travel-to="' + esc(meetingCity("buy",id).id) + '">Открыть Переезд</button>' : '');
     $("carOverlay").classList.add("open");
     updateGameSpeed("car");
 }
@@ -1006,7 +1017,6 @@ function openBuyChat(carId){
     if(!canOpenChat()) return;
     var car = carById(carId);
     if(!car || car.exchangeOnly) return;
-    if(garage.length >= currentGarage().cap){ alert("❌ Нет места! Расширь гараж."); return; }
     if(garage.indexOf(carId) !== -1) return;
     if(pendingFor(carId)) return;
 
@@ -1154,6 +1164,7 @@ function renderChat(){
             ? 'Пора ехать! Если опоздать больше чем на ' + Math.round(MEET_GRACE / 3600000) + ' ч, встреча сорвётся.'
             : 'До встречи: <b><span data-until="' + chat.meet.whenMs + '"></span></b>. Можно закрыть чат: встреча сохранится во вкладке «Сделки».';
         $("goBtn").disabled = !reached;
+        $("goBtn").textContent = meetingHere(chat.mode,chat.car.id) ? "🚗 Поехать на встречу" : "🧳 Сначала приехать в " + meetingCity(chat.mode,chat.car.id).name;
         updatePendingCountdowns();
     }
     if(st === "event" && chat.event){
@@ -1313,6 +1324,7 @@ function handleBuyOffer(offer){
 }
 
 function finishBuy(price){
+    if(!guardDealLocation()) return;
     price = Math.round(price);
     if(!Number.isSafeInteger(price) || price < 1){
         sysSay("❌ Некорректная цена сделки."); chat.done = true; return;
@@ -1320,11 +1332,6 @@ function finishBuy(price){
     if(!canAfford(price)){
         npcSay("Без денег я машину не отдам. Зря съездили.");
         sysSay("💤 Сделка сорвалась.");
-        chat.done = true;
-        return;
-    }
-    if(garage.length >= currentGarage().cap){
-        sysSay("❌ В гараже нет места. Сделка сорвалась.");
         chat.done = true;
         return;
     }
@@ -1336,6 +1343,7 @@ function finishBuy(price){
     }
     spend(price);
     garage.push(chat.car.id);
+    parkVehicle(chat.car.id,transport.cityId);
     purchasePrices[chat.car.id] = price;
     deals++;
     save();
@@ -1393,17 +1401,22 @@ function handleSellAsk(price){
 }
 
 function finishSell(price){
+    if(!guardDealLocation()) return;
+    tickTransport();
     price = Math.round(price);
     if(!Number.isSafeInteger(price) || price < 1 || !Number.isSafeInteger(balance + price)){
         sysSay("❌ Сумма сделки выходит за допустимый диапазон."); chat.done = true; return;
     }
+    if(balance + price < parkingDebt(chat.car.id) && !ADM.infMoney){ sysSay("❌ Даже с выручкой не хватает денег на долг за парковку."); chat.done = true; return; }
     if(garage.indexOf(chat.car.id) === -1){
         sysSay("❌ Этой машины уже нет в гараже.");
         chat.done = true;
         return;
     }
     balance += price;
+    payParkingDebt(chat.car.id);
     garage = garage.filter(function(x){ return x !== chat.car.id; });
+    removeVehicle(chat.car.id);
     delete listings[chat.car.id];
     delete purchasePrices[chat.car.id];
     removeSaleOffers(chat.car.id);
@@ -1453,10 +1466,6 @@ function agreePrice(price){
         sysSay('💸 Не хватает денег на доплату за обмен. Предложите больше за свою машину.'); return;
     }
     if(chat.mode === "buy"){
-        if(garage.length >= currentGarage().cap){
-            sysSay("❌ В гараже нет места.");
-            return;
-        }
         if(!canAfford(price)){
             sysSay("💸 На вашем счёте не хватает денег для такой цены. Предложите меньше.");
             return;
@@ -1585,6 +1594,11 @@ function rollEvent(){
 function goToMeeting(){
     if(!chat || chat.done || chat.stage !== "go") return;
     advanceGameTime(Date.now());
+    tickTransport();
+    if(!meetingHere(chat.mode,chat.car.id)){
+        sysSay("Для встречи нужно приехать в город " + meetingCity(chat.mode,chat.car.id).name + ".");
+        renderChat(); openTravelTo(meetingCity(chat.mode,chat.car.id).id); return;
+    }
     if(!ADM.smoothMeet && chat.meet && gameMs < chat.meet.whenMs){
         sysSay("⏳ Ещё рано: встреча назначена на " + chat.meet.label + ".");
         renderChat();
@@ -1775,17 +1789,22 @@ function tradeTerms(trade, price){
 function tradePreview(trade, price){
     var car = carById(trade.carId);
     if(!car) return '';
-    return '<div class="trade-preview"><button class="trade-photo" data-trade-info="' + car.id + '" aria-label="Осмотреть ' + esc(car.name) + '">' + carImg(car) + '</button><div><b>🔁 ' + esc(car.name) + '</b><br>' + esc(car.desc) + '<br>' + esc(tradeTerms(trade, price)) + '<br><button class="trade-details" data-trade-info="' + car.id + '">Подробнее о машине</button></div></div>';
+    return '<div class="trade-preview"><button class="trade-photo" data-trade-info="' + car.id + '" aria-label="Осмотреть ' + esc(car.name) + '">' + carImg(car) + '</button><div><b>🔁 ' + esc(car.name) + '</b><br>' + esc(vehicleDesc(car)) + '<br>' + esc(tradeTerms(trade, price)) + '<br><button class="trade-details" data-trade-info="' + car.id + '">Подробнее о машине</button></div></div>';
 }
 function finishTrade(price){
+    if(!guardDealLocation()) return;
+    tickTransport();
     var incoming = carById(chat.trade.carId), difference = price - chat.trade.value;
-    var newBalance = balance + difference, index = garage.indexOf(chat.car.id);
+    var debt = parkingDebt(chat.car.id);
+    var newBalance = balance + difference - (ADM.infMoney ? 0 : debt), index = garage.indexOf(chat.car.id);
     if(!incoming || index < 0 || garage.indexOf(incoming.id) !== -1 || !Number.isSafeInteger(price) || price < 1 || !Number.isSafeInteger(newBalance) || newBalance < 0){
         sysSay('❌ Обмен невозможен: проверьте наличие машин и деньги на доплату.'); chat.done = true; return;
     }
     var cost = Math.max(1, purchaseCost(chat.car) - difference);
     balance = newBalance;
     garage[index] = incoming.id;
+    removeVehicle(chat.car.id);
+    parkVehicle(incoming.id,transport.cityId);
     delete purchasePrices[chat.car.id];
     purchasePrices[incoming.id] = cost;
     delete listings[chat.car.id];
@@ -1852,6 +1871,7 @@ function buyBtn(car, owned){
     return '<button class="buy" data-buy="' + car.id + '">💬 Написать</button>';
 }
 function sellBtn(car){
+    if(vehicleMoving(car.id)) return '<button class="sell" disabled>🚛 Автомобиль в пути</button>';
     var it = pendingFor(car.id);
     if(!it){
         return listings[car.id]
@@ -1914,6 +1934,7 @@ function tickListings(){
     Object.keys(listings).forEach(function(key){
         var listing = listings[key], car = carById(Number(key));
         if(!car || garage.indexOf(car.id) === -1){ delete listings[key]; changed = true; return; }
+        if(vehicleMoving(car.id)) return;
         if(pending.some(function(it){ return it.carId === car.id && it.type === "meet"; })) return;
         if(gameMs < listing.nextBuyerAt) return;
         var offers = pending.filter(function(it){ return it.type === "ad" && it.carId === car.id; });
@@ -1962,6 +1983,7 @@ function migrateSaleListings(){
 function openSaleForm(carId){
     var car = carById(carId);
     if(!car || garage.indexOf(carId) === -1) return;
+    if(vehicleMoving(carId)){ toast("Дождитесь окончания перевозки, прежде чем выставлять машину."); return; }
     if(pending.some(function(it){ return it.carId === carId && it.type === "meet"; })){
         toast("📅 Сначала завершите назначенную встречу."); return;
     }
@@ -1983,6 +2005,7 @@ function closeSaleForm(){
 function postAd(carId, price){
     var car = carById(carId);
     if(!car || garage.indexOf(carId) === -1) return false;
+    if(vehicleMoving(carId)){ toast("Нельзя выставить машину во время перевозки."); return false; }
     price = Number(price);
     if(!Number.isSafeInteger(price) || price < 1){ toast("Укажите целую положительную цену в рублях."); return false; }
     if(pending.some(function(it){ return it.carId === carId && it.type === "meet"; })) return false;
@@ -2199,6 +2222,7 @@ function showDeals(){
 
 // проверяется каждый тик игрового времени
 function tickPending(){
+    tickTransport();
     tickMeeting();
     var changed = tickListings();
     if(!pending.length){
@@ -2367,13 +2391,13 @@ function saveGameTime(){
 
 function canSleep(){
     var hour = gameNow().getHours();
-    return (hour >= 22 || hour < 9) && !(chat && chat.met && !chat.done);
+    return !transport.trip && (hour >= 22 || hour < 9) && !(chat && chat.met && !chat.done);
 }
 function sleepUntilMorning(){
     advanceGameTime(Date.now());
     if(!canSleep()){
         renderGameTime();
-        toast(chat && chat.met && !chat.done ? "Сначала завершите встречу." : "Спать можно с 22:00 до 09:00.");
+        toast(transport.trip ? "Вы в пути: дождитесь прибытия в приложении Переезд." : chat && chat.met && !chat.done ? "Сначала завершите встречу." : "Спать можно с 22:00 до 09:00.");
         return false;
     }
     var now = gameNow(), morning = new Date(now);
@@ -2443,7 +2467,7 @@ function renderGameTime(){
     var hm = pad2(d.getHours()) + ":" + pad2(d.getMinutes());
     if($("sleepBtn")){
         $("sleepBtn").disabled = !canSleep();
-        $("sleepStatus").textContent = chat && chat.met && !chat.done ? "Сначала завершите встречу." :
+        $("sleepStatus").textContent = transport.trip ? "Вы в пути. Дождитесь прибытия в Переезде." : chat && chat.met && !chat.done ? "Сначала завершите встречу." :
             canSleep() ? "Можно поспать до 09:00. Сообщения продолжат приходить." : "Сон доступен с 22:00 до 09:00.";
     }
     if($("clock")){
@@ -2574,6 +2598,8 @@ function tryAdminGate(){
 
 function admMsg(t){ if($("admMsg")) $("admMsg").textContent = t; }
 function admApply(){
+    rebalanceHome();
+    tickTransport();
     save(); updateStats(); renderShop();
     if(typeof refreshList === "function") refreshList();
 }
@@ -2591,8 +2617,8 @@ function admCarAdd(id){
     var car = CARS.find(function(c){ return c.id === id; });
     if(!car){ admMsg("⚠️ Машина не найдена."); return; }
     if(garage.indexOf(id) !== -1){ admMsg("ℹ️ Эта машина уже в гараже."); return; }
-    if(garage.length >= currentGarage().cap){ admMsg("⚠️ Гараж заполнен. Поднимите уровень гаража."); return; }
     garage.push(id);
+    parkVehicle(id,moscowCity.id);
     purchasePrices[id] = car.price;
     admMsg("✅ В гараж добавлено: " + car.name);
     admApply();
@@ -2600,6 +2626,7 @@ function admCarAdd(id){
 function admCarDel(id){
     if(garage.indexOf(id) === -1){ admMsg("ℹ️ Этой машины нет в гараже."); return; }
     garage = garage.filter(function(x){ return x !== id; });
+    removeVehicle(id);
     delete purchasePrices[id];
     delete listings[id];
     removeSaleOffers(id);
@@ -2616,6 +2643,8 @@ function admReset(){
     if(!confirm("Сбросить весь прогресс (баланс, гараж, сделки, заметки)?")) return;
     balance = START_BALANCE; garage = []; deals = 0; garageLvl = 0; notes = {}; pending = [];
     purchasePrices = {}; listings = {}; chatStore = {};
+    transport = newTransport();
+    $("arrivalOverlay").classList.remove("open");
     persistChats();
     if(chat) closeChat();
     closeSaleForm();
@@ -2628,6 +2657,7 @@ function admTime(ms){
     ms = Number(ms);
     if(!isFinite(ms) || ms <= 0) return;
     gameMs += ms;
+    tickPending();
     saveGameTime();
     renderGameTime();
     admMsg("✅ Время сдвинуто вперёд.");
@@ -2845,6 +2875,7 @@ function bindUI(){
 /* ================= СТАРТ ================= */
 window.addEventListener("DOMContentLoaded", function(){
     migrateStartingBalance();
+    initTransport();
     migrateSaleListings();
     bindUI();
     initCalc();

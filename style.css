@@ -1,4 +1,44 @@
 *{box-sizing:border-box}
+.tb-location{font-size:12px;color:#a6efdf;max-width:190px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#win-travel,#win-garage{width:min(820px,94vw);min-width:min(380px,94vw);height:min(720px,calc(100% - 24px))}
+.journey-heading{padding:4px 0 18px;border-bottom:1px solid #ffffff1c;margin-bottom:18px}
+.journey-heading span,.journey-note{color:#aab5c7;font-size:13px;line-height:1.6}
+.journey-heading h2,.journey-status h2{margin:8px 0;font-size:24px}
+.journey-destination{display:flex;align-items:center;gap:14px;font-weight:bold}
+.travel-options,.vehicle-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(240px,100%),1fr));gap:16px}
+.travel-option,.vehicle-card{background:#ffffff06;border:1px solid #ffffff24;border-radius:16px;overflow:hidden}
+.travel-option{padding:18px;display:flex;flex-direction:column;gap:12px}
+.travel-option h3,.vehicle-card h3{margin:0;font-size:17px}
+.travel-option p,.vehicle-content p{font-size:13px;color:#b4bdd0;line-height:1.5;margin:0}
+.travel-price{font-weight:800;font-size:24px;color:#43ddc5}
+.travel-option label{font-size:13px}
+#travelBody select{display:block;width:100%;padding:10px;margin-top:6px;border-radius:8px;background:#151b2b;color:#fff;border:1px solid #435166}
+.journey-destination select{flex:1;max-width:440px}
+#travelBody button,#garageBody button,.arrival-card button{cursor:pointer;background:#37d8bd;color:#071c19;border:0;border-radius:9px;padding:11px 14px;font-weight:700}
+.travel-option>button{margin-top:auto}
+#travelBody button:disabled,#garageBody button:disabled{opacity:.4;cursor:default}
+.vehicle-card{display:flex;flex-direction:column}
+.vehicle-content h3{min-height:40px;line-height:1.25}
+.vehicle-content>button:last-child{margin-top:auto}
+#taskList{min-width:0;overflow-x:auto;overflow-y:hidden;height:64px;align-items:center;scrollbar-width:none}
+#taskList::-webkit-scrollbar{display:none}
+#taskList .task-btn{flex:none}
+@media(max-width:600px){#taskList{gap:6px!important}.taskbar{padding:0 8px!important}#taskList .task-btn{width:36px;height:40px;font-size:22px}}
+#garageBody .vehicle-image{display:block;padding:0;border-radius:0;aspect-ratio:16/10;width:100%;overflow:hidden;background:#161c26}
+.vehicle-image img{width:100%;height:100%;object-fit:cover;display:block}
+.vehicle-content{padding:16px;display:flex;flex:1;flex-direction:column;gap:12px}
+.vehicle-location{font-size:13px;color:#77e9d5}
+.carrier-quote{padding:12px;background:#ffffff08;border-radius:9px;font-size:13px;display:flex;flex-direction:column;gap:10px;margin-top:auto}
+.parking-debt{color:#ffb28e!important}
+.journey-status{text-align:center;padding:20px 10px}
+.journey-status progress{display:block;width:100%;height:12px;accent-color:#37d8bd;margin:22px 0}
+.journey-symbol{font-size:56px}
+#arrivalOverlay{z-index:10000;align-items:center;justify-content:center;background:#060a18c9;backdrop-filter:blur(9px)}
+.arrival-card{width:min(460px,92vw);padding:32px;text-align:center;background:#151c30;border:1px solid #4a677b;border-radius:22px;box-shadow:0 24px 80px #0008}
+.arrival-card h2{font-size:28px;margin:12px 0;color:#61ead2}
+.arrival-card p{color:#b2bfd0;font-size:14px;line-height:1.5}
+.arrival-actions{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:24px}
+@media(max-width:600px){.tb-location{max-width:100px;font-size:10px}.topbar{gap:7px!important;padding:0 8px!important}.tb-balance{padding:6px 8px!important}.journey-destination{display:block}.arrival-card{padding:22px}}
 html,body{height:100%}
 html{color-scheme:dark}
 *{scrollbar-width:thin;scrollbar-color:#2b3444 transparent}
