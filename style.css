@@ -184,16 +184,28 @@ backdrop-filter:blur(22px) saturate(140%);-webkit-backdrop-filter:blur(22px) sat
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}
 .card{
     background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:16px;
-    overflow:hidden;transition:.2s;
+    overflow:hidden;transition:.2s;display:flex;flex-direction:column;
 }
 .card:hover{transform:translateY(-3px);border-color:#3a4353}
 .car-img{
-    height:170px;display:flex;align-items:center;justify-content:center;
+    height:auto;aspect-ratio:1/1;flex:none;display:flex;align-items:center;justify-content:center;
     font-size:64px;overflow:hidden;
     background:linear-gradient(135deg,#202632,#11141a);
 }
 .car-img img{width:100%;height:100%;object-fit:cover;display:block}
-.info{padding:16px}
+.info{padding:16px;display:flex;flex-direction:column;flex:1;gap:0}
+.card .name{min-height:2.6em;line-height:1.3}
+.card .seller{align-self:flex-start}
+.card .info > .price{margin-top:auto;padding-top:4px}
+.price-assessment{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:-4px 0 16px;font-size:13px;color:#aeb7c7}
+.price-badge{padding:6px 10px;border-radius:8px;font-weight:700}
+.price-badge.below{background:#123b32;color:#77e5b0}
+.price-badge.fair{background:#173a42;color:#8defe0}
+.price-badge.above{background:#453222;color:#ffd391}
+.trade-preview{display:flex;gap:10px;align-items:center;margin:10px 0;font-size:13px}
+.trade-preview img{width:78px;height:78px;object-fit:cover;border-radius:8px}
+.trade-photo{padding:0;border:0;background:none;flex:none;cursor:pointer;width:78px;height:78px}
+.trade-details{padding:4px 0;border:0;background:none;color:#8defe0;font:inherit;cursor:pointer;text-decoration:underline}
 .name{font-size:18px;font-weight:800;margin-bottom:4px}
 .meta{color:#8f98a8;font-size:12.5px;margin-bottom:10px}
 .seller{
@@ -358,7 +370,7 @@ button:disabled{opacity:.4;cursor:not-allowed}
 .card .more{font-size:12.5px;color:#8defe0;margin:-2px 0 10px}
 
 /* ===== окно объявления ===== */
-#carOverlay{z-index:450}
+#carOverlay{z-index:600}
 .car-modal{
     position:relative;width:min(720px,100%);max-height:94vh;
     display:flex;flex-direction:column;
@@ -370,7 +382,7 @@ button:disabled{opacity:.4;cursor:not-allowed}
     background:rgba(10,14,20,.75);width:36px;height:36px;padding:0;
 }
 .car-modal-img{
-    flex:none;height:min(340px,42vh);overflow:hidden;
+    flex:none;height:min(500px,48vh);overflow:hidden;
     display:flex;align-items:center;justify-content:center;font-size:96px;
     background:linear-gradient(135deg,#202632,#11141a);
 }
@@ -443,8 +455,6 @@ button:disabled{opacity:.4;cursor:not-allowed}
 .meeting-car{display:flex;align-items:center;gap:14px;font-weight:700;flex:none}
 #meetingCarImage{width:110px;height:74px;flex:none;border-radius:10px;overflow:hidden;background:#0f131b}
 #meetingCarImage img{width:100%;height:100%;object-fit:cover}
-.car-img img.custom-car-photo,
-.car-modal-img img.custom-car-photo,
 #meetingCarImage img.custom-car-photo{object-fit:contain}
 .meeting-steps{display:flex;gap:8px;list-style:none;margin:0;padding:0;flex:none}
 .meeting-steps li{flex:1;padding:10px 6px;border-radius:9px;background:#1b2033;color:#8992a3;font-size:12px;text-align:center}

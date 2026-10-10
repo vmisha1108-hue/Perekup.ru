@@ -54,7 +54,7 @@ const server = http.createServer(async (request, response) => {
     }
     async function advertise(page, price) {
         await ownCar(page);
-        await page.locator('[data-sell="1"]').click();
+        await page.locator('[data-sell="1"], [data-sale-edit="1"]').click();
         await page.locator('#salePrice').fill(String(price));
         await page.locator('#saleSubmit').click();
     }
@@ -469,6 +469,123 @@ const server = http.createServer(async (request, response) => {
             await page.locator('#evNo').click();
             assert.equal(await page.evaluate(() => balance), 310000);
             assert.deepEqual(await page.evaluate(() => garage), []);
+        });
+        await scenario('prices follow mood, remain stable during a visit, and refresh on return without changing chats', async page => {
+            const first = await page.evaluate(() => {
+                openBuyChat(1); saveChat();
+                return {cars:CARS.map(c => ({id:c.id, mood:c.seller.personality, price:c.price, market:c.marketPrice})), ask:chat.ask, npc:chat.npc};
+            });
+            assert.ok(first.cars.every(c => c.mood === 'evil' && c.price > c.market));
+            assert.ok(first.cars.some(c => c.price <= 100000), 'Starter projects remain affordable');
+            await page.evaluate(() => { closeChat(); openCarInfo(1); closeCarInfo(); showMarket(); });
+            assert.deepEqual(await page.evaluate(() => CARS.map(c => c.price)), first.cars.map(c => c.price));
+            await page.reload({waitUntil:'networkidle'});
+            const second = await page.evaluate(() => CARS.map(c => ({mood:c.seller.personality, price:c.price, market:c.marketPrice})));
+            assert.ok(second.every(c => c.mood === 'neutral' && c.price >= c.market * .95 && c.price <= c.market * 1.07));
+            await page.evaluate(() => openBuyChat(1));
+            assert.equal(await page.evaluate(() => chat.ask), first.ask);
+            assert.deepEqual(await page.evaluate(() => chat.npc), first.npc);
+            await page.addInitScript(() => { Math.random = () => .05; });
+            await page.reload({waitUntil:'networkidle'});
+            assert.ok(await page.evaluate(() => CARS.every(c => c.seller.personality === 'kind' && c.price < c.marketPrice)));
+        });
+        await scenario('listing assessments appear only in details and cards align with full-width images', async page => {
+            await page.evaluate(() => openWin('market'));
+            assert.equal(await page.locator('#content .price-badge').count(), 0);
+            const layout = await page.evaluate(() => Array.from(document.querySelectorAll('#content .card')).slice(0,3).map(card => {
+                const button = card.querySelector('.buy').getBoundingClientRect(), image = card.querySelector('.car-img img').getBoundingClientRect(), holder = card.querySelector('.car-img').getBoundingClientRect();
+                return {bottom:button.bottom, width:image.width, holder:holder.width, fit:getComputedStyle(card.querySelector('img')).objectFit};
+            }));
+            assert.ok(layout.every(item => Math.abs(item.bottom - layout[0].bottom) < 1 && Math.abs(item.width - item.holder) < 1 && item.fit === 'cover'));
+            for(const [mood, label] of [['kind','Ниже рынка'],['neutral','Хорошая цена'],['evil','Выше рынка']]){
+                const id = await page.evaluate(mood => { const car=CARS[0]; car.price=Math.round(car.marketPrice * ({kind:.9,neutral:1,evil:1.15}[mood])); openCarInfo(car.id); return car.id; }, mood);
+                assert.equal(await page.locator('#carModalBody .price-badge').textContent(), label);
+                await page.waitForFunction(() => document.querySelector('#carModalImg img').naturalWidth > 0);
+                await page.evaluate(() => closeCarInfo());
+            }
+            await page.setViewportSize({width:390,height:844});
+            await page.evaluate(() => { openWin('market'); openCarInfo(1); });
+            assert.ok(await page.evaluate(() => document.querySelector('.car-modal').getBoundingClientRect().width <= innerWidth));
+        });
+        await scenario('40 exchange cars have photos, diverse prices, and are offered by actual buyers', async page => {
+            const fsSync = require('node:fs');
+            const cars = await page.evaluate(() => TRADE_CARS);
+            assert.equal(cars.length, 40); assert.equal(new Set(cars.map(c => c.id)).size,40);
+            assert.ok(cars.some(c => c.price <= 100000) && cars.some(c => c.price >= 10000000));
+            for(const car of cars) assert.ok(fsSync.existsSync(path.join(root,car.img)) && car.full && car.desc);
+            await advertise(page,210000);
+            const id = await offer(page,.6);
+            assert.ok(await page.evaluate(id => !!findPending(id).trade, id));
+            await page.evaluate(() => { dealsFilter='in'; showDeals(); });
+            assert.ok((await page.locator('#content').textContent()).includes('Обмен'));
+            await page.evaluate(id => openAdChat(id), id);
+            await page.locator('#dealRow .trade-details').click();
+            assert.equal(await page.locator('#carModalBody [data-buy]').count(),0);
+            assert.ok((await page.locator('#carModalBody').textContent()).includes('Автомобиль для обмена'));
+            await page.locator('[data-trade-back]').click();
+            assert.ok(await page.locator('#overlay').isVisible());
+        });
+        async function beginExchange(page, value, bid, options = {}){
+            await advertise(page, bid);
+            const id = await page.evaluate(({value,bid,options}) => {
+                if(options.full) garage=[1,2,3];
+                const car=TRADE_CARS.find(c=>c.marketPrice===value);
+                const offer=makeBuyerOffer(listings[1]); offer.bid=bid; offer.maxBid=bid; offer.trade={carId:car.id,value}; pending.push(offer); save();
+                Math.random=()=>.9; openAdChat(offer.id); agreePrice(bid); renderChat(); return car.id;
+            }, {value,bid,options});
+            await page.locator('#meetBtn').click();
+            await page.locator('#goBtn').click();
+            return id;
+        }
+        await scenario('exchange pays player, survives inspection reload, fills the same garage slot and can be resold', async page => {
+            const id=await beginExchange(page,110000,210000,{full:true});
+            await page.reload({waitUntil:'networkidle'});
+            assert.equal(await page.evaluate(() => chat.trade.carId),id);
+            await finishInspection(page);
+            assert.deepEqual(await page.evaluate(() => garage),[1,2,3]);
+            await page.locator('#evYes').click();
+            assert.equal(await page.evaluate(() => balance),200000);
+            assert.deepEqual(await page.evaluate(() => garage),[id,2,3]);
+            await page.reload({waitUntil:'networkidle'});
+            await page.evaluate(() => { openWin('market'); showGarage(); });
+            assert.equal(await page.locator('#content .card').count(),3);
+            await page.locator('[data-sell="'+id+'"]').click();
+            await page.locator('#salePrice').fill('150000'); await page.locator('#saleSubmit').click();
+            assert.equal(await page.evaluate(id => listings[id].price,id),150000);
+        });
+        await scenario('exchange charges player only after confirming inspection', async page => {
+            const id=await beginExchange(page,230000,150000);
+            await finishInspection(page);
+            assert.equal(await page.evaluate(() => balance),100000);
+            await page.locator('#evYes').click();
+            assert.equal(await page.evaluate(() => balance),20000);
+            assert.deepEqual(await page.evaluate(() => garage),[id]);
+            assert.equal(await page.evaluate(id => purchasePrices[id],id),175000);
+        });
+        await scenario('exchange blocks unaffordable top-up and excludes cars already owned', async page => {
+            await advertise(page,210000);
+            await page.evaluate(() => {
+                const offer=makeBuyerOffer(listings[1]); offer.trade={carId:TRADE_CARS[8].id,value:420000}; pending.push(offer);
+                openAdChat(offer.id); agreePrice(210000); renderChat();
+            });
+            assert.equal(await page.evaluate(() => chat.stage),'talk');
+            assert.equal(await page.evaluate(() => balance),100000);
+            assert.deepEqual(await page.evaluate(() => garage),[1]);
+            assert.ok((await page.locator('#chatLog').textContent()).includes('Не хватает'));
+            assert.ok(await page.evaluate(() => {
+                garage=TRADE_CARS.map(c=>c.id); Math.random=()=>.6;
+                return !makeBuyerOffer(listings[1]).trade;
+            }));
+        });
+        await scenario('refusing exchange or buyer absence transfers neither car nor money', async page => {
+            await beginExchange(page,110000,210000); await finishInspection(page);
+            await page.locator('#evNo').click();
+            assert.deepEqual(await page.evaluate(() => garage),[1]); assert.equal(await page.evaluate(() => balance),100000);
+            await page.evaluate(() => closeChat());
+            await beginExchange(page,110000,210000);
+            await page.evaluate(() => { findPending(chat.pid).noShow=true; gameMs=findPending(chat.pid).flow.arrivalAt; tickPending(); });
+            assert.equal(await page.evaluate(() => chat.meetingOutcome),'no-show');
+            assert.deepEqual(await page.evaluate(() => garage),[1]); assert.equal(await page.evaluate(() => balance),100000);
         });
         console.log(`${passed} gameplay scenarios passed`);
     } finally { await browser.close(); }

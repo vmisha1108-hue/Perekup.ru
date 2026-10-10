@@ -164,7 +164,7 @@ const server = http.createServer((req, res) => {
         assert.equal(await page.locator('#fCity').inputValue(), '');
         assert.ok(await page.locator('#fRadius').isDisabled());
         const city = targets.find(c => c.name === 'Новосибирск');
-        const car = data.REGIONAL_CARS.find(c => c.cityId === city.id && !c.legend && c.price <= 100000);
+        const car = await page.evaluate(id => CARS.find(c => c.cityId === id && !c.legend && c.price <= 100000), city.id);
         assert.ok(car, 'An affordable fictional car in Novosibirsk');
         await page.locator('#fCity').fill(city.name);
         await page.locator('#content [data-buy="' + car.id + '"]').click();
@@ -196,7 +196,11 @@ const server = http.createServer((req, res) => {
         await fresh.evaluate(() => openWin('market'));
         assert.equal(await fresh.locator('#fCity').inputValue(), '');
         assert.ok(await fresh.locator('#fRadius').isDisabled());
-        const starter = data.CUSTOM_CARS.find(car => car.cityId === aldan.id && car.price <= 100000);
+        // A returning visit refreshes seller moods and asking prices. Select the current affordable offer.
+        await fresh.reload({waitUntil:'networkidle'});
+        await fresh.evaluate(() => openWin('market'));
+        const starter = await fresh.evaluate(id => CUSTOM_CARS.find(car => car.cityId === id && car.price <= 100000), aldan.id);
+        assert.ok(starter, 'An affordable current offer in Aldan');
         await fresh.locator('#fCity').fill('Алдан');
         await fresh.locator('#fRadius').selectOption('0');
         await fresh.locator('#content [data-buy="' + starter.id + '"]').click();

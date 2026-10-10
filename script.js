@@ -77,7 +77,7 @@ var MEETING_INSPECTION_MIN = 5 * 60000, MEETING_INSPECTION_MAX = 10 * 60000;
 var pending = [];
 try{ pending = JSON.parse(localStorage.getItem("pending") || "[]") || []; }catch(e){ pending = []; }
 pending = pending.filter(function(it){
-    return it && it.id && it.type && CARS.some(function(c){ return c.id === it.carId; });
+    return it && it.id && it.type && carById(it.carId) && (!it.trade || carById(it.trade.carId));
 });
 pending.forEach(function(it){ if(it.type === "meet") it.reached = gameMs >= it.when; });
 
@@ -132,8 +132,8 @@ function updateStats(){
     if($("balance")) $("balance").textContent = balance.toLocaleString("ru-RU");
     if($("garageCount")) $("garageCount").textContent = garage.length + " / " + cap;
     if($("garageValue")) $("garageValue").textContent = money(garage.reduce(function(s,id){
-        var c = CARS.find(function(x){ return x.id === id; });
-        return s + (c?c.price:0);
+        var c = carById(id);
+        return s + (c?(c.marketPrice || c.price):0);
     },0));
     if($("deals")) $("deals").textContent = deals;
     if($("shopCap")){
@@ -849,14 +849,14 @@ function showMarket(){
 function showGarage(){
     view = "garage";
     setTabs("garage");
-    garage = garage.filter(function(id){ return CARS.some(function(c){ return c.id === id; }); });
+    garage = garage.filter(function(id){ return !!carById(id); });
     if(!garage.length){
         $("content").innerHTML = '<div class="empty" style="grid-column:1/-1">🏠<br><br>Гараж пока пуст.<br>Купи первый автомобиль.</div>';
         updateResultCount(0, 0);
         updateStats();
         return;
     }
-    var mine = garage.map(function(id){ return CARS.find(function(c){ return c.id === id; }); });
+    var mine = garage.map(carById);
     var shownG = visibleCars(mine);
     $("content").innerHTML = shownG.map(function(car){
         return '<article class="card" data-info="' + car.id + '">' +
@@ -865,7 +865,7 @@ function showGarage(){
                 '<div class="name">' + car.name + '</div>' +
                 '<div class="meta">' + esc(shortDesc(car.desc, 60)) + '</div>' +
                 '<div class="more">Подробнее ›</div>' +
-                '<div class="seller">Рынок: ' + money(car.price) + '</div>' +
+                '<div class="seller">Рынок: ' + money(car.marketPrice || car.price) + '</div>' +
                 '<div class="seller">Куплено за: ' + money(purchaseCost(car)) + '</div>' +
                 (listings[car.id] ? '<div class="price">Продажа: ' + money(listings[car.id].price) + '</div>' : '') +
                 sellBtn(car) +
@@ -919,7 +919,7 @@ var SELLER_NOTE = {
 };
 
 function openCarInfo(id){
-    var car = CARS.find(function(c){ return c.id === id; });
+    var car = carById(id);
     if(!car) return;
     var s = car.seller;
     var p = PERSONALITY[s.personality];
@@ -933,7 +933,7 @@ function openCarInfo(id){
     var fullHtml = car.full ? '<p class="car-full">' + esc(car.full) + '</p>' : '';
 
     var who = inGarage
-        ? '<div class="car-seller"><b>Рыночная цена:</b> ' + money(car.price) + '</div>'
+        ? '<div class="car-seller"><b>Рыночная цена:</b> ' + money(car.marketPrice || car.price) + '</div>'
         : '<div class="car-seller"><div class="ava">' + s.avatar + '</div>' +
             '<div><div class="car-seller-name">' + esc(s.name) + ' · ' + p.label + '</div>' +
             '<div class="car-seller-note">«' + esc(SELLER_NOTE[s.personality]) + '»</div></div></div>';
@@ -942,7 +942,7 @@ function openCarInfo(id){
     if(inGarage){
         action = sellBtn(car);
     }else{
-        action = buyBtn(car, owned);
+        action = car.exchangeOnly && !owned ? '<button class="buy" data-trade-back>Вернуться к предложению</button>' : buyBtn(car, owned);
     }
 
     $("carModalImg").innerHTML = carImg(car);
@@ -950,6 +950,8 @@ function openCarInfo(id){
         '<div class="car-title">' + esc(car.name) + '</div>' +
         '<div class="car-location">' + esc(carLocationText(car, filters.city)) + (car.fictional ? ' · Игровое объявление' : '') + '</div>' +
         '<div class="car-price">' + money(car.price) + '</div>' +
+        '<div class="price-assessment"><span class="price-badge ' + priceAssessment(car).tone + '">' + priceAssessment(car).label + '</span>' +
+        '<span>Оценка рынка: ' + money(car.marketPrice || car.price) + '</span></div>' +
         specHtml + fullHtml + who +
         '<div class="car-actions">' + action + '</div>';
     $("carOverlay").classList.add("open");
@@ -968,7 +970,7 @@ function saveChat(){
     if(!chat || chat.done) return;
     chatStore[chatKey(chat)] = {
         mode: chat.mode, carId: chat.car.id, npc: chat.npc, ask: chat.ask, bid: chat.bid,
-        listingPrice: chat.listingPrice, maxBid: chat.maxBid,
+        listingPrice: chat.listingPrice, maxBid: chat.maxBid, trade: chat.trade || null, referencePrice: chat.referencePrice,
         log: chat.log.slice(-80), last: chat.last, stage: chat.stage, price: chat.price,
         meet: chat.meet ? {whenMs: chat.meet.whenMs, label: chat.meet.label} : null,
         note: chat.note, busyUsed: chat.busyUsed, pid: chat.pid, met: chat.met, event: chat.event
@@ -988,18 +990,19 @@ function deleteChatByPid(pid){
     if(ch) persistChats();
 }
 function restoreChat(sv){
-    var car = CARS.find(function(c){ return c.id === sv.carId; });
+    var car = carById(sv.carId);
     if(!car) return null;
     return {mode: sv.mode, car: car, npc: sv.npc, ask: sv.ask, bid: sv.bid, log: sv.log.slice(), last: sv.last || "",
             done: false, stage: sv.stage, price: sv.price, event: sv.event || null,
             meet: sv.meet ? {when: new Date(sv.meet.whenMs), whenMs: sv.meet.whenMs, label: sv.meet.label} : null,
             note: sv.note || null, met: !!sv.met, busyUsed: !!sv.busyUsed, pid: sv.pid || null,
-            listingPrice: sv.listingPrice, maxBid: sv.maxBid};
+            listingPrice: sv.listingPrice, maxBid: sv.maxBid, trade: sv.trade || null, referencePrice: sv.referencePrice || sv.ask};
 }
 
 function openBuyChat(carId){
     if(!canOpenChat()) return;
-    var car = CARS.find(function(c){ return c.id === carId; });
+    var car = carById(carId);
+    if(!car || car.exchangeOnly) return;
     if(garage.length >= currentGarage().cap){ alert("❌ Нет места! Расширь гараж."); return; }
     if(garage.indexOf(carId) !== -1) return;
     if(pendingFor(carId)) return;
@@ -1014,8 +1017,9 @@ function openBuyChat(carId){
     var p = PERSONALITY[s.personality];
     var npc = {name:s.name, avatar:s.avatar, personality:s.personality,
                mood: clamp(p.mood + rnd(-8,8), 5, 95), greeted:false};
-    var ask = Math.round(car.price * p.markup / 500) * 500;
+    var ask = car.price;
     chat = {mode:"buy", car:car, npc:npc, ask:ask, log:[], last:"", done:false, stage:"talk", price:null, event:null, meet:null, note:null, met:false, busyUsed:false, pid:null};
+    chat.referencePrice = ask;
 
     var opening = {
         kind:   'Привет! Это ' + car.name + '. Состояние отличное, отдам за ' + money(ask) + '. Что скажешь? 🙂',
@@ -1028,7 +1032,7 @@ function openBuyChat(carId){
 
 function openSellChat(carId, ad){
     if(!canOpenChat()) return;
-    var car = CARS.find(function(c){ return c.id === carId; });
+    var car = carById(carId);
     var b = ad ? ad.npc : pick(BUYERS);
     var p = PERSONALITY[b.personality];
     var npc = {name:b.name, avatar:b.avatar, personality:b.personality,
@@ -1038,6 +1042,7 @@ function openSellChat(carId, ad){
     chat = {mode:"sell", car:car, npc:npc, bid:bid, log:[], last:"", done:false, stage:"talk", price:null, event:null, meet:null, note:null, met:false, busyUsed:false, pid:null};
 
     chat.pid = ad ? ad.id : null;
+    chat.trade = ad && ad.trade ? Object.assign({}, ad.trade) : null;
     chat.listingPrice = ad ? (ad.listingPrice || car.price) : car.price;
     chat.maxBid = ad ? (ad.maxBid || bid) : bid;
     var svs = ad ? (chatStore[chatKey(chat)] || chatStore["sell:" + carId]) : null;
@@ -1051,6 +1056,7 @@ function openSellChat(carId, ad){
         evil:   'Ну чё, ' + car.name + '? Больше ' + money(bid) + ' всё равно никто не даст.'
     }[b.personality];
     npcSay(opening);
+    if(chat.trade) npcSay('Предлагаю обмен на ' + carById(chat.trade.carId).name + '. ' + tradeTerms(chat.trade, bid));
     sysSay("📢 Цена в объявлении: " + money(chat.listingPrice));
     openOverlay();
 }
@@ -1119,12 +1125,13 @@ function renderChat(){
 
     if(chat.price != null){
         $("dealRow").innerHTML = 'Цена сделки: <b>' + money(chat.price) + '</b>' +
-            (chat.mode === "buy" ? ' · Баланс: ' + money(balance) : ' · Рынок: ' + money(chat.car.price));
+            (chat.mode === "buy" ? ' · Баланс: ' + money(balance) : ' · Рынок: ' + money(chat.car.marketPrice || chat.car.price));
     }else{
         $("dealRow").innerHTML = chat.mode === "buy"
             ? 'Запрос продавца: <b>' + money(chat.ask) + '</b> · Баланс: ' + money(balance)
             : 'Предложение: <b>' + money(chat.bid) + '</b> · Рынок: ' + money(chat.car.price);
     }
+    if(chat.trade) $("dealRow").innerHTML += tradePreview(chat.trade, chat.price == null ? chat.bid : chat.price);
 
     var log = $("chatLog");
     log.innerHTML = chat.log.map(function(x){
@@ -1238,7 +1245,7 @@ function applyMood(intent){
 function sellerLimit(){
     var p = PERSONALITY[chat.npc.personality];
     var d = lerp(p.dMin, p.dMax, chat.npc.mood/100);
-    return Math.round(chat.car.price * (1 - d));
+    return Math.round((chat.referencePrice || chat.ask) * (1 - d));
 }
 function buyerLimit(){
     if(chat.listingPrice != null) return Math.max(chat.bid, chat.maxBid || chat.bid);
@@ -1317,7 +1324,7 @@ function handleBuyOffer(offer){
     var limit = sellerLimit();
     if(ADM.anyPrice){ agreePrice(offer); return; }
 
-    if(offer < car.price * 0.3){
+    if(offer < (chat.referencePrice || chat.ask) * 0.3){
         npcSay(pick([
             "Это несерьёзно.",
             "Ты издеваешься? За такие деньги я лучше оставлю её себе."
@@ -1475,6 +1482,9 @@ function removeCalNote(h){
 function agreePrice(price){
     price = Math.round(price);
     if(!Number.isSafeInteger(price) || price < 1){ sysSay("Укажите положительную цену в рублях."); return; }
+    if(chat.trade && price < chat.trade.value && !canAfford(chat.trade.value - price)){
+        sysSay('💸 Не хватает денег на доплату за обмен. Предложите больше за свою машину.'); return;
+    }
     if(chat.mode === "buy"){
         if(garage.length >= currentGarage().cap){
             sysSay("❌ В гараже нет места.");
@@ -1545,7 +1555,7 @@ function scheduleMeeting(){
     pending.push({
         id: chat.pid, type: "meet", mode: chat.mode, carId: chat.car.id,
         npc: {name: chat.npc.name, avatar: chat.npc.avatar, personality: chat.npc.personality, mood: chat.npc.mood},
-        price: chat.price, when: chat.meet.whenMs, label: chat.meet.label, note: chat.note, reached: false,
+        price: chat.price, trade: chat.trade || null, when: chat.meet.whenMs, label: chat.meet.label, note: chat.note, reached: false,
         noShow: chat.mode === "sell" && !ADM.smoothMeet && Math.random() < BUYER_NO_SHOW_CHANCE,
         attendanceChecked: false
     });
@@ -1632,6 +1642,7 @@ function goToMeeting(){
 }
 
 function meetingConfirmation(){
+    if(chat.trade) return {sign:0, amount:0, confirmation:true, prompt:'Обе машины осмотрены. ' + tradeTerms(chat.trade, chat.price), yesLabel:'Подтвердить обмен'};
     return {sign:0, amount:0, confirmation:true,
         prompt:(chat.mode === "sell" ? "Клиент готов купить автомобиль" : "Осмотр завершён, автомобиль соответствует описанию") +
             " по согласованной цене: " + money(chat.price) + ".",
@@ -1657,7 +1668,7 @@ function tickMeeting(){
         }
         flow.stage = "inspection";
         chat.stage = "inspection";
-        sysSay(chat.mode === "sell" ? "Клиент приехал и осматривает автомобиль." : "Продавец приехал. Вы осматриваете автомобиль.");
+        sysSay(chat.mode === "sell" ? (chat.trade ? "Участники приехали и осматривают обе машины." : "Клиент приехал и осматривает автомобиль.") : "Продавец приехал. Вы осматриваете автомобиль.");
         changed = true;
     }
     if(flow.stage === "inspection" && gameMs >= flow.inspectionUntil){
@@ -1679,7 +1690,7 @@ function renderMeeting(){
     $("meetingTitle").textContent = "Встреча · " + chat.car.name;
     $("meetingPerson").textContent = chat.npc.avatar + " " + chat.npc.name +
         (chat.mode === "sell" ? " · Покупатель" : " · Продавец");
-    $("meetingDeal").textContent = "Согласованная цена: " + money(chat.price);
+    $("meetingDeal").innerHTML = 'Согласованная цена: ' + money(chat.price) + (chat.trade ? tradePreview(chat.trade, chat.price) : '');
     if($("meetingCarImage").dataset.carId !== String(chat.car.id)){
         $("meetingCarImage").innerHTML = carImg(chat.car);
         $("meetingCarImage").dataset.carId = String(chat.car.id);
@@ -1701,7 +1712,7 @@ function renderMeeting(){
         var end = stage === "waiting" ? flow.arrivalAt : flow.inspectionUntil;
         $("meetingStatus").textContent = stage === "waiting" ? (chat.mode === "sell" ? "Ожидание клиента" : "Ожидание продавца") : "Осмотр автомобиля";
         $("meetingDescription").textContent = stage === "waiting" ? "Вы на месте. Дождитесь приезда второй стороны." :
-            chat.mode === "sell" ? "Клиент проверяет кузов, салон и двигатель. После осмотра он сообщит своё решение." :
+            chat.trade ? "Вы проверяете обе машины: кузов, салон и двигатель. После осмотра подтвердите условия обмена." : chat.mode === "sell" ? "Клиент проверяет кузов, салон и двигатель. После осмотра он сообщит своё решение." :
                 "Вы проверяете кузов, салон и двигатель перед покупкой.";
         $("meetingProgress").value = clamp((gameMs - start) / Math.max(1, end - start) * 100, 0, 100);
         $("meetingTimeLeft").textContent = "Осталось: " + fmtDur(end - gameMs) + " игрового времени";
@@ -1712,7 +1723,7 @@ function renderMeeting(){
         $("stEventText").textContent = ev.prompt;
         $("stEventNote").textContent = lack ? "Не хватает денег, чтобы согласиться." : "";
         $("evYes").textContent = ev.yesLabel;
-        $("evYes").disabled = lack;
+        $("evYes").disabled = lack || !!(chat.trade && chat.trade.value > chat.price + ev.sign * ev.amount && !canAfford(chat.trade.value - chat.price - ev.sign * ev.amount));
         $("evNo").textContent = ev.confirmation ? "Отказаться от сделки" : "Оставить прежнюю цену";
     }else if(chat.done){
         $("meetingStatus").textContent = chat.meetingOutcome === "no-show" ? "Клиент не приехал" :
@@ -1731,7 +1742,7 @@ function agreeEvent(){
     if(!chat || chat.done || chat.stage !== "event" || !chat.event) return;
     var ev = chat.event;
     var newPrice = chat.price + ev.sign * ev.amount;
-    if(ev.sign > 0 && !canAfford(newPrice)){ renderChat(); return; }
+    if((ev.sign > 0 && !canAfford(newPrice)) || (chat.trade && newPrice < chat.trade.value && !canAfford(chat.trade.value - newPrice))){ renderChat(); return; }
     meSay("Хорошо, согласен.");
     chat.price = newPrice;
     chat.event = null;
@@ -1776,7 +1787,7 @@ function refuseEvent(){
 }
 
 function completeDeal(){
-    if(chat.mode === "buy") finishBuy(chat.price); else finishSell(chat.price);
+    if(chat.trade) finishTrade(chat.price); else if(chat.mode === "buy") finishBuy(chat.price); else finishSell(chat.price);
     chat.stage = "done";
     var result = chat.log.filter(function(message){ return message.who === "sys"; }).slice(-1)[0];
     chat.meetingResult = result ? result.text : "Встреча завершена.";
@@ -1789,7 +1800,36 @@ var pidSeq = 0;
 function newPid(){ return "p" + Date.now().toString(36) + (++pidSeq).toString(36) + Math.floor(Math.random() * 1e6).toString(36); }
 function findPending(id){ return pending.find(function(x){ return x.id === id; }) || null; }
 function pendingFor(carId){ return pending.find(function(x){ return x.carId === carId; }) || null; }
-function carById(id){ return CARS.find(function(c){ return c.id === id; }) || null; }
+function carById(id){ return CARS.find(function(c){ return c.id === id; }) || TRADE_CARS.find(function(c){ return c.id === id; }) || null; }
+function tradeTerms(trade, price){
+    var difference = price - trade.value;
+    return 'Оценка машины покупателя: ' + money(trade.value) + '. ' + (difference > 0 ? 'Покупатель доплатит ' + money(difference) : difference < 0 ? 'Ваша доплата: ' + money(-difference) : 'Обмен без доплаты');
+}
+function tradePreview(trade, price){
+    var car = carById(trade.carId);
+    if(!car) return '';
+    return '<div class="trade-preview"><button class="trade-photo" data-trade-info="' + car.id + '" aria-label="Осмотреть ' + esc(car.name) + '">' + carImg(car) + '</button><div><b>🔁 ' + esc(car.name) + '</b><br>' + esc(car.desc) + '<br>' + esc(tradeTerms(trade, price)) + '<br><button class="trade-details" data-trade-info="' + car.id + '">Подробнее о машине</button></div></div>';
+}
+function finishTrade(price){
+    var incoming = carById(chat.trade.carId), difference = price - chat.trade.value;
+    var newBalance = balance + difference, index = garage.indexOf(chat.car.id);
+    if(!incoming || index < 0 || garage.indexOf(incoming.id) !== -1 || !Number.isSafeInteger(price) || price < 1 || !Number.isSafeInteger(newBalance) || newBalance < 0){
+        sysSay('❌ Обмен невозможен: проверьте наличие машин и деньги на доплату.'); chat.done = true; return;
+    }
+    var cost = Math.max(1, purchaseCost(chat.car) - difference);
+    balance = newBalance;
+    garage[index] = incoming.id;
+    delete purchasePrices[chat.car.id];
+    purchasePrices[incoming.id] = cost;
+    delete listings[chat.car.id];
+    removeSaleOffers(chat.car.id);
+    // Одна машина не может одновременно перейти от двух покупателей.
+    pending.filter(function(it){ return it.type === 'ad' && it.trade && it.trade.carId === incoming.id; }).forEach(function(it){ dropPending(it.id); });
+    deals++;
+    save();
+    sysSay('✅ Обмен: ' + chat.car.name + ' → ' + incoming.name + '. ' + tradeTerms(chat.trade, price));
+    chat.done = true;
+}
 function isMeetReady(it){ return !!(ADM.smoothMeet || gameMs >= it.when); }
 
 function dropPending(id, removeNote){
@@ -1859,7 +1899,7 @@ function sellBtn(car){
 }
 
 function purchaseCost(car){
-    return Number.isFinite(purchasePrices[car.id]) ? purchasePrices[car.id] : car.price;
+    return Number.isFinite(purchasePrices[car.id]) ? purchasePrices[car.id] : (car.basePrice || car.price);
 }
 function nextBuyerDelay(listing){
     var markup = listing.price - listing.purchasePrice;
@@ -1875,10 +1915,19 @@ function makeBuyerOffer(listing, arrivedAt){
     var bid = kind < 0.15 ? Math.min(Number.MAX_SAFE_INTEGER, Math.max(price + 1, Math.round(price * (1.01 + Math.random() * 0.09))))
         : kind < 0.50 ? price : Math.max(1, Math.round(price * (0.75 + Math.random() * 0.20)));
     listing.lastBuyerName = b.name;
+    var offered = null;
+    if(kind >= 0.50 && kind < 0.75){
+        var pool = TRADE_CARS.filter(function(car){
+            return garage.indexOf(car.id) === -1 && car.id !== listing.carId &&
+                car.marketPrice >= price * 0.30 && car.marketPrice <= price * 1.60 &&
+                !pending.some(function(it){ return it.trade && it.trade.carId === car.id; });
+        });
+        if(pool.length){ var swap = pick(pool); offered = {carId:swap.id, value:swap.marketPrice}; }
+    }
     return {
         id: newPid(), type: "ad", mode: "sell", carId: listing.carId,
         npc: {name: b.name, avatar: b.avatar, personality: b.personality, mood: clamp(p.mood + rnd(-8, 8), 5, 95)},
-        listingPrice: price, bid: bid, maxBid: Math.min(Number.MAX_SAFE_INTEGER, Math.max(bid, Math.round(bid * 1.05))),
+        listingPrice: price, bid: bid, trade: offered, maxBid: Math.min(Number.MAX_SAFE_INTEGER, Math.max(bid, Math.round(bid * 1.05))),
         readyAt: arrivedAt == null ? gameMs : arrivedAt, ready: true
     };
 }
@@ -1906,7 +1955,7 @@ function tickListings(){
             var offer = makeBuyerOffer(listing, arrivedAt);
             pending.push(offer);
             offers.push(offer);
-            toastDeals("📩 " + offer.npc.name + " предлагает " + money(offer.bid) + " за " + car.name + ".");
+            toastDeals("📩 " + offer.npc.name + (offer.trade ? " предлагает обмен, оценка вашей машины: " : " предлагает ") + money(offer.bid) + " за " + car.name + ".");
             listing.nextBuyerAt = arrivedAt + nextBuyerDelay(listing);
             changed = true;
         }
@@ -1929,12 +1978,12 @@ function migrateSaleListings(){
     pending.filter(function(it){ return it.type === "ad" && it.mode === "sell"; }).forEach(function(it){
         var car = carById(it.carId);
         if(!listings[it.carId]){
-            listings[it.carId] = {carId: it.carId, price: car.price, purchasePrice: purchaseCost(car),
+            listings[it.carId] = {carId: it.carId, price: car.basePrice || car.price, purchasePrice: purchaseCost(car),
                 buyerTimingVersion: BUYER_TIMING_VERSION};
             listings[it.carId].nextBuyerAt = gameMs + nextBuyerDelay(listings[it.carId]);
         }
         if(!Number.isFinite(it.bid)){
-            it.bid = Math.round(car.price * 0.9);
+            it.bid = Math.round(listings[it.carId].price * 0.9);
             it.listingPrice = listings[it.carId].price;
             it.maxBid = Math.round(it.bid * 1.05);
         }
@@ -2009,7 +2058,7 @@ function openMeetChat(id, travel){
     if(!it || it.type !== "meet" || !car) return;
     var npc = {name: it.npc.name, avatar: it.npc.avatar, personality: it.npc.personality, mood: it.npc.mood, greeted: true};
     chat = {mode: it.mode, car: car, npc: npc, ask: it.price, bid: it.price, log: [], last: "", done: false,
-            stage: "go", price: it.price, event: null,
+            stage: "go", price: it.price, event: null, trade: it.trade || null,
             meet: {when: new Date(it.when), whenMs: it.when, label: it.label},
             note: it.note, met: false, busyUsed: true, pid: it.id};
     var svm = chatStore[chatKey(chat)];
@@ -2126,7 +2175,8 @@ function dealCard(it){
         if(it.ready){
             body = '<div class="name">📩 ' + esc(n.avatar + " " + n.name) + ' пишет по объявлению</div>' +
                 '<div class="meta">' + esc(car.name) + '</div>' +
-                '<div class="price">Предлагает: ' + money(it.bid || car.price) + '</div>' +
+                '<div class="price">' + (it.trade ? '🔁 Обмен · Ваша машина: ' : 'Предлагает: ') + money(it.bid || car.price) + '</div>' +
+                (it.trade ? tradePreview(it.trade, it.bid) : '') +
                 '<div class="deal-status ok">Покупатель ждёт ответа</div>' +
                 '<button class="buy" data-ad-open="' + it.id + '">💬 Ответить</button>' +
                 '<button class="deal-cancel" data-ad-cancel="' + it.id + '">Отклонить предложение</button>';
@@ -2730,6 +2780,12 @@ function bindUI(){
     });
 
     bindFilters();
+    document.addEventListener('click', function(e){
+        var info = e.target.closest('[data-trade-info]'), back = e.target.closest('[data-trade-back]');
+        if(!info && !back) return;
+        e.preventDefault(); e.stopPropagation();
+        if(info) openCarInfo(Number(info.dataset.tradeInfo)); else closeCarInfo();
+    }, true);
     if($("tabMarket")) $("tabMarket").addEventListener("click", showMarket);
     if($("tabDeals")) $("tabDeals").addEventListener("click", showDeals);
     if($("tabGarage")) $("tabGarage").addEventListener("click", showGarage);
