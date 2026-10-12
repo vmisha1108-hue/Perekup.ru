@@ -314,6 +314,9 @@ button:disabled{opacity:.4;cursor:not-allowed}
     font-size:14px;line-height:1.4;white-space:pre-wrap;
 }
 .msg.npc{background:#1e2531;align-self:flex-start;border-bottom-left-radius:4px}
+.ai-status{padding:6px 16px;color:#9aa3b3;font-size:11px;border-bottom:1px solid #202632}
+.typing{color:#9aa3b3;font-style:italic}
+.quick button:disabled{opacity:.45;cursor:wait}
 .msg.me{background:#3ee0c9;color:#07110b;align-self:flex-end;border-bottom-right-radius:4px}
 .msg.sys{
     align-self:center;text-align:center;font-size:13px;

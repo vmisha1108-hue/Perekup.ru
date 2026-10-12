@@ -985,7 +985,7 @@ function saveChat(){
     chatStore[chatKey(chat)] = {
         mode: chat.mode, carId: chat.car.id, npc: chat.npc, ask: chat.ask, bid: chat.bid,
         listingPrice: chat.listingPrice, maxBid: chat.maxBid, trade: chat.trade || null, referencePrice: chat.referencePrice,
-        log: chat.log.slice(-80), last: chat.last, stage: chat.stage, price: chat.price,
+        log: chat.log.slice(-80).map(function(m){ return {who:m.who, text:m.text, source:m.source}; }), last: chat.last, stage: chat.stage, price: chat.price,
         meet: chat.meet ? {whenMs: chat.meet.whenMs, label: chat.meet.label} : null,
         note: chat.note, busyUsed: chat.busyUsed, pid: chat.pid, met: chat.met, event: chat.event
     };
@@ -1071,6 +1071,7 @@ function canOpenChat(){
         return false;
     }
     if(chat && chat.met) closeChat();
+    if(chat) cancelAiReply(chat);
     return true;
 }
 function setMeetingDefaults(){
@@ -1090,6 +1091,7 @@ function openOverlay(){
     setTimeout(function(){ $("msgInput").focus(); }, 60);
 }
 function closeChat(){
+    if(chat) cancelAiReply(chat);
     $("overlay").classList.remove("open");
     $("win-meeting").classList.remove("open", "minimized");
     delete openWindows.meeting;
@@ -1138,14 +1140,18 @@ function renderChat(){
 
     var log = $("chatLog");
     log.innerHTML = chat.log.map(function(x){
+        if(x.aiWaiting) return '<div class="msg npc typing" role="status">Собеседник печатает…</div>';
         return '<div class="msg ' + x.who + '">' + esc(x.text) + '</div>';
     }).join("");
     log.scrollTop = log.scrollHeight;
 
-    $("msgInput").disabled   = chat.done;
-    $("offerInput").disabled = chat.done;
-    $("offerBtn").disabled   = chat.done;
-    $("sendBtn").disabled    = chat.done;
+    var waiting = !!chat.aiPending;
+    $("msgInput").disabled   = chat.done || waiting;
+    $("offerInput").disabled = chat.done || waiting;
+    $("offerBtn").disabled   = chat.done || waiting;
+    $("sendBtn").disabled    = chat.done || waiting;
+    $("meetBtn").disabled    = waiting;
+    renderAiStatus();
 
     // панель этапов сделки: назначение встречи, поездка, решение на встрече
     var st = chat.done ? "done" : chat.stage;
@@ -1181,7 +1187,7 @@ function renderChat(){
         $("chatFinishClose").addEventListener("click", closeChat);
     }else{
         q.innerHTML = QUICK[chat.mode].map(function(t,i){
-            return '<button data-quick="' + i + '">' + esc(t) + '</button>';
+            return '<button data-quick="' + i + '"' + (waiting ? ' disabled' : '') + '>' + esc(t) + '</button>';
         }).join("");
         q.querySelectorAll("[data-quick]").forEach(function(btn){
             btn.addEventListener("click", function(){
@@ -1243,7 +1249,7 @@ function buyerLimit(){
 function smallTalk(intent){ return humanSmallTalk(intent); }
 
 /* ================= ДИАЛОГ ================= */
-function handleMessage(text){
+function handleMessageRules(text){
     if(!chat || chat.done || chat.stage !== "talk") return;
 
     meSay(text);
@@ -1484,7 +1490,7 @@ function agreePrice(price){
 }
 
 function scheduleMeeting(){
-    if(!chat || chat.done || chat.stage !== "schedule") return;
+    if(!chat || chat.done || chat.aiPending || chat.stage !== "schedule") return;
     advanceGameTime(Date.now());
     if(!meetingTimeEdited) setMeetingDefaults();
     var ds = $("meetDate").value, ts = $("meetTime").value;
