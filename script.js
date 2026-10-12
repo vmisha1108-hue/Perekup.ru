@@ -80,7 +80,7 @@ var lastClockStr = "";
 var BUYER_WAIT_MEAN = 3 * 3600000;  // случайные отклики: в среднем раз в три игровых часа
 var BUYER_TIMING_VERSION = 2;
 var MEET_GRACE  = 4 * 3600000;       // на встречу можно приехать в течение 4 игровых часов после назначенного
-var BUYER_NO_SHOW_CHANCE = 0.15;    // часть покупателей не приезжает; исход сохраняется при назначении
+var NPC_NO_SHOW_CHANCE = 0.20;      // неявка покупателя или продавца; исход сохраняется при назначении
 var MEETING_WAIT_MIN = 5 * 60000, MEETING_WAIT_MAX = 15 * 60000;
 var MEETING_INSPECTION_MIN = 5 * 60000, MEETING_INSPECTION_MAX = 10 * 60000;
 var pending = readSaved("pending",[]).filter(function(it){
@@ -706,7 +706,8 @@ function saveChat(){
         listingPrice: chat.listingPrice, maxBid: chat.maxBid, trade: chat.trade || null, referencePrice: chat.referencePrice,
         log: chat.log.slice(-80).map(function(m){ return {who:m.who, text:m.text}; }), last: chat.last, stage: chat.stage, price: chat.price,
         meet: chat.meet ? {whenMs: chat.meet.whenMs, label: chat.meet.label} : null,
-        note: chat.note, busyUsed: chat.busyUsed, pid: chat.pid, met: chat.met, event: chat.event
+        note: chat.note, busyUsed: chat.busyUsed, busyTimes: chat.busyTimes || [], discountBudget: chat.discountBudget,
+        pid: chat.pid, met: chat.met, event: chat.event
     };
     persistChats();
     renderDealsTab();
@@ -728,7 +729,8 @@ function restoreChat(sv){
     return {mode: sv.mode, car: car, npc: sv.npc, ask: sv.ask, bid: sv.bid, log: sv.log.slice(), last: sv.last || "",
             done: false, stage: sv.stage, price: sv.price, event: sv.event || null,
             meet: sv.meet ? {when: new Date(sv.meet.whenMs), whenMs: sv.meet.whenMs, label: sv.meet.label} : null,
-            note: sv.note || null, met: !!sv.met, busyUsed: !!sv.busyUsed, pid: sv.pid || null,
+            note: sv.note || null, met: !!sv.met, busyUsed: !!sv.busyUsed, busyTimes: restoreBusyTimes(sv), pid: sv.pid || null,
+            discountBudget: sv.mode==='buy' ? (Number.isSafeInteger(sv.discountBudget) && sv.discountBudget>=0 ? sv.discountBudget : negotiationDiscount(sv.referencePrice || sv.ask)) : null,
             listingPrice: sv.listingPrice, maxBid: sv.maxBid, trade: sv.trade || null, referencePrice: sv.referencePrice || sv.ask};
 }
 
@@ -751,7 +753,7 @@ function openBuyChat(carId){
     var npc = {name:s.name, avatar:s.avatar, personality:s.personality,
                mood: clamp(p.mood + rnd(-8,8), 5, 95), greeted:false};
     var ask = car.price;
-    chat = {mode:"buy", car:car, npc:npc, ask:ask, log:[], last:"", done:false, stage:"talk", price:null, event:null, meet:null, note:null, met:false, busyUsed:false, pid:null};
+    chat = {mode:"buy", car:car, npc:npc, ask:ask, log:[], last:"", done:false, stage:"talk", price:null, event:null, meet:null, note:null, met:false, busyUsed:false, busyTimes:[], discountBudget:negotiationDiscount(ask), pid:null};
     chat.referencePrice = ask;
 
     npcSay(humanOpening());
@@ -767,7 +769,7 @@ function openSellChat(carId, ad){
                mood: ad ? b.mood : clamp(p.mood + rnd(-8,8), 5, 95), greeted:false};
     var b0 = lerp(p.bMin, p.bMax, npc.mood/100);
     var bid = ad && Number.isFinite(ad.bid) ? ad.bid : Math.round(car.price * (1 + b0) * 0.88 / 500) * 500;
-    chat = {mode:"sell", car:car, npc:npc, bid:bid, log:[], last:"", done:false, stage:"talk", price:null, event:null, meet:null, note:null, met:false, busyUsed:false, pid:null};
+    chat = {mode:"sell", car:car, npc:npc, bid:bid, log:[], last:"", done:false, stage:"talk", price:null, event:null, meet:null, note:null, met:false, busyUsed:false, busyTimes:[], pid:null};
 
     chat.pid = ad ? ad.id : null;
     chat.trade = ad && ad.trade ? Object.assign({}, ad.trade) : null;
@@ -964,10 +966,19 @@ function applyMood(intent){
     chat.npc.mood = clamp(chat.npc.mood + d, 0, 100);
 }
 
+// Обычный торг — 10–20 тысяч; 30 тысяч выпадают в 12%, 50 тысяч — в 3% случаев.
+function negotiationDiscount(price){
+    if(!Number.isSafeInteger(price) || price<=1)return 0;
+    var chance=Math.random(),amount=chance<.03?50000:chance<.15?30000:pick([10000,15000,20000]);
+    return Math.max(0,Math.min(amount,price-1,Math.floor(price*.15/500)*500));
+}
 function sellerLimit(){
     var p = PERSONALITY[chat.npc.personality];
     var d = lerp(p.dMin, p.dMax, chat.npc.mood/100);
-    return Math.round((chat.referencePrice || chat.ask) * (1 - d));
+    var reference=chat.referencePrice || chat.ask;
+    if(!Number.isSafeInteger(chat.discountBudget) || chat.discountBudget<0)chat.discountBudget=negotiationDiscount(reference);
+    var discount=Math.max(0,Math.min(chat.discountBudget,Math.floor(reference*d/500)*500));
+    return reference-discount;
 }
 function buyerLimit(){
     if(chat.listingPrice != null) return Math.max(chat.bid, chat.maxBid || chat.bid);
@@ -1062,7 +1073,7 @@ function handleBuyOffer(offer){
         return;
     }
 
-    if(offer >= chat.ask){ agreePrice(chat.ask); return; }
+    if(offer >= chat.ask){ agreePrice(offer); return; }
     if(offer >= limit){ agreePrice(offer); return; }
 
     var counter = Math.round(((offer + chat.ask) / 2) / 500) * 500;
@@ -1207,6 +1218,18 @@ function fmtMeet(d){
            " в " + pad2(d.getHours()) + ":" + pad2(d.getMinutes());
 }
 
+function restoreBusyTimes(saved){
+    if(Array.isArray(saved.busyTimes))return saved.busyTimes.filter(function(time,index,times){return Number.isSafeInteger(time) && time>0 && times.indexOf(time)===index;});
+    // Старые переписки хранили только факт отказа: восстанавливаем слот из диалога.
+    var times=[];
+    (saved.log || []).forEach(function(message,index,log){
+        var next=log[index+1],match=/Давайте встретимся (\d{2})\.(\d{2})\.(\d{4}) в (\d{2}):(\d{2})/.exec(message.text);
+        if(message.who==='me' && match && next && next.who==='npc' && /в это время.*(?:занят|не получится)|не могу в это время/i.test(next.text)){
+            times.push(new Date(+match[3],+match[2]-1,+match[1],+match[4],+match[5]).getTime());
+        }
+    });
+    return Array.from(new Set(times)).filter(function(time){return Number.isSafeInteger(time) && time>0;});
+}
 // Удаление старых календарных записей при отмене сохранённой встречи.
 function removeCalNote(h){
     if(!h || !notes[h.key]) return;
@@ -1257,11 +1280,16 @@ function scheduleMeeting(){
 
     var p = chat.npc.personality;
     meSay("Давайте встретимся " + fmtMeet(when) + ".");
+    if(!Array.isArray(chat.busyTimes))chat.busyTimes=restoreBusyTimes(chat);
+    if(!ADM.smoothMeet && chat.busyTimes.indexOf(when.getTime())!==-1){
+        npcSay('Я уже говорил, что в это время занят. Выберите другой день или другое время.');renderChat();return;
+    }
 
     // небольшой шанс, что продавец или покупатель занят (не больше одного раза за сделку)
     var chance = {kind:0.05, neutral:0.08, evil:0.14}[p];
     if(!ADM.smoothMeet && !chat.busyUsed && Math.random() < chance){
         chat.busyUsed = true;
+        chat.busyTimes.push(when.getTime());
         npcSay({
             kind:   "Ой, в это время никак не получится, я занят. Давайте другой день? 🙂",
             neutral:"В это время занят. Назовите другое.",
@@ -1289,7 +1317,7 @@ function scheduleMeeting(){
         id: chat.pid, type: "meet", mode: chat.mode, carId: chat.car.id,
         npc: {name: chat.npc.name, avatar: chat.npc.avatar, personality: chat.npc.personality, mood: chat.npc.mood},
         price: chat.price, trade: chat.trade || null, when: chat.meet.whenMs, label: chat.meet.label, note: chat.note, reached: false,
-        noShow: chat.mode === "sell" && !ADM.smoothMeet && Math.random() < BUYER_NO_SHOW_CHANCE,
+        noShow: !ADM.smoothMeet && Math.random() < NPC_NO_SHOW_CHANCE,
         attendanceChecked: false
     });
     save();
@@ -1323,20 +1351,9 @@ function rollEvent(){
         };
     }
 
-    // покупатель осматривает машину и просит скинуть
-    if(Math.random() < 0.5){
-        return {
-            sign: -1, amount: fuel,
-            line: {
-                kind:   'Ехал к вам далеко. Не скинете ' + money(fuel) + ' на бензин? 🙂',
-                neutral:'Ехал через весь город. Скиньте ' + money(fuel) + ' на бензин.',
-                evil:   'Я сюда не просто так ехал. Скидывай ' + money(fuel) + ' на бензин.'
-            }[p],
-            prompt: "Покупатель просит скинуть на бензин: −" + money(fuel),
-            yesLabel: "✅ Согласиться (−" + money(fuel) + ")"
-        };
-    }
-    var cut = Math.min(price - 1, Math.max(1000, Math.round(price * lerp(0.01, 0.03, Math.random()) / 500) * 500));
+    // Покупатель просит обычную или редкую крупную скидку после осмотра.
+    var cut=negotiationDiscount(price);
+    if(!cut)return null;
     return {
         sign: -1, amount: cut,
         line: {
@@ -1396,13 +1413,13 @@ function tickMeeting(){
     var changed = false;
     if(flow.stage === "waiting" && gameMs >= flow.arrivalAt){
         meeting.attendanceChecked = true;
-        if(chat.mode === "sell" && meeting.noShow && !ADM.smoothMeet){
+        if(meeting.noShow && !ADM.smoothMeet){
             chat.event = null;
             chat.done = true;
             chat.stage = "done";
             chat.meetingOutcome = "no-show";
             chat.meetingEndStage = "waiting";
-            chat.meetingResult = "Клиент не приехал. Автомобиль остаётся в гараже, деньги не изменились. Объявление снова принимает отклики.";
+            chat.meetingResult = chat.mode==='sell' ? "Клиент не приехал. Автомобиль остаётся в гараже, деньги не изменились. Объявление снова принимает отклики." : "Продавец не приехал. Деньги остались на счёте, покупка отменена. Можно выбрать другое объявление.";
             sysSay(chat.meetingResult);
             renderChat();
             return;
@@ -1474,7 +1491,7 @@ function renderMeeting(){
         $("meetingDescription").textContent='Заполните данные, сверьте документы и подпишите договор. Подсказки и помощь находятся ниже. Пока договор не подписан, машина и деньги не передаются.';
         renderContractForm();
     }else if(chat.done){
-        $("meetingStatus").textContent = chat.meetingOutcome === "no-show" ? "Клиент не приехал" :
+        $("meetingStatus").textContent = chat.meetingOutcome === "no-show" ? (chat.mode==='sell'?"Клиент не приехал":"Продавец не приехал") :
             chat.meetingOutcome === "success" ? "Сделка завершена" : "Встреча завершена";
         var result = chat.log.filter(function(message){ return message.who === "sys"; }).slice(-1)[0];
         $("meetingDescription").textContent = chat.meetingResult || (result ? result.text : "Встреча завершена.");
