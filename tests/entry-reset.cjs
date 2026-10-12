@@ -16,12 +16,21 @@ const server=http.createServer(async(req,res)=>{
     async function scenario(name,run,options={}){
         const context=await browser.newContext({viewport:options.viewport||{width:1280,height:900}}),page=await context.newPage(),errors=[];page.on('pageerror',e=>errors.push(e.message));
         await page.addInitScript(firstVisit=>{if(!firstVisit)localStorage.setItem('helpPromptSeen','1');window.testNow=new Date(2030,0,15,12).getTime();Date.now=()=>testNow;Math.random=()=>.9;},!!options.firstVisit);
-        try{await page.goto('http://127.0.0.1:'+server.address().port,{waitUntil:'networkidle'});assert.ok(await page.locator('#entryResetOverlay').isVisible());await run(page);assert.deepEqual(errors,[]);passed++;console.log('PASS '+name);}finally{await context.close();}
+        if(!options.noPrompt)await page.route('**/entry-reset.js*',async route=>{const response=await route.fetch();const body=(await response.text()).replace('var ENTRY_RESET_PROMPT_ENABLED=false;','var ENTRY_RESET_PROMPT_ENABLED=true;');await route.fulfill({response,body});});
+        try{await page.goto('http://127.0.0.1:'+server.address().port,{waitUntil:'networkidle'});assert.equal(await page.locator('#entryResetOverlay').isVisible(),!options.noPrompt);await run(page);assert.deepEqual(errors,[]);passed++;console.log('PASS '+name);}finally{await context.close();}
     }
     async function collectorFixture(page){
         await page.evaluate(()=>{Math.random=()=>0;takeMicro(10000);spend(balance,'Расход');gameMs=bankActive('micro').nextDueAt+90*BANK_DAY;tickPending();bank.collectors.nextEventAt=gameMs;tickPending();save();});
     }
     try{
+        await scenario('default entry loads saved progress directly without prompting or resetting it',async page=>{
+            assert.equal(await page.evaluate(()=>startupResetPending),false);
+            await page.evaluate(()=>{garage=[1];purchasePrices[1]=95000;changeBalance(650000,'Доход','income');save();});
+            await page.reload({waitUntil:'networkidle'});
+            assert.ok(!await page.locator('#entryResetOverlay').isVisible());assert.equal(await page.evaluate(()=>startupResetPending),false);
+            assert.equal(await page.evaluate(()=>balance),750000);assert.deepEqual(await page.evaluate(()=>garage),[1]);assert.equal(await page.evaluate(()=>purchasePrices[1]),95000);
+            await page.evaluate(()=>{testNow+=1000;tickGame();});assert.equal(await page.evaluate(()=>gameMs),await page.evaluate(()=>Number(localStorage.getItem('gameMs'))+60000));
+        },{noPrompt:true});
         await scenario('every entry and reload offers an optional reset; continuing preserves cash and cars',async page=>{
             assert.equal(await page.evaluate(()=>document.activeElement.id),'entryContinue');await page.locator('#entryContinue').click();
             await page.evaluate(()=>{garage=[1];changeBalance(650000,'Доход','income');purchasePrices[1]=95000;save();});

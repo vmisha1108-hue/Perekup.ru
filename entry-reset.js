@@ -1,7 +1,7 @@
 'use strict';
 
 // Временное предложение на период разработки. Для отключения достаточно поставить false.
-var ENTRY_RESET_PROMPT_ENABLED=true;
+var ENTRY_RESET_PROMPT_ENABLED=false;
 var startupResetPending=ENTRY_RESET_PROMPT_ENABLED;
 function resumeAfterEntry(){
     lastRealMs=Date.now();updateGameSpeed();
