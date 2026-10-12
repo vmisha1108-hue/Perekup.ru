@@ -1,3 +1,4 @@
+const {installEntryContinue}=require('./helpers/entry.cjs');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
@@ -37,7 +38,7 @@ const server = http.createServer((request,response)=>{
     async function scenario(name,run){
         const context=await browser.newContext();const page=await context.newPage();const errors=[];
         page.on('pageerror',error=>errors.push(error.message));
-        await page.addInitScript(()=>{localStorage.setItem('helpPromptSeen','1');Date.now=()=>new Date(2030,0,15,12).getTime();Math.random=()=>.9;});
+        installEntryContinue(page);await page.addInitScript(()=>{localStorage.setItem('helpPromptSeen','1');Date.now=()=>new Date(2030,0,15,12).getTime();Math.random=()=>.9;});
         try{await page.goto(url,{waitUntil:'networkidle'});await run(page);assert.deepEqual(errors,[]);passed++;console.log('PASS '+name);}finally{await context.close();}
     }
     try{

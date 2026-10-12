@@ -2319,6 +2319,7 @@ function showDeals(){
 
 // проверяется каждый тик игрового времени
 function tickPending(){
+    if(startupResetPending)return;
     tickTransport();
     tickBank();
     tickCollectors();
@@ -2538,6 +2539,7 @@ function offerFirstVisitHelp(){
 }
 
 function advanceGameTime(now){
+    if(startupResetPending){lastRealMs=now;return;}
     var delta = now - lastRealMs;
     lastRealMs = now;
     if(delta < 0) delta = 0;
@@ -2599,6 +2601,7 @@ function renderGameTime(){
 
 function tickGame(){
     var now = Date.now();
+    if(startupResetPending){lastRealMs=now;return;}
     advanceGameTime(now);
     renderGameTime();
     if(chat && chat.stage === "schedule" && !meetingTimeEdited) setMeetingDefaults();
@@ -2741,6 +2744,10 @@ function admGarLvl(i){
 }
 function admReset(){
     if(!confirm("Сбросить весь прогресс (баланс, гараж, сделки, заметки, кредиты и историю банка)?")) return;
+    resetGameProgress(false);
+}
+function resetGameProgress(resetClock){
+    if(resetClock){gameMs=Date.now();lastRealMs=Date.now();lastDayKey='';lastClockStr='';calYear=gameNow().getFullYear();calMonth=gameNow().getMonth();}
     balance = START_BALANCE; garage = []; deals = 0; garageLvl = 0; notes = {}; pending = [];
     purchasePrices = {}; listings = {}; chatStore = {}; retiredMarketCars=[];
     transport = newTransport();
@@ -2982,6 +2989,7 @@ window.addEventListener("DOMContentLoaded", function(){
     initTransport();
     initCollectors();
     initContracts();
+    initEntryReset();
     migrateSaleListings();
     bindUI();
     initCalc();
@@ -2996,8 +3004,7 @@ window.addEventListener("DOMContentLoaded", function(){
     updateStats();
     renderShop();
     renderTaskbar();
-    restoreActiveMeeting();
-    offerFirstVisitHelp();
+    offerEntryReset();
 });
 /* ================= РЕСАЙЗ ОКОН ЗА ЛЮБУЮ ГРАНИЦУ (ФИКС) ================= */
 window.addEventListener("load", function(){

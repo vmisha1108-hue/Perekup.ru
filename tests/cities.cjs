@@ -1,3 +1,4 @@
+const {installEntryContinue}=require('./helpers/entry.cjs');
 const {signContract}=require('./helpers/contracts.cjs');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
@@ -95,7 +96,7 @@ const server = http.createServer((req, res) => {
         const page = await browser.newPage();
         const errors = [];
         page.on('pageerror', error => errors.push(error.message));
-        await page.addInitScript(() => { localStorage.setItem('helpPromptSeen','1'); Math.random = () => .9; });
+        installEntryContinue(page);await page.addInitScript(() => { localStorage.setItem('helpPromptSeen','1'); Math.random = () => .9; });
         const url = 'http://127.0.0.1:' + server.address().port;
         await page.goto(url, {waitUntil:'networkidle'});
         await page.evaluate(() => openWin('market'));
@@ -193,7 +194,7 @@ const server = http.createServer((req, res) => {
 
         const fresh = await browser.newPage();
         fresh.on('pageerror', error => errors.push(error.message));
-        await fresh.addInitScript(id => {
+        installEntryContinue(fresh);await fresh.addInitScript(id => {
             localStorage.setItem('helpPromptSeen', '1');
             if(!localStorage.getItem('marketLocation')) localStorage.setItem('marketLocation', JSON.stringify({city:id,radius:'500'}));
             Math.random = () => .9;

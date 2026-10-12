@@ -1,3 +1,4 @@
+const {installEntryContinue}=require('./helpers/entry.cjs');
 const assert = require('node:assert/strict');
 const fs = require('node:fs/promises');
 const fsSync = require('node:fs');
@@ -22,7 +23,7 @@ const server = http.createServer(async(req,res)=>{
         const context=await browser.newContext(),page=await context.newPage(),errors=[],apiRequests=[];
         page.on('pageerror',e=>errors.push(e.message));
         page.on('request',r=>{if(r.url().includes('/api/') || !r.url().startsWith('http://127.0.0.1:')) apiRequests.push(r.url());});
-        await page.addInitScript(()=>{localStorage.setItem('helpPromptSeen','1');Date.now=()=>new Date(2030,0,15,12).getTime();Math.random=()=>.9;});
+        installEntryContinue(page);await page.addInitScript(()=>{localStorage.setItem('helpPromptSeen','1');Date.now=()=>new Date(2030,0,15,12).getTime();Math.random=()=>.9;});
         try{
             await page.goto('http://127.0.0.1:'+server.address().port,{waitUntil:'networkidle'});
             await run(page);assert.deepEqual(errors,[]);assert.deepEqual(apiRequests,[]);passed++;console.log('PASS '+name);

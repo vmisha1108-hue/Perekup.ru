@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Perekyp.ru</title>
-<link rel="stylesheet" href="style.css?v=20261012-contracts">
+<link rel="stylesheet" href="style.css?v=20261012-entry">
 </head>
 <body>
 
@@ -362,6 +362,19 @@
 </div>
 
 <!-- ВХОД В СЛУЖЕБНОЕ ОКНО -->
+<div class="overlay entry-reset-overlay" id="entryResetOverlay" role="dialog" aria-modal="true" aria-labelledby="entryResetTitle" aria-describedby="entryResetText entryResetLoss">
+    <div class="sale-modal entry-reset-card">
+        <span class="entry-reset-badge">Проект в разработке</span>
+        <h2 id="entryResetTitle">Начать с чистого сохранения?</h2>
+        <p id="entryResetText" class="welcome-text">Мы обновляем игру. Для лучшей работы обновлений предлагаем сбросить старое сохранение и начать заново. Это необязательно — можно продолжить с текущим прогрессом.</p>
+        <p id="entryResetLoss" class="entry-reset-loss">При сбросе удалятся деньги, машины, сделки, кредиты, заметки и договоры. Новая игра начнётся со 100 000 ₽.</p>
+        <div class="entry-reset-actions">
+            <button id="entryContinue" class="stage-btn yes">Продолжить с сохранением</button>
+            <button id="entryReset" class="stage-btn no">Сбросить и начать заново</button>
+        </div>
+        <p class="entry-reset-note">Это временное предложение появляется при каждом входе, пока мы дорабатываем проект.</p>
+    </div>
+</div>
 <div class="overlay" id="welcomeOverlay" role="dialog" aria-modal="true" aria-labelledby="welcomeTitle">
     <div class="sale-modal">
         <h2 id="welcomeTitle">👋 Добро пожаловать в Perekyp.ru!</h2>
@@ -474,8 +487,9 @@
     <div class="collector-call"><div class="collector-phone" aria-hidden="true"><svg viewBox="0 0 24 24" width="42" height="42" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 2 .7 2.9a2 2 0 0 1-.4 2.1L8.1 10a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.9.6 2.9.7a2 2 0 0 1 1.6 1.9Z"/></svg></div><p class="collector-eyebrow">Входящий звонок взыскателя</p><h2 id="collectorCaller"></h2><p id="collectorCallText"></p><p id="collectorCallCost" class="collector-cost"></p><div class="collector-actions"><button id="collectorHangup">Завершить разговор</button><button id="collectorOpenBank">Открыть Банк</button></div></div>
 </div>
 <script src="bank.js?v=20261012-review"></script>
-<script src="collectors.js?v=20261012-review"></script>
+<script src="collectors.js?v=20261012-entry"></script>
 <script src="contracts.js?v=20261012-contracts"></script>
-<script src="script.js?v=20261012-contracts"></script>
+<script src="entry-reset.js?v=20261012-entry"></script>
+<script src="script.js?v=20261012-entry"></script>
 </body>
 </html>

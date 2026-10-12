@@ -156,6 +156,7 @@ function initCollectors(){
         else if(!event.shiftKey && document.activeElement===last){event.preventDefault();first.focus();}
     });
     document.addEventListener('keydown',function(event){
+        if(startupResetPending)return;
         if(event.key==='Escape' && document.getElementById('collectorOverlay').classList.contains('open')){
             event.preventDefault();event.stopImmediatePropagation();dismissCollectorCall(false);
         }

@@ -1,3 +1,4 @@
+const {installEntryContinue}=require('./helpers/entry.cjs');
 const {signContract}=require('./helpers/contracts.cjs');
 // Run with Node.js and Playwright installed: node tests/gameplay.cjs
 const assert = require('node:assert/strict');
@@ -33,7 +34,7 @@ const server = http.createServer(async (request, response) => {
         const page = await context.newPage();
         const errors = [];
         page.on('pageerror', error => errors.push(error.message));
-        await page.addInitScript(options => {
+        installEntryContinue(page);await page.addInitScript(options => {
             if(!options.firstVisit) localStorage.setItem('helpPromptSeen', '1');
             if(options.returningPlayer) localStorage.setItem('balance', '100000');
             window.testNow = new Date(2030, 0, 15, 12, 30, 15).getTime();
@@ -489,7 +490,7 @@ const server = http.createServer(async (request, response) => {
             await page.evaluate(() => openBuyChat(1));
             assert.equal(await page.evaluate(() => chat.ask), first.ask);
             assert.deepEqual(await page.evaluate(() => chat.npc), first.npc);
-            await page.addInitScript(() => { Math.random = () => .05; });
+            installEntryContinue(page);await page.addInitScript(() => { Math.random = () => .05; });
             await page.reload({waitUntil:'networkidle'});
             assert.ok(await page.evaluate(() => CARS.every(c => c.seller.personality === 'kind' && c.price < c.marketPrice)));
         });

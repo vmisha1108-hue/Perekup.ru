@@ -1,3 +1,4 @@
+const {installEntryContinue}=require('./helpers/entry.cjs');
 const assert=require('node:assert/strict');
 const fs=require('node:fs/promises');
 const fsSync=require('node:fs');
@@ -18,7 +19,7 @@ const server=http.createServer(async(req,res)=>{
     async function scenario(name,run,viewport={width:1280,height:900}){
         const context=await browser.newContext({viewport}),page=await context.newPage(),errors=[];
         page.on('pageerror',e=>errors.push(e.message));
-        await page.addInitScript(()=>{localStorage.setItem('helpPromptSeen','1');window.testNow=new Date(2030,0,15,12).getTime();Date.now=()=>testNow;Math.random=()=>.9;});
+        installEntryContinue(page);await page.addInitScript(()=>{localStorage.setItem('helpPromptSeen','1');window.testNow=new Date(2030,0,15,12).getTime();Date.now=()=>testNow;Math.random=()=>.9;});
         try{await page.goto('http://127.0.0.1:'+server.address().port,{waitUntil:'networkidle'});await run(page);assert.deepEqual(errors,[]);passed++;console.log('PASS '+name);}finally{await context.close();}
     }
     async function delinquent(page,kind='micro',days=90){
