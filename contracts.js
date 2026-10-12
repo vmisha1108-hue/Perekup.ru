@@ -132,7 +132,9 @@ function signContract(){
     if(chat.mode==='sell' && (!Number.isSafeInteger(balance+draft.price) || (!ADM.infMoney && balance+draft.price<parkingDebt(chat.car.id))))errors.push({text:'Нельзя провести расчёт: проверьте сумму и долг за парковку.'});
     if(errors.length){displayContractErrors(errors);return false;}
     var player={fullName:playerIdentity.nickname,passport:contractNormal(draft.fields.passport),address:contractNormal(draft.fields.address),signature:JSON.parse(JSON.stringify(playerIdentity.signature))};
-    var record={version:1,id:draft.id,number:draft.number,mode:draft.mode,carId:draft.carId,city:draft.city,createdAt:draft.createdAt,signedAt:gameMs,price:draft.price,vehicle:Object.assign({},draft.vehicle),seller:draft.mode==='buy'?draft.other:player,buyer:draft.mode==='buy'?player:draft.other};
+    // Capture the actual cost before selling removes it from purchasePrices.
+    var cost=purchasePrices[draft.carId];
+    var record={version:1,id:draft.id,number:draft.number,mode:draft.mode,carId:draft.carId,city:draft.city,createdAt:draft.createdAt,signedAt:gameMs,price:draft.price,purchasePrice:draft.mode==='buy'?draft.price:Number.isSafeInteger(cost) && cost>0?cost:null,vehicle:Object.assign({},draft.vehicle),seller:draft.mode==='buy'?draft.other:player,buyer:draft.mode==='buy'?player:draft.other};
     contractSigning=true;
     try{
         completeDeal();
@@ -148,20 +150,44 @@ function cancelContract(){
     chat.done=true;chat.stage='done';chat.meetingOutcome='cancelled';chat.meetingResult='Вы отказались подписывать договор. Деньги и автомобиль остались у владельцев.';
     sysSay(chat.meetingResult);renderChat();refreshList();
 }
+function contractPurchasePrice(d){
+    if(Number.isSafeInteger(d.purchasePrice) && d.purchasePrice>0)return d.purchasePrice;
+    if(Object.prototype.hasOwnProperty.call(d,'purchasePrice'))return null;
+    // Older saves have no cost snapshot. Records are ordered newest first;
+    // only the preceding transaction for this car can establish its cost.
+    var index=contractBook.records.indexOf(d);
+    if(index<0)return null;
+    var previous=contractBook.records.slice(index+1).find(function(record){return record.carId===d.carId;});
+    return previous && previous.mode==='buy'?previous.price:null;
+}
+function contractResultHtml(d){
+    var html='<span class="document-result"><span class="document-result-label">'+(d.mode==='buy'?'Потрачено':'Выручка')+'</span><strong>'+money(d.price)+'</strong>';
+    if(d.mode==='sell'){
+        var cost=contractPurchasePrice(d);
+        if(cost===null)html+='<span class="document-result-unknown">Цена покупки неизвестна</span>';
+        else{
+            var profit=d.price-cost;
+            html+='<span class="document-profit '+(profit>0?'positive':profit<0?'negative':'neutral')+'"><span>'+(profit>0?'Прибыль':profit<0?'Убыток':'Без прибыли')+'</span><strong>'+(profit>0?'+':profit<0?'−':'')+money(Math.abs(profit))+'</strong></span>';
+        }
+    }
+    return html+'</span>';
+}
 function signedContractHtml(d){
     var player=d.mode==='buy'?d.buyer:d.seller;
     var draft={number:d.number,city:d.city,createdAt:d.createdAt,price:d.price,mode:d.mode,vehicle:d.vehicle,other:d.mode==='buy'?d.seller:d.buyer,fields:Object.assign({},player,d.vehicle)};
-    return renderContractPreview(draft)+'<div class="contract-signed"><b>Подписан обеими сторонами · '+fmtMeet(new Date(d.signedAt))+'</b><p>Продавец: '+esc(d.seller.fullName)+'</p>'+signatureHtml(d.seller.signature,'Подпись продавца')+'<p>Покупатель: '+esc(d.buyer.fullName)+'</p>'+signatureHtml(d.buyer.signature,'Подпись покупателя')+'<p>Автомобиль и сумма переданы. Экземпляр вашего персонажа сохранён.</p></div>';
+    var cost=d.mode==='sell'?contractPurchasePrice(d):null;
+    return renderContractPreview(draft)+'<section class="contract-result"><div><h3>Итог сделки</h3>'+(cost!==null?'<p>Куплено за '+money(cost)+'.</p>':'')+'<p class="contract-muted">'+(d.mode==='sell'?'Прибыль и убыток — разница между ценой продажи и покупки, без других расходов.':'Расход на покупку автомобиля по этому договору.')+'</p></div>'+contractResultHtml(d)+'</section><div class="contract-signed"><b>Подписан обеими сторонами · '+fmtMeet(new Date(d.signedAt))+'</b><p>Продавец: '+esc(d.seller.fullName)+'</p>'+signatureHtml(d.seller.signature,'Подпись продавца')+'<p>Покупатель: '+esc(d.buyer.fullName)+'</p>'+signatureHtml(d.buyer.signature,'Подпись покупателя')+'<p>Автомобиль и сумма переданы. Экземпляр вашего персонажа сохранён.</p></div>';
 }
 function renderDocuments(){
     var body=$('documentsBody');if(!body || !openWindows.documents)return;
     var selected=contractBook.records.find(function(d){return d.id===selectedContractId;});
     body.innerHTML='<div class="contract-heading"><span>Ваши документы</span><h2>Договоры купли-продажи</h2><p>Сохраняются последние 100 подписанных договоров. Черновик остаётся в текущей встрече.</p></div><details class="contract-help"><summary>Игровой паспорт персонажа</summary>'+contractPartyHtml('Данные для заполнения договоров',contractBook.profile)+'</details>'+
-        (selected?'<button class="document-back" data-document-back>← Все договоры</button>'+signedContractHtml(selected):!contractBook.records.length?'<div class="empty">Здесь появятся ваши подписанные договоры после покупки или продажи автомобиля.</div>':'<div class="document-list">'+contractBook.records.map(function(d){return '<button class="document-card" data-document="'+esc(d.id)+'"><span>'+esc(d.number)+' · '+(d.mode==='buy'?'Покупка':'Продажа')+'</span><b>'+esc(d.vehicle.name)+'</b><span>'+money(d.price)+' · '+fmtMeet(new Date(d.signedAt))+'</span><small>Подписан обеими сторонами →</small></button>';}).join('')+'</div>');
+        (selected?'<button class="document-back" data-document-back>← Все договоры</button>'+signedContractHtml(selected):!contractBook.records.length?'<div class="empty">Здесь появятся ваши подписанные договоры после покупки или продажи автомобиля.</div>':'<div class="document-list">'+contractBook.records.map(function(d){return '<button class="document-card" data-document="'+esc(d.id)+'"><span class="document-info"><span>'+esc(d.number)+' · '+(d.mode==='buy'?'Покупка':'Продажа')+'</span><b>'+esc(d.vehicle.name)+'</b><span>'+money(d.price)+' · '+fmtMeet(new Date(d.signedAt))+'</span><small>Подписан обеими сторонами →</small></span>'+contractResultHtml(d)+'</button>';}).join('')+'</div>');
 }
 function openSignedContract(id){selectedContractId=id;openWin('documents');renderDocuments();}
 function initContracts(){
     if(hasPlayerIdentity())contractBook.profile.fullName=playerIdentity.nickname;
+    contractBook.records.forEach(function(d){if(d.mode==='sell' && !Object.prototype.hasOwnProperty.call(d,'purchasePrice'))d.purchasePrice=contractPurchasePrice(d);});
     saveContracts();
     $('meetingContract').addEventListener('input',function(event){
         var draft=currentContract(),key=event.target.dataset.contractField;if(!draft || !key || !Object.prototype.hasOwnProperty.call(draft.fields,key))return;

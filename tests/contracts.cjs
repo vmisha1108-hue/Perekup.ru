@@ -45,6 +45,55 @@ const server=http.createServer(async(req,res)=>{
             assert.deepEqual(await page.evaluate(()=>garage),[]);assert.equal(await page.evaluate(()=>balance),100000+final);
             const d=await page.evaluate(()=>contractBook.records[0]);assert.equal(d.seller.fullName,'Иванов Алексей Сергеевич');assert.match(d.buyer.fullName,/Анна/);assert.equal(d.price,final);assert.equal(d.mode,'sell');assert.ok(!await page.evaluate(()=>listings[1]));
         });
+        await scenario('purchase expense and sale profit use the actual prices, persist and appear on the right',async page=>{
+            await draft(page);await signContract(page);
+            assert.equal(await page.evaluate(()=>contractBook.records[0].purchasePrice),90000);
+            await page.evaluate(()=>closeChat());await draft(page,'sell',100000);await signContract(page);
+            assert.equal(await page.evaluate(()=>purchasePrices[1]),undefined);
+            assert.equal(await page.evaluate(()=>contractBook.records[0].purchasePrice),90000);
+            await page.evaluate(()=>{selectedContractId=null;openWin('documents');});
+            const cards=page.locator('.document-card');assert.equal(await cards.count(),2);
+            assert.match(await cards.nth(0).locator('.document-result').textContent(),/Выручка100\s*000\s*₽Прибыль\+10\s*000\s*₽/);
+            assert.match(await cards.nth(1).locator('.document-result').textContent(),/Потрачено90\s*000/);
+            assert.equal(await cards.nth(1).locator('.document-profit').count(),0);
+            await page.locator('#win-documents').evaluate(el=>Promise.all(el.getAnimations().map(a=>a.finished)));
+            const left=await cards.nth(0).locator('.document-info').boundingBox(),right=await cards.nth(0).locator('.document-result').boundingBox();assert.ok(right.x>=left.x+left.width);
+            await page.screenshot({path:'/workspace/scratch/3151c7eebd10/dkp-results-desktop.png'});
+            await cards.nth(0).click();assert.match(await page.locator('.contract-result').textContent(),/Куплено за 90\s*000/);assert.match(await page.locator('.contract-result').textContent(),/без других расходов/);
+            await page.evaluate(()=>{contractBook.records=contractBook.records.filter(d=>d.mode==='sell');saveContracts();});
+            await page.reload({waitUntil:'networkidle'});assert.equal(await page.evaluate(()=>contractBook.records[0].purchasePrice),90000);
+            await page.evaluate(()=>openWin('documents'));assert.match(await page.locator('.document-profit').textContent(),/Прибыль\+10\s*000/);
+        });
+        await scenario('sale loss, break-even and unknown cost are distinct and use the final inspection price',async page=>{
+            await page.evaluate(()=>{purchasePrices[1]=120000;save();});await draft(page,'sell',100000,.4);
+            const final=await page.evaluate(()=>currentContract().price);await signContract(page);
+            await page.evaluate(()=>{selectedContractId=null;openWin('documents');});
+            assert.match(await page.locator('.document-profit').textContent(),/Убыток−/);assert.ok(await page.locator('.document-profit.negative').count());
+            assert.equal(await page.locator('.document-profit strong').textContent(),await page.evaluate(price=>'−'+money(120000-price),final));
+            await page.evaluate(()=>{const original=contractBook.records[0];contractBook.records=[Object.assign({},original,{id:'even',price:120000}),Object.assign({},original,{id:'unknown',purchasePrice:null}),original];renderDocuments();});
+            assert.match(await page.locator('[data-document="even"] .document-profit').textContent(),/Без прибыли0\s*₽/);
+            assert.match(await page.locator('[data-document="unknown"]').textContent(),/Цена покупки неизвестна/);assert.equal(await page.locator('[data-document="unknown"] .document-profit').count(),0);
+        });
+        await scenario('older contracts recover cost only from the preceding purchase and keep it when the archive is trimmed',async page=>{
+            await draft(page);await signContract(page);
+            await page.evaluate(()=>{
+                const original=contractBook.records[0];
+                contractBook.records=[{id:'sale',mode:'sell',price:688000},{id:'buy',mode:'buy',price:616500},{id:'older-sale',mode:'sell',price:701000}].map((data,i)=>{const record=Object.assign({},original,data,{signedAt:original.signedAt-i*1000});delete record.purchasePrice;return record;});saveContracts();
+            });
+            await page.reload({waitUntil:'networkidle'});
+            assert.equal(await page.evaluate(()=>contractBook.records[0].purchasePrice),616500);assert.equal(await page.evaluate(()=>contractBook.records[2].purchasePrice),null);
+            await page.evaluate(()=>{contractBook.records=contractBook.records.slice(0,1);saveContracts();});await page.reload({waitUntil:'networkidle'});
+            await page.evaluate(()=>openWin('documents'));assert.match(await page.locator('.document-profit').textContent(),/Прибыль\+71\s*500/);
+        });
+        await scenario('financial summaries stay to the right without horizontal scrolling on a narrow phone',async page=>{
+            await page.evaluate(()=>{purchasePrices[1]=120000;save();});await draft(page,'sell',100000);await signContract(page);
+            await page.evaluate(()=>{selectedContractId=null;openWin('documents');});
+            await page.locator('#win-documents').evaluate(el=>Promise.all(el.getAnimations().map(a=>a.finished)));
+            const card=page.locator('.document-card'),left=await card.locator('.document-info').boundingBox(),right=await card.locator('.document-result').boundingBox();assert.ok(right.x>=left.x+left.width);
+            assert.ok(await page.locator('#documentsBody').evaluate(el=>el.scrollWidth<=el.clientWidth));assert.ok(await card.evaluate(el=>el.scrollWidth<=el.clientWidth));
+            await page.screenshot({path:'/workspace/scratch/3151c7eebd10/dkp-results-mobile.png'});
+            await card.click();assert.ok(await page.locator('#documentsBody').evaluate(el=>el.scrollWidth<=el.clientWidth));assert.match(await page.locator('.contract-result').textContent(),/Убыток−20\s*000/);
+        },{width:320,height:640});
         await scenario('blank or incorrect fields show specific help and cannot transfer anything',async page=>{
             await draft(page);await page.locator('#contractSign').click();assert.match(await page.locator('#contractErrors').textContent(),/паспорте|адрес/);assert.equal(await page.evaluate(()=>contractBook.records.length),0);
             await ready(page);await page.locator('#contract-vin').fill('BADVIN');await page.locator('#contractSign').click();assert.match(await page.locator('#contractErrors').textContent(),/VIN не совпадает/);

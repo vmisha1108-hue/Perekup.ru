@@ -31,6 +31,16 @@
 .contract-errors{padding:14px;background:#46272f;border:1px solid #af5f6d;border-radius:10px;color:#ffd9dd;font-size:12px;line-height:1.6}.contract-errors ul{padding-left:20px;margin-bottom:0}.contract-actions{display:grid;gap:10px}.contract-actions button:last-child{background:#38212a;color:#ffbdc4;border:1px solid #845262}
 .contract-signed{margin:16px 0;padding:18px;border:1px solid #4edab788;border-radius:12px;background:#15342d;color:#b5f2dd;font-size:12px;line-height:1.7}.document-list{display:grid;gap:12px}.document-card{display:grid;gap:8px;padding:18px;border:1px solid #ffffff25;border-radius:12px;background:#1c2639;color:#dce7f5;text-align:left;cursor:pointer}.document-card b{font-size:16px;overflow-wrap:anywhere}.document-card span,.document-card small{font-size:12px}.document-card small{color:#6ee2c9}.document-back{margin:16px 0}
 .meeting-steps{flex-wrap:wrap}.meeting-steps li{min-width:85px}
+.document-card{grid-template-columns:minmax(0,1fr) auto;gap:18px;align-items:center}
+.document-info{display:grid;gap:8px;min-width:0;overflow-wrap:anywhere}
+.document-result{display:grid;gap:5px;max-width:170px;text-align:right;font-variant-numeric:tabular-nums}
+.document-result strong{font-size:16px;line-height:1.35;overflow-wrap:anywhere}
+.document-result-label,.document-result-unknown{font-size:11px;color:#a4b2c5}
+.document-profit{display:grid;gap:3px;margin-top:8px;font-size:11px}
+.document-profit.positive{color:#6ee2c9}.document-profit.negative{color:#ff929b}.document-profit.neutral{color:#a4b2c5}
+.contract-result{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:18px;align-items:center;margin:16px 0;padding:18px;border:1px solid #ffffff25;border-radius:12px;background:#1c2639;color:#dce7f5}
+.contract-result h3{margin:0 0 8px;font-size:16px}.contract-result p{font-size:12px;line-height:1.6;margin:5px 0}
+@media(max-width:400px){.document-card,.contract-result{padding:12px;gap:10px}.document-result{max-width:110px}.document-result strong{font-size:14px}.document-card b{font-size:14px}}
 @media(max-width:600px){#deskArea .desk-icon{width:88px;padding:6px 4px;gap:6px}#deskArea .desk-icon .ico{width:42px;height:42px;font-size:24px}#deskArea .desk-icon span{font-size:11px}.contract-fields,.contract-parties{grid-template-columns:1fr}.contract-paper{padding:16px}#contractForm fieldset{padding:12px}.contract-help{padding:12px}.contract-heading h3{font-size:20px}}
 .collector-call{width:min(460px,92vw);max-height:90vh;overflow:auto;padding:28px;border-radius:20px;background:#151d2e;border:1px solid #dd8c6866;box-shadow:0 25px 90px #0009;text-align:center}
 .collector-call h2{font-size:22px;line-height:1.35;margin:12px 0;overflow-wrap:anywhere}
