@@ -1658,6 +1658,7 @@ function goToMeeting(){
         meeting.flow = {stage:"waiting", startedAt:gameMs, arrivalAt:arrivalAt,
             inspectionUntil:arrivalAt + rnd(MEETING_INSPECTION_MIN, MEETING_INSPECTION_MAX), event:null};
         sysSay("🚗 Вы приехали на встречу: " + chat.car.name + ".");
+        collectorDelayMeeting(meeting,false);
         save();
     }
     chat.stage = meeting.flow.stage;
@@ -1938,7 +1939,7 @@ function nextBuyerDelay(listing){
     var factor = markup > 500000 ? Math.min(8, 3 + (markup - 500000) / 500000) : 1;
     // Экспоненциальное ожидание: возможны и тишина на несколько часов, и быстрые серии.
     var draw = Math.min(1 - Number.EPSILON, Math.max(0, Math.random()));
-    return Math.max(60000, Math.round(-Math.log(1 - draw) * BUYER_WAIT_MEAN * factor));
+    return Math.max(60000, Math.round(-Math.log(1 - draw) * BUYER_WAIT_MEAN * factor * collectorBuyerMultiplier()));
 }
 function makeBuyerOffer(listing, arrivedAt){
     var b = pick(BUYERS.filter(function(b){ return b.name !== listing.lastBuyerName; }));
@@ -2269,6 +2270,7 @@ function showDeals(){
 function tickPending(){
     tickTransport();
     tickBank();
+    tickCollectors();
     tickMeeting();
     var changed = tickListings();
     if(!pending.length){
@@ -2692,6 +2694,7 @@ function admReset(){
     purchasePrices = {}; listings = {}; chatStore = {};
     transport = newTransport();
     bank=freshBank();bankRenderKey='';bankRecord(START_BALANCE,'Стартовый баланс','opening');
+    syncCollectors();
     $("arrivalOverlay").classList.remove("open");
     persistChats();
     if(chat) closeChat();
@@ -2925,6 +2928,7 @@ window.addEventListener("DOMContentLoaded", function(){
     migrateStartingBalance();
     initBank();
     initTransport();
+    initCollectors();
     migrateSaleListings();
     bindUI();
     initCalc();

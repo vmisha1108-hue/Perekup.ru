@@ -174,6 +174,7 @@ function tickBank(){
     }
     bank.loans.forEach(function(l){accrueLoan(l,gameMs);});
     bank.loans.filter(function(l){return overdueCents(l)>0;}).sort(function(a,b){return (a.overdueAt || a.dueAt)-(b.overdueAt || b.dueAt);}).forEach(function(l){if(collectOverdue(l,gameMs)) changed=true;});
+    syncCollectors();
     if(changed){save();saveGameTime();updateStats();}renderBank();
 }
 function payBankLoan(id,amount,full){
@@ -184,6 +185,7 @@ function payBankLoan(id,amount,full){
     if(full) amount=loanDebt(loan);
     if(!Number.isSafeInteger(amount) || amount<=0 || amount>balance){toast('Не хватает денег на такой платёж.');return false;}
     if(!payLoanAmount(loan,amount,gameMs,false)) return false;
+    syncCollectors();
     save();saveGameTime();updateStats();renderBank(true);return true;
 }
 function waitForBank(){
@@ -239,9 +241,9 @@ function renderBank(force){
         var loans=bank.loans.filter(function(l){return l.status==='active';});
         var entries=bank.entries.filter(function(e){return bankHistoryFilter==='all' || (bankHistoryFilter==='expenses'?e.amount<0:e.amount>0);});
         document.getElementById('bankBody').innerHTML='<div class="bank-balance-card"><span>Доступно на счёте</span><strong id="bankBalance">'+money(balance)+'</strong><div id="bankOverdue"></div></div>'+
-            (loans.length?'<div class="bank-loans">'+loans.map(loanCard).join('')+'</div>':'')+
+            collectorBankPanel()+(loans.length?'<div class="bank-loans">'+loans.map(loanCard).join('')+'</div>':'')+
             '<div class="bank-tabs"><button data-bank-tab="credit" class="'+(bankTab==='credit'?'active':'')+'">🏦 Кредит</button><button data-bank-tab="micro" class="'+(bankTab==='micro'?'active':'')+'">⚡ Микрозайм</button></div><section class="bank-products">'+(bankTab==='credit'?creditForm():microForm())+'</section>'+
-            '<p class="bank-muted bank-rules">Платежи списываются автоматически в срок. При нехватке денег остаток становится просрочкой; новые поступления идут на её погашение. Пеня — 0,1% просроченной суммы за игровой день, максимум 10% полученной суммы. Месяц — 30 игровых дней. Пока игра закрыта, время не идёт.</p>'+
+            '<p class="bank-muted bank-rules">Платежи списываются автоматически в срок. При нехватке денег остаток становится просрочкой; новые поступления идут на её погашение. Пеня — 0,1% просроченной суммы за игровой день, максимум 10% полученной суммы. После 90 дней непрерывной просрочки подключаются коллекторы: звонки, помехи переговорам и задержки встреч. Месяц — 30 игровых дней. Пока игра закрыта, время не идёт.</p>'+
             '<section class="bank-history"><div class="bank-history-head"><h3>История операций</h3><select id="bankHistoryFilter" aria-label="Фильтр истории"><option value="all"'+(bankHistoryFilter==='all'?' selected':'')+'>Все операции</option><option value="expenses"'+(bankHistoryFilter==='expenses'?' selected':'')+'>Расходы</option><option value="income"'+(bankHistoryFilter==='income'?' selected':'')+'>Поступления</option></select></div>'+
             (!entries.length?'<p class="bank-muted">Операций пока нет.</p>':'<ol class="bank-history-list">'+entries.slice(0,bankHistoryLimit).map(function(e){return '<li><div><b>'+esc(e.label)+'</b><small>'+fmtMeet(new Date(e.when))+' · Остаток '+money(e.balance)+'</small></div><strong class="'+(e.amount<0?'expense':'income')+'">'+(e.amount>0?'+':'')+money(e.amount)+'</strong></li>';}).join('')+'</ol>')+
             (entries.length>bankHistoryLimit?'<button class="bank-secondary" data-bank-history-more>Показать ещё 20</button>':'')+'</section>';
