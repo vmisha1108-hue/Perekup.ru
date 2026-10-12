@@ -1,5 +1,5 @@
 const {installEntryContinue}=require('./helpers/entry.cjs');
-const {signContract}=require('./helpers/contracts.cjs');
+const {signContract,reachMeetingTime}=require('./helpers/contracts.cjs');
 // Run with Node.js and Playwright installed: node tests/gameplay.cjs
 const assert = require('node:assert/strict');
 const fs = require('node:fs/promises');
@@ -77,7 +77,7 @@ const server = http.createServer(async (request, response) => {
         const id = await offer(page);
         await page.evaluate(id => { Math.random = () => 0.9; openAdChat(id); agreePrice(chat.bid); renderChat(); }, id);
         await page.locator('#meetBtn').click();
-        await page.locator('#goBtn').click();
+        await reachMeetingTime(page);await page.locator('#goBtn').click();
     }
     try {
         await scenario('new game and reset start with 100000 and reload preserves progress', async page => {
@@ -123,7 +123,7 @@ const server = http.createServer(async (request, response) => {
             await page.evaluate(() => { Math.random = () => 0.4; testNow += 3000; tickGame(); });
             await page.locator('#meetBtn').click();
             assert.equal(await page.evaluate(() => chat.stage), 'go');
-            await page.locator('#goBtn').click();
+            await reachMeetingTime(page);await page.locator('#goBtn').click();
             await finishInspection(page);
             const finalPrice = await page.evaluate(() => chat.price + chat.event.amount);
             await page.locator('#evYes').click();await signContract(page);
@@ -207,7 +207,7 @@ const server = http.createServer(async (request, response) => {
             assert.equal(await page.evaluate(() => pending.filter(it => it.type === 'ad').length), 0);
             await page.evaluate(() => { listings[1].nextBuyerAt = gameMs; tickPending(); });
             assert.equal(await page.evaluate(() => pending.length), 1);
-            await page.locator('#goBtn').click();
+            await reachMeetingTime(page);await page.locator('#goBtn').click();
             await finishInspection(page);
             await page.locator('#evYes').click();await signContract(page);
             assert.deepEqual(await page.evaluate(() => garage), []);
@@ -230,7 +230,7 @@ const server = http.createServer(async (request, response) => {
             const id = await offer(page);
             await page.evaluate(id => { openAdChat(id); agreePrice(chat.bid); renderChat(); Math.random = () => 0.3; }, id);
             await page.locator('#meetBtn').click();
-            await page.locator('#goBtn').click();
+            await reachMeetingTime(page);await page.locator('#goBtn').click();
             await finishInspection(page);
             await page.locator('#evYes').click();await signContract(page);
             assert.equal(await page.evaluate(() => balance), 100001);
@@ -449,7 +449,7 @@ const server = http.createServer(async (request, response) => {
             assert.equal(await page.evaluate(() => balance), 100000);
             const id = await offer(page);
             await page.evaluate(id => { Math.random = () => 0.9; openAdChat(id); agreePrice(chat.bid); renderChat(); }, id);
-            await page.locator('#meetBtn').click(); await page.locator('#goBtn').click();
+            await page.locator('#meetBtn').click(); await reachMeetingTime(page);await page.locator('#goBtn').click();
             await page.evaluate(() => { gameMs = findPending(chat.pid).flow.arrivalAt; tickPending(); });
             assert.equal(await page.evaluate(() => chat.stage), 'inspection');
             await page.locator('[data-close="win-meeting"]').click();
@@ -539,7 +539,7 @@ const server = http.createServer(async (request, response) => {
                 Math.random=()=>.9; openAdChat(offer.id); agreePrice(bid); renderChat(); return car.id;
             }, {value,bid,options});
             await page.locator('#meetBtn').click();
-            await page.locator('#goBtn').click();
+            await reachMeetingTime(page);await page.locator('#goBtn').click();
             return id;
         }
         await scenario('exchange pays player, survives inspection reload, fills the same garage slot and can be resold', async page => {

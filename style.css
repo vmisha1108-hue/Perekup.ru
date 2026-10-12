@@ -451,6 +451,7 @@ button:disabled{opacity:.4;cursor:not-allowed}
 .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
 .cal-dow{text-align:center;font-size:12px;color:#7b8496;padding:6px 0;font-weight:700}
 .cal-day{
+    color:inherit;font-family:inherit;padding:0;
     aspect-ratio:1;display:grid;place-items:center;
     background:#151b25;border:1px solid #222a37;border-radius:10px;
     font-size:14px;cursor:pointer;position:relative;
@@ -459,6 +460,9 @@ button:disabled{opacity:.4;cursor:not-allowed}
 .cal-day.blank{background:transparent;border-color:transparent;cursor:default}
 .cal-day.today{background:#0f3036;border-color:#3ee0c9;color:#a6f5ea;font-weight:800}
 .cal-day.has{background:#1a2740;border-color:#3d5b8a}
+.cal-day.selected{outline:2px solid #3ee0c9;outline-offset:1px}
+.cal-agenda{margin-top:20px}.cal-agenda h3{font-size:16px;margin:0 0 12px}.cal-empty{font-size:13px;line-height:1.5;color:#99a6ba}
+.cal-meeting{display:flex;flex-direction:column;gap:6px;width:100%;margin-top:10px;padding:12px;background:#182536;border:1px solid #3a526a;border-radius:12px;color:#e2ecf8;font:inherit;font-size:12px;text-align:left;cursor:pointer;overflow-wrap:anywhere;touch-action:manipulation}.cal-meeting:hover{border-color:#3ee0c9}.cal-meeting b{font-size:13px;color:#93eddf}.cal-meeting small{color:#b2c5df}
 .cal-day .dot{position:absolute;bottom:5px;width:5px;height:5px;border-radius:50%;background:#3ee0c9}
 .cal-note{
     margin-top:16px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);
@@ -598,12 +602,12 @@ button:disabled{opacity:.4;cursor:not-allowed}
 .stage-note{font-size:12.5px;color:#ff8d94;margin:-4px 0 10px;min-height:0}
 .stage-note:empty{display:none}
 .stage-row{display:flex;flex-wrap:wrap;gap:8px}
-.stage-row input{
+.stage-row input,.stage-row select{
     flex:1 1 130px;background:#0e121a;border:1px solid #2a3140;border-radius:10px;
     padding:10px 12px;color:#f4f5f7;font-size:14px;outline:none;
     font-family:inherit;user-select:text;
 }
-.stage-row input:focus{border-color:#3ee0c9}
+.stage-row input:focus,.stage-row select:focus{border-color:#3ee0c9}
 .stage-btn{
     flex:1 1 130px;border:0;border-radius:10px;padding:11px 14px;
     font-weight:800;font-size:14px;cursor:pointer;

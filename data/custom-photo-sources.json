@@ -100,6 +100,13 @@
       "cols": 3,
       "rows": 2,
       "prompt": "Photorealistic beautiful realistic car-sale photography. Exact 3-column by 2-row contact sheet of 6 independent car-sale photographs. Equal panels touching edge to edge. No margins, borders, labels or collage decoration. Panels read left to right then second row. The complete vehicle must be visible in each panel, front three-quarter view, roof and wheels not cropped, 8 percent space around the car. Accurate specific model shape, headlights and trim. Clean appealing cars, tasteful factory styling. Summer in Cherkessk, Karachay-Cherkessia Russia: tidy ordinary urban private-sale parking, low buildings, trees, distant Caucasus foothills, beautiful natural daylight. No people, no sales-service logos, no watermarks, no lettering, ALL registration plates completely blank with no digits or letters. Manufacturer badges allowed. Landscape sheet, aspect ratio 3:2 for six panels, square for four. Panel 1: silver 2018 Audi A6 C7 facelift sedan. Panel 2: dark blue 2014 Lexus GS350 fourth generation sedan with original F Sport bumper. Panel 3: pearl white 2019 Toyota Camry XV70 sedan. Panel 4: dark grey 2018 Porsche Macan S first generation compact SUV. Panel 5: black 2020 Toyota Land Cruiser Prado 150 late facelift SUV. Panel 6: different angle of the vehicle from panel 5, spare photograph. "
+    },
+    {
+      "key": "aldan-s8",
+      "original": "exec-3f7239b2-229a-4052-a8c6-0f75d8e73ed7.png",
+      "cols": 1,
+      "rows": 1,
+      "prompt": "Use case: photorealistic-natural. Asset type: car marketplace photograph for a fictional Russian car trading game. Primary request: a realistic dark navy blue 2019 Audi S8 D5, specifically the S8 performance model, NOT an ordinary Audi A8. Accurate factory S8 front bumper and grille, small S8 badge, silver mirror caps, large factory sporty multi-spoke alloy wheels, low wide sporty stance, four oval exhaust tips (two each side) if visible. Full car seen from front three-quarter view, all roof and wheels visible, 8 percent space around the vehicle, landscape 3:2 image. Background: ordinary tidy parking lot in Aldan, Sakha Yakutia, low buildings and birch trees, attractive natural summer daylight. Keep the car as the unmistakable main subject. Clean beautiful factory styling, navy paint with real reflections. No people, no sale-service logos, no watermarks, no captions; completely blank registration plate. Manufacturer rings and S8 badge allowed. This is one independent car photograph, not a contact sheet."
     }
   ],
   "photos": [
@@ -483,17 +490,17 @@
     },
     {
       "id": 3000028,
-      "img": "img/custom/3000028.jpg",
+      "img": "img/custom/3000028-s8.jpg",
       "cityId": "29a64605-5441-48c5-bc08-117a72ebc843",
       "requested": true,
-      "season": "winter",
-      "sheet": "aldan-sports",
-      "panel": 5,
+      "season": "summer",
+      "sheet": "aldan-s8",
+      "panel": 1,
       "size": [
-        508,
-        508
+        768,
+        512
       ],
-      "sha256": "a880e8736a4348b3a03e9ea02bffbd8b4aa9b9a3056f93b0f3663e926e4685f0"
+      "sha256": "1e3ddde6cc80c0f86162d6fa608a204ea6dbf0c2458c9393dc942c5145824391"
     },
     {
       "id": 3000029,

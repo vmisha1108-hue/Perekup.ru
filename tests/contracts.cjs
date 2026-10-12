@@ -23,7 +23,7 @@ const server=http.createServer(async(req,res)=>{
         await page.evaluate(({mode,price,eventRandom})=>{
             if(mode==='buy'){openBuyChat(1);agreePrice(price);}
             else{garage=[1];vehicleState(1);postAd(1,price);const ad={id:'contract-buyer',type:'ad',mode:'sell',carId:1,ready:true,npc:{name:'Анна',avatar:'👩',personality:'kind',mood:80},bid:price,maxBid:price,listingPrice:price};pending.push(ad);openAdChat(ad.id);agreePrice(price);}
-            renderChat();scheduleMeeting();goToMeeting();gameMs=findPending(chat.pid).flow.inspectionUntil;Math.random=()=>eventRandom;tickPending();
+            renderChat();scheduleMeeting();gameMs=Math.max(gameMs,chat.meet.whenMs);lastRealMs=Date.now();goToMeeting();gameMs=findPending(chat.pid).flow.inspectionUntil;Math.random=()=>eventRandom;tickPending();
         },{mode,price,eventRandom});
     }
     async function draft(page,mode='buy',price=90000,eventRandom=.9){await meeting(page,mode,price,eventRandom);await page.locator('#evYes').click();assert.equal(await page.evaluate(()=>chat.stage),'contract');}

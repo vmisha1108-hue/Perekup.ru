@@ -193,6 +193,8 @@ function tickTransport(){
             resumeVehicleListing(trip.carId,trip.arrivesAt);
         }
         transport.trip = null;
+        if(filters.city===trip.from && filters.radius==="0"){filters.city=trip.to;saveMarketLocation();if(view==="market")showMarket();}
+        updateLocationControls();
         transport.arrival = {cityId:trip.to,label:trip.label,when:trip.arrivesAt};
         changed = true;
         showArrival();

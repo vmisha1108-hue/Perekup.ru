@@ -20,7 +20,7 @@ const server=http.createServer(async(req,res)=>{
         try{await page.goto(url,{waitUntil:'networkidle'});assert.ok(await page.locator('#identityOverlay').isVisible());await run(page);assert.deepEqual(errors,[]);passed++;console.log('PASS '+name);}finally{await context.close();}
     }
     async function draft(page,mode='buy'){
-        await page.evaluate(mode=>{if(mode==='buy')openBuyChat(1);else{const ad={id:'identity-buyer',type:'ad',mode:'sell',carId:1,ready:true,npc:{name:'Анна',avatar:'👩',personality:'kind',mood:80},bid:100000,maxBid:100000,listingPrice:100000};postAd(1,100000);pending.push(ad);openAdChat(ad.id);}agreePrice(mode==='buy'?90000:100000);renderChat();scheduleMeeting();goToMeeting();gameMs=findPending(chat.pid).flow.inspectionUntil;tickPending();agreeEvent();},mode);
+        await page.evaluate(mode=>{if(mode==='buy')openBuyChat(1);else{const ad={id:'identity-buyer',type:'ad',mode:'sell',carId:1,ready:true,npc:{name:'Анна',avatar:'👩',personality:'kind',mood:80},bid:100000,maxBid:100000,listingPrice:100000};postAd(1,100000);pending.push(ad);openAdChat(ad.id);}agreePrice(mode==='buy'?90000:100000);renderChat();scheduleMeeting();gameMs=Math.max(gameMs,chat.meet.whenMs);lastRealMs=Date.now();goToMeeting();gameMs=findPending(chat.pid).flow.inspectionUntil;tickPending();agreeEvent();},mode);
     }
     try{
         await scenario('the first entry requires a nickname and an actual drawing, pauses time and cannot be skipped',async page=>{

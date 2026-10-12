@@ -25,7 +25,7 @@ const server=http.createServer(async(req,res)=>{
         finally{await context.close();}
     }
     async function buyMeeting(page,price=90000){
-        await page.evaluate(price=>{openBuyChat(1);agreePrice(price);renderChat();scheduleMeeting();goToMeeting();gameMs=findPending(chat.pid).flow.inspectionUntil;tickPending();},price);
+        await page.evaluate(price=>{openBuyChat(1);agreePrice(price);renderChat();scheduleMeeting();gameMs=Math.max(gameMs,chat.meet.whenMs);lastRealMs=Date.now();goToMeeting();gameMs=findPending(chat.pid).flow.inspectionUntil;tickPending();},price);
     }
     async function buyerChat(page){
         return page.evaluate(()=>{garage=[1];vehicleState(1);postAd(1,100000);const ad=makeBuyerOffer(listings[1]);pending.push(ad);openAdChat(ad.id);return ad.id;});
@@ -40,7 +40,7 @@ const server=http.createServer(async(req,res)=>{
             await page.reload({waitUntil:'networkidle'});
             assert.equal(await page.locator('[data-info="1"]').count(),0);assert.equal(await page.evaluate(()=>balance),cash);
             await page.evaluate(()=>{
-                postAd(1,100000);const ad=makeBuyerOffer(listings[1]);pending.push(ad);openAdChat(ad.id);agreePrice(100000);renderChat();scheduleMeeting();goToMeeting();
+                postAd(1,100000);const ad=makeBuyerOffer(listings[1]);pending.push(ad);openAdChat(ad.id);agreePrice(100000);renderChat();scheduleMeeting();gameMs=Math.max(gameMs,chat.meet.whenMs);lastRealMs=Date.now();goToMeeting();
                 gameMs=findPending(chat.pid).flow.inspectionUntil;tickPending();agreeEvent();
             });
             await signContract(page);await page.evaluate(()=>{closeChat();showMarket();});

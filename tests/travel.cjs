@@ -1,5 +1,5 @@
 const {installEntryContinue}=require('./helpers/entry.cjs');
-const {signContract}=require('./helpers/contracts.cjs');
+const {signContract,reachMeetingTime}=require('./helpers/contracts.cjs');
 const assert = require('node:assert/strict');
 const fs = require('node:fs/promises');
 const path = require('node:path');
@@ -63,7 +63,7 @@ const server = http.createServer(async(req,res)=>{
                 const city=cityNamed('Нижний Новгород'),car=CARS.find(c=>c.cityId===city.id && c.price<100000);
                 filters.city=city.id;openBuyChat(car.id);agreePrice(car.price);renderChat();
             });
-            await page.locator('#meetBtn').click();await page.locator('#goBtn').click();
+            await page.locator('#meetBtn').click();await reachMeetingTime(page);await page.locator('#goBtn').click();
             assert.equal(await page.evaluate(()=>playerCity().name),'Москва');
             assert.equal(await page.evaluate(()=>chat.met),false);
             assert.ok(!await page.locator('#overlay').isVisible(),'Remote meeting button exposes the travel app');
@@ -93,7 +93,7 @@ const server = http.createServer(async(req,res)=>{
         await scenario('buy after travelling parks in the purchase city and bills only after a full day',async page=>{
             await page.evaluate(()=>{balance=1000000;depart(cityNamed('Нижний Новгород').id,'train');waitForTransport();closeArrival();const c=CARS.filter(c=>c.cityId===transport.cityId).sort((a,b)=>a.price-b.price)[0];openBuyChat(c.id);agreePrice(c.price);renderChat();});
             const before=await page.evaluate(()=>({balance,price:chat.price}));
-            await page.locator('#meetBtn').click();await page.locator('#goBtn').click();
+            await page.locator('#meetBtn').click();await reachMeetingTime(page);await page.locator('#goBtn').click();
             await page.evaluate(()=>{gameMs=findPending(chat.pid).flow.inspectionUntil;tickPending();});await page.locator('#evYes').click();await signContract(page);
             const owned=await page.evaluate(()=>({id:garage[0],v:vehicleState(garage[0]),balance}));
             assert.equal(owned.v.place,'parking');assert.equal(owned.balance,before.balance-before.price);
@@ -209,7 +209,7 @@ const server = http.createServer(async(req,res)=>{
         });
         await scenario('another Moscow purchase succeeds with a full home garage and stays in the free yard',async page=>{
             await fixture(page);await page.evaluate(()=>{openBuyChat(3);agreePrice(chat.ask);renderChat();});
-            await page.locator('#meetBtn').click();await page.locator('#goBtn').click();
+            await page.locator('#meetBtn').click();await reachMeetingTime(page);await page.locator('#goBtn').click();
             await page.evaluate(()=>{gameMs=findPending(chat.pid).flow.inspectionUntil;tickPending();});await page.locator('#evYes').click();await signContract(page);
             assert.ok(await page.evaluate(()=>garage.includes(3)));
             assert.equal(await page.evaluate(()=>vehicleState(3).place),'yard');

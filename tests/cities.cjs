@@ -1,5 +1,5 @@
 const {installEntryContinue}=require('./helpers/entry.cjs');
-const {signContract}=require('./helpers/contracts.cjs');
+const {signContract,reachMeetingTime}=require('./helpers/contracts.cjs');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
@@ -100,6 +100,8 @@ const server = http.createServer((req, res) => {
         const url = 'http://127.0.0.1:' + server.address().port;
         await page.goto(url, {waitUntil:'networkidle'});
         await page.evaluate(() => openWin('market'));
+        assert.equal(await page.locator('#fCity').inputValue(), 'Москва');
+        await page.locator('#fCity').fill('');
         assert.equal(await page.locator('#content .card').count(), 60);
         assert.equal(await page.locator('#cityOptions option').count(), 25);
         assert.ok(await page.locator('#fRadius').isDisabled());
@@ -166,8 +168,8 @@ const server = http.createServer((req, res) => {
         console.log('PASS radius, distance ordering, saved location and invalid city input');
 
         await page.locator('#fReset').click();
-        assert.equal(await page.locator('#fCity').inputValue(), '');
-        assert.ok(await page.locator('#fRadius').isDisabled());
+        assert.equal(await page.locator('#fCity').inputValue(), 'Москва');
+        assert.ok(!await page.locator('#fRadius').isDisabled());
         const city = targets.find(c => c.name === 'Новосибирск');
         const car = await page.evaluate(id => CARS.find(c => c.cityId === id && !c.legend && c.price <= 100000), city.id);
         assert.ok(car, 'An affordable fictional car in Novosibirsk');
@@ -178,7 +180,7 @@ const server = http.createServer((req, res) => {
         assert.equal(await page.evaluate(() => chat && chat.car.id), car.id);
         await page.evaluate(() => { agreePrice(chat.car.price); renderChat(); });
         await page.locator('#meetBtn').click();
-        await page.locator('#goBtn').click();
+        await reachMeetingTime(page);await page.locator('#goBtn').click();
         await page.evaluate(() => { gameMs = findPending(chat.pid).flow.inspectionUntil; tickPending(); });
         await page.locator('#evYes').click();await signContract(page);
         assert.ok(await page.evaluate(id => garage.includes(id), car.id));
@@ -201,8 +203,8 @@ const server = http.createServer((req, res) => {
         }, removedCity.id);
         await fresh.goto(url, {waitUntil:'networkidle'});
         await fresh.evaluate(() => openWin('market'));
-        assert.equal(await fresh.locator('#fCity').inputValue(), '');
-        assert.ok(await fresh.locator('#fRadius').isDisabled());
+        assert.equal(await fresh.locator('#fCity').inputValue(), 'Москва');
+        assert.ok(!await fresh.locator('#fRadius').isDisabled());
         // A returning visit refreshes seller moods and asking prices. Select the current affordable offer.
         await fresh.reload({waitUntil:'networkidle'});
         await fresh.evaluate(() => openWin('market'));
@@ -215,7 +217,7 @@ const server = http.createServer((req, res) => {
         assert.equal(await fresh.evaluate(() => chat.car.seller.name), starter.seller.name);
         await fresh.evaluate(() => { agreePrice(chat.car.price); renderChat(); });
         await fresh.locator('#meetBtn').click();
-        await fresh.locator('#goBtn').click();
+        await reachMeetingTime(fresh);await fresh.locator('#goBtn').click();
         await fresh.evaluate(() => { gameMs = findPending(chat.pid).flow.inspectionUntil; tickPending(); });
         await fresh.locator('#evYes').click();await signContract(fresh);
         assert.equal(await fresh.evaluate(() => balance), 100000 - starter.price);

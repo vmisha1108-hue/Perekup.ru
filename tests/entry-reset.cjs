@@ -52,7 +52,7 @@ const server=http.createServer(async(req,res)=>{
             assert.ok(await page.locator('#entryResetOverlay').isVisible());await page.locator('#entryContinue').click();await completeIdentity(page);assert.equal(await page.evaluate(()=>balance),125000);
         });
         await scenario('explicit reset clears cars, debts, contracts, notes, collectors and the advanced game date',async page=>{
-            await page.locator('#entryContinue').click();await completeIdentity(page);await page.evaluate(()=>{openBuyChat(1);agreePrice(90000);renderChat();scheduleMeeting();goToMeeting();gameMs=findPending(chat.pid).flow.inspectionUntil;tickPending();agreeEvent();});await signContract(page);
+            await page.locator('#entryContinue').click();await completeIdentity(page);await page.evaluate(()=>{openBuyChat(1);agreePrice(90000);renderChat();scheduleMeeting();gameMs=Math.max(gameMs,chat.meet.whenMs);lastRealMs=Date.now();goToMeeting();gameMs=findPending(chat.pid).flow.inspectionUntil;tickPending();agreeEvent();});await signContract(page);
             assert.equal(await page.evaluate(()=>contractBook.records.length),1);await page.evaluate(()=>{closeChat();notes={'2030-01-16':'Заметка'};save();});await collectorFixture(page);
             await page.reload({waitUntil:'networkidle'});assert.ok(await page.locator('#collectorOverlay').isVisible());await page.locator('#entryReset').click();await completeIdentity(page);
             const data=await page.evaluate(()=>({balance,garage,deals,garageLvl,notes,pending,loans:bank.loans,docs:contractBook.records,retired:retiredMarketCars,city:transport.cityId,moscow:moscowCity.id,gameMs,now:Date.now(),collector:bank.collectors.active}));

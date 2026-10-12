@@ -6,4 +6,8 @@ async function signContract(page){
         await page.locator('#contractSign').click();
     }
 }
-module.exports={signContract};
+// Old deal scenarios now wait until the next selectable half-hour appointment.
+async function reachMeetingTime(page){
+    await page.evaluate(()=>{if(chat && chat.stage==='go' && chat.meet && gameMs<chat.meet.whenMs){gameMs=chat.meet.whenMs;lastRealMs=Date.now();tickPending();renderChat();}});
+}
+module.exports={signContract,reachMeetingTime};

@@ -476,6 +476,7 @@ function openWin(id){
     if(id === "shop"){ renderShop(); }
     if(id === "bank"){ renderBank(true); }
     if(id === "documents"){ renderDocuments(); }
+    if(id === "calendar"){ renderCal(); }
     if(id === "admin"){ renderAdmin(); }
 }
 
@@ -711,8 +712,10 @@ function onWinResizeEnd(){
 /* ================= ФИЛЬТРЫ И СОРТИРОВКА ================= */
 var filters = {q:"", sort:"default", min:"", max:"", mood:"all", afford:false, city:"", radius:"0"};
 var marketLimit = 60;
+var hasSavedMarketLocation = false;
 try{
     var savedLocation = JSON.parse(localStorage.getItem("marketLocation") || "{}");
+    hasSavedMarketLocation = !!savedLocation && (savedLocation.city === "" || !!CITY_BY_ID[savedLocation.city]);
     if(CITY_BY_ID[savedLocation.city]) filters.city = savedLocation.city;
     if(["0","50","100","200","500","1000","2000","all"].indexOf(String(savedLocation.radius)) !== -1) filters.radius = String(savedLocation.radius);
 }catch(e){}
@@ -780,6 +783,7 @@ function saveMarketLocation(){
 }
 function updateLocationControls(){
     var city = CITY_BY_ID[filters.city];
+    $("fLocal").textContent = "Искать: " + playerCity().name;
     $("fCity").value = city ? city.label : "";
     $("fRadius").value = filters.radius;
     $("fRadius").disabled = !city;
@@ -807,8 +811,10 @@ function applyCityInput(){
 }
 function bindFilters(){
     if(!$("fSearch")) return;
+    if(!hasSavedMarketLocation){filters.city=playerCity().id;filters.radius="0";saveMarketLocation();}
     $("cityOptions").innerHTML = CITIES.slice().sort(function(a,b){ return a.label.localeCompare(b.label,"ru"); }).map(function(city){ return '<option value="' + esc(city.label) + '"></option>'; }).join("");
     updateLocationControls();
+    $("fLocal").addEventListener("click",function(){filters.city=playerCity().id;filters.radius="0";marketLimit=60;saveMarketLocation();updateLocationControls();showMarket();});
     $("fCity").addEventListener("input", applyCityInput);
     $("fCity").addEventListener("change", function(){
         if(!applyCityInput()){
@@ -825,7 +831,7 @@ function bindFilters(){
     $("fMood").addEventListener("change", function(){ filters.mood = this.value; marketLimit = 60; refreshList(); });
     $("fAfford").addEventListener("change", function(){ filters.afford = this.checked; marketLimit = 60; refreshList(); });
     $("fReset").addEventListener("click", function(){
-        filters = {q:"", sort:"default", min:"", max:"", mood:"all", afford:false, city:"", radius:"0"};
+        filters = {q:"", sort:"default", min:"", max:"", mood:"all", afford:false, city:playerCity().id, radius:"0"};
         marketLimit = 60;
         $("fSearch").value = ""; $("fSort").value = "default";
         $("fMin").value = ""; $("fMax").value = "";
@@ -848,6 +854,7 @@ function setTabs(active){
     if($("fMood")) $("fMood").style.display = active === "market" ? "" : "none";
     if($("fAffordWrap")) $("fAffordWrap").style.display = active === "market" ? "" : "none";
     if($("fCity")) $("fCity").hidden = active !== "market";
+    if($("fLocal")) $("fLocal").hidden = active !== "market";
     if($("fRadius")) $("fRadius").hidden = active !== "market";
     if($("marketMore")) $("marketMore").hidden = true;
     updateLocationControls();
@@ -1103,7 +1110,11 @@ function canOpenChat(){
 }
 function setMeetingDefaults(){
     var now = gameNow();
+    if(!$("meetTime").options.length){
+        for(var slot=0;slot<48;slot++){var time=pad2(Math.floor(slot/2))+":"+(slot%2?"30":"00");$("meetTime").add(new Option(time,time));}
+    }
     $("meetDate").min = ymd(now);
+    now.setMinutes(Math.ceil(now.getMinutes()/30)*30,0,0);
     $("meetDate").value = ymd(now);
     $("meetTime").value = pad2(now.getHours()) + ":" + pad2(now.getMinutes());
     meetingTimeEdited = false;
@@ -1511,14 +1522,7 @@ function fmtMeet(d){
            " в " + pad2(d.getHours()) + ":" + pad2(d.getMinutes());
 }
 
-// запись о встрече в календаре
-function addCalNote(d, text){
-    var key = calKey(d.getFullYear(), d.getMonth(), d.getDate());
-    notes[key] = notes[key] ? notes[key] + " · " + text : text;
-    save();
-    if($("calGrid")) renderCal();
-    return {key: key, text: text};
-}
+// Удаление старых календарных записей при отмене сохранённой встречи.
 function removeCalNote(h){
     if(!h || !notes[h.key]) return;
     var parts = notes[h.key].split(" · ").filter(function(x){ return x !== h.text; });
@@ -1559,12 +1563,12 @@ function scheduleMeeting(){
     if(!meetingTimeEdited) setMeetingDefaults();
     var ds = $("meetDate").value, ts = $("meetTime").value;
     if(!ds || !ts){ sysSay("📅 Выберите дату и время встречи."); renderChat(); return; }
+    if(!/^(?:[01]\d|2[0-3]):(?:00|30)$/.test(ts)){sysSay("📅 Встречи назначаются каждые полчаса: выберите время с :00 или :30.");renderChat();return;}
     var when = new Date(ds + "T" + ts);
     if(isNaN(when.getTime())){ sysSay("📅 Не удалось разобрать дату."); renderChat(); return; }
     // Поля имеют точность до минуты: текущую минуту можно назначить «сейчас».
     var currentMinute = Math.floor(gameMs / 60000) * 60000;
     if(when.getTime() < currentMinute){ sysSay("📅 Это время уже прошло. Выберите другое."); renderChat(); return; }
-    if(when.getTime() < gameMs) when = gameNow();
 
     var p = chat.npc.personality;
     meSay("Давайте встретимся " + fmtMeet(when) + ".");
@@ -1588,9 +1592,7 @@ function scheduleMeeting(){
         evil:   "Ладно. Не опаздывай."
     }[p]);
     chat.meet = {when: when, whenMs: when.getTime(), label: fmtMeet(when)};
-    chat.note = addCalNote(when,
-        (chat.mode === "buy" ? "🚗 " : "💰 ") + pad2(when.getHours()) + ":" + pad2(when.getMinutes()) +
-        " — " + (chat.mode === "buy" ? "купить " : "продать ") + chat.car.name + " (" + chat.npc.name + ")");
+    chat.note = null;
     sysSay("📅 Встреча назначена: " + chat.meet.label);
     if(chat.pid) dropPending(chat.pid);
     if(chat.mode === "sell"){
@@ -1607,6 +1609,7 @@ function scheduleMeeting(){
     });
     save();
     chat.stage = "go";
+    renderCal();
     renderChat();
 }
 
@@ -1913,6 +1916,7 @@ function dropPending(id, removeNote){
     if(!it) return;
     if(removeNote && it.note) removeCalNote(it.note);
     pending = pending.filter(function(x){ return x.id !== id; });
+    if($("calGrid"))renderCal();
     if(it.type === "meet" && it.mode === "sell" && listings[it.carId]){
         listings[it.carId].nextBuyerAt = gameMs + nextBuyerDelay(listings[it.carId]);
     }
@@ -2434,31 +2438,49 @@ document.addEventListener("keydown", function(e){
 /* ================= КАЛЕНДАРЬ ================= */
 var MONTHS = ["Январь","Февраль","Март","Апрель","Май","Июнь","Июль","Август","Сентябрь","Октябрь","Ноябрь","Декабрь"];
 var DOW = ["Пн","Вт","Ср","Чт","Пт","Сб","Вс"];
-var calYear, calMonth;
+var calYear, calMonth, calSelectedDay=null, calAgendaKey="";
+
+function calendarMeetings(){return pending.filter(function(it){return it.type==="meet" && (it.flow || it.when+MEET_GRACE>=gameMs);}).slice().sort(function(a,b){return a.when-b.when;});}
+function calendarMeetingHtml(it){
+    var car=carById(it.carId),status=it.flow?"На встрече":gameMs>=it.when?"Пора на встречу":"Через "+fmtDur(it.when-gameMs);
+    return '<button type="button" class="cal-meeting" data-calendar-meeting="'+esc(it.id)+'"><b>'+esc(fmtMeet(new Date(it.when)))+'</b><span>'+(it.mode==="buy"?"Покупка: ":"Продажа: ")+esc(car.name)+'</span><span>'+esc(it.npc.name)+' · '+esc(meetingCity(it.mode,it.carId).name)+'</span><small>'+esc(status)+'</small></button>';
+}
+function renderCalendarAgenda(force){
+    var meetings=calendarMeetings(),key=Math.floor(gameMs/60000)+":"+calSelectedDay+":"+meetings.map(function(it){return it.id+":"+it.when+":"+!!it.flow;}).join(",");
+    if(!force && key===calAgendaKey)return;
+    calAgendaKey=key;
+    $("calUpcoming").innerHTML=meetings.slice(0,5).map(calendarMeetingHtml).join("") || '<p class="cal-empty">Ближайших встреч нет. Договоритесь о цене и назначьте встречу в переписке.</p>';
+    var day=calSelectedDay,selected=meetings.filter(function(it){return ymd(new Date(it.when))===day;});
+    $("calNote").innerHTML=day?'<b>'+esc(day.split("-").reverse().join("."))+'</b>'+ (selected.map(calendarMeetingHtml).join("") || '<p class="cal-empty">На этот день встреч нет.</p>'):"Выберите день, чтобы посмотреть встречи.";
+}
 
 function calKey(y,m,d){ return y + "-" + String(m+1).padStart(2,"0") + "-" + String(d).padStart(2,"0"); }
 function renderCal(){
     if(!$("calTitle")) return;
+    if(typeof calYear!=="number" || typeof calMonth!=="number"){var now=gameNow();calYear=now.getFullYear();calMonth=now.getMonth();}
     $("calTitle").textContent = MONTHS[calMonth] + " " + calYear;
     var first = new Date(calYear, calMonth, 1);
     var startDay = (first.getDay() + 6) % 7;
     var daysInMonth = new Date(calYear, calMonth+1, 0).getDate();
     var today = gameNow();
     var todayKey = calKey(today.getFullYear(), today.getMonth(), today.getDate());
+    var meetingDays={};calendarMeetings().forEach(function(it){meetingDays[ymd(new Date(it.when))]=true;});
     var html = DOW.map(function(d){ return '<div class="cal-dow">' + d + '</div>'; }).join("");
     for(var i=0;i<startDay;i++) html += '<div class="cal-day blank"></div>';
     for(var d=1; d<=daysInMonth; d++){
         var key = calKey(calYear, calMonth, d);
         var cls = "cal-day";
         if(key === todayKey) cls += " today";
-        if(notes[key]) cls += " has";
-        html += '<div class="' + cls + '" data-day="' + key + '">' +
-            d + (notes[key] ? '<span class="dot"></span>' : '') + '</div>';
+        if(meetingDays[key]) cls += " has";
+        if(key===calSelectedDay)cls+=" selected";
+        html += '<button type="button" class="' + cls + '" data-day="' + key + '" aria-label="Встречи на '+key+'" aria-pressed="'+(key===calSelectedDay)+'">' +
+            d + (meetingDays[key] ? '<span class="dot"></span>' : '') + '</button>';
     }
     $("calGrid").innerHTML = html;
     $("calGrid").querySelectorAll("[data-day]").forEach(function(el){
         el.addEventListener("click", function(){ pickDay(el.dataset.day); });
     });
+    renderCalendarAgenda(true);
 }
 function calShift(n){
     calMonth += n;
@@ -2473,13 +2495,7 @@ function calToday(){
     renderCal();
 }
 function pickDay(key){
-    var cur = notes[key] || "";
-    var v = prompt("Заметка на " + key + ":", cur);
-    if(v === null) return;
-    if(v.trim() === "") delete notes[key];
-    else notes[key] = v.trim();
-    save(); renderCal();
-    $("calNote").innerHTML = '<b>' + key + '</b><br>' + (notes[key] ? esc(notes[key]) : "Заметки нет.");
+    calSelectedDay=key;renderCal();
 }
 
 /* ================= ИГРОВОЕ ВРЕМЯ ================= */
@@ -2609,6 +2625,7 @@ function tickGame(){
     renderGameTime();
     if(chat && chat.stage === "schedule" && !meetingTimeEdited) setMeetingDefaults();
     tickPending();
+    if(openWindows.calendar)renderCalendarAgenda();
     if(now - lastGameSave > 5000) saveGameTime();
 }
 
@@ -2950,6 +2967,7 @@ function bindUI(){
     if($("calPrev")) $("calPrev").addEventListener("click", function(){ calShift(-1); });
     if($("calNext")) $("calNext").addEventListener("click", function(){ calShift(1); });
     if($("calTodayBtn")) $("calTodayBtn").addEventListener("click", calToday);
+    $("win-calendar").addEventListener("click",function(event){var button=event.target.closest("[data-calendar-meeting]");if(button)openMeetChat(button.dataset.calendarMeeting,false);});
 
     if($("chatClose")) $("chatClose").addEventListener("click", closeChat);
     $("saleForm").addEventListener("submit", function(e){
