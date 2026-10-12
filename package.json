@@ -3,8 +3,9 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "start": "node --env-file-if-exists=.env ai/server.cjs",
-    "test:ai": "node --test tests/ai-server.cjs && node tests/ai-dialogue.cjs"
+    "start": "python3 -m http.server 8000",
+    "test": "node tests/gameplay.cjs && node tests/cities.cjs && node tests/dialogue.cjs && node tests/travel.cjs && node tests/human-dialogue.cjs",
+    "test:dialogue": "node tests/dialogue.cjs && node tests/human-dialogue.cjs"
   },
   "engines": {"node": ">=22"},
   "devDependencies": {"playwright": "^1.56.0"}

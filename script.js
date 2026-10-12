@@ -985,7 +985,7 @@ function saveChat(){
     chatStore[chatKey(chat)] = {
         mode: chat.mode, carId: chat.car.id, npc: chat.npc, ask: chat.ask, bid: chat.bid,
         listingPrice: chat.listingPrice, maxBid: chat.maxBid, trade: chat.trade || null, referencePrice: chat.referencePrice,
-        log: chat.log.slice(-80).map(function(m){ return {who:m.who, text:m.text, source:m.source}; }), last: chat.last, stage: chat.stage, price: chat.price,
+        log: chat.log.slice(-80).map(function(m){ return {who:m.who, text:m.text}; }), last: chat.last, stage: chat.stage, price: chat.price,
         meet: chat.meet ? {whenMs: chat.meet.whenMs, label: chat.meet.label} : null,
         note: chat.note, busyUsed: chat.busyUsed, pid: chat.pid, met: chat.met, event: chat.event
     };
@@ -1071,7 +1071,6 @@ function canOpenChat(){
         return false;
     }
     if(chat && chat.met) closeChat();
-    if(chat) cancelAiReply(chat);
     return true;
 }
 function setMeetingDefaults(){
@@ -1091,7 +1090,6 @@ function openOverlay(){
     setTimeout(function(){ $("msgInput").focus(); }, 60);
 }
 function closeChat(){
-    if(chat) cancelAiReply(chat);
     $("overlay").classList.remove("open");
     $("win-meeting").classList.remove("open", "minimized");
     delete openWindows.meeting;
@@ -1109,7 +1107,10 @@ function closeChat(){
     refreshList();
     renderDealsTab();
 }
-function npcSay(t){ chat.log.push({who:"npc", text:t}); }
+function npcSay(t){
+    if(chat.replyLead){ t = chat.replyLead + ' ' + t; delete chat.replyLead; }
+    chat.log.push({who:"npc", text:t});
+}
 function meSay(t){  chat.log.push({who:"me",  text:t}); }
 function sysSay(t){ chat.log.push({who:"sys", text:t}); }
 
@@ -1140,18 +1141,15 @@ function renderChat(){
 
     var log = $("chatLog");
     log.innerHTML = chat.log.map(function(x){
-        if(x.aiWaiting) return '<div class="msg npc typing" role="status">Собеседник печатает…</div>';
         return '<div class="msg ' + x.who + '">' + esc(x.text) + '</div>';
     }).join("");
     log.scrollTop = log.scrollHeight;
 
-    var waiting = !!chat.aiPending;
-    $("msgInput").disabled   = chat.done || waiting;
-    $("offerInput").disabled = chat.done || waiting;
-    $("offerBtn").disabled   = chat.done || waiting;
-    $("sendBtn").disabled    = chat.done || waiting;
-    $("meetBtn").disabled    = waiting;
-    renderAiStatus();
+    $("msgInput").disabled   = chat.done;
+    $("offerInput").disabled = chat.done;
+    $("offerBtn").disabled   = chat.done;
+    $("sendBtn").disabled    = chat.done;
+    $("meetBtn").disabled    = false;
 
     // панель этапов сделки: назначение встречи, поездка, решение на встрече
     var st = chat.done ? "done" : chat.stage;
@@ -1187,7 +1185,7 @@ function renderChat(){
         $("chatFinishClose").addEventListener("click", closeChat);
     }else{
         q.innerHTML = QUICK[chat.mode].map(function(t,i){
-            return '<button data-quick="' + i + '"' + (waiting ? ' disabled' : '') + '>' + esc(t) + '</button>';
+            return '<button data-quick="' + i + '">' + esc(t) + '</button>';
         }).join("");
         q.querySelectorAll("[data-quick]").forEach(function(btn){
             btn.addEventListener("click", function(){
@@ -1223,14 +1221,22 @@ function analyze(text){ return dialogueIntent(text); }
 
 function applyMood(intent){
     var p = PERSONALITY[chat.npc.personality];
+    var memory = dialogueMemory();
     var d = 0;
-    if(intent.greet && !chat.npc.greeted){ d += 8; chat.npc.greeted = true; }
-    if(intent.praise) d += p.praise;
-    if(intent.polite) d += p.polite;
-    if(intent.rude)   d -= p.rudeness;
+    if(intent.rude || intent.threat){
+        d -= p.rudeness + (memory.warnings > 1 ? 8 : 0);
+    }else{
+        if(intent.greet && !chat.npc.greeted){ d += 8; chat.npc.greeted = true; }
+        if(intent.praise && !memory.praised){ d += p.praise; memory.praised = true; }
+        if(intent.polite && !intent.apology && !intent.same) d += Math.min(p.polite, memory.thanks > 2 ? 0 : 3);
+        if(intent.apology && memory.apologyAccepted){ d += 8; }
+        if(intent.accuse) d -= 7;
+        if(intent.swearing) d -= 2;
+        if(intent.pressure) d -= 4;
+    }
     if(intent.haggle) d -= 4;
     if(intent.offer != null) d -= 3;
-    if(intent.same)   d -= 7;
+    if(intent.same) d -= Math.min(8, memory.repeats * 2);
     chat.npc.mood = clamp(chat.npc.mood + d, 0, 100);
 }
 
@@ -1249,15 +1255,28 @@ function buyerLimit(){
 function smallTalk(intent){ return humanSmallTalk(intent); }
 
 /* ================= ДИАЛОГ ================= */
-function handleMessageRules(text){
+function handleMessage(text){
     if(!chat || chat.done || chat.stage !== "talk") return;
-
+    text = String(text).trim().slice(0,2000);
+    if(!text) return;
     meSay(text);
-    var intent = analyze(text);
+    var intent = contextualIntent(text, analyze(text));
     intent.same = (text.trim().toLowerCase() === chat.last);
     chat.last = text.trim().toLowerCase();
+    rememberDialogue(intent);
     applyMood(intent);
     if(ADM.anyPrice) chat.npc.mood = 100;
+
+    if(intent.rude || intent.threat){
+        npcSay(humanConflictReply(intent));
+        var patience = chat.npc.personality === 'evil' ? 2 : 3;
+        if(intent.threat || dialogueMemory().tension >= patience || chat.npc.mood <= 6){
+            sysSay("💤 Собеседник больше не хочет продолжать разговор.");
+            chat.done = true;
+        }
+        renderChat();
+        return;
+    }
 
     if(chat.npc.mood <= 6){
         var leaves = {
@@ -1272,13 +1291,23 @@ function handleMessageRules(text){
         return;
     }
 
+    if(intent.apology || intent.accuse || intent.swearing || intent.pressure || intent.joke){
+        var reaction = humanSocialReply(intent);
+        if(intent.offer != null || intent.agree || intent.decline || (intent.topic && intent.topic !== 'personal')) chat.replyLead = reaction;
+        else { npcSay(reaction); renderChat(); return; }
+    }
+
+    if(intent.answer){ npcSay(humanAnswerReply(intent)); renderChat(); return; }
+
     if(intent.offer == null && intent.agree && !intent.haggle && !intent.topic && !intent.question){
         if(chat.mode === "buy"){
             agreePrice(chat.ask);
+            delete chat.replyLead;
             renderChat();
             return;
         }else{
             agreePrice(chat.bid);
+            delete chat.replyLead;
             renderChat();
             return;
         }
@@ -1287,11 +1316,16 @@ function handleMessageRules(text){
     if(intent.offer != null){
         if(intent.adjustment) intent.offer = (chat.mode === "buy" ? chat.ask : chat.bid) + intent.adjustment * intent.offer;
         if(!Number.isSafeInteger(intent.offer) || intent.offer < 1){ npcSay("Такая сумма не подходит. Предложите положительную цену в рублях."); renderChat(); return; }
+        if(dialogueMemory().offerRepeats >= 2 && !ADM.anyPrice){
+            npcSay(dialogueTone({kind:['Вашу сумму я помню. Давайте попробуем другой вариант, повторять одно и то же смысла нет.'],neutral:['Это предложение мы уже обсуждали. Мой вариант — ' + money(chat.mode === 'buy' ? chat.ask : chat.bid) + '.'],evil:['Сумма от повторения не изменится. Сейчас ' + money(chat.mode === 'buy' ? chat.ask : chat.bid) + '.']}));
+            renderChat(); return;
+        }
         if(chat.mode === "buy") handleBuyOffer(intent.offer);
         else handleSellAsk(intent.offer);
     }else{
         npcSay(smallTalk(intent));
     }
+    delete chat.replyLead;
     renderChat();
 }
 
@@ -1490,7 +1524,7 @@ function agreePrice(price){
 }
 
 function scheduleMeeting(){
-    if(!chat || chat.done || chat.aiPending || chat.stage !== "schedule") return;
+    if(!chat || chat.done || chat.stage !== "schedule") return;
     advanceGameTime(Date.now());
     if(!meetingTimeEdited) setMeetingDefaults();
     var ds = $("meetDate").value, ts = $("meetTime").value;

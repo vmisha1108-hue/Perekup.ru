@@ -71,7 +71,7 @@ const server = http.createServer((request,response)=>{
             assert.deepEqual(await page.evaluate(()=>chat.log),before.log);assert.deepEqual(await page.evaluate(()=>chat.npc),before.npc);
             const mood=await page.evaluate(()=>chat.npc.mood);await page.evaluate(()=>handleMessage('Ты жадный!'));
             assert.ok(await page.evaluate(()=>chat.npc.mood)<mood);
-            assert.ok(await page.evaluate(()=>/грубости|оскорблять/.test(chat.log.at(-1).text)));
+            assert.ok(await page.evaluate(()=>/грубости|оскорб/.test(chat.log.at(-1).text)));
         });
         await scenario('exchange questions explain the offered car and both directions of top-up',async page=>{
             await page.evaluate(()=>{garage=[1];const ad={id:'trade',npc:{name:'Анна',avatar:'👩',personality:'kind',mood:80},bid:210000,maxBid:210000,listingPrice:210000,trade:{carId:4000003,value:110000}};openSellChat(1,ad);handleMessage('Что предлагаете на обмен?');});
