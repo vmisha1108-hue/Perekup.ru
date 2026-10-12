@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "start": "python3 -m http.server 8000",
-    "test": "node tests/gameplay.cjs && node tests/cities.cjs && node tests/dialogue.cjs && node tests/travel.cjs && node tests/human-dialogue.cjs",
+    "test": "node tests/gameplay.cjs && node tests/cities.cjs && node tests/dialogue.cjs && node tests/travel.cjs && node tests/human-dialogue.cjs && node tests/bank.cjs",
+    "test:bank": "node tests/bank.cjs",
     "test:dialogue": "node tests/dialogue.cjs && node tests/human-dialogue.cjs"
   },
   "engines": {"node": ">=22"},

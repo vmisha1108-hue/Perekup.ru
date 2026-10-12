@@ -105,6 +105,7 @@ function carImg(car){
 }
 
 function save(){
+    syncBankBalance(); saveBank();
     saveTransport();
     localStorage.setItem("balance", balance);
     localStorage.setItem("garage", JSON.stringify(garage));
@@ -121,7 +122,7 @@ function migrateStartingBalance(){
     if(localStorage.getItem("startingBalanceVersion") === "1") return;
     // Старый сброс выдавал миллион. Исправляем только пустую игру без сделок.
     if(balance === 1000000 && deals === 0 && garageLvl === 0 && !garage.length && !pending.length &&
-        !Object.keys(listings).length && !Object.keys(chatStore).length){
+        !Object.keys(listings).length && !Object.keys(chatStore).length && !bankHasProgress()){
         balance = START_BALANCE;
         localStorage.setItem("balance", String(balance));
     }
@@ -144,6 +145,7 @@ function updateStats(){
     }
     if(typeof renderAdmin === "function") renderAdmin();
     if(typeof renderDealsTab === "function") renderDealsTab();
+    renderBank();
 }
 
 /* ================= ИКОНКИ ================= */
@@ -155,7 +157,8 @@ var ICONS = [
     {id:"clock",    ico:"🕐", label:"Часы"},
     {id:"help",     ico:"❓", label:"Справка"},
     {id:"travel",   ico:"🧳", label:"Переезд"},
-    {id:"garage",   ico:"🏠", label:"Гараж"}
+    {id:"garage",   ico:"🏠", label:"Гараж"},
+    {id:"bank",     ico:"🏦", label:"Банк"}
 ];
 
 function loadIconPositions(){
@@ -454,6 +457,7 @@ function openWin(id){
     if(id === "travel"){ renderTravel(); }
     if(id === "garage"){ renderGarageApp(); }
     if(id === "shop"){ renderShop(); }
+    if(id === "bank"){ renderBank(true); }
     if(id === "admin"){ renderAdmin(); }
 }
 
@@ -914,7 +918,7 @@ function buyGarage(i){
     var g = GARAGES[i];
     if(i !== garageLvl + 1) return;
     if(!canAfford(g.price)) return;
-    spend(g.price);
+    spend(g.price,'Расширение гаража: '+g.name);
     garageLvl = i;
     rebalanceHome();
     save(); renderShop(); updateStats();
@@ -1381,7 +1385,7 @@ function finishBuy(price){
         chat.done = true;
         return;
     }
-    spend(price);
+    spend(price,'Покупка автомобиля: '+chat.car.name);
     garage.push(chat.car.id);
     parkVehicle(chat.car.id,transport.cityId);
     purchasePrices[chat.car.id] = price;
@@ -1453,7 +1457,7 @@ function finishSell(price){
         chat.done = true;
         return;
     }
-    balance += price;
+    changeBalance(price,'Продажа автомобиля: '+chat.car.name,'sale');
     payParkingDebt(chat.car.id);
     garage = garage.filter(function(x){ return x !== chat.car.id; });
     removeVehicle(chat.car.id);
@@ -1841,7 +1845,8 @@ function finishTrade(price){
         sysSay('❌ Обмен невозможен: проверьте наличие машин и деньги на доплату.'); chat.done = true; return;
     }
     var cost = Math.max(1, purchaseCost(chat.car) - difference);
-    balance = newBalance;
+    changeBalance(difference,'Доплата при обмене: '+chat.car.name+' → '+incoming.name,'trade');
+    payParkingDebt(chat.car.id);
     garage[index] = incoming.id;
     removeVehicle(chat.car.id);
     parkVehicle(incoming.id,transport.cityId);
@@ -2263,6 +2268,7 @@ function showDeals(){
 // проверяется каждый тик игрового времени
 function tickPending(){
     tickTransport();
+    tickBank();
     tickMeeting();
     var changed = tickListings();
     if(!pending.length){
@@ -2425,6 +2431,7 @@ var MONTHS_GEN = ["января","февраля","марта","апреля","�
 
 function gameNow(){ return new Date(gameMs); }
 function saveGameTime(){
+    saveBank();
     localStorage.setItem("gameMs", String(Math.round(gameMs)));
     lastGameSave = Date.now();
 }
@@ -2600,7 +2607,7 @@ function saveAdminFlags(){ localStorage.setItem("adminFlags", JSON.stringify(ADM
 
 // деньги: в режиме «деньги не списываются» всегда хватает
 function canAfford(p){ return ADM.infMoney || balance >= p; }
-function spend(p){ if(!ADM.infMoney) balance -= p; }
+function spend(p,label){ return ADM.infMoney ? true : changeBalance(-p,label || 'Расход по счёту','expense'); }
 
 function openAdminGate(){
     $("gatePass").value = "";
@@ -2648,9 +2655,9 @@ function admMoney(mode, n){
     n = Math.floor(Number(n));
     if(!isFinite(n) || n < 0 || (mode !== "set" && n === 0)){ admMsg("⚠️ Введите сумму больше нуля."); return; }
     var LIM = 1e15;
-    if(mode === "add"){ balance = Math.min(LIM, balance + n); admMsg("✅ Выдано " + money(n)); }
-    else if(mode === "sub"){ balance = Math.max(0, balance - n); admMsg("✅ Забрано " + money(n)); }
-    else { balance = Math.min(LIM, n); admMsg("✅ Баланс установлен: " + money(balance)); }
+    if(mode === "add"){ changeBalance(Math.min(LIM, balance + n)-balance,'Администратор: пополнение','admin'); admMsg("✅ Выдано " + money(n)); }
+    else if(mode === "sub"){ changeBalance(Math.max(0,balance-n)-balance,'Администратор: списание','admin'); admMsg("✅ Забрано " + money(n)); }
+    else { changeBalance(Math.min(LIM,n)-balance,'Администратор: новый баланс','admin'); admMsg("✅ Баланс установлен: " + money(balance)); }
     admApply();
 }
 function admCarAdd(id){
@@ -2680,10 +2687,11 @@ function admGarLvl(i){
     admApply();
 }
 function admReset(){
-    if(!confirm("Сбросить весь прогресс (баланс, гараж, сделки, заметки)?")) return;
+    if(!confirm("Сбросить весь прогресс (баланс, гараж, сделки, заметки, кредиты и историю банка)?")) return;
     balance = START_BALANCE; garage = []; deals = 0; garageLvl = 0; notes = {}; pending = [];
     purchasePrices = {}; listings = {}; chatStore = {};
     transport = newTransport();
+    bank=freshBank();bankRenderKey='';bankRecord(START_BALANCE,'Стартовый баланс','opening');
     $("arrivalOverlay").classList.remove("open");
     persistChats();
     if(chat) closeChat();
@@ -2915,6 +2923,7 @@ function bindUI(){
 /* ================= СТАРТ ================= */
 window.addEventListener("DOMContentLoaded", function(){
     migrateStartingBalance();
+    initBank();
     initTransport();
     migrateSaleListings();
     bindUI();

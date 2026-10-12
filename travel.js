@@ -79,14 +79,14 @@ function parkingDebt(id){ var v = vehicleState(id); return v ? v.debt || 0 : 0; 
 function payParkingDebt(id){
     var v = vehicleState(id), amount = parkingDebt(id);
     if(!canAfford(amount)) return false;
-    spend(amount); v.debt = 0; return true;
+    spend(amount,'Погашение долга за парковку: '+carById(id).name); v.debt = 0; return true;
 }
 function settleParking(id, until){
     var v = vehicleState(id);
     if(!v || v.place !== "parking" || !v.nextChargeAt || until < v.nextChargeAt) return false;
     var days = Math.floor((until - v.nextChargeAt) / DAY_MS) + 1, fee = days * 100;
     var paid = ADM.infMoney ? fee : Math.min(balance, fee);
-    spend(paid);
+    spend(paid,'Парковка: '+carById(id).name);
     v.debt = Math.min(Number.MAX_SAFE_INTEGER, (v.debt || 0) + fee - paid);
     v.nextChargeAt += days * DAY_MS;
     return true;
@@ -137,7 +137,7 @@ function depart(targetId,mode,carId){
     if(mode === "drive" && (localDrivingCars().indexOf(carId) === -1 || carHasMeeting(carId))){ toast("Выберите местную машину без назначенной встречи."); return false; }
     var debt = mode === "drive" ? parkingDebt(carId) : 0;
     if(!canAfford(option.price + debt)){ toast("Не хватает денег на дорогу" + (debt ? " и долг за парковку" : "") + "."); return false; }
-    spend(option.price);
+    spend(option.price,'Переезд: '+CITY_BY_ID[transport.cityId].name+' → '+CITY_BY_ID[targetId].name+' · '+option.label);
     if(mode === "drive"){
         payParkingDebt(carId);
         transport.vehicles[carId].place = "road";
@@ -157,7 +157,7 @@ function shipVehicle(id){
     if(!quote || carHasMeeting(id)){ toast("Сначала завершите или отмените встречу по этой машине."); return false; }
     var debt = parkingDebt(id);
     if(!canAfford(quote.price + debt)){ toast("Не хватает денег на автовоз и оплату долга за парковку."); return false; }
-    spend(quote.price); payParkingDebt(id);
+    spend(quote.price,'Автовоз в Москву: '+carById(id).name); payParkingDebt(id);
     transport.vehicles[id].place = "carrier";
     transport.shipments.push({carId:id,from:transport.vehicles[id].cityId,departedAt:gameMs,arrivesAt:gameMs + quote.duration,price:quote.price});
     removeSaleOffers(id);
