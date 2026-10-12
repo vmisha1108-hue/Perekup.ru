@@ -19,13 +19,36 @@ function bankHasProgress(){
     }catch(e){return false;}
 }
 function initBank(){
-    try{bank=JSON.parse(localStorage.getItem('bank') || 'null');}catch(e){}
-    if(!bank || bank.version!==1 || !Array.isArray(bank.entries) || !Array.isArray(bank.loans) || !Number.isSafeInteger(bank.knownBalance)){
+    bank=readSaved('bank',{});
+    if(bank.version!==1){
         bank=freshBank();
         bankRecord(balance,localStorage.getItem('balance')===null ? 'Стартовый баланс' : 'Баланс при открытии банка','opening');
     }
-    bank.loans=bank.loans.filter(function(l){return l && ['credit','micro'].indexOf(l.kind)!==-1 && Number.isFinite(l.principalCents) && l.principalCents>=0 && Number.isFinite(l.accruedAt);});
-    bank.selection=bank.selection || {amount:50000,months:12,microAmount:10000};
+    bank.entries=(Array.isArray(bank.entries)?bank.entries:[]).filter(function(e){return isRecord(e) && Number.isSafeInteger(e.amount) && Number.isSafeInteger(e.balance) && Number.isFinite(e.when) && typeof e.label==='string';});
+    bank.loans=(Array.isArray(bank.loans)?bank.loans:[]).filter(function(l){
+        return isRecord(l) && typeof l.id==='string' && ['credit','micro'].indexOf(l.kind)!==-1 && ['active','repaid'].indexOf(l.status)!==-1 &&
+            Number.isSafeInteger(l.amount) && l.amount>0 && Number.isFinite(l.principalCents) && l.principalCents>=0 && Number.isFinite(l.accruedAt) &&
+            (l.nextDueAt===null || Number.isFinite(l.nextDueAt)) &&
+            (l.kind!=='credit' || (CREDIT_TERMS.indexOf(l.months)!==-1 && Number.isFinite(l.apr) && l.apr>0 && Number.isSafeInteger(l.installment) && l.installment>0));
+    });
+    bank.loans.forEach(function(l){
+        ['interestCents','feesCents','feeTotalCents','arrearsCents','paid','period'].forEach(function(key){if(!Number.isFinite(l[key]) || l[key]<0)l[key]=0;});
+        if(!Number.isFinite(l.overdueAt))l.overdueAt=null;
+    });
+    ['sequence','revision','nextApplicationAt','repaidCredits','missedPayments'].forEach(function(key){if(!Number.isSafeInteger(bank[key]) || bank[key]<0)bank[key]=0;});
+    // Номера записей продолжаются даже при неполном старом сохранении.
+    bank.entries.forEach(function(e){if(Number.isSafeInteger(e.id))bank.sequence=Math.max(bank.sequence,e.id);});
+    bank.loans.forEach(function(l){var seq=Number(l.id.replace(/^l/,''));if(Number.isSafeInteger(seq))bank.sequence=Math.max(bank.sequence,seq);});
+    if(!Number.isSafeInteger(bank.knownBalance))bank.knownBalance=balance;
+    var app=bank.application,q=app && app.quote;
+    if(!isRecord(app) || ['review','approved','declined'].indexOf(app.status)===-1 || !isRecord(q) ||
+        CREDIT_AMOUNTS.indexOf(q.amount)===-1 || CREDIT_TERMS.indexOf(q.months)===-1 || !Number.isFinite(q.apr) || q.apr<=0 ||
+        !Number.isSafeInteger(q.installment) || q.installment<1 || !Number.isSafeInteger(q.total) || q.total<q.amount || !Number.isFinite(app.decisionAt))bank.application=null;
+    else {var appSeq=Number(typeof app.id==='string'?app.id.replace(/^a/,''):NaN);if(Number.isSafeInteger(appSeq))bank.sequence=Math.max(bank.sequence,appSeq);}
+    if(!isRecord(bank.selection))bank.selection={amount:50000,months:12,microAmount:10000};
+    var micro=bank.microQuote;
+    if(!isRecord(micro) || MICRO_AMOUNTS.indexOf(micro.amount)===-1 || !Number.isFinite(micro.multiplier) || micro.multiplier<2 || micro.multiplier>3 ||
+        micro.total!==Math.round(micro.amount*micro.multiplier) || micro.days!==14)bank.microQuote=null;
     if(CREDIT_AMOUNTS.indexOf(bank.selection.amount)===-1) bank.selection.amount=50000;
     if(CREDIT_TERMS.indexOf(bank.selection.months)===-1) bank.selection.months=12;
     if(MICRO_AMOUNTS.indexOf(bank.selection.microAmount)===-1) bank.selection.microAmount=10000;

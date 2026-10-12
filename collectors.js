@@ -4,9 +4,16 @@ var COLLECTOR_GRACE = 90*BANK_DAY;
 var collectorBusy = false, collectorPreviousFocus = null;
 function collectorState(){
     if(!bank) return null;
-    if(!bank.collectors || bank.collectors.version!==1){
+    if(!isRecord(bank.collectors) || bank.collectors.version!==1){
         bank.collectors={version:1,active:false,loanIds:[],level:0,nextEventAt:null,sequence:0,call:null,log:[]};
     }
+    var s=bank.collectors;
+    if(!Array.isArray(s.loanIds))s.loanIds=[];
+    if(!Array.isArray(s.log))s.log=[];
+    s.log=s.log.filter(function(e){return isRecord(e) && Number.isFinite(e.when) && typeof e.text==='string';}).slice(0,60);
+    if(!Number.isSafeInteger(s.sequence) || s.sequence<0)s.sequence=0;
+    if(!Number.isFinite(s.nextEventAt))s.nextEventAt=null;
+    if(s.call && (!isRecord(s.call) || !Number.isSafeInteger(s.call.minutes) || s.call.minutes<15 || s.call.minutes>90 || typeof s.call.name!=='string' || typeof s.call.text!=='string'))s.call=null;
     return bank.collectors;
 }
 function collectorLoans(){
@@ -39,6 +46,7 @@ function syncCollectors(){
     var ids=loans.map(function(l){return l.id;}).sort();
     var changed=s.level!==level || s.loanIds.join(',')!==ids.join(',');
     s.active=level>0;s.level=level;s.loanIds=ids;
+    if(s.active && wasActive && s.nextEventAt===null){s.nextEventAt=gameMs+30*60000;changed=true;}
     if(s.active && !wasActive){
         s.nextEventAt=gameMs+30*60000;
         collectorLog('started','Просрочка достигла 90 дней. Долг передан игровому отделу взыскания.');

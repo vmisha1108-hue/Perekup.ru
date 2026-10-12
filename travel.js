@@ -6,13 +6,28 @@ var transportRenderKey = "";
 var DAY_MS = 86400000;
 function newTransport(){ return {version:1, cityId:moscowCity.id, trip:null, shipments:[], vehicles:{}, odometers:{}, arrival:null}; }
 function initTransport(){
-    try { transport = JSON.parse(localStorage.getItem("transport") || "null"); } catch(e){}
-    if(!transport || transport.version !== 1) transport = newTransport();
+    transport=readSaved("transport",{});
+    if(transport.version !== 1) transport = newTransport();
     if(!CITY_BY_ID[transport.cityId]) transport.cityId = moscowCity.id;
-    transport.vehicles = transport.vehicles || {};
-    transport.odometers = transport.odometers || {};
-    transport.shipments = transport.shipments || [];
+    if(!isRecord(transport.vehicles))transport.vehicles={};
+    if(!isRecord(transport.odometers))transport.odometers={};
+    garage.forEach(function(id){
+        var v=transport.vehicles[id];
+        if(!isRecord(v) || !CITY_BY_ID[v.cityId] || ['garage','yard','parking','road','carrier'].indexOf(v.place)===-1){delete transport.vehicles[id];return;}
+        if(!Number.isSafeInteger(v.debt) || v.debt<0)v.debt=0;
+        if(v.place==='parking' && !Number.isFinite(v.nextChargeAt))v.nextChargeAt=gameMs+DAY_MS;
+    });
+    Object.keys(transport.odometers).forEach(function(id){if(!Number.isSafeInteger(transport.odometers[id]) || transport.odometers[id]<0)delete transport.odometers[id];});
+    transport.shipments=(Array.isArray(transport.shipments)?transport.shipments:[]).filter(function(s){return isRecord(s) && garage.indexOf(s.carId)!==-1 && CITY_BY_ID[s.from] && Number.isFinite(s.departedAt) && Number.isFinite(s.arrivesAt) && s.arrivesAt>s.departedAt;});
+    var trip=transport.trip;
+    if(!isRecord(trip) || !CITY_BY_ID[trip.from] || !CITY_BY_ID[trip.to] || ['train','plane','taxi','drive'].indexOf(trip.mode)===-1 || typeof trip.label!=='string' ||
+        !Number.isFinite(trip.departedAt) || !Number.isFinite(trip.arrivesAt) || trip.arrivesAt<=trip.departedAt || (trip.mode==='drive' && garage.indexOf(trip.carId)===-1))transport.trip=null;
+    if(!isRecord(transport.arrival) || !CITY_BY_ID[transport.arrival.cityId] || typeof transport.arrival.label!=='string' || !Number.isFinite(transport.arrival.when))transport.arrival=null;
     garage.forEach(function(id){ vehicleState(id); });
+    garage.forEach(function(id){
+        var v=transport.vehicles[id];
+        if((v.place==='road' && (!transport.trip || transport.trip.carId!==id)) || (v.place==='carrier' && !transport.shipments.some(function(s){return s.carId===id;})))parkVehicle(id,v.cityId);
+    });
     rebalanceHome();
     bindTransport();
     saveTransport();

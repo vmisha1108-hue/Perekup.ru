@@ -26,8 +26,7 @@ function estimateMarketPrice(car){
     return Math.round(Math.max(reference * 0.65, Math.min(reference * 1.8, original)) / 1000) * 1000;
 }
 function initMarketSession(){
-    var previous = {};
-    try{ previous = JSON.parse(localStorage.getItem('sellerSessionMoods') || '{}') || {}; }catch(e){}
+    var previous = readSaved('sellerSessionMoods',{});
     var current = {}, moods = ['kind', 'neutral', 'evil'];
     var marketMove = 0.98 + Math.random() * 0.04;
     CARS.forEach(function(car){
