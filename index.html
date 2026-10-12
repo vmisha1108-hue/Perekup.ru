@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Perekyp.ru</title>
-<link rel="stylesheet" href="style.css?v=20261012-entry">
+<link rel="stylesheet" href="style.css?v=20261012-identity">
 </head>
 <body>
 
@@ -227,7 +227,7 @@
         <p><b>🧮 Калькулятор</b> — быстрый счёт.</p>
         <p><b>📅 Календарь</b> — заметки по дням.</p>
         <p>🛒 После подтверждения покупки объявление исчезает из каталога, а машина остаётся в вашем гараже. Перезагрузка, сон и последующая продажа не возвращают это объявление на рынок. Полный сброс прогресса возвращает каталог.</p>
-        <p>📄 Покупка и продажа завершаются подписанием договора купли-продажи после осмотра и согласования цены. Заполните ФИО, игровой паспорт, адрес, VIN, госномер, ПТС и СТС, проверьте условия и подпишите. Кнопка «Заполнить по игровым документам» и подсказки помогут заполнить поля. Используются данные персонажа; настоящие документы не нужны. Черновик сохраняется автоматически, а подписанные экземпляры находятся в приложении «Документы». До подписи машина и деньги остаются у владельцев. Можно свернуть встречу; закрытие окна отменяет сделку.</p>
+        <p>📄 При первом входе выберите ник и нарисуйте подпись мышью или пальцем. Это окно появляется один раз. Ник используется вместо имени, а рисунок подписи — в конце договора. Подпись пока нельзя изменить или сбросить; обычный сброс игры сохраняет её и ник. Покупка и продажа завершаются подписанием договора после осмотра и согласования цены. Заполните игровой паспорт, адрес, VIN, госномер, ПТС и СТС, проверьте условия и подпишите. Кнопка «Заполнить по игровым документам» и подсказки помогут заполнить поля. Настоящие документы не нужны. Черновик сохраняется автоматически, подписанные экземпляры находятся в «Документах». До подписи машина и деньги остаются у владельцев. Можно свернуть встречу; закрытие окна отменяет сделку.</p>
         <p>🏁 Все объявления в игре вымышленные: модели автомобилей сохранены, а описания, пробеги и истории продавцов придуманы для игры. Фотографии созданы с помощью ИИ, без читаемых номеров и рекламы сервисов продажи. У машин из Алдана — зимние фотографии со снегом. <a href="photo-credits.html" target="_blank" rel="noopener" style="color:#4de0cb">Источники иллюстраций</a>.</p>
         <p style="color:#8f98a8">Окна можно тянуть за заголовок и растягивать за края/углы.</p>
     </div>
@@ -386,6 +386,23 @@
     </div>
 </div>
 
+<div class="overlay identity-overlay" id="identityOverlay" role="dialog" aria-modal="true" aria-labelledby="identityTitle" aria-describedby="identityIntro">
+    <div class="sale-modal identity-card">
+        <span class="entry-reset-badge">Знакомство с игроком · один раз</span>
+        <h2 id="identityTitle">Ваш ник и подпись</h2>
+        <p id="identityIntro" class="welcome-text">Ник будет указан вместо имени в договорах купли-продажи. Нарисуйте подпись — она появится в конце ваших договоров.</p>
+        <form id="identityForm" novalidate>
+            <label for="identityNickname">Ник</label><input id="identityNickname" maxlength="32" autocomplete="off" placeholder="Например, Перекуп77">
+            <label for="identityCanvas">Нарисуйте подпись</label>
+            <canvas id="identityCanvas" width="640" height="240" tabindex="0" aria-label="Поле для рисования подписи мышью или пальцем"></canvas>
+            <p class="identity-note">Подпись не делайте сложной: после сохранения сбросить её пока нельзя.</p>
+            <button type="button" id="identityClear" class="identity-clear">Очистить рисунок</button>
+            <p id="identityError" class="identity-error" role="alert"></p>
+            <button type="submit" id="identitySave" class="stage-btn yes wide">Сохранить ник и подпись</button>
+        </form>
+    </div>
+</div>
+
 <div class="overlay" id="adminGate">
     <div class="gate-modal">
         <div class="gate-title">🔒 Доступ</div>
@@ -488,8 +505,9 @@
 </div>
 <script src="bank.js?v=20261012-review"></script>
 <script src="collectors.js?v=20261012-entry"></script>
-<script src="contracts.js?v=20261012-contracts"></script>
-<script src="entry-reset.js?v=20261012-no-reset"></script>
-<script src="script.js?v=20261012-entry"></script>
+<script src="identity.js?v=20261012-identity"></script>
+<script src="contracts.js?v=20261012-identity"></script>
+<script src="entry-reset.js?v=20261012-identity"></script>
+<script src="script.js?v=20261012-identity"></script>
 </body>
 </html>

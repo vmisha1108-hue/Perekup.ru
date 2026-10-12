@@ -2,8 +2,9 @@
 
 // Временное предложение на период разработки. Для отключения достаточно поставить false.
 var ENTRY_RESET_PROMPT_ENABLED=false;
-var startupResetPending=ENTRY_RESET_PROMPT_ENABLED;
+var startupResetPending=ENTRY_RESET_PROMPT_ENABLED || !hasPlayerIdentity();
 function resumeAfterEntry(){
+    if(!hasPlayerIdentity()){showIdentitySetup();return;}
     lastRealMs=Date.now();updateGameSpeed();
     if(!chat || !chat.met || chat.done)restoreActiveMeeting();
     offerFirstVisitHelp();

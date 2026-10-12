@@ -46,16 +46,17 @@ const server=http.createServer(async(req,res)=>{
             const d=await page.evaluate(()=>contractBook.records[0]);assert.equal(d.seller.fullName,'Иванов Алексей Сергеевич');assert.match(d.buyer.fullName,/Анна/);assert.equal(d.price,final);assert.equal(d.mode,'sell');assert.ok(!await page.evaluate(()=>listings[1]));
         });
         await scenario('blank or incorrect fields show specific help and cannot transfer anything',async page=>{
-            await draft(page);await page.locator('#contractSign').click();assert.match(await page.locator('#contractErrors').textContent(),/ФИО|полное имя/);assert.equal(await page.evaluate(()=>contractBook.records.length),0);
+            await draft(page);await page.locator('#contractSign').click();assert.match(await page.locator('#contractErrors').textContent(),/паспорте|адрес/);assert.equal(await page.evaluate(()=>contractBook.records.length),0);
             await ready(page);await page.locator('#contract-vin').fill('BADVIN');await page.locator('#contractSign').click();assert.match(await page.locator('#contractErrors').textContent(),/VIN не совпадает/);
             assert.equal(await page.locator('#contract-vin').getAttribute('aria-invalid'),'true');assert.deepEqual(await page.evaluate(()=>garage),[]);assert.equal(await page.evaluate(()=>balance),100000);
             await ready(page);await page.locator('#contractConfirm').uncheck();await page.locator('#contractSign').click();assert.match(await page.locator('#contractErrors').textContent(),/Подтвердите/);
             await page.locator('#contractConfirm').check();await page.locator('#contractSign').click();assert.equal(await page.evaluate(()=>contractBook.records.length),1);
         });
-        await scenario('custom player data must match the signature and become the profile for later paperwork',async page=>{
-            await draft(page);await ready(page);await page.locator('#contract-fullName').fill('Михаил Андреевич Петров');await page.locator('#contract-passport').fill('1234 567890');await page.locator('#contract-address').fill('г. Москва, ул. Новая, д. 20');
-            await page.locator('#contractSign').click();assert.match(await page.locator('#contractErrors').textContent(),/то же полное ФИО/);assert.equal(await page.evaluate(()=>balance),100000);
-            await page.locator('#contract-signature').fill('Михаил Андреевич Петров');await page.locator('#contractSign').click();assert.equal(await page.evaluate(()=>contractBook.records[0].buyer.fullName),'Михаил Андреевич Петров');assert.equal(await page.evaluate(()=>contractBook.profile.passport),'1234 567890');
+        await scenario('nickname and drawn signature stay fixed while editable passport data become the profile for later paperwork',async page=>{
+            await draft(page);await ready(page);assert.ok(await page.locator('#contract-fullName').evaluate(el=>el.readOnly));assert.equal(await page.locator('#contract-signature').count(),0);
+            await page.locator('#contract-passport').fill('1234 567890');await page.locator('#contract-address').fill('г. Москва, ул. Новая, д. 20');
+            await page.locator('#contractSign').click();assert.equal(await page.evaluate(()=>contractBook.records[0].buyer.fullName),await page.evaluate(()=>playerIdentity.nickname));assert.equal(await page.evaluate(()=>contractBook.profile.passport),'1234 567890');
+            assert.deepEqual(await page.evaluate(()=>contractBook.records[0].buyer.signature),await page.evaluate(()=>playerIdentity.signature));
         });
         await scenario('an unsigned partly filled draft and its fixed price survive reload and a long wait',async page=>{
             await draft(page,'buy',90000,.4);await ready(page);await page.locator('#contract-address').fill('г. Москва, ул. Сохранённая, д. 3');

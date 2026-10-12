@@ -2990,6 +2990,7 @@ window.addEventListener("DOMContentLoaded", function(){
     initCollectors();
     initContracts();
     initEntryReset();
+    initIdentity();
     migrateSaleListings();
     bindUI();
     initCalc();

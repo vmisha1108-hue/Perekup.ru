@@ -1,6 +1,6 @@
 'use strict';
 
-function defaultContractProfile(){return {fullName:'Иванов Алексей Сергеевич',passport:'4501 123456',address:'г. Москва, ул. Игровая, д. 7, кв. 12'};}
+function defaultContractProfile(){return {fullName:hasPlayerIdentity()?playerIdentity.nickname:'Игрок',passport:'4501 123456',address:'г. Москва, ул. Игровая, д. 7, кв. 12'};}
 var contractBook=readSaved('contracts',{}),contractSigning=false,selectedContractId=null;
 if(contractBook.version!==1)contractBook={version:1,sequence:0,profile:defaultContractProfile(),records:[]};
 if(!Number.isSafeInteger(contractBook.sequence) || contractBook.sequence<0)contractBook.sequence=0;
@@ -37,6 +37,7 @@ function repairContractDraft(meeting){
     }
     ['fullName','passport','address','vin','plate','pts','sts','signature'].forEach(function(key){if(typeof d.fields[key]!=='string')d.fields[key]='';});
     d.acknowledged=!!d.acknowledged;
+    if(hasPlayerIdentity()){d.fields.fullName=playerIdentity.nickname;d.fields.signature=playerIdentity.nickname;}
 }
 function beginContract(){
     if(!chat || chat.done || !chat.met)return false;
@@ -46,7 +47,7 @@ function beginContract(){
         var city=meetingCity(chat.mode,chat.car.id);
         meeting.contract={version:1,id:'dkp-'+meeting.id,number:'ДКП-'+String(++contractBook.sequence).padStart(5,'0'),mode:chat.mode,
             carId:chat.car.id,price:chat.price,cityId:city.id,city:city.name,createdAt:gameMs,other:contractOtherParty(chat.npc,city),vehicle:contractVehicle(chat.car),
-            fields:{fullName:'',passport:'',address:'',vin:'',plate:'',pts:'',sts:'',signature:''},acknowledged:false};
+            fields:{fullName:hasPlayerIdentity()?playerIdentity.nickname:'',passport:'',address:'',vin:'',plate:'',pts:'',sts:'',signature:hasPlayerIdentity()?playerIdentity.nickname:''},acknowledged:false};
         sysSay('Цена согласована. Теперь заполните и подпишите договор купли-продажи. Деньги и машина пока остаются у владельцев.');
     }
     meeting.price=meeting.contract.price;meeting.flow.stage='contract';meeting.flow.event=null;
@@ -56,11 +57,11 @@ function beginContract(){
 function requestDealCompletion(){if(chat.trade)completeDeal();else beginContract();}
 function contractField(key,label,hint,placeholder,draft){
     var upper=['vin','plate','pts','sts'].indexOf(key)!==-1;
-    return '<label class="contract-field" for="contract-'+key+'">'+label+'<input id="contract-'+key+'" data-contract-field="'+key+'" value="'+esc(draft.fields[key] || '')+'" placeholder="'+esc(placeholder || '')+'" maxlength="'+(key==='address'?200:upper?24:80)+'" autocomplete="off" spellcheck="false"'+(key==='passport'?' inputmode="numeric"':'')+' aria-describedby="contract-hint-'+key+'"><small id="contract-hint-'+key+'">'+hint+'</small></label>';
+    return '<label class="contract-field" for="contract-'+key+'">'+label+'<input id="contract-'+key+'" data-contract-field="'+key+'" value="'+esc(draft.fields[key] || '')+'" placeholder="'+esc(placeholder || '')+'" maxlength="'+(key==='address'?200:upper?24:80)+'" autocomplete="off" spellcheck="false"'+(key==='fullName'?' readonly':'')+(key==='passport'?' inputmode="numeric"':'')+' aria-describedby="contract-hint-'+key+'"><small id="contract-hint-'+key+'">'+hint+'</small></label>';
 }
 function contractPartyHtml(title,party){return '<section class="contract-party"><h4>'+title+'</h4><p><b>'+esc(party.fullName)+'</b></p><p>Паспорт: '+esc(party.passport)+'</p><p>Адрес: '+esc(party.address)+'</p></section>';}
 function renderContractPreview(draft){
-    var f=draft.fields,player={fullName:f.fullName || 'ФИО не заполнено',passport:f.passport || 'не заполнен',address:f.address || 'не заполнен'};
+    var f=draft.fields,player={fullName:f.fullName || 'Ник не указан',passport:f.passport || 'не заполнен',address:f.address || 'не заполнен'};
     var seller=draft.mode==='buy'?draft.other:player,buyer=draft.mode==='buy'?player:draft.other;
     return '<article class="contract-paper"><h3>Договор купли-продажи автомобиля</h3><p class="contract-paper-meta">'+esc(draft.number)+' · '+esc(draft.city)+' · '+fmtMeet(new Date(draft.createdAt))+'</p>'+
         '<div class="contract-parties">'+contractPartyHtml('Продавец',seller)+contractPartyHtml('Покупатель',buyer)+'</div>'+
@@ -78,7 +79,7 @@ function renderContractForm(force){
             '<div class="contract-help"><b>Помощь с заполнением</b><p>Кнопка перенесёт данные вашего игрового паспорта и машины. Затем проверьте договор и подтвердите подпись.</p><button type="button" id="contractAutofill">Заполнить по игровым документам</button><details><summary>Посмотреть игровые документы</summary>'+contractPartyHtml('Ваш игровой паспорт',contractBook.profile)+
             '<dl class="contract-docs">'+[['Автомобиль',draft.vehicle.name],['VIN',draft.vehicle.vin],['Госномер',draft.vehicle.plate],['ПТС',draft.vehicle.pts],['СТС',draft.vehicle.sts]].map(function(r){return '<div><dt>'+r[0]+'</dt><dd>'+esc(r[1])+'</dd></div>';}).join('')+'</dl></details></div>'+
             '<form id="contractForm" novalidate><fieldset><legend>1. Ваши данные · '+(draft.mode==='buy'?'покупатель':'продавец')+'</legend><div class="contract-fields">'+
-            contractField('fullName','Фамилия, имя и отчество','Полностью, как в игровом паспорте.','Иванов Иван Иванович',draft)+
+            contractField('fullName','Ваш ник','Используется вместо имени. Вы выбрали его при первом входе.','Ваш ник',draft)+
             contractField('passport','Серия и номер паспорта','Четыре цифры серии и шесть цифр номера.','4501 123456',draft)+
             contractField('address','Адрес регистрации','Город, улица, дом и квартира персонажа.','г. Москва, ул. Игровая, д. 7, кв. 12',draft)+'</div></fieldset>'+
             '<fieldset><legend>2. Данные автомобиля</legend><p class="contract-muted">'+esc(draft.vehicle.name)+' · '+esc(draft.vehicle.color)+'. Сверьте поля с документами выше.</p><div class="contract-fields">'+
@@ -86,7 +87,7 @@ function renderContractForm(force){
             contractField('plate','Государственный номер','Перепишите номер без изменения букв и цифр.','Номер из игровых документов',draft)+
             contractField('pts','Серия и номер ПТС','Паспорт транспортного средства — документ на машину.','ПТС из игровых документов',draft)+
             contractField('sts','Серия и номер СТС','Свидетельство о регистрации автомобиля.','СТС из игровых документов',draft)+'</div></fieldset>'+
-            '<div id="contractPreview">'+renderContractPreview(draft)+'</div><fieldset><legend>3. Подпись</legend>'+contractField('signature','Ваша подпись — полное ФИО','Должна совпадать с ФИО, указанным в договоре.','Введите своё игровое ФИО',draft)+
+            '<div id="contractPreview">'+renderContractPreview(draft)+'</div><fieldset><legend>3. Ваша подпись</legend>'+signatureHtml(hasPlayerIdentity()?playerIdentity.signature:[], 'Сохранённая подпись игрока')+'<p class="signature-owner">'+esc(hasPlayerIdentity()?playerIdentity.nickname:'')+' · подпись, нарисованная при первом входе</p>'+
             '<label class="contract-confirm"><input type="checkbox" id="contractConfirm"'+(draft.acknowledged?' checked':'')+'>Я проверил данные и согласен с передачей автомобиля и суммы '+money(draft.price)+'.</label><p class="contract-muted">'+(draft.mode==='buy'?'Продавец':'Покупатель')+' '+esc(draft.other.fullName)+' подпишет договор вместе с вами.</p></fieldset>'+
             '<div class="contract-errors" id="contractErrors" role="alert" hidden></div><p id="contractFunds" class="contract-muted"></p><div class="contract-actions"><button type="submit" id="contractSign">Подписать и '+(draft.mode==='buy'?'купить':'продать')+' за '+money(draft.price)+'</button><button type="button" id="contractCancel">Отказаться от сделки</button></div><p class="contract-muted">Черновик сохраняется автоматически. Можно свернуть окно встречи. Закрытие встречи отменяет сделку.</p></form>';
     }
@@ -95,6 +96,7 @@ function renderContractForm(force){
 function fillContractAssist(){
     var draft=currentContract();if(!draft || chat.stage!=='contract')return false;
     ['fullName','passport','address'].forEach(function(key){draft.fields[key]=contractBook.profile[key];});
+    if(hasPlayerIdentity())draft.fields.fullName=playerIdentity.nickname;
     ['vin','plate','pts','sts'].forEach(function(key){draft.fields[key]=draft.vehicle[key];});
     draft.fields.signature=draft.fields.fullName;draft.acknowledged=false;
     save();renderContractForm(true);return true;
@@ -103,11 +105,11 @@ function contractNormal(value){return String(value || '').trim().replace(/\s+/g,
 function contractCode(value){return contractNormal(value).toUpperCase().replace(/\s+/g,'');}
 function contractErrors(draft){
     var f=draft.fields,errors=[];
-    if(!/^[А-ЯЁA-Zа-яёa-z][А-ЯЁA-Zа-яёa-z\s'-]{4,79}$/.test(contractNormal(f.fullName)) || contractNormal(f.fullName).split(' ').length<2)errors.push({field:'fullName',text:'Укажите полное имя персонажа: фамилию, имя и отчество, как в игровом паспорте.'});
+    if(!hasPlayerIdentity() || f.fullName!==playerIdentity.nickname)errors.push({field:'fullName',text:'Ник должен совпадать с выбранным при первом входе.'});
     if(!/^\d{10}$/.test(contractNormal(f.passport).replace(/\s+/g,'')))errors.push({field:'passport',text:'В паспорте нужны 4 цифры серии и 6 цифр номера. Например: 4501 123456.'});
     if(contractNormal(f.address).length<8)errors.push({field:'address',text:'Допишите адрес регистрации персонажа: город, улицу и дом.'});
     ['vin','plate','pts','sts'].forEach(function(key){if(contractCode(f[key])!==contractCode(draft.vehicle[key]))errors.push({field:key,text:({vin:'VIN',plate:'Госномер',pts:'ПТС',sts:'СТС'})[key]+' не совпадает с игровыми документами автомобиля. Сверьте поле или воспользуйтесь помощью.'});});
-    if(contractNormal(f.signature).toLowerCase()!==contractNormal(f.fullName).toLowerCase() || !contractNormal(f.signature))errors.push({field:'signature',text:'Для подписи введите то же полное ФИО, что указано в договоре.'});
+    if(!hasPlayerIdentity() || !validSignature(playerIdentity.signature))errors.push({text:'Для договора нужна сохранённая нарисованная подпись.'});
     if(!draft.acknowledged)errors.push({field:'confirm',text:'Подтвердите, что проверили данные и согласны с условиями сделки.'});
     return errors;
 }
@@ -129,7 +131,7 @@ function signContract(){
     if(chat.mode==='buy' && !canAfford(draft.price))errors.push({text:'Не хватает денег на покупку. Пополните счёт и вернитесь к договору.'});
     if(chat.mode==='sell' && (!Number.isSafeInteger(balance+draft.price) || (!ADM.infMoney && balance+draft.price<parkingDebt(chat.car.id))))errors.push({text:'Нельзя провести расчёт: проверьте сумму и долг за парковку.'});
     if(errors.length){displayContractErrors(errors);return false;}
-    var player={fullName:contractNormal(draft.fields.fullName),passport:contractNormal(draft.fields.passport),address:contractNormal(draft.fields.address)};
+    var player={fullName:playerIdentity.nickname,passport:contractNormal(draft.fields.passport),address:contractNormal(draft.fields.address),signature:JSON.parse(JSON.stringify(playerIdentity.signature))};
     var record={version:1,id:draft.id,number:draft.number,mode:draft.mode,carId:draft.carId,city:draft.city,createdAt:draft.createdAt,signedAt:gameMs,price:draft.price,vehicle:Object.assign({},draft.vehicle),seller:draft.mode==='buy'?draft.other:player,buyer:draft.mode==='buy'?player:draft.other};
     contractSigning=true;
     try{
@@ -149,7 +151,7 @@ function cancelContract(){
 function signedContractHtml(d){
     var player=d.mode==='buy'?d.buyer:d.seller;
     var draft={number:d.number,city:d.city,createdAt:d.createdAt,price:d.price,mode:d.mode,vehicle:d.vehicle,other:d.mode==='buy'?d.seller:d.buyer,fields:Object.assign({},player,d.vehicle)};
-    return renderContractPreview(draft)+'<div class="contract-signed"><b>Подписан обеими сторонами · '+fmtMeet(new Date(d.signedAt))+'</b><p>Продавец: '+esc(d.seller.fullName)+'</p><p>Покупатель: '+esc(d.buyer.fullName)+'</p><p>Автомобиль и сумма переданы. Экземпляр вашего персонажа сохранён.</p></div>';
+    return renderContractPreview(draft)+'<div class="contract-signed"><b>Подписан обеими сторонами · '+fmtMeet(new Date(d.signedAt))+'</b><p>Продавец: '+esc(d.seller.fullName)+'</p>'+signatureHtml(d.seller.signature,'Подпись продавца')+'<p>Покупатель: '+esc(d.buyer.fullName)+'</p>'+signatureHtml(d.buyer.signature,'Подпись покупателя')+'<p>Автомобиль и сумма переданы. Экземпляр вашего персонажа сохранён.</p></div>';
 }
 function renderDocuments(){
     var body=$('documentsBody');if(!body || !openWindows.documents)return;
@@ -159,9 +161,11 @@ function renderDocuments(){
 }
 function openSignedContract(id){selectedContractId=id;openWin('documents');renderDocuments();}
 function initContracts(){
+    if(hasPlayerIdentity())contractBook.profile.fullName=playerIdentity.nickname;
     saveContracts();
     $('meetingContract').addEventListener('input',function(event){
         var draft=currentContract(),key=event.target.dataset.contractField;if(!draft || !key || !Object.prototype.hasOwnProperty.call(draft.fields,key))return;
+        if(key==='fullName' || key==='signature')return;
         draft.fields[key]=event.target.value.slice(0,key==='address'?200:80);save();$('contractPreview').innerHTML=renderContractPreview(draft);
     });
     $('meetingContract').addEventListener('change',function(event){var draft=currentContract();if(draft && event.target.id==='contractConfirm'){draft.acknowledged=event.target.checked;save();}});
