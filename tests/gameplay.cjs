@@ -1,3 +1,4 @@
+const {signContract}=require('./helpers/contracts.cjs');
 // Run with Node.js and Playwright installed: node tests/gameplay.cjs
 const assert = require('node:assert/strict');
 const fs = require('node:fs/promises');
@@ -124,7 +125,7 @@ const server = http.createServer(async (request, response) => {
             await page.locator('#goBtn').click();
             await finishInspection(page);
             const finalPrice = await page.evaluate(() => chat.price + chat.event.amount);
-            await page.locator('#evYes').click();
+            await page.locator('#evYes').click();await signContract(page);
             assert.equal(await page.evaluate(() => purchasePrices[1]), finalPrice);
             await page.reload({ waitUntil: 'networkidle' });
             assert.equal(await page.evaluate(() => purchaseCost(carById(1))), finalPrice);
@@ -207,7 +208,7 @@ const server = http.createServer(async (request, response) => {
             assert.equal(await page.evaluate(() => pending.length), 1);
             await page.locator('#goBtn').click();
             await finishInspection(page);
-            await page.locator('#evYes').click();
+            await page.locator('#evYes').click();await signContract(page);
             assert.deepEqual(await page.evaluate(() => garage), []);
             assert.equal(await page.evaluate(() => balance), 100000 + price);
             assert.equal(await page.evaluate(() => listings[1]), undefined);
@@ -230,7 +231,7 @@ const server = http.createServer(async (request, response) => {
             await page.locator('#meetBtn').click();
             await page.locator('#goBtn').click();
             await finishInspection(page);
-            await page.locator('#evYes').click();
+            await page.locator('#evYes').click();await signContract(page);
             assert.equal(await page.evaluate(() => balance), 100001);
             assert.deepEqual(await page.evaluate(() => garage), []);
         });
@@ -411,7 +412,7 @@ const server = http.createServer(async (request, response) => {
             assert.equal(await page.evaluate(() => chat.event.confirmation), true);
             assert.equal(await page.locator('#evYes').isVisible(), true);
             assert.deepEqual(await page.evaluate(() => garage), [1]);
-            await page.locator('#evYes').click();
+            await page.locator('#evYes').click();await signContract(page);
             assert.equal(await page.evaluate(() => balance), 310000);
             assert.deepEqual(await page.evaluate(() => garage), []);
             assert.ok((await page.locator('#meetingStatus').textContent()).includes('Сделка завершена'));
@@ -433,7 +434,7 @@ const server = http.createServer(async (request, response) => {
             await page.reload({waitUntil:'networkidle'});
             assert.equal(await page.evaluate(() => chat.stage), 'event');
             assert.deepEqual(await page.evaluate(() => chat.event), priceEvent);
-            await page.locator('#evYes').click();
+            await page.locator('#evYes').click();await signContract(page);
             assert.equal(await page.evaluate(() => balance), 310000 - priceEvent.amount);
             await page.reload({waitUntil:'networkidle'});
             assert.equal(await page.evaluate(() => chat), null);
@@ -458,7 +459,7 @@ const server = http.createServer(async (request, response) => {
         });
         await scenario('refusing the unchanged-price deal keeps the car and money', async page => {
             await beginSaleMeeting(page); await finishInspection(page);
-            await page.locator('#evNo').click();
+            await page.locator('#evNo').click();await signContract(page);
             assert.equal(await page.evaluate(() => chat.done), true);
             assert.equal(await page.evaluate(() => balance), 100000);
             assert.deepEqual(await page.evaluate(() => garage), [1]);
@@ -469,7 +470,7 @@ const server = http.createServer(async (request, response) => {
             await page.evaluate(() => { Math.random = () => 0.3; }); await finishInspection(page);
             assert.ok(await page.evaluate(() => chat.event.sign < 0));
             await page.evaluate(() => { Math.random = () => 0.9; });
-            await page.locator('#evNo').click();
+            await page.locator('#evNo').click();await signContract(page);
             assert.equal(await page.evaluate(() => balance), 310000);
             assert.deepEqual(await page.evaluate(() => garage), []);
         });
@@ -546,7 +547,7 @@ const server = http.createServer(async (request, response) => {
             assert.equal(await page.evaluate(() => chat.trade.carId),id);
             await finishInspection(page);
             assert.deepEqual(await page.evaluate(() => garage),[1,2,3]);
-            await page.locator('#evYes').click();
+            await page.locator('#evYes').click();await signContract(page);
             assert.equal(await page.evaluate(() => balance),200000);
             assert.deepEqual(await page.evaluate(() => garage),[id,2,3]);
             await page.reload({waitUntil:'networkidle'});
@@ -560,7 +561,7 @@ const server = http.createServer(async (request, response) => {
             const id=await beginExchange(page,230000,150000);
             await finishInspection(page);
             assert.equal(await page.evaluate(() => balance),100000);
-            await page.locator('#evYes').click();
+            await page.locator('#evYes').click();await signContract(page);
             assert.equal(await page.evaluate(() => balance),20000);
             assert.deepEqual(await page.evaluate(() => garage),[id]);
             assert.equal(await page.evaluate(id => purchasePrices[id],id),175000);
@@ -582,7 +583,7 @@ const server = http.createServer(async (request, response) => {
         });
         await scenario('refusing exchange or buyer absence transfers neither car nor money', async page => {
             await beginExchange(page,110000,210000); await finishInspection(page);
-            await page.locator('#evNo').click();
+            await page.locator('#evNo').click();await signContract(page);
             assert.deepEqual(await page.evaluate(() => garage),[1]); assert.equal(await page.evaluate(() => balance),100000);
             await page.evaluate(() => closeChat());
             await beginExchange(page,110000,210000);

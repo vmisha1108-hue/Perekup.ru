@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Perekyp.ru</title>
-<link rel="stylesheet" href="style.css?v=20261012-review">
+<link rel="stylesheet" href="style.css?v=20261012-contracts">
 </head>
 <body>
 
@@ -227,6 +227,7 @@
         <p><b>🧮 Калькулятор</b> — быстрый счёт.</p>
         <p><b>📅 Календарь</b> — заметки по дням.</p>
         <p>🛒 После подтверждения покупки объявление исчезает из каталога, а машина остаётся в вашем гараже. Перезагрузка, сон и последующая продажа не возвращают это объявление на рынок. Полный сброс прогресса возвращает каталог.</p>
+        <p>📄 Покупка и продажа завершаются подписанием договора купли-продажи после осмотра и согласования цены. Заполните ФИО, игровой паспорт, адрес, VIN, госномер, ПТС и СТС, проверьте условия и подпишите. Кнопка «Заполнить по игровым документам» и подсказки помогут заполнить поля. Используются данные персонажа; настоящие документы не нужны. Черновик сохраняется автоматически, а подписанные экземпляры находятся в приложении «Документы». До подписи машина и деньги остаются у владельцев. Можно свернуть встречу; закрытие окна отменяет сделку.</p>
         <p>🏁 Все объявления в игре вымышленные: модели автомобилей сохранены, а описания, пробеги и истории продавцов придуманы для игры. Фотографии созданы с помощью ИИ, без читаемых номеров и рекламы сервисов продажи. У машин из Алдана — зимние фотографии со снегом. <a href="photo-credits.html" target="_blank" rel="noopener" style="color:#4de0cb">Источники иллюстраций</a>.</p>
         <p style="color:#8f98a8">Окна можно тянуть за заголовок и растягивать за края/углы.</p>
     </div>
@@ -323,6 +324,7 @@
             <li>1. Ожидание</li>
             <li>2. Осмотр</li>
             <li>3. Решение</li>
+            <li>4. Договор</li>
         </ol>
         <section class="meeting-state" aria-live="polite">
             <h2 id="meetingStatus"></h2>
@@ -340,10 +342,16 @@
                 <button id="evNo" class="stage-btn no">❌ Отказать</button>
             </div>
         </div>
+        <section id="meetingContract" hidden aria-label="Договор купли-продажи"></section>
+        <button id="meetingContractView" class="stage-btn yes wide" hidden>Открыть подписанный договор</button>
         <button id="meetingFinish" class="stage-btn yes wide">Закрыть</button>
     </div>
 </div>
 
+<div class="window" id="win-documents" data-title="Документы" data-icon="📄">
+    <div class="win-head"><div class="wi">📄</div><div class="win-title">Документы</div><div class="win-btns"><button class="min" data-min="win-documents" title="Свернуть">—</button><button class="x" data-close="win-documents" title="Закрыть">✕</button></div></div>
+    <div class="win-body" id="documentsBody"></div>
+</div>
         <div class="desk-hint">Тащи иконки мышкой · клик открывает · окна тащатся за заголовок</div>
     </div>
 
@@ -467,6 +475,7 @@
 </div>
 <script src="bank.js?v=20261012-review"></script>
 <script src="collectors.js?v=20261012-review"></script>
-<script src="script.js?v=20261012-review"></script>
+<script src="contracts.js?v=20261012-contracts"></script>
+<script src="script.js?v=20261012-contracts"></script>
 </body>
 </html>

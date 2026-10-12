@@ -1,3 +1,4 @@
+const {signContract}=require('./helpers/contracts.cjs');
 const assert=require('node:assert/strict');
 const fs=require('node:fs/promises');
 const path=require('node:path');
@@ -30,7 +31,7 @@ const server=http.createServer(async(req,res)=>{
     }
     try{
         await scenario('purchase retires the exact listing immediately, on reload and after resale; reset restores the catalogue',async page=>{
-            await buyMeeting(page);await page.locator('#evYes').click();
+            await buyMeeting(page);await page.locator('#evYes').click();await signContract(page);
             assert.equal(await page.locator('[data-info="1"]').count(),0);
             await page.evaluate(()=>{closeChat();openWin('market');marketLimit=CARS.length;showMarket();});
             assert.equal(await page.locator('[data-info="1"]').count(),0);
@@ -39,15 +40,16 @@ const server=http.createServer(async(req,res)=>{
             assert.equal(await page.locator('[data-info="1"]').count(),0);assert.equal(await page.evaluate(()=>balance),cash);
             await page.evaluate(()=>{
                 postAd(1,100000);const ad=makeBuyerOffer(listings[1]);pending.push(ad);openAdChat(ad.id);agreePrice(100000);renderChat();scheduleMeeting();goToMeeting();
-                gameMs=findPending(chat.pid).flow.inspectionUntil;tickPending();agreeEvent();closeChat();showMarket();
+                gameMs=findPending(chat.pid).flow.inspectionUntil;tickPending();agreeEvent();
             });
+            await signContract(page);await page.evaluate(()=>{closeChat();showMarket();});
             assert.deepEqual(await page.evaluate(()=>garage),[]);assert.equal(await page.locator('[data-info="1"]').count(),0);
             await page.reload({waitUntil:'networkidle'});assert.equal(await page.locator('[data-info="1"]').count(),0);
             await page.evaluate(()=>{openBuyChat(1);});assert.equal(await page.evaluate(()=>chat),null);
             page.once('dialog',d=>d.accept());await page.evaluate(()=>admReset());assert.equal(await page.locator('[data-info="1"]').count(),1);
         });
         await scenario('old owned cars are removed from the market and a refused purchase stays available',async page=>{
-            await buyMeeting(page);await page.locator('#evNo').click();await page.evaluate(()=>{closeChat();showMarket();});
+            await buyMeeting(page);await page.locator('#evNo').click();await signContract(page);await page.evaluate(()=>{closeChat();showMarket();});
             assert.equal(await page.locator('[data-info="1"]').count(),1);
             await page.evaluate(()=>{garage=[1];save();localStorage.removeItem('retiredMarketCars');});
             await page.reload({waitUntil:'networkidle'});assert.equal(await page.locator('[data-info="1"]').count(),0);assert.deepEqual(await page.evaluate(()=>garage),[1]);

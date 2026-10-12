@@ -1,3 +1,4 @@
+const {signContract}=require('./helpers/contracts.cjs');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
@@ -178,7 +179,7 @@ const server = http.createServer((req, res) => {
         await page.locator('#meetBtn').click();
         await page.locator('#goBtn').click();
         await page.evaluate(() => { gameMs = findPending(chat.pid).flow.inspectionUntil; tickPending(); });
-        await page.locator('#evYes').click();
+        await page.locator('#evYes').click();await signContract(page);
         assert.ok(await page.evaluate(id => garage.includes(id), car.id));
         assert.equal(await page.evaluate(() => balance), 100000 - car.price);
         await page.reload({waitUntil:'networkidle'});
@@ -215,7 +216,7 @@ const server = http.createServer((req, res) => {
         await fresh.locator('#meetBtn').click();
         await fresh.locator('#goBtn').click();
         await fresh.evaluate(() => { gameMs = findPending(chat.pid).flow.inspectionUntil; tickPending(); });
-        await fresh.locator('#evYes').click();
+        await fresh.locator('#evYes').click();await signContract(fresh);
         assert.equal(await fresh.evaluate(() => balance), 100000 - starter.price);
         await fresh.reload({waitUntil:'networkidle'});
         assert.ok(await fresh.evaluate(id => garage.includes(id), starter.id));

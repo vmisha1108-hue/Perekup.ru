@@ -89,7 +89,8 @@ pending.forEach(function(it){
     if(it.type !== 'meet')return;
     it.reached=gameMs>=it.when;
     var flow=it.flow;
-    if(flow && (!isRecord(flow) || ['waiting','inspection','event'].indexOf(flow.stage)===-1 || !Number.isFinite(flow.startedAt) || !Number.isFinite(flow.arrivalAt) || !Number.isFinite(flow.inspectionUntil) || (flow.stage==='event' && !isRecord(flow.event))))delete it.flow;
+    if(flow && (!isRecord(flow) || ['waiting','inspection','event','contract'].indexOf(flow.stage)===-1 || !Number.isFinite(flow.startedAt) || !Number.isFinite(flow.arrivalAt) || !Number.isFinite(flow.inspectionUntil) || (flow.stage==='event' && !isRecord(flow.event))))delete it.flow;
+    if(it.flow && it.flow.stage==='contract')repairContractDraft(it);
 });
 
 /* ================= ХЕЛПЕРЫ ================= */
@@ -173,7 +174,8 @@ var ICONS = [
     {id:"help",     ico:"❓", label:"Справка"},
     {id:"travel",   ico:"🧳", label:"Переезд"},
     {id:"garage",   ico:"🏠", label:"Гараж"},
-    {id:"bank",     ico:"🏦", label:"Банк"}
+    {id:"bank",     ico:"🏦", label:"Банк"},
+    {id:"documents",ico:"📄",label:"Документы"}
 ];
 
 function loadIconPositions(){
@@ -260,6 +262,7 @@ var GRID = {w:112, h:120, x0:20, y0:20};
 
 function gridInfo(el){
     var desk = $("deskArea");
+    GRID.w=window.innerWidth<=600?96:112;GRID.h=window.innerWidth<=600?96:120;
     var iw = el ? el.offsetWidth  : 104;
     var ih = el ? el.offsetHeight : 100;
     return {
@@ -472,6 +475,7 @@ function openWin(id){
     if(id === "garage"){ renderGarageApp(); }
     if(id === "shop"){ renderShop(); }
     if(id === "bank"){ renderBank(true); }
+    if(id === "documents"){ renderDocuments(); }
     if(id === "admin"){ renderAdmin(); }
 }
 
@@ -505,6 +509,7 @@ function restoreWin(id){
     updateGameSpeed(id);
     if(id === "travel") renderTravel();
     if(id === "garage") renderGarageApp();
+    if(id === "documents") renderDocuments();
     renderTaskbar();
 }
 
@@ -1741,8 +1746,9 @@ function renderMeeting(){
         $("meetingCarImage").dataset.carId = String(chat.car.id);
     }
     $("meetingCarName").textContent = chat.car.name;
-    var active = stage === "waiting" || chat.meetingEndStage === "waiting" ? 0 : stage === "inspection" ? 1 : 2;
+    var active = stage === "waiting" || chat.meetingEndStage === "waiting" ? 0 : stage === "inspection" ? 1 : stage==='contract' || (chat.done && !chat.trade)?3:2;
     $("meetingSteps").querySelectorAll("li").forEach(function(step, index){
+        step.hidden=index===3 && !!chat.trade;
         step.classList.toggle("current", index === active && !chat.done);
         step.classList.toggle("completed", index < active || chat.meetingOutcome === "success");
         if(index === active && !chat.done) step.setAttribute("aria-current", "step");
@@ -1752,6 +1758,8 @@ function renderMeeting(){
     $("meetingTimer").hidden = !timed;
     $("stEvent").style.display = stage === "event" ? "block" : "none";
     $("meetingFinish").style.display = chat.done ? "" : "none";
+    $("meetingContractView").hidden=!(chat.done && chat.signedContractId);
+    $("meetingContract").hidden=stage!=='contract';
     if(timed && flow){
         var start = stage === "waiting" ? flow.startedAt : flow.arrivalAt;
         var end = stage === "waiting" ? flow.arrivalAt : flow.inspectionUntil;
@@ -1764,12 +1772,16 @@ function renderMeeting(){
     }else if(stage === "event" && chat.event){
         var ev = chat.event, lack = ev.sign > 0 && !canAfford(chat.price + ev.amount);
         $("meetingStatus").textContent = ev.confirmation ? "Осмотр завершён" : ev.sign < 0 ? "Клиент просит скидку" : "Продавец просит доплату";
-        $("meetingDescription").textContent = "Примите предложение или выберите другое действие. Деньги и автомобиль передаются после вашего решения.";
+        $("meetingDescription").textContent = chat.trade?"Примите предложение или выберите другое действие. Обмен состоится после вашего решения.":"Согласуйте окончательную цену. Затем заполните и подпишите договор — до подписи деньги и автомобиль остаются у владельцев.";
         $("stEventText").textContent = ev.prompt;
         $("stEventNote").textContent = lack ? "Не хватает денег, чтобы согласиться." : "";
-        $("evYes").textContent = ev.yesLabel;
+        $("evYes").textContent = !chat.trade && ev.confirmation?'Перейти к договору':ev.yesLabel;
         $("evYes").disabled = lack || !!(chat.trade && chat.trade.value > chat.price + ev.sign * ev.amount && !canAfford(chat.trade.value - chat.price - ev.sign * ev.amount));
         $("evNo").textContent = ev.confirmation ? "Отказаться от сделки" : "Оставить прежнюю цену";
+    }else if(stage==='contract'){
+        $("meetingStatus").textContent='Оформление договора';
+        $("meetingDescription").textContent='Заполните данные, сверьте документы и подпишите договор. Подсказки и помощь находятся ниже. Пока договор не подписан, машина и деньги не передаются.';
+        renderContractForm();
     }else if(chat.done){
         $("meetingStatus").textContent = chat.meetingOutcome === "no-show" ? "Клиент не приехал" :
             chat.meetingOutcome === "success" ? "Сделка завершена" : "Встреча завершена";
@@ -1793,7 +1805,7 @@ function agreeEvent(){
     meSay("Хорошо, согласен.");
     chat.price = newPrice;
     chat.event = null;
-    completeDeal();
+    requestDealCompletion();
     renderChat();
 }
 
@@ -1830,12 +1842,14 @@ function refuseEvent(){
             neutral:"Ну ладно, как договорились.",
             evil:   "Ладно. В другой раз так просто не отделаешься."
         }[p]);
-        completeDeal();
+        requestDealCompletion();
     }
     renderChat();
 }
 
 function completeDeal(){
+    if(!chat || chat.done)return false;
+    if(!chat.trade && !contractSigning){beginContract();return false;}
     if(chat.trade) finishTrade(chat.price); else if(chat.mode === "buy") finishBuy(chat.price); else finishSell(chat.price);
     chat.stage = "done";
     var result = chat.log.filter(function(message){ return message.who === "sys"; }).slice(-1)[0];
@@ -2731,6 +2745,7 @@ function admReset(){
     purchasePrices = {}; listings = {}; chatStore = {}; retiredMarketCars=[];
     transport = newTransport();
     bank=freshBank();bankRenderKey='';bankRecord(START_BALANCE,'Стартовый баланс','opening');
+    resetContracts();
     syncCollectors();
     $("arrivalOverlay").classList.remove("open");
     persistChats();
@@ -2966,6 +2981,7 @@ window.addEventListener("DOMContentLoaded", function(){
     initBank();
     initTransport();
     initCollectors();
+    initContracts();
     migrateSaleListings();
     bindUI();
     initCalc();
