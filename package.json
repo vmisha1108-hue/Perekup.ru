@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "start": "python3 -m http.server 8000",
-    "test": "node tests/gameplay.cjs && node tests/cities.cjs && node tests/dialogue.cjs && node tests/travel.cjs && node tests/human-dialogue.cjs && node tests/bank.cjs && node tests/collectors.cjs && node tests/regressions.cjs && node tests/contracts.cjs && node tests/entry-reset.cjs && node tests/identity.cjs && node tests/meetings-calendar.cjs",
+    "test": "node tests/gameplay.cjs && node tests/cities.cjs && node tests/dialogue.cjs && node tests/travel.cjs && node tests/human-dialogue.cjs && node tests/bank.cjs && node tests/collectors.cjs && node tests/regressions.cjs && node tests/contracts.cjs && node tests/entry-reset.cjs && node tests/identity.cjs && node tests/meetings-calendar.cjs && node tests/optimization.cjs",
+    "test:optimization": "node tests/optimization.cjs",
     "test:meetings": "node tests/meetings-calendar.cjs",
     "test:identity": "node tests/identity.cjs",
     "test:entry": "node tests/entry-reset.cjs",

@@ -1,5 +1,9 @@
 'use strict';
 
+// Каталог не меняет состав во время игры; индекс хранит ссылки на те же машины.
+var CAR_BY_ID=Object.create(null);
+CARS.concat(TRADE_CARS).forEach(function(car){if(!CAR_BY_ID[car.id])CAR_BY_ID[car.id]=car;});
+
 /* ================= ДАННЫЕ ================= */
 var BUYERS = [
     {name:"Сергей",avatar:"🧔‍♂️",personality:"kind"},
@@ -117,22 +121,19 @@ function carImg(car){
 }
 
 function save(){
-    syncBankBalance(); saveBank();
+    syncBankBalance();
     saveTransport();
-    localStorage.setItem("balance", balance);
-    localStorage.setItem("garage", JSON.stringify(garage));
-    localStorage.setItem("deals", deals);
-    localStorage.setItem("garageLvl", garageLvl);
-    localStorage.setItem("notes", JSON.stringify(notes));
-    localStorage.setItem("pending", JSON.stringify(pending));
-    localStorage.setItem("purchasePrices", JSON.stringify(purchasePrices));
-    localStorage.setItem("listings", JSON.stringify(listings));
-    localStorage.setItem("retiredMarketCars", JSON.stringify(retiredMarketCars));
+    var state={balance:balance,garage:garage,deals:deals,garageLvl:garageLvl,notes:notes,
+        pending:pending,purchasePrices:purchasePrices,listings:listings,retiredMarketCars:retiredMarketCars};
+    Object.keys(state).forEach(function(key){writeSaved(key,state[key]);});
     saveGameTime();
 }
 function currentGarage(){ return GARAGES[garageLvl]; }
 function retireMarketCar(id){if(retiredMarketCars.indexOf(id)===-1)retiredMarketCars.push(id);}
-function availableMarketCars(){return CARS.filter(function(car){return garage.indexOf(car.id)===-1 && retiredMarketCars.indexOf(car.id)===-1;});}
+function availableMarketCars(){
+    var excluded=new Set(garage.concat(retiredMarketCars));
+    return CARS.filter(function(car){return !excluded.has(car.id);});
+}
 
 function migrateStartingBalance(){
     if(localStorage.getItem("startingBalanceVersion") === "1") return;
@@ -391,322 +392,6 @@ function onIconUp(){
     if(!moved){
         openWin(el.dataset.app);
     }
-}
-
-/* ================= ОКНА ================= */
-
-function getDeskRect(){
-    return $("deskArea").getBoundingClientRect();
-}
-
-function getWindowState(id){
-    try{
-        var data = JSON.parse(localStorage.getItem("window_" + id));
-        return data || null;
-    }catch(e){
-        return null;
-    }
-}
-
-function saveWindowState(id, w){
-    var state = {
-        left: parseFloat(w.style.left) || 0,
-        top: parseFloat(w.style.top) || 0,
-        width: w.offsetWidth,
-        height: w.offsetHeight
-    };
-    localStorage.setItem("window_" + id, JSON.stringify(state));
-}
-
-function clampWindow(w){
-    var desk = getDeskRect();
-    var width = w.offsetWidth;
-    var height = w.offsetHeight;
-    var left = parseFloat(w.style.left);
-    var top = parseFloat(w.style.top);
-    if(isNaN(left)) left = 0;
-    if(isNaN(top)) top = 0;
-    var maxLeft = Math.max(0, desk.width - width);
-    var maxTop = Math.max(0, desk.height - height);
-    left = Math.max(0, Math.min(maxLeft, left));
-    top = Math.max(0, Math.min(maxTop, top));
-    w.style.left = left + "px";
-    w.style.top = top + "px";
-}
-
-function openWin(id){
-    var w = $("win-" + id);
-    if(!w) return;
-    if(id === "admin" && !adminUnlocked){ openAdminGate(); return; }
-    var desk = getDeskRect();
-
-    if(!w.dataset.hasPos){
-        var saved = getWindowState(id);
-        w.classList.add("open");
-        w.classList.remove("minimized");
-        w.style.visibility = "hidden";
-
-        if(saved){
-            w.style.width = saved.width + "px";
-            w.style.height = saved.height + "px";
-            w.style.left = saved.left + "px";
-            w.style.top = saved.top + "px";
-        }else{
-            var left = Math.max(0, (desk.width - w.offsetWidth) / 2);
-            var top = Math.max(0, (desk.height - w.offsetHeight) / 2);
-            w.style.left = left + "px";
-            w.style.top = top + "px";
-        }
-        w.dataset.hasPos = "1";
-        w.style.visibility = "";
-    }
-
-    w.classList.add("open");
-    w.classList.remove("minimized");
-    clampWindow(w);
-    w.style.zIndex = ++zTop;
-
-    openWindows[id] = true;
-    updateGameSpeed(id);
-    saveWindowState(id, w);
-    renderTaskbar();
-
-    if(id === "travel"){ renderTravel(); }
-    if(id === "garage"){ renderGarageApp(); }
-    if(id === "shop"){ renderShop(); }
-    if(id === "bank"){ renderBank(true); }
-    if(id === "documents"){ renderDocuments(); }
-    if(id === "calendar"){ renderCal(); }
-    if(id === "admin"){ renderAdmin(); }
-}
-
-function closeWin(id){
-    if(id === "meeting"){ closeChat(); return; }
-    var w = $("win-" + id);
-    if(!w) return;
-    w.classList.remove("open");
-    delete openWindows[id];
-    updateGameSpeed();
-    renderTaskbar();
-}
-
-function minimizeWin(id){
-    var w = $("win-" + id);
-    if(!w) return;
-    w.classList.remove("open");
-    w.classList.add("minimized");
-    updateGameSpeed();
-    renderTaskbar();
-}
-
-function restoreWin(id){
-    var w = $("win-" + id);
-    if(!w) return;
-    w.classList.remove("minimized");
-    void w.offsetWidth;
-    w.classList.add("open");
-    clampWindow(w);
-    w.style.zIndex = ++zTop;
-    updateGameSpeed(id);
-    if(id === "travel") renderTravel();
-    if(id === "garage") renderGarageApp();
-    if(id === "documents") renderDocuments();
-    renderTaskbar();
-}
-
-function focusWin(id){
-    var w = $("win-" + id);
-    if(!w) return;
-    if(!w.classList.contains("open")) return;
-    w.style.zIndex = ++zTop;
-    updateGameSpeed(id);
-    saveWindowState(id, w);
-    renderTaskbar();
-}
-
-function renderTaskbar(){
-    var list = $("taskList");
-    if(!list) return;
-    list.innerHTML = "";
-
-    var apps = ["market", "help", "calc", "calendar", "clock"].map(function(id){
-        var icon = ICONS.find(function(i){ return i.id === id; });
-        return {id:icon.id, ico:icon.ico, title:icon.label};
-    });
-
-    apps.forEach(function(app){
-        var w = $("win-" + app.id);
-        var running = !!openWindows[app.id];
-        var minimized = !!(w && w.classList.contains("minimized"));
-        var btn = document.createElement("button");
-        btn.className = "task-btn" + (running ? " running" : "") + (running && !minimized ? " active" : "");
-        btn.title = app.title;
-        btn.setAttribute("aria-label", app.title);
-        btn.dataset.app = app.id;
-        btn.textContent = app.ico;
-
-        btn.addEventListener("click", function(){
-            if(!running){ openWin(app.id); return; }
-            if(minimized){
-                restoreWin(app.id);
-            }else if(Number(w.style.zIndex) === zTop){
-                minimizeWin(app.id);
-            }else{
-                focusWin(app.id);
-            }
-        });
-        list.appendChild(btn);
-    });
-}
-
-/* ================= ПЕРЕТАСКИВАНИЕ ОКОН ================= */
-var winDrag = null;
-
-function startDrag(e, id){
-    if(e.button !== undefined && e.button !== 0) return;
-    var win = $("win-" + id);
-    if(!win) return;
-
-    win.style.zIndex = ++zTop;
-    updateGameSpeed(id);
-    var rect = win.getBoundingClientRect();
-    var desk = getDeskRect();
-
-    win.style.left = (rect.left - desk.left) + "px";
-    win.style.top  = (rect.top  - desk.top ) + "px";
-    win.dataset.hasPos = "1";
-
-    winDrag = {
-        el: win,
-        startX: e.clientX,
-        startY: e.clientY,
-        left: rect.left - desk.left,
-        top:  rect.top  - desk.top,
-        desk: desk
-    };
-    e.preventDefault();
-    document.addEventListener("mousemove", onWinMove);
-    document.addEventListener("mouseup", onWinUp);
-}
-
-function onWinMove(e){
-    if(!winDrag) return;
-    var dx = e.clientX - winDrag.startX;
-    var dy = e.clientY - winDrag.startY;
-    var x = winDrag.left + dx;
-    var y = winDrag.top  + dy;
-
-    var maxX = Math.max(0, winDrag.desk.width  - winDrag.el.offsetWidth);
-    var maxY = Math.max(0, winDrag.desk.height - winDrag.el.offsetHeight);
-
-    x = Math.max(0, Math.min(maxX, x));
-    y = Math.max(0, Math.min(maxY, y));
-
-    winDrag.el.style.left = x + "px";
-    winDrag.el.style.top  = y + "px";
-}
-
-function onWinUp(){
-    if(!winDrag) return;
-    var win = winDrag.el;
-    var id = win.id.replace("win-", "");
-    saveWindowState(id, win);
-    winDrag = null;
-    document.removeEventListener("mousemove", onWinMove);
-    document.removeEventListener("mouseup", onWinUp);
-}
-
-
-/* ================= ИЗМЕНЕНИЕ РАЗМЕРА ОКОН ================= */
-var winResize = null;
-
-function attachResizeHandlers(){
-    document.querySelectorAll(".window").forEach(function(win){
-        win.querySelectorAll(".resize-handle").forEach(function(handle){
-            handle.addEventListener("mousedown", function(e){
-                if(e.button !== undefined && e.button !== 0) return;
-                e.preventDefault();
-                e.stopPropagation();
-
-                var desk = getDeskRect();
-                var rect = win.getBoundingClientRect();
-                var dir = handle.className.replace("resize-handle","").trim();
-
-                winResize = {
-                    el: win,
-                    dir: dir,
-                    startX: e.clientX,
-                    startY: e.clientY,
-                    startLeft:   rect.left - desk.left,
-                    startTop:    rect.top  - desk.top,
-                    startWidth:  rect.width,
-                    startHeight: rect.height,
-                    desk: desk
-                };
-
-                win.style.zIndex = ++zTop;
-                updateGameSpeed(win.id.replace("win-", ""));
-                document.body.style.cursor = getComputedStyle(handle).cursor;
-                document.addEventListener("mousemove", onWinResize);
-                document.addEventListener("mouseup", onWinResizeEnd);
-            });
-        });
-    });
-}
-
-function onWinResize(e){
-    if(!winResize) return;
-    e.preventDefault();
-
-    var dx = e.clientX - winResize.startX;
-    var dy = e.clientY - winResize.startY;
-
-    var left   = winResize.startLeft;
-    var top    = winResize.startTop;
-    var width  = winResize.startWidth;
-    var height = winResize.startHeight;
-
-    var desk = winResize.desk;
-    var minW = Math.min(380,desk.width);
-    var minH = Math.min(280,desk.height);
-
-    if(winResize.dir.indexOf("e") !== -1){
-        width = Math.max(minW, winResize.startWidth + dx);
-        width = Math.min(width, desk.width - left);
-    }
-    if(winResize.dir.indexOf("w") !== -1){
-        var newWidth = Math.max(minW, winResize.startWidth - dx);
-        left = winResize.startLeft + (winResize.startWidth - newWidth);
-        if(left < 0){ newWidth += left; left = 0; }
-        width = newWidth;
-    }
-    if(winResize.dir.indexOf("s") !== -1){
-        height = Math.max(minH, winResize.startHeight + dy);
-        height = Math.min(height, desk.height - top);
-    }
-    if(winResize.dir.indexOf("n") !== -1){
-        var newHeight = Math.max(minH, winResize.startHeight - dy);
-        top = winResize.startTop + (winResize.startHeight - newHeight);
-        if(top < 0){ newHeight += top; top = 0; }
-        height = newHeight;
-    }
-
-    winResize.el.style.left   = left   + "px";
-    winResize.el.style.top    = top    + "px";
-    winResize.el.style.width  = width  + "px";
-    winResize.el.style.height = height + "px";
-    winResize.el.dataset.hasPos = "1";
-}
-
-function onWinResizeEnd(){
-    if(!winResize) return;
-    var win = winResize.el;
-    var id = win.id.replace("win-", "");
-    saveWindowState(id, win);
-    winResize = null;
-    document.body.style.cursor = "";
-    document.removeEventListener("mousemove", onWinResize);
-    document.removeEventListener("mouseup", onWinResizeEnd);
 }
 
 /* ================= ФИЛЬТРЫ И СОРТИРОВКА ================= */
@@ -1013,7 +698,7 @@ function closeCarInfo(){
 /* ================= ЧАТ ================= */
 /* ================= ПАМЯТЬ ПЕРЕПИСКИ ================= */
 function chatKey(c){ return c.mode + ":" + c.car.id + (c.mode === "sell" && c.pid ? ":" + c.pid : ""); }
-function persistChats(){ try{ localStorage.setItem("chats", JSON.stringify(chatStore)); }catch(e){} }
+function persistChats(){ try{ writeSaved("chats", chatStore); }catch(e){} }
 function saveChat(){
     if(!chat || chat.done) return;
     chatStore[chatKey(chat)] = {
@@ -1870,7 +1555,7 @@ var pidSeq = 0;
 function newPid(){ return "p" + Date.now().toString(36) + (++pidSeq).toString(36) + Math.floor(Math.random() * 1e6).toString(36); }
 function findPending(id){ return pending.find(function(x){ return x.id === id; }) || null; }
 function pendingFor(carId){ return pending.find(function(x){ return x.carId === carId; }) || null; }
-function carById(id){ return CARS.find(function(c){ return c.id === id; }) || TRADE_CARS.find(function(c){ return c.id === id; }) || null; }
+function carById(id){ return typeof id==="number" && CAR_BY_ID[id] || null; }
 function tradeTerms(trade, price){
     var difference = price - trade.value;
     return 'Оценка машины покупателя: ' + money(trade.value) + '. ' + (difference > 0 ? 'Покупатель доплатит ' + money(difference) : difference < 0 ? 'Ваша доплата: ' + money(-difference) : 'Обмен без доплаты');
@@ -2505,7 +2190,7 @@ var MONTHS_GEN = ["января","февраля","марта","апреля","�
 function gameNow(){ return new Date(gameMs); }
 function saveGameTime(){
     saveBank();
-    localStorage.setItem("gameMs", String(Math.round(gameMs)));
+    writeSaved("gameMs", Math.round(gameMs));
     lastGameSave = Date.now();
 }
 
@@ -2875,38 +2560,7 @@ function bindUI(){
     buildIcons();
     attachIconHandlers();
 
-    document.querySelectorAll(".win-head").forEach(function(head){
-        head.addEventListener("mousedown", function(e){
-            if(e.target.closest(".win-btns")) return;
-            if(e.target.closest("button")) return;
-            var win = head.closest(".window");
-            if(!win) return;
-            startDrag(e, win.id.replace("win-", ""));
-        });
-    });
-
-    document.querySelectorAll(".window").forEach(function(win){
-        win.addEventListener("mousedown", function(e){
-            if(e.target.closest(".resize-handle")) return;
-            var id = win.id.replace("win-", "");
-            focusWin(id);
-        });
-    });
-
-    document.querySelectorAll("[data-min]").forEach(function(btn){
-        btn.addEventListener("click", function(e){
-            e.stopPropagation();
-            e.preventDefault();
-            minimizeWin(btn.dataset.min.replace("win-", ""));
-        });
-    });
-    document.querySelectorAll("[data-close]").forEach(function(btn){
-        btn.addEventListener("click", function(e){
-            e.stopPropagation();
-            e.preventDefault();
-            closeWin(btn.dataset.close.replace("win-", ""));
-        });
-    });
+    initWindowManager();
 
     bindFilters();
     document.addEventListener('click', function(e){
@@ -3027,243 +2681,4 @@ window.addEventListener("DOMContentLoaded", function(){
     renderShop();
     renderTaskbar();
     offerEntryReset();
-});
-/* ================= РЕСАЙЗ ОКОН ЗА ЛЮБУЮ ГРАНИЦУ (ФИКС) ================= */
-window.addEventListener("load", function(){
-
-    var EDGE = 8;   // сколько пикселей от края считается «за границу»
-    var MIN_W = 380;
-    var MIN_H = 280;
-
-    var activeResize = null;
-
-    // ---- Определяем, у какого края окна находится курсор ----
-    function getEdge(win, e){
-        var r = win.getBoundingClientRect();
-        var x = e.clientX - r.left;
-        var y = e.clientY - r.top;
-
-        var nearL = x < EDGE;
-        var nearR = x > r.width - EDGE;
-        var nearT = y < EDGE;
-        var nearB = y > r.height - EDGE;
-
-        // только если курсор реально внутри окна (или чуть за границей)
-        if(x < -EDGE || x > r.width + EDGE) return null;
-        if(y < -EDGE || y > r.height + EDGE) return null;
-
-        var dir = "";
-        if(nearT) dir += "n";
-        if(nearB) dir += "s";
-        if(nearL) dir += "w";
-        if(nearR) dir += "e";
-        return dir || null;
-    }
-
-    // ---- Курсор в нужный вид ----
-    function cursorFor(dir){
-        if(dir === "n"  || dir === "s")  return "ns-resize";
-        if(dir === "e"  || dir === "w")  return "ew-resize";
-        if(dir === "ne" || dir === "sw") return "nesw-resize";
-        if(dir === "nw" || dir === "se") return "nwse-resize";
-        return "";
-    }
-
-    // ---- Отслеживаем движение мыши над окнами, меняем курсор ----
-    document.addEventListener("mousemove", function(e){
-        if(activeResize) return;   // если уже ресайзим — не мешаем
-
-        var win = e.target.closest && e.target.closest(".window");
-        if(!win || !win.classList.contains("open") || win.classList.contains("minimized")){
-            // если курсор не над окном — сбрасываем курсор
-            var deskCursor = document.getElementById("deskArea");
-            if(deskCursor) deskCursor.style.cursor = "";
-            return;
-        }
-
-        // не трогаем курсор, если мы над кнопками окна
-        if(e.target.closest(".win-btns")){
-            win.style.cursor = "";
-            return;
-        }
-
-        var dir = getEdge(win, e);
-        win.style.cursor = cursorFor(dir);
-    });
-
-    // ---- Начинаем ресайз при клике у границы ----
-    document.addEventListener("mousedown", function(e){
-        if(e.button !== undefined && e.button !== 0) return;
-
-        var win = e.target.closest && e.target.closest(".window");
-        if(!win || !win.classList.contains("open") || win.classList.contains("minimized")) return;
-
-        // клики по кнопкам свернуть/закрыть не трогаем
-        if(e.target.closest(".win-btns")) return;
-        if(e.target.closest("button")) return;
-
-        var dir = getEdge(win, e);
-        if(!dir) return;   // не у границы — обычный клик, не мешаем
-
-        // ★ Начинаем ресайз
-        e.preventDefault();
-        e.stopPropagation();
-
-        var desk = document.getElementById("deskArea").getBoundingClientRect();
-        var rect = win.getBoundingClientRect();
-
-        activeResize = {
-            win: win,
-            dir: dir,
-            startX: e.clientX,
-            startY: e.clientY,
-            startLeft:   rect.left - desk.left,
-            startTop:    rect.top  - desk.top,
-            startWidth:  rect.width,
-            startHeight: rect.height,
-            desk: desk
-        };
-
-        win.style.zIndex = ++zTop;
-        updateGameSpeed(win.id.replace("win-", ""));
-        document.body.style.cursor = cursorFor(dir);
-
-        // ★ Слушаем движение
-        document.addEventListener("mousemove", onResizeMove);
-        document.addEventListener("mouseup", onResizeUp);
-    }, true);   // ← true = захватываем ДО других обработчиков
-
-    function onResizeMove(e){
-        if(!activeResize) return;
-        e.preventDefault();
-
-        var r = activeResize;
-        var dx = e.clientX - r.startX;
-        var dy = e.clientY - r.startY;
-
-        var left   = r.startLeft;
-        var top    = r.startTop;
-        var width  = r.startWidth;
-        var height = r.startHeight;
-        var minW = Math.min(MIN_W,r.desk.width),minH=Math.min(MIN_H,r.desk.height);
-
-        // восточная грань — тянем ширину
-        if(r.dir.indexOf("e") !== -1){
-            width = Math.max(minW, r.startWidth + dx);
-            width = Math.min(width, r.desk.width - left);
-        }
-        // западная грань — тянем ширину и left
-        if(r.dir.indexOf("w") !== -1){
-            var newW = Math.max(minW, r.startWidth - dx);
-            left = r.startLeft + (r.startWidth - newW);
-            if(left < 0){ newW += left; left = 0; }
-            width = newW;
-        }
-        // южная грань — высота
-        if(r.dir.indexOf("s") !== -1){
-            height = Math.max(minH, r.startHeight + dy);
-            height = Math.min(height, r.desk.height - top);
-        }
-        // северная грань — высота и top
-        if(r.dir.indexOf("n") !== -1){
-            var newH = Math.max(minH, r.startHeight - dy);
-            top = r.startTop + (r.startHeight - newH);
-            if(top < 0){ newH += top; top = 0; }
-            height = newH;
-        }
-
-        r.win.style.left   = left   + "px";
-        r.win.style.top    = top    + "px";
-        r.win.style.width  = width  + "px";
-        r.win.style.height = height + "px";
-        r.win.dataset.hasPos = "1";
-    }
-
-    function onResizeUp(){
-        if(!activeResize) return;
-
-        // сохраняем в localStorage
-        try{
-            var w = activeResize.win;
-            localStorage.setItem("window_" + w.id.replace("win-",""), JSON.stringify({
-                left: parseFloat(w.style.left) || 0,
-                top:  parseFloat(w.style.top)  || 0,
-                width: w.offsetWidth,
-                height: w.offsetHeight
-            }));
-        }catch(err){}
-
-        activeResize = null;
-        document.body.style.cursor = "";
-        document.removeEventListener("mousemove", onResizeMove);
-        document.removeEventListener("mouseup", onResizeUp);
-    }
-
-});
-/* ================= ПЕРЕТАСКИВАНИЕ ОКОН БЕЗ ПРЫЖКОВ (ФИНАЛЬНАЯ ВЕРСИЯ) =================
-   Окна лежат внутри #deskArea, поэтому left/top считаются в той же системе координат.
-   Двигаем по смещению курсора (delta) от стартовой позиции — без округлений и без прыжков. */
-window.addEventListener("load", function(){
-
-    // Убираем все старые обработчики с заголовков
-    document.querySelectorAll(".win-head").forEach(function(head){
-        head.parentNode.replaceChild(head.cloneNode(true), head);
-    });
-
-    // cloneNode стирает обработчики, поэтому кнопки «свернуть» и «закрыть» вешаем заново
-    document.querySelectorAll(".win-head [data-min]").forEach(function(btn){
-        btn.addEventListener("click", function(e){
-            e.stopPropagation();
-            e.preventDefault();
-            minimizeWin(btn.dataset.min.replace("win-", ""));
-        });
-    });
-    document.querySelectorAll(".win-head [data-close]").forEach(function(btn){
-        btn.addEventListener("click", function(e){
-            e.stopPropagation();
-            e.preventDefault();
-            closeWin(btn.dataset.close.replace("win-", ""));
-        });
-    });
-
-    var area = $("deskArea");
-
-    document.querySelectorAll(".win-head").forEach(function(head){
-        head.addEventListener("mousedown", function(e){
-            if(e.button !== undefined && e.button !== 0) return;
-            if(e.target.closest("button")) return;
-
-            var win = head.closest(".window");
-            if(!win || !win.classList.contains("open")) return;
-
-            win.style.zIndex = ++zTop;
-            updateGameSpeed(win.id.replace("win-", ""));
-            win.dataset.hasPos = "1";
-
-            var startLeft = win.offsetLeft;
-            var startTop  = win.offsetTop;
-            var startX = e.clientX;
-            var startY = e.clientY;
-
-            e.preventDefault();
-
-            function onMove(ev){
-                var maxX = Math.max(0, area.clientWidth  - win.offsetWidth);
-                var maxY = Math.max(0, area.clientHeight - win.offsetHeight);
-                var x = Math.max(0, Math.min(maxX, startLeft + (ev.clientX - startX)));
-                var y = Math.max(0, Math.min(maxY, startTop  + (ev.clientY - startY)));
-                win.style.left = x + "px";
-                win.style.top  = y + "px";
-            }
-
-            function onUp(){
-                document.removeEventListener("mousemove", onMove);
-                document.removeEventListener("mouseup", onUp);
-                saveWindowState(win.id.replace("win-", ""), win);
-            }
-
-            document.addEventListener("mousemove", onMove);
-            document.addEventListener("mouseup", onUp);
-        });
-    });
 });

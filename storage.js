@@ -12,6 +12,11 @@ function readSaved(key,fallback){
         return value;
     }catch(e){return fallback;}
 }
+// Не перезаписываем неизменённые данные; сверяемся с хранилищем, чтобы учитывать сброс.
+function writeSaved(key,value){
+    var serialized=JSON.stringify(value);
+    if(localStorage.getItem(key)!==serialized)localStorage.setItem(key,serialized);
+}
 function savedInteger(key,fallback,min,max){
     var raw=localStorage.getItem(key),value=raw===null || raw.trim()===''?NaN:Number(raw);
     return Number.isSafeInteger(value) && value>=min && (max==null || value<=max)?value:fallback;

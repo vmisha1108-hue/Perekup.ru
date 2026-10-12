@@ -54,7 +54,7 @@ function initBank(){
     if(MICRO_AMOUNTS.indexOf(bank.selection.microAmount)===-1) bank.selection.microAmount=10000;
     syncBankBalance(); saveBank(); bindBank();
 }
-function saveBank(){if(bank) localStorage.setItem('bank',JSON.stringify(bank));}
+function saveBank(){if(bank) writeSaved('bank',bank);}
 function bankRecord(amount,label,kind,when){
     if(!bank || !Number.isSafeInteger(amount) || (!amount && kind!=='opening')) return;
     bank.entries.unshift({id:++bank.sequence,amount:amount,label:label || 'Операция по счёту',kind:kind || (amount<0?'expense':'income'),

@@ -6,7 +6,7 @@ if(contractBook.version!==1)contractBook={version:1,sequence:0,profile:defaultCo
 if(!Number.isSafeInteger(contractBook.sequence) || contractBook.sequence<0)contractBook.sequence=0;
 if(!isRecord(contractBook.profile) || ['fullName','passport','address'].some(function(key){return typeof contractBook.profile[key]!=='string';}))contractBook.profile=defaultContractProfile();
 contractBook.records=(Array.isArray(contractBook.records)?contractBook.records:[]).filter(function(d){return isRecord(d) && d.version===1 && typeof d.id==='string' && isRecord(d.seller) && isRecord(d.buyer) && isRecord(d.vehicle) && Number.isSafeInteger(d.price) && d.price>0 && Number.isFinite(d.signedAt);}).slice(0,100);
-function saveContracts(){localStorage.setItem('contracts',JSON.stringify(contractBook));}
+function saveContracts(){writeSaved('contracts',contractBook);}
 function resetContracts(){contractBook={version:1,sequence:0,profile:defaultContractProfile(),records:[]};selectedContractId=null;saveContracts();renderDocuments();}
 function contractVehicle(car){
     var seed=hashStr('vehicle-documents:'+car.id)>>>0,alphabet='ABCDEFGHJKLMNPRSTUVWXYZ0123456789',vin='XGM';

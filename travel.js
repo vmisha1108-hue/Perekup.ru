@@ -33,7 +33,7 @@ function initTransport(){
     saveTransport();
     showArrival();
 }
-function saveTransport(){ if(transport) localStorage.setItem("transport", JSON.stringify(transport)); }
+function saveTransport(){ if(transport) writeSaved("transport", transport); }
 function playerCity(){ return CITY_BY_ID[transport.cityId]; }
 function vehicleState(id){
     if(!transport) return null;
