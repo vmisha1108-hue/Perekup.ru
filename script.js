@@ -528,9 +528,10 @@ function renderTaskbar(){
     if(!list) return;
     list.innerHTML = "";
 
-    var apps = ICONS.map(function(i){ return {id:i.id, ico:i.ico, title:i.label.replace(/<br>/g, " ")}; });
-    if(openWindows.admin) apps.push({id:"admin", ico:"⚙️", title:"Система"});
-    if(openWindows.meeting) apps.push({id:"meeting", ico:"🤝", title:"Встреча"});
+    var apps = ["market", "help", "calc", "calendar", "clock"].map(function(id){
+        var icon = ICONS.find(function(i){ return i.id === id; });
+        return {id:icon.id, ico:icon.ico, title:icon.label};
+    });
 
     apps.forEach(function(app){
         var w = $("win-" + app.id);
@@ -539,6 +540,8 @@ function renderTaskbar(){
         var btn = document.createElement("button");
         btn.className = "task-btn" + (running ? " running" : "") + (running && !minimized ? " active" : "");
         btn.title = app.title;
+        btn.setAttribute("aria-label", app.title);
+        btn.dataset.app = app.id;
         btn.textContent = app.ico;
 
         btn.addEventListener("click", function(){

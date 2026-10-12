@@ -14,8 +14,8 @@ const server=http.createServer(async(req,res)=>{
 (async()=>{
     await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));const url='http://127.0.0.1:'+server.address().port;
     const browser=await chromium.launch({executablePath:process.env.CHROMIUM_PATH||'/usr/bin/chromium',args:['--no-sandbox']});let passed=0;
-    async function scenario(name,run,viewport={width:1280,height:900},seed){
-        const context=await browser.newContext({viewport}),page=await context.newPage(),errors=[];page.on('pageerror',e=>errors.push(e.message));
+    async function scenario(name,run,viewport={width:1280,height:900},seed,options={}){
+        const context=await browser.newContext({viewport,...options}),page=await context.newPage(),errors=[];page.on('pageerror',e=>errors.push(e.message));
         await page.addInitScript(()=>{localStorage.setItem('helpPromptSeen','1');window.testNow=new Date(2030,0,15,12).getTime();Date.now=()=>testNow;Math.random=()=>.9;});if(seed)await page.addInitScript(seed);
         try{await page.goto(url,{waitUntil:'networkidle'});assert.ok(await page.locator('#identityOverlay').isVisible());await run(page);assert.deepEqual(errors,[]);passed++;console.log('PASS '+name);}finally{await context.close();}
     }
@@ -55,6 +55,24 @@ const server=http.createServer(async(req,res)=>{
             await page.locator('#identityNickname').fill('Палец_77');await page.locator('#identityCanvas').evaluate(canvas=>{const r=canvas.getBoundingClientRect();for(const [type,x,y] of [['pointerdown',.2,.5],['pointermove',.4,.2],['pointermove',.6,.7],['pointerup',.6,.7]])canvas.dispatchEvent(new PointerEvent(type,{pointerId:1,pointerType:'touch',isPrimary:true,bubbles:true,clientX:r.x+r.width*x,clientY:r.y+r.height*y}));});
             await page.locator('#identitySave').click();assert.equal(await page.evaluate(()=>playerIdentity.nickname),'Палец_77');
         },{width:390,height:844});
+        await scenario('Android first entry accepts a real touch signature and the five dock apps fit and open',async page=>{
+            assert.equal(await page.evaluate(()=>matchMedia('(pointer: coarse)').matches),true);
+            assert.equal(await page.locator('#identityNickname').evaluate(el=>el===document.activeElement),false);
+            const card=await page.locator('.identity-card').boundingBox();assert.ok(card.x>=0 && card.y>=0 && card.x+card.width<=320 && card.y+card.height<=640);
+            await page.locator('#identityNickname').fill('Телефон_77');
+            const box=await page.locator('#identityCanvas').boundingBox(),session=await page.context().newCDPSession(page);
+            await session.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{x:box.x+box.width*.15,y:box.y+box.height*.5}]});
+            for(let i=1;i<=12;i++)await session.send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[{x:box.x+box.width*(.15+.6*i/12),y:box.y+box.height*(.5+Math.sin(i)*.2)}]});
+            await session.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});await session.detach();
+            assert.ok(await page.evaluate(()=>validSignature(identityStrokes)),JSON.stringify(await page.evaluate(()=>({strokes:identityStrokes,pointer:identityPointer}))));
+            await page.locator('#identitySave').tap();await page.locator('#identityOverlay').waitFor({state:'hidden'});assert.equal(await page.evaluate(()=>playerIdentity.nickname),'Телефон_77');
+            const apps=['market','help','calc','calendar','clock'];
+            assert.deepEqual(await page.locator('#taskList button').evaluateAll(buttons=>buttons.map(b=>b.dataset.app)),apps);
+            assert.equal(await page.locator('#taskList').evaluate(el=>el.scrollWidth<=el.clientWidth),true);
+            for(const app of apps){const button=page.locator('#taskList [data-app="'+app+'"]');await button.tap();assert.ok(await page.locator('#win-'+app).isVisible());await page.locator('#win-'+app+' [data-min]').tap();await button.tap();assert.ok(await page.locator('#win-'+app).isVisible());await page.locator('#win-'+app+' [data-close]').tap();}
+            await page.locator('.desk-icon[data-app="bank"]').tap();assert.ok(await page.locator('#win-bank').isVisible());assert.equal(await page.locator('#taskList button').count(),5);
+            await page.reload({waitUntil:'networkidle'});assert.ok(!await page.locator('#identityOverlay').isVisible());assert.equal(await page.evaluate(()=>playerIdentity.nickname),'Телефон_77');
+        },{width:320,height:640},undefined,{isMobile:true,hasTouch:true,deviceScaleFactor:3,userAgent:'Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/154.0.0.0 Mobile Safari/537.36'});
         console.log(passed+' identity scenarios passed');
     }finally{await browser.close();await new Promise(resolve=>server.close(resolve));}
 })().catch(error=>{console.error(error);process.exitCode=1;server.close();});

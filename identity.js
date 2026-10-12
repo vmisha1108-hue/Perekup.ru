@@ -14,7 +14,9 @@ function signatureHtml(strokes,label){
 }
 function showIdentitySetup(){
     if(hasPlayerIdentity())return;
-    startupResetPending=true;lastRealMs=Date.now();$('identityOverlay').classList.add('open');updateGameSpeed();$('identityNickname').focus();
+    startupResetPending=true;lastRealMs=Date.now();$('identityOverlay').classList.add('open');updateGameSpeed();
+    // На телефоне автофокус ввода вызывает клавиатуру и скрывает часть знакомства.
+    if(!window.matchMedia('(pointer: coarse)').matches)$('identityNickname').focus({preventScroll:true});
 }
 function redrawIdentitySignature(){
     var canvas=$('identityCanvas'),ctx=canvas.getContext('2d');ctx.clearRect(0,0,canvas.width,canvas.height);
@@ -48,6 +50,13 @@ function initIdentity(){
     canvas.addEventListener('pointerup',end);canvas.addEventListener('pointercancel',end);canvas.addEventListener('lostpointercapture',end);
     $('identityClear').addEventListener('click',function(){if(hasPlayerIdentity())return;identityPointer=null;identityStrokes=[];redrawIdentitySignature();$('identityError').textContent='';});
     $('identityForm').addEventListener('submit',function(event){event.preventDefault();savePlayerIdentity();});
+    // После рисования браузер может подавить первый click: касание сохраняет напрямую.
+    $('identitySave').addEventListener('pointerup',function(event){if(event.pointerType==='touch'){event.preventDefault();$('identityForm').requestSubmit();}});
+    // Показываем знакомство до загрузки остальных окон; проверяем и возврат из фона.
+    function ensureIdentitySetup(){if(!hasPlayerIdentity() && !ENTRY_RESET_PROMPT_ENABLED)showIdentitySetup();}
+    ensureIdentitySetup();
+    window.addEventListener('pageshow',ensureIdentitySetup);
+    document.addEventListener('visibilitychange',function(){if(!document.hidden)ensureIdentitySetup();});
     document.addEventListener('keydown',function(event){
         if(!$('identityOverlay').classList.contains('open'))return;
         if(event.key==='Escape'){event.preventDefault();event.stopImmediatePropagation();}
