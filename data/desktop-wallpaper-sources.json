@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "purpose": "Original desktop wallpapers matching the approved game design mockups",
+  "purpose": "Desktop wallpapers from approved design mockups and user-supplied media",
   "photos": [
     {
       "path": "wallpapers/ribbons.jpg",
@@ -25,6 +25,32 @@
       "tool": "imagegen",
       "prompt": "Extract and reconstruct only the wallpaper from the reference. Remove all interface, windows, icons, captions and branding. Seamlessly reconstruct the background behind them, preserving its colors and composition. navy purple polygonal mountains, a modern city across the lake on the right and a sunset peach horizon. Output only an original edge-to-edge landscape wallpaper, no text, no interface.",
       "encoding": "JPEG optimized for the game, original generated artwork preserved separately"
+    }
+  ],
+  "videos": [
+    {
+      "id": "winter-night",
+      "source": "User-supplied 8536a780-be0c-45f3-963e-abc1d95d3252_1.mp4",
+      "source_sha256": "4a5cba6c53f2190510d0a0338defdad89739a08cacbe8ec821208225798a102c",
+      "duration_seconds": 13.466667,
+      "encoding": "Original H.264 video copied without audio; VP9 fallback encoded at CRF 36; JPEG still at 3 seconds",
+      "files": [
+        {
+          "path": "wallpapers/winter-night.jpg",
+          "sha256": "8bad3a04982e15f898e378b21a5e76d204c1605b9512a6d483ca8f1d80a6636e",
+          "bytes": 56511
+        },
+        {
+          "path": "wallpapers/winter-night.mp4",
+          "sha256": "8c8c2d4cc3cbbfa0daf31dc905cdb7e7a3e691172ed1c8cef3dae9fdb304bda4",
+          "bytes": 336974
+        },
+        {
+          "path": "wallpapers/winter-night.webm",
+          "sha256": "7cbd0cfab8ef3be78c37193653529ef6e8773d3505b0bc58f9854d8c1f4defa5",
+          "bytes": 506433
+        }
+      ]
     }
   ]
 }

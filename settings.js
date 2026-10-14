@@ -1,9 +1,9 @@
 'use strict';
 
 var OS_STYLES={
-    windows:{label:'Windows',hint:'Оконный стиль',theme:'light',wallpapers:[{id:'ribbons',label:'Ленты'},{id:'aurora',label:'Сияние'}]},
-    macos:{label:'macOS',hint:'Мягкий стиль',theme:'light',wallpapers:[{id:'valley',label:'Долины'},{id:'dawn',label:'Рассвет'}]},
-    linux:{label:'Linux',hint:'Панельный стиль',theme:'dark',wallpapers:[{id:'facets',label:'Грани'},{id:'orbit',label:'Орбита'}]}
+    windows:{label:'Windows',hint:'Оконный стиль',theme:'light',wallpapers:[{id:'ribbons',label:'Ленты'},{id:'aurora',label:'Сияние'},LIVE_WALLPAPER]},
+    macos:{label:'macOS',hint:'Мягкий стиль',theme:'light',wallpapers:[{id:'valley',label:'Долины'},{id:'dawn',label:'Рассвет'},LIVE_WALLPAPER]},
+    linux:{label:'Linux',hint:'Панельный стиль',theme:'dark',wallpapers:[{id:'facets',label:'Грани'},{id:'orbit',label:'Орбита'},LIVE_WALLPAPER]}
 };
 var appearance=readSaved('appearance',{}),settingsStrokes=[],settingsPointer=null;
 function normalizeAppearance(value){
@@ -21,6 +21,7 @@ function applyAppearance(){
     root.dataset.os=appearance.os;root.dataset.theme=appearance.themes[appearance.os];
     root.dataset.wallpaper=appearance.wallpapers[appearance.os];
     root.style.setProperty('--wallpaper-image','url("'+wallpaperPath(root.dataset.wallpaper)+'")');
+    syncLiveWallpaper();
 }
 applyAppearance();
 function changeAppearance(kind,value){
@@ -144,4 +145,4 @@ function appIconSvg(id){
     }
     return '<svg class="app-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+(APP_ICON_PATHS[id] || '')+'</svg>';
 }
-function wallpaperPath(id){return 'wallpapers/'+id+(['ribbons','valley','facets'].indexOf(id)!==-1?'.jpg':'.svg');}
+function wallpaperPath(id){if(id===LIVE_WALLPAPER.id)return LIVE_WALLPAPER.poster;return 'wallpapers/'+id+(['ribbons','valley','facets'].indexOf(id)!==-1?'.jpg':'.svg');}

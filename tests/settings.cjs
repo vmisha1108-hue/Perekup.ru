@@ -7,7 +7,7 @@ const root=path.resolve(__dirname,'..');
 const server=http.createServer(async(req,res)=>{
     const pathname=new URL(req.url,'http://localhost').pathname,file=path.resolve(root,'.'+(pathname==='/'?'/index.html':pathname));
     if(!file.startsWith(root+path.sep))return res.writeHead(403).end();
-    try{const data=await fs.readFile(file);res.writeHead(200,{'Content-Type':({'.html':'text/html','.js':'text/javascript','.css':'text/css','.svg':'image/svg+xml','.mp3':'audio/mpeg'})[path.extname(file)]||'application/octet-stream'}).end(data);}catch{res.writeHead(404).end();}
+    try{const data=await fs.readFile(file);res.writeHead(200,{'Content-Type':({'.html':'text/html','.js':'text/javascript','.css':'text/css','.svg':'image/svg+xml','.mp3':'audio/mpeg','.mp4':'video/mp4','.webm':'video/webm','.jpg':'image/jpeg'})[path.extname(file)]||'application/octet-stream'}).end(data);}catch{res.writeHead(404).end();}
 });
 (async()=>{
     await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));
@@ -102,6 +102,51 @@ const server=http.createServer(async(req,res)=>{
             await page.locator('#settingsSaveSignature').tap();assert.ok(await page.locator('#settingsSignatureEditor').isHidden());assert.ok(await page.evaluate(()=>validSignature(playerIdentity.signature)));
             await page.evaluate(()=>{document.getElementById('toasts').innerHTML='';document.querySelector('.settings-body').scrollTop=0;});await page.locator('#win-settings').evaluate(el=>Promise.all(el.getAnimations().map(a=>a.finished)));await page.screenshot({path:'/workspace/scratch/3151c7eebd10/settings-mobile.png'});
         },{viewport:{width:320,height:640},isMobile:true,hasTouch:true});
+        async function expectAnimation(page){await page.waitForFunction(()=>{const v=document.getElementById('liveWallpaper');return v.readyState>=2 && !v.paused && v.currentTime>.1 && v.classList.contains('playing');});}
+        await scenario('third wallpaper plays muted in every OS and theme, retains the selection and releases video for static backgrounds',async page=>{
+            const requests=[];page.on('request',r=>{if(/winter-night\.(mp4|webm)/.test(r.url()))requests.push(r.url());});
+            assert.equal(await page.locator('#liveWallpaper').getAttribute('src'),null);assert.equal(requests.length,0);
+            await page.evaluate(()=>openWin('settings'));
+            for(const os of ['windows','macos','linux']){
+                await page.locator('[name="settingsOS"][value="'+os+'"]').check();
+                assert.equal(await page.locator('[name="settingsWallpaper"]').count(),3);
+                assert.equal(await page.locator('[name="settingsWallpaper"]').last().getAttribute('value'),'winter-night');
+                await page.locator('[name="settingsWallpaper"][value="winter-night"]').check();await expectAnimation(page);
+                assert.ok(await page.locator('#liveWallpaper').evaluate(v=>v.muted && v.loop && v.playsInline));
+                const source=await page.locator('#liveWallpaper').getAttribute('src');
+                for(const theme of ['light','dark']){await page.locator('[name="settingsTheme"][value="'+theme+'"]').check();await expectAnimation(page);assert.equal(await page.locator('#liveWallpaper').getAttribute('src'),source);}
+                const time=await page.locator('#liveWallpaper').evaluate(v=>v.currentTime);await page.waitForFunction(time=>document.getElementById('liveWallpaper').currentTime>time+.15,time);
+            }
+            await page.reload({waitUntil:'networkidle'});await expectAnimation(page);
+            assert.deepEqual(await page.evaluate(()=>appearance.wallpapers),{windows:'winter-night',macos:'winter-night',linux:'winter-night'});
+            await page.evaluate(()=>{openWin('settings');document.getElementById('toasts').innerHTML='';});
+            await page.locator('#win-settings').evaluate(el=>Promise.all(el.getAnimations().map(a=>a.finished)));await page.screenshot({path:'/workspace/scratch/3151c7eebd10/live-wallpaper-settings.png'});
+            await page.evaluate(()=>{closeWin('settings');changeAppearance('os','windows');});await expectAnimation(page);await page.locator('#win-settings').waitFor({state:'hidden'});await page.screenshot({path:'/workspace/scratch/3151c7eebd10/live-wallpaper-desktop.png'});
+            await page.evaluate(()=>changeAppearance('wallpaper','ribbons'));
+            assert.ok(await page.locator('#liveWallpaper').evaluate(v=>v.hidden && v.paused && !v.hasAttribute('src')));assert.ok(requests.length>=3);
+        });
+        await scenario('live wallpaper uses its still preview for reduced motion and animates on a narrow touch screen when enabled',async page=>{
+            const requests=[];page.on('request',r=>{if(/winter-night\.(mp4|webm)/.test(r.url()))requests.push(r.url());});
+            await page.locator('#taskList [data-app="settings"]').tap();await page.locator('[name="settingsWallpaper"][value="winter-night"]').check();
+            assert.equal(requests.length,0);assert.ok(await page.locator('#liveWallpaper').evaluate(v=>v.paused && !v.hasAttribute('src')));
+            assert.match(await page.evaluate(()=>getComputedStyle(document.documentElement).getPropertyValue('--wallpaper-image')),/winter-night.jpg/);
+            assert.ok(await page.locator('.settings-body').evaluate(el=>el.scrollWidth<=el.clientWidth));
+            await page.emulateMedia({reducedMotion:'no-preference'});await expectAnimation(page);
+            const box=await page.locator('#liveWallpaper').boundingBox();assert.equal(box.width,320);assert.equal(box.height,640);
+            await page.evaluate(()=>closeWin('settings'));await page.locator('#win-settings').waitFor({state:'hidden'});await page.screenshot({path:'/workspace/scratch/3151c7eebd10/live-wallpaper-phone.png'});
+            await page.emulateMedia({reducedMotion:'reduce'});await page.waitForFunction(()=>document.getElementById('liveWallpaper').paused);
+            assert.ok(await page.locator('#liveWallpaper').evaluate(v=>!v.classList.contains('playing')));
+        },{viewport:{width:320,height:640},isMobile:true,hasTouch:true,reducedMotion:'reduce'});
+        await scenario('background playback pauses while hidden, resumes on return and recovers from an autoplay denial',async page=>{
+            await page.evaluate(()=>{const v=document.getElementById('liveWallpaper');window.originalWallpaperPlay=v.play;v.play=()=>Promise.reject(new DOMException('Blocked','NotAllowedError'));changeAppearance('wallpaper','winter-night');});
+            assert.ok(await page.locator('#liveWallpaper').evaluate(v=>v.paused && !v.classList.contains('playing')));
+            await page.evaluate(()=>{document.getElementById('liveWallpaper').play=originalWallpaperPlay;});await page.locator('#taskList [data-app="settings"]').click();await expectAnimation(page);
+            await page.evaluate(()=>{Object.defineProperty(document,'hidden',{configurable:true,value:true});document.dispatchEvent(new Event('visibilitychange'));});
+            await page.waitForFunction(()=>document.getElementById('liveWallpaper').paused);
+            await page.evaluate(()=>{Object.defineProperty(document,'hidden',{configurable:true,value:false});document.dispatchEvent(new Event('visibilitychange'));});await expectAnimation(page);
+            await page.evaluate(()=>window.dispatchEvent(new Event('pagehide')));await page.waitForFunction(()=>document.getElementById('liveWallpaper').paused);
+            await page.evaluate(()=>window.dispatchEvent(new Event('pageshow')));await expectAnimation(page);
+        });
         console.log(passed+' settings scenarios passed');
     }finally{await browser.close();await new Promise(resolve=>server.close(resolve));}
 })().catch(error=>{console.error(error);process.exitCode=1;server.close();});

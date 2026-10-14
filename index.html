@@ -6,11 +6,12 @@
 <title>Perekyp.ru</title>
 <link rel="stylesheet" href="style.css?v=20261014-settings">
 <link rel="stylesheet" href="themes.css?v=20261014-settings">
-<link rel="stylesheet" href="desktop-visuals.css?v=20261014-window-controls">
+<link rel="stylesheet" href="desktop-visuals.css?v=20261014-live-wallpaper">
 </head>
 <body>
 
 <div id="desktop">
+    <video id="liveWallpaper" class="live-wallpaper" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1" disablepictureinpicture hidden></video>
     <div class="topbar">
         <div class="tb-logo">Perekyp<span>.ru</span></div>
         <div class="tb-clock" id="clock">--:--</div>
@@ -31,7 +32,7 @@
                 <label class="os-choice"><input type="radio" name="settingsOS" value="linux"><span class="os-mini os-linux"><i></i><i></i></span><strong>Linux</strong><small>Панельный стиль</small></label>
             </fieldset>
             <fieldset class="settings-options settings-modes"><legend>Тема</legend><label><input type="radio" name="settingsTheme" value="light"><span>☀ Светлая</span></label><label><input type="radio" name="settingsTheme" value="dark"><span>☾ Тёмная</span></label></fieldset>
-            <fieldset class="settings-options settings-wallpapers"><legend>Обои</legend><div id="settingsWallpapers"></div></fieldset><p class="settings-muted">Пока доступны встроенные обои. Позже добавим новые изображения.</p>
+            <fieldset class="settings-options settings-wallpapers"><legend>Обои</legend><div id="settingsWallpapers"></div></fieldset><p class="settings-muted">Живые обои проигрываются без звука.</p>
         </section>
         <section class="settings-section"><h2>Ник и подпись</h2><p class="settings-muted">Изменения применяются к будущим договорам. Подписанные экземпляры сохраняют прежние данные.</p>
             <form id="settingsNicknameForm" novalidate><label for="settingsNickname">Ваш ник</label><div class="settings-input-row"><input id="settingsNickname" maxlength="32" autocomplete="off" required><button type="submit">Сохранить ник</button></div><p class="settings-error" id="settingsNicknameError" role="alert"></p></form>
@@ -552,7 +553,8 @@
 <script src="city-market.js?v=20261010-travel"></script>
 <script src="trade-cars.js?v=20261010-market"></script>
 <script src="storage.js?v=20261012-optimize"></script>
-<script src="settings.js?v=20261014-solid-icons"></script>
+<script src="live-wallpaper.js?v=20261014-live-wallpaper"></script>
+<script src="settings.js?v=20261014-live-wallpaper"></script>
 <audio id="backgroundMusic" src="audio/mevison-background.mp3" loop preload="none"></audio>
 <script src="music.js?v=20261013-music-help"></script>
 <script src="market-pricing.js?v=20261012-review"></script>
