@@ -1,11 +1,16 @@
 'use strict';
 
+function windowControlSvg(kind){
+    var paths={min:'M5 12h14',max:'M5 5h14v14H5z',restore:'M9 5h10v10M5 9h10v10H5z',close:'m5 5 14 14M19 5 5 19'};
+    return '<svg class="window-control-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="'+paths[kind]+'"/></svg>';
+}
+
 function toggleWindowMaximize(id){
     var win=$('win-'+id),desk=getDeskRect();if(!win)return;
     if(win._restoreGeometry){Object.assign(win.style,win._restoreGeometry);delete win._restoreGeometry;win.classList.remove('maximized');}
     else{win._restoreGeometry={left:win.style.left,top:win.style.top,width:win.style.width,height:win.style.height};Object.assign(win.style,{left:'0px',top:'0px',width:desk.width+'px',height:desk.height+'px'});win.classList.add('maximized');}
     clampWindow(win);focusWin(id);
-    var button=win.querySelector('[data-max]');if(button){button.title=win._restoreGeometry?'Восстановить размер':'Развернуть';button.setAttribute('aria-label',button.title);}
+    var button=win.querySelector('[data-max]');if(button){button.title=win._restoreGeometry?'Восстановить размер':'Развернуть';button.setAttribute('aria-label',button.title);button.innerHTML=windowControlSvg(win._restoreGeometry?'restore':'max');}
 }
 function arrangeConversationWindows(){
     if(innerWidth<1100)return;
@@ -25,7 +30,8 @@ function initDesktopVisuals(){
     $('deskArea').appendChild($('overlay'));
     $('win-market').appendChild($('win-market').querySelector('.hero'));
     document.querySelectorAll('.window .win-btns').forEach(function(row){
-        var win=row.closest('.window'),button=document.createElement('button');button.type='button';button.className='max';button.dataset.max=win.id;button.title='Развернуть';button.setAttribute('aria-label','Развернуть');button.textContent='□';row.insertBefore(button,row.querySelector('.x'));
+        var win=row.closest('.window'),button=document.createElement('button');button.type='button';button.className='max';button.dataset.max=win.id;button.title='Развернуть';button.setAttribute('aria-label','Развернуть');row.insertBefore(button,row.querySelector('.x'));
+        row.querySelectorAll('button').forEach(function(control){control.type='button';control.setAttribute('aria-label',control.title);control.innerHTML=windowControlSvg(control.classList.contains('min')?'min':control.classList.contains('max')?'max':'close');});
     });
     $('filterToggle').addEventListener('click',function(){var fields=$('marketAdvanced');fields.hidden=!fields.hidden;this.setAttribute('aria-expanded',String(!fields.hidden));});
     window.addEventListener('resize',function(){if($('overlay').classList.contains('open'))arrangeConversationWindows();});

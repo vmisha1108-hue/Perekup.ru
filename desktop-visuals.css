@@ -60,3 +60,14 @@ html[data-os="linux"][data-theme="dark"] #win-market .tab.active{color:#faf7ff}
 .win-head .wi[data-app]:has(.app-icon-art){display:grid;place-items:center;flex:none;width:26px;height:26px;border-radius:6px;background:linear-gradient(145deg,color-mix(in srgb,var(--icon-color) 76%,white),var(--icon-color));box-shadow:inset 0 1px 0 #ffffff45}
 .win-head .wi .app-icon-art{width:20px;height:20px}
 @media(max-width:600px){.desk-icon .app-icon-art{width:31px;height:31px}#taskList .app-icon-art{width:26px;height:26px}}
+
+/* Window actions use the same geometry instead of platform-dependent font glyphs. */
+.win-title{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.win-btns{flex:none}
+.win-btns .window-control-icon{display:block;width:18px;height:18px;pointer-events:none}
+html:is([data-os="windows"],[data-os="linux"]) .win-btns button{width:36px;height:32px;padding:0;flex:none;color:var(--ui-secondary)}
+html:is([data-os="windows"],[data-os="linux"]) .win-btns button:hover{background:var(--ui-line);color:var(--ui-text)}
+html:is([data-os="windows"],[data-os="linux"]) .win-btns .x:hover{background:#df424d;color:#fff}
+html[data-os="macos"] .win-btns .window-control-icon{width:10px;height:10px;opacity:0}
+html[data-os="macos"] .win-btns button:hover .window-control-icon,html[data-os="macos"] .win-btns button:focus-visible .window-control-icon{opacity:1}
+@media(max-width:600px){html:is([data-os="windows"],[data-os="linux"]) .win-btns{gap:2px}html:is([data-os="windows"],[data-os="linux"]) .win-btns button{width:32px;height:32px}}
