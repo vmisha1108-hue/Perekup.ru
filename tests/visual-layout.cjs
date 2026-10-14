@@ -43,6 +43,29 @@ const server=http.createServer(async(req,res)=>{
             await page.locator('#msgInput').fill('Здравствуйте! Какой пробег?');await page.locator('#sendBtn').tap();assert.match(await page.locator('#chatLog').textContent(),/пробег|км/i);await page.screenshot({path:'/workspace/scratch/3151c7eebd10/actual-phone-chat.png'});
             await page.locator('#chatClose').tap();assert.ok(await page.locator('#win-market').isVisible());
         },{viewport:{width:320,height:640},isMobile:true,hasTouch:true});
+        async function checkDockPaint(page){
+            for(const os of ['windows','macos','linux'])for(const theme of ['light','dark']){
+                await page.evaluate(({os,theme})=>{changeAppearance('os',os);changeAppearance('theme',theme);}, {os,theme});
+                for(const app of ['market','settings']){
+                    await page.evaluate(id=>openWin(id),app);
+                    const button=page.locator('#taskList [data-app="'+app+'"]');
+                    await page.keyboard.press('Tab');await button.focus();await button.hover();
+                    await button.evaluate(el=>Promise.all(el.getAnimations().map(a=>a.finished)));
+                    const clipped=await button.evaluate(el=>{
+                        const list=el.parentElement,clip=list.getBoundingClientRect();
+                        const left=clip.left+list.clientLeft,top=clip.top+list.clientTop,right=left+list.clientWidth,bottom=top+list.clientHeight;
+                        return [el,el.querySelector('.task-icon'),el.querySelector('.task-label')].flatMap(item=>{
+                            const r=item.getBoundingClientRect(),style=getComputedStyle(item);
+                            const ring=style.outlineStyle==='none'?0:parseFloat(style.outlineWidth)+parseFloat(style.outlineOffset);
+                            return r.left-ring<left-.5 || r.right+ring>right+.5 || r.top-ring<top-.5 || r.bottom+ring>bottom+.5?[item.className]:[];
+                        });
+                    });
+                    assert.deepEqual(clipped,[],os+' '+theme+' '+app+' hover and focus must stay inside the dock scrolling area');
+                }
+            }
+        }
+        await scenario('desktop dock preserves complete icons, labels and active/focus rings on hover in all themes',checkDockPaint);
+        await scenario('narrow dock preserves complete first and last controls and their focus rings in all themes',checkDockPaint,{viewport:{width:320,height:640},isMobile:true,hasTouch:true});
         console.log(passed+' visual layout scenarios passed');
     }finally{await browser.close();await new Promise(resolve=>server.close(resolve));}
 })().catch(error=>{console.error(error);process.exitCode=1;server.close();});
