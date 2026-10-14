@@ -109,26 +109,39 @@ function initSettings(){
         resetGameProgress(true);finishSignatureEditing();renderSettings();toast('Прогресс сброшен. Вы начинаете со 100 000 ₽.');
     });
     // Use one original icon family across all three desktop styles.
-    document.querySelectorAll('.window .wi').forEach(function(el){var id=el.closest('.window').id.replace('win-','');if(APP_ICON_PATHS[id])el.innerHTML=appIconSvg(id);});
+    document.querySelectorAll('.window .wi').forEach(function(el){var id=el.closest('.window').id.replace('win-','');if(APP_ICON_PATHS[id] || APP_ICON_ART[id]){el.dataset.app=id;el.innerHTML=appIconSvg(id);}});
     renderSettings();
 }
 
+// Small interface symbols keep their outline style; application artwork is layered and filled.
 var APP_ICON_PATHS={
     chat:'<path d="M3 3h18v13H9l-6 5z"/>',
     profile:'<circle cx="12" cy="7" r="4"/><path d="M4 22v-3a8 8 0 0 1 16 0v3"/>',
     location:'<path d="M19 9c0 5-7 13-7 13S5 14 5 9a7 7 0 0 1 14 0z"/><circle cx="12" cy="9" r="2"/>',
-    wallet:'<path d="M3 5h17v16H3zM3 5l15-3v3m-4 6h7v5h-7z"/>',
-    market:'<path d="m4 10 2-5h12l2 5M3 10h18v8H3zM6 18v2m12-2v2M6 14h2m8 0h2"/>',
-    shop:'<path d="M3 10V5h18v5M3 10h18v11H3zM7 21v-7h10v7M1 10h22"/>',
-    calc:'<rect x="5" y="2" width="14" height="20" rx="2"/><path d="M8 6h8M8 11h1m5 0h1m-7 4h1m5 0h1m-7 4h1m5 0h1"/>',
-    calendar:'<rect x="3" y="5" width="18" height="17" rx="2"/><path d="M7 2v6m10-6v6M3 11h18m-13 4h1m6 0h1m-8 4h1m6 0h1"/>',
-    clock:'<circle cx="12" cy="12" r="10"/><path d="M12 6v7l4 2"/>',
-    help:'<circle cx="12" cy="12" r="10"/><path d="M9 8a3 3 0 0 1 6 0c0 3-3 2-3 5m0 4h.01"/>',
-    travel:'<path d="M3 8h11v10H3zM14 11h4l3 4v3h-7M6 8V4h5v4"/><circle cx="6" cy="19" r="2"/><circle cx="18" cy="19" r="2"/>',
-    garage:'<path d="m2 10 10-8 10 8M4 9v13h16V9M8 22V12h8v10m-8-6h8m-8 3h8"/>',
-    bank:'<path d="m2 8 10-6 10 6H2m2 4v7m5-7v7m6-7v7m5-7v7M2 22h20"/>',
-    documents:'<path d="M5 2h9l5 5v15H5zM14 2v6h5M8 12h8m-8 4h8"/>',
-    settings:'<path d="M4 5h16M4 12h16M4 19h16"/><circle cx="8" cy="5" r="2"/><circle cx="16" cy="12" r="2"/><circle cx="10" cy="19" r="2"/>'
+    wallet:'<path d="M3 5h17v16H3zM3 5l15-3v3m-4 6h7v5h-7z"/>'
 };
-function appIconSvg(id){return '<svg class="app-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+(APP_ICON_PATHS[id] || '')+'</svg>';}
+var GARAGE_ICON_ART='<path fill="#547088" d="m4 17 20-11 20 11v27H4z"/><path fill="url(#app-paper)" d="M7 16h34v26H7z"/><path fill="#bbc9d4" d="M37 16h4v26h-4z"/><path fill="#fff" d="M1 16 24 3l23 13-2 4L24 8 3 20z"/><path fill="#9db2c4" d="m3 20 21-12 21 12v2L24 11 3 23z"/><path fill="url(#app-metal)" d="M13 24h22v18H13z"/><path stroke="#8c9fae" stroke-width="1.5" d="M15 28h18m-18 4h18m-18 4h18"/><path fill="#c6d3dc" d="M20 38h8v2h-8z"/><path fill="#889daa" d="M4 42h40v3H4z"/>';
+var APP_ICON_ART={
+    market:'<path fill="#fff" d="m9 20 4-11a4 4 0 0 1 4-3h14a4 4 0 0 1 4 3l4 11 4 5v12H5V25z"/><path fill="var(--icon-color,#ff6254)" d="m13 19 3-10h16l3 10z"/><path fill="#fff" d="M3 18h6v4H3zm36 0h6v4h-6z"/><rect fill="url(#app-paper)" x="5" y="33" width="8" height="10" rx="3"/><rect fill="url(#app-paper)" x="35" y="33" width="8" height="10" rx="3"/><rect fill="var(--icon-color,#ff6254)" x="9" y="26" width="8" height="5" rx="2.5"/><rect fill="var(--icon-color,#ff6254)" x="31" y="26" width="8" height="5" rx="2.5"/><path stroke="#dce5eb" stroke-width="2" d="M18 34h12"/>',
+    shop:GARAGE_ICON_ART,
+    garage:GARAGE_ICON_ART,
+    calc:'<rect fill="#bacddd" x="9" y="4" width="30" height="42" rx="4"/><rect fill="url(#app-paper)" x="8" y="3" width="30" height="41" rx="4"/><rect fill="#377ba9" x="12" y="8" width="22" height="9" rx="1"/><path fill="#4489b3" d="M13 9h20v2H13z"/><g fill="#4684ae"><rect x="12" y="21" width="5" height="5" rx=".7"/><rect x="20.5" y="21" width="5" height="5" rx=".7"/><rect x="29" y="21" width="5" height="5" rx=".7"/><rect x="12" y="29" width="5" height="5" rx=".7"/><rect x="20.5" y="29" width="5" height="5" rx=".7"/><rect x="29" y="29" width="5" height="13" rx=".7"/><rect x="12" y="37" width="5" height="5" rx=".7"/><rect x="20.5" y="37" width="5" height="5" rx=".7"/></g>',
+    calendar:'<rect fill="#b93836" x="3" y="11" width="42" height="34" rx="5"/><rect fill="url(#app-paper)" x="3" y="10" width="42" height="33" rx="4"/><path fill="#fff" d="M3 14a4 4 0 0 1 4-4h34a4 4 0 0 1 4 4v5H3z"/><g fill="#fff"><rect x="11" y="2" width="3" height="11" rx="1.5"/><rect x="34" y="2" width="3" height="11" rx="1.5"/></g><path fill="#233449" d="m12 23 5-3h3v19h-4V25l-4 2zm14-3h12v4h-8v4c8-2 12 3 9 8-2 5-10 4-13 2l1-4c6 4 11-2 6-3-2-1-4 0-6 1z"/>',
+    clock:'<circle fill="#bfd1df" cx="25" cy="25" r="23"/><circle fill="url(#app-paper)" cx="24" cy="23" r="22"/><g stroke="#526575" stroke-width="1.5" stroke-linecap="round"><path d="M24 5v2m0 32v2M6 23h2m32 0h2M15 7.4l1 1.7m16 27.8 1 1.7M8.4 14l1.7 1m27.8 16 1.7 1M8.4 32l1.7-1m27.8-16 1.7-1M15 38.6l1-1.7m16-27.8 1-1.7"/></g><path stroke="#283e51" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" d="M24 11v13l10 7"/><circle fill="#283e51" cx="24" cy="24" r="2.2"/>',
+    bank:'<path fill="#278657" d="M3 42h42v4H3z"/><path fill="#fff" d="m2 14 22-12 22 12z"/><path fill="#d7e8dd" d="M4 14h40v4H4z"/><circle fill="#469b70" cx="24" cy="10" r="2.7"/><path fill="url(#app-paper)" d="M8 18h6v20H8zm13 0h6v20h-6zm13 0h6v20h-6z"/><path fill="#c4dcd0" d="M11 19h3v17h-3zm13 0h3v17h-3zm13 0h3v17h-3z"/><path fill="#fff" d="M6 18h10v3H6zm13 0h10v3H19zm13 0h10v3H32zM6 36h10v3H6zm13 0h10v3H19zm13 0h10v3H32zM5 39h38v3H5z"/><path fill="#d7e8dd" d="M2 42h44v3H2z"/>',
+    travel:'<rect fill="url(#app-paper)" x="1" y="7" width="31" height="29" rx="2.5"/><path fill="#d8ece1" d="M1 33h31v3H1z"/><path fill="#fff" d="M33 19h8l6 12v8H33z"/><path fill="#429e6b" d="M36 22h4l4 9h-8z"/><path fill="#e0eee7" d="M34 33h13v6H34z"/><rect fill="#b8d7c4" x="36" y="33" width="4" height="2" rx="1"/><circle fill="#2d8c58" cx="9" cy="40" r="5.5"/><circle fill="#fff" cx="9" cy="40" r="3.5"/><circle fill="#2d8c58" cx="39" cy="40" r="5.5"/><circle fill="#fff" cx="39" cy="40" r="3.5"/>',
+    documents:'<path fill="#c0d3e3" d="M8 4h22l12 12v29H8z"/><path fill="url(#app-paper)" d="M6 2h23l11 12v29H6z"/><path fill="#b0c6d6" d="M28 3v13h12z"/><path fill="#e7eff6" d="M29 2v12h11z"/><g stroke="#9db4c6" stroke-width="2.5" stroke-linecap="round"><path d="M13 17h11m-11 7h20m-20 6h20m-20 6h14"/></g>',
+    help:'<path fill="url(#app-paper)" d="M10 10C12-1 37-2 38 11c1 8-9 10-10 16v3h-8v-4c0-9 10-10 10-15 0-5-11-6-13 2z"/><circle fill="url(#app-paper)" cx="24" cy="40" r="4.5"/>',
+    settings:'<path fill="url(#app-paper)" fill-rule="evenodd" d="m20 1-1 6-5 2-5-3-6 6 3 5-2 5-4 1v8l6 1 2 5-3 5 6 6 5-3 5 2 1 4h8l1-6 5-2 5 3 6-6-3-5 2-5 4-1v-8l-6-1-2-5 3-5-6-6-5 3-5-2-1-4zm4 14a9 9 0 1 0 0 18 9 9 0 0 0 0-18z" transform="translate(3 2) scale(.88)"/><circle fill="#768a9a" cx="24.1" cy="23.1" r="5.5"/><circle fill="#dae3ea" cx="24.1" cy="23.1" r="3"/>'
+};
+var appIconSequence=0;
+function appIconSvg(id){
+    if(APP_ICON_ART[id]){
+        // Each copy owns its paint IDs, so hiding a window cannot break another icon.
+        var prefix='app-icon-'+(++appIconSequence)+'-';
+        var art='<defs><linearGradient id="app-paper" x1="0" y1="0" x2=".7" y2="1"><stop stop-color="#fff"/><stop offset="1" stop-color="#e1e9ef"/></linearGradient><linearGradient id="app-metal" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#607787"/><stop offset="1" stop-color="#354959"/></linearGradient></defs>'+APP_ICON_ART[id];
+        return '<svg class="app-icon app-icon-art" viewBox="0 0 48 48" fill="none" aria-hidden="true">'+art.replace(/app-(paper|metal)/g,function(match){return prefix+match.slice(4);})+'</svg>';
+    }
+    return '<svg class="app-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+(APP_ICON_PATHS[id] || '')+'</svg>';
+}
 function wallpaperPath(id){return 'wallpapers/'+id+(['ribbons','valley','facets'].indexOf(id)!==-1?'.jpg':'.svg');}

@@ -16,9 +16,9 @@ html[data-os="linux"] .win-btns .x{color:#f5c04c}html[data-os="linux"] .win-head
 .window.maximized{border-radius:0!important;max-width:100%;max-height:100%}
 .desk-icon{padding:10px 5px;gap:8px}.desk-icon .ico{width:58px;height:58px;border-radius:14px;color:#fff;background:linear-gradient(145deg,color-mix(in srgb,var(--icon-color) 76%,white),var(--icon-color));border:1px solid #ffffff55;box-shadow:inset 0 1px 1px #ffffff8a,0 5px 14px #14284235}.desk-icon .app-icon{width:34px;height:34px;filter:drop-shadow(0 2px 1px #0002);stroke-width:1.6}.desk-icon span{font-size:12px;font-weight:500;line-height:1.3}
 html[data-os="windows"][data-theme="light"] .desk-icon span{color:#172842;text-shadow:0 1px 5px #ffffffb3}
-html[data-os="macos"] .desk-icon .ico{border-radius:16px;color:var(--icon-color);background:linear-gradient(145deg,#fff,#eff0f9);border:1px solid #fff8;box-shadow:0 6px 18px #45375825,inset 0 1px 1px #fff}
+html[data-os="macos"] .desk-icon .ico{border-radius:16px;color:#fff;border:1px solid #fff8;box-shadow:0 6px 18px #45375825,inset 0 1px 1px #fff}
 html[data-os="macos"] .desk-icon .app-icon{stroke-width:2;filter:drop-shadow(0 3px 1px #7e709640)}
-html[data-os="linux"] .desk-icon .ico{color:#fff;border-radius:10px;border-color:#ffffff40;background:linear-gradient(145deg,color-mix(in srgb,var(--icon-color) 75%,white),var(--icon-color))}html[data-os="linux"] .desk-icon[data-app="shop"]{--icon-color:#8459c5}html[data-os="linux"] .desk-icon[data-app="bank"]{--icon-color:#cc942f}html[data-os="linux"] .desk-icon[data-app="documents"]{--icon-color:#9060df}
+html[data-os="linux"] .desk-icon .ico{color:#fff;border-radius:10px;border-color:#ffffff40;background:linear-gradient(145deg,color-mix(in srgb,var(--icon-color) 75%,white),var(--icon-color))}
 #win-market{width:min(850px,88vw);height:min(690px,calc(100% - 40px));min-width:min(400px,94vw)}
 #win-market>.win-body{padding:18px;container-type:inline-size}
 #win-market>.hero{flex:none;padding:7px 18px;margin:0;background:rgb(var(--ui-rgb) / .03);border:0;border-top:1px solid var(--ui-line);border-radius:0}
@@ -30,7 +30,7 @@ html[data-os="macos"] #win-market .tabs{width:min(480px,100%);padding:3px;border
 html[data-os="windows"] .buy,html[data-os="macos"] .buy{background:linear-gradient(180deg,color-mix(in srgb,var(--ui-accent) 80%,white),var(--ui-accent));box-shadow:0 3px 7px rgb(var(--ui-accent-rgb) / .14)}html[data-os="linux"] .buy{background:linear-gradient(155deg,#6c59b2,#8662d4);color:#fff;border:1px solid #ffffff24}
 .taskbar{height:92px!important;padding:0 20px!important}.task-btn{display:flex;flex-direction:column;justify-content:center;align-items:center;gap:7px;position:relative;width:82px;height:78px;border:0;background:transparent!important;border-radius:12px!important;padding:0;box-shadow:none!important;overflow:visible}.task-icon{width:47px;height:47px;display:grid;place-items:center;color:#fff;background:linear-gradient(145deg,color-mix(in srgb,var(--icon-color,#438ae1) 70%,white),var(--icon-color,#438ae1));border:1px solid #ffffff45;border-radius:12px;box-shadow:0 4px 10px #0002,inset 0 1px 1px #ffffff70}.task-icon .app-icon{width:30px;height:30px}.task-label{font-size:10px;font-weight:500;color:var(--ui-text);white-space:nowrap}.task-btn.running::after{bottom:0}.task-btn.active .task-icon{outline:2px solid var(--ui-accent);outline-offset:3px}.task-btn:hover{transform:translateY(-3px)}
 html[data-os="windows"] .taskbar{bottom:8px;left:14px;width:calc(100% - 28px);max-width:calc(100% - 28px);border:1px solid #ffffff70;border-radius:20px}
-html[data-os="macos"] .taskbar{height:100px!important;bottom:12px;border-radius:23px;padding:0 20px!important}html[data-os="macos"] .task-icon{color:var(--icon-color,#438ae1);background:linear-gradient(145deg,#fff,#eff0f9);border-radius:14px;border-color:#fff8}html[data-os="macos"] .task-label{font-size:10px}
+html[data-os="macos"] .taskbar{height:100px!important;bottom:12px;border-radius:23px;padding:0 20px!important}html[data-os="macos"] .task-icon{color:#fff;border-radius:14px;border-color:#fff8}html[data-os="macos"] .task-label{font-size:10px}
 html[data-os="linux"] .taskbar{height:78px!important}html[data-os="linux"] .task-btn{width:78px}html[data-os="linux"] .task-icon{border-radius:9px}
 #overlay{position:absolute;inset:0;padding:0;background:none;backdrop-filter:none;-webkit-backdrop-filter:none;pointer-events:none;z-index:auto}
 #win-chat{position:absolute;width:min(460px,94vw);height:min(660px,calc(100% - 24px));max-height:100%;min-width:min(320px,94vw);min-height:0;pointer-events:none;border-radius:var(--ui-radius);background:var(--ui-window);box-shadow:0 15px 40px #07163140}
@@ -45,3 +45,15 @@ html[data-os="linux"][data-theme="dark"] #win-market .tab.active{color:#faf7ff}
 .ava .app-icon circle,.ava .app-icon path{fill:currentColor;stroke:none}
 @media(max-width:600px){html[data-os="macos"] .win-btns button{width:26px;height:26px}}
 @media(max-width:600px){html[data-os] .taskbar{padding:0 8px!important}}
+
+/* Filled application tiles follow the supplied reference in every OS and theme. */
+:is(.desk-icon,.task-btn,.wi[data-app]){--icon-color:#168ef2}
+:is(.desk-icon,.task-btn,.wi)[data-app="market"],:is(.desk-icon,.task-btn,.wi)[data-app="calendar"]{--icon-color:#ff6254}
+:is(.desk-icon,.task-btn,.wi)[data-app="bank"],:is(.desk-icon,.task-btn,.wi)[data-app="travel"]{--icon-color:#2aae6d}
+:is(.desk-icon,.task-btn,.wi)[data-app="garage"]{--icon-color:#627382}
+:is(.desk-icon,.task-btn,.wi)[data-app="settings"]{--icon-color:#7182a0}
+.desk-icon .app-icon-art{width:42px;height:42px;filter:drop-shadow(0 2px 1px #17314926)}
+.task-icon .app-icon-art{width:34px;height:34px}
+.win-head .wi[data-app]:has(.app-icon-art){display:grid;place-items:center;flex:none;width:26px;height:26px;border-radius:6px;background:linear-gradient(145deg,color-mix(in srgb,var(--icon-color) 76%,white),var(--icon-color));box-shadow:inset 0 1px 0 #ffffff45}
+.win-head .wi .app-icon-art{width:20px;height:20px}
+@media(max-width:600px){.desk-icon .app-icon-art{width:31px;height:31px}#taskList .app-icon-art{width:26px;height:26px}}
