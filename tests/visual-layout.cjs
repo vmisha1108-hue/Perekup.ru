@@ -66,6 +66,37 @@ const server=http.createServer(async(req,res)=>{
         }
         await scenario('desktop dock preserves complete icons, labels and active/focus rings on hover in all themes',checkDockPaint);
         await scenario('narrow dock preserves complete first and last controls and their focus rings in all themes',checkDockPaint,{viewport:{width:320,height:640},isMobile:true,hasTouch:true});
+        await scenario('ultrawide and resized markets keep the first row photos, prices and purchase actions visible',async page=>{
+            for(const os of ['windows','macos','linux']){
+                await page.evaluate(os=>{changeAppearance('os',os);openWin('market');openBuyChat(1);},os);
+                await page.locator('#win-market').evaluate(el=>Promise.all(el.getAnimations().map(a=>a.finished)));
+                async function checkFirstRow(){
+                    const rows=await page.locator('#content .card').evaluateAll(cards=>{
+                        const viewport=document.querySelector('#win-market .win-body').getBoundingClientRect(),y=cards[0].getBoundingClientRect().top;
+                        return cards.filter(c=>Math.abs(c.getBoundingClientRect().top-y)<1).map(c=>({photo:c.querySelector('.car-img').getBoundingClientRect().height,price:c.querySelector('.price').getBoundingClientRect().bottom,action:c.querySelector('.buy').getBoundingClientRect().bottom,limit:viewport.bottom}));
+                    });
+                    assert.ok(rows.every(r=>r.photo<=260.5 && r.price<r.limit && r.action<r.limit),os+' first-row actions must remain on screen');
+                }
+                await checkFirstRow();await page.screenshot({path:'/workspace/scratch/3151c7eebd10/market-ultrawide-'+os+'.png'});
+                await page.evaluate(()=>{closeChat();Object.assign(document.getElementById('win-market').style,{left:'260px',top:'10px',width:'900px',height:'520px'});});await checkFirstRow();
+            }
+        },{viewport:{width:3200,height:700}});
+        await scenario('opening and reopening chat preserves a smaller market and caps old stretched saves',async page=>{
+            for(const os of ['windows','macos','linux']){
+                await page.evaluate(os=>{changeAppearance('os',os);openWin('market');Object.assign(document.getElementById('win-market').style,{width:'700px',height:'520px'});},os);
+                await page.evaluate(()=>openBuyChat(1));
+                await page.locator('#win-chat').evaluate(el=>Promise.all(el.getAnimations().map(a=>a.finished)));
+                for(let i=0;i<3;i++){
+                    const market=await page.locator('#win-market').boundingBox(),talk=await page.locator('#win-chat').boundingBox();
+                    assert.equal(Math.round(market.width),700);assert.equal(Math.round(market.height),520);assert.ok(market.x+market.width<talk.x);assert.ok(talk.x+talk.width<=3200);
+                    await page.evaluate(()=>{closeChat();openBuyChat(1);});
+                }
+                await page.evaluate(()=>{closeChat();document.getElementById('win-market').style.width='2400px';openBuyChat(1);});
+                assert.ok((await page.locator('#win-market').boundingBox()).width<=850);
+                await page.screenshot({path:'/workspace/scratch/3151c7eebd10/chat-compact-'+os+'.png'});
+                await page.evaluate(()=>closeChat());
+            }
+        },{viewport:{width:3200,height:1000}});
         console.log(passed+' visual layout scenarios passed');
     }finally{await browser.close();await new Promise(resolve=>server.close(resolve));}
 })().catch(error=>{console.error(error);process.exitCode=1;server.close();});

@@ -20,7 +20,7 @@ html[data-os="macos"] .desk-icon .ico{border-radius:16px;color:#fff;border:1px s
 html[data-os="macos"] .desk-icon .app-icon{stroke-width:2;filter:drop-shadow(0 3px 1px #7e709640)}
 html[data-os="linux"] .desk-icon .ico{color:#fff;border-radius:10px;border-color:#ffffff40;background:linear-gradient(145deg,color-mix(in srgb,var(--icon-color) 75%,white),var(--icon-color))}
 #win-market{width:min(850px,88vw);height:min(690px,calc(100% - 40px));min-width:min(400px,94vw)}
-#win-market>.win-body{padding:18px;container-type:inline-size}
+#win-market>.win-body{padding:18px;container-type:size}
 #win-market>.hero{flex:none;padding:7px 18px;margin:0;background:rgb(var(--ui-rgb) / .03);border:0;border-top:1px solid var(--ui-line);border-radius:0}
 #win-market>.hero :is(h1,p,.legend){display:none}#win-market .stats{display:flex;gap:18px;justify-content:space-between;align-items:center;margin:0}#win-market .stat{display:flex;align-items:center;gap:7px;padding:0;border:0;background:none;white-space:nowrap;border-radius:0}#win-market .stat small{font-size:10px}#win-market .stat b{display:inline;font-size:12px;margin:0}
 #win-market .tabs{display:flex;gap:0;width:100%;margin-bottom:14px;border-bottom:1px solid var(--ui-line)}#win-market .tab{flex:1;border:0;border-radius:0;background:transparent;padding:12px 10px;font-size:15px;color:var(--ui-text);border-bottom:3px solid transparent}#win-market .tab.active{color:var(--ui-accent);background:rgb(var(--ui-accent-rgb) / .045);border-bottom-color:var(--ui-accent)}
@@ -72,8 +72,16 @@ html[data-os="macos"] .win-btns .window-control-icon{width:10px;height:10px;opac
 html[data-os="macos"] .win-btns button:hover .window-control-icon,html[data-os="macos"] .win-btns button:focus-visible .window-control-icon{opacity:1}
 @media(max-width:600px){html:is([data-os="windows"],[data-os="linux"]) .win-btns{gap:2px}html:is([data-os="windows"],[data-os="linux"]) .win-btns button{width:32px;height:32px}}
 
-.live-wallpaper{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none;z-index:0;opacity:0;filter:brightness(var(--wallpaper-brightness))}
-.live-wallpaper.playing{opacity:1}
-.live-wallpaper[hidden]{display:none}
-#settingsWallpapers{grid-template-columns:repeat(3,minmax(0,1fr))}
-@media(max-width:600px){#settingsWallpapers{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+/* Limit photo growth to the space left below the market filters. */
+#win-market[data-view="market"] .grid{grid-template-columns:repeat(auto-fill,minmax(min(240px,100%),1fr))}
+#win-market[data-view="market"] .card .car-img{max-height:clamp(80px,calc(100cqh - 300px),260px)}
+@container (min-width:1000px) and (max-height:430px){
+    #win-market[data-view="market"] .grid{grid-template-columns:repeat(auto-fill,minmax(320px,1fr))}
+    #win-market[data-view="market"] .card{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);gap:4px}
+    #win-market[data-view="market"] .card .car-img{height:150px;aspect-ratio:auto;max-height:none}
+    #win-market[data-view="market"] .card .info{min-width:0;padding:10px 6px}
+}
+.wallpaper-swatch{display:block;width:100%;height:auto;object-fit:cover;opacity:1}
+@container(max-width:580px){#win-market[data-view="market"] .grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:600px){#win-market[data-view="market"] .grid{grid-template-columns:repeat(2,minmax(0,1fr))}#win-market[data-view="market"] .card .car-img{max-height:none}}

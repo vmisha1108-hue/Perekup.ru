@@ -1,9 +1,9 @@
 'use strict';
 
 var OS_STYLES={
-    windows:{label:'Windows',hint:'Оконный стиль',theme:'light',wallpapers:[{id:'ribbons',label:'Ленты'},{id:'aurora',label:'Сияние'},LIVE_WALLPAPER]},
-    macos:{label:'macOS',hint:'Мягкий стиль',theme:'light',wallpapers:[{id:'valley',label:'Долины'},{id:'dawn',label:'Рассвет'},LIVE_WALLPAPER]},
-    linux:{label:'Linux',hint:'Панельный стиль',theme:'dark',wallpapers:[{id:'facets',label:'Грани'},{id:'orbit',label:'Орбита'},LIVE_WALLPAPER]}
+    windows:{label:'Windows',hint:'Оконный стиль',theme:'light',wallpapers:[{id:'ribbons',label:'Ленты'},{id:'aurora',label:'Сияние'}]},
+    macos:{label:'macOS',hint:'Мягкий стиль',theme:'light',wallpapers:[{id:'valley',label:'Долины'},{id:'dawn',label:'Рассвет'}]},
+    linux:{label:'Linux',hint:'Панельный стиль',theme:'dark',wallpapers:[{id:'facets',label:'Грани'},{id:'orbit',label:'Орбита'}]}
 };
 var appearance=readSaved('appearance',{}),settingsStrokes=[],settingsPointer=null;
 function normalizeAppearance(value){
@@ -21,7 +21,6 @@ function applyAppearance(){
     root.dataset.os=appearance.os;root.dataset.theme=appearance.themes[appearance.os];
     root.dataset.wallpaper=appearance.wallpapers[appearance.os];
     root.style.setProperty('--wallpaper-image','url("'+wallpaperPath(root.dataset.wallpaper)+'")');
-    syncLiveWallpaper();
 }
 applyAppearance();
 function changeAppearance(kind,value){
@@ -39,7 +38,7 @@ function renderAppearanceControls(){
     var grid=$('settingsWallpapers');
     if(grid.dataset.os!==os){
         grid.dataset.os=os;
-        grid.innerHTML=OS_STYLES[os].wallpapers.map(function(w){return '<label class="wallpaper-choice"><input type="radio" name="settingsWallpaper" value="'+w.id+'"><span class="wallpaper-swatch" style="background-image:url('+wallpaperPath(w.id)+')"></span><span>'+w.label+'</span></label>';}).join('');
+        grid.innerHTML=OS_STYLES[os].wallpapers.map(function(w){return '<label class="wallpaper-choice"><input type="radio" name="settingsWallpaper" value="'+w.id+'"><img class="wallpaper-swatch" src="'+wallpaperPath(w.id)+'" alt="" loading="lazy" decoding="async"><span>'+w.label+'</span></label>';}).join('');
     }
     grid.querySelectorAll('input').forEach(function(input){input.checked=input.value===appearance.wallpapers[os];});
 }
@@ -145,4 +144,4 @@ function appIconSvg(id){
     }
     return '<svg class="app-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+(APP_ICON_PATHS[id] || '')+'</svg>';
 }
-function wallpaperPath(id){if(id===LIVE_WALLPAPER.id)return LIVE_WALLPAPER.poster;return 'wallpapers/'+id+(['ribbons','valley','facets'].indexOf(id)!==-1?'.jpg':'.svg');}
+function wallpaperPath(id){return 'wallpapers/'+id+(['ribbons','valley','facets'].indexOf(id)!==-1?'.jpg':'.svg');}

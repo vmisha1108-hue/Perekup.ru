@@ -14,17 +14,24 @@ function toggleWindowMaximize(id){
 }
 function arrangeConversationWindows(){
     if(innerWidth<1100)return;
-    var desk=getDeskRect(),talk=$('win-chat'),market=$('win-market');
-    var side=Math.min(440,Math.max(350,desk.width*.28)),left=244;
-    var right=desk.width-side-24,height=Math.min(640,desk.height-70),top=Math.max(16,(desk.height-height)/2-20);
-    Object.assign(talk.style,{left:right+'px',top:top+'px',width:side+'px',height:height+'px'});talk.dataset.hasPos='1';
+    var desk=getDeskRect(),talk=$('win-chat'),market=$('win-market'),gap=24;
+    var side=Math.min(440,Math.max(350,desk.width*.28));
+    var height=Math.min(640,desk.height-32),left=(desk.width-side)/2,top=Math.max(16,(desk.height-height)/2);
     if(market.classList.contains('open') && !market._restoreGeometry){
-        Object.assign(market.style,{left:left+'px',top:top+'px',width:(right-left-24)+'px',height:height+'px'});market.dataset.hasPos='1';
-        saveWindowState('market',market);
+        // Keep the user's smaller size and cap old, oversized saved windows.
+        var width=Math.min(market.offsetWidth,850,desk.width-244-side-gap*2);
+        var marketHeight=Math.min(market.offsetHeight,desk.height-32);
+        var groupWidth=width+gap+side;
+        var marketLeft=Math.min(Math.max(244,(desk.width-groupWidth)/2),desk.width-groupWidth-gap);
+        top=Math.max(16,(desk.height-Math.max(height,marketHeight))/2);left=marketLeft+width+gap;
+        Object.assign(market.style,{left:marketLeft+'px',top:top+'px',width:width+'px',height:marketHeight+'px'});market.dataset.hasPos='1';
+        clampWindow(market);saveWindowState('market',market);
     }
+    Object.assign(talk.style,{left:left+'px',top:top+'px',width:side+'px',height:height+'px'});talk.dataset.hasPos='1';
     clampWindow(talk);saveWindowState('chat',talk);
     $('marketAdvanced').hidden=true;$('filterToggle').setAttribute('aria-expanded','false');
 }
+
 function initDesktopVisuals(){
     // Keep the existing conversation and game handlers; present it as an OS window.
     $('deskArea').appendChild($('overlay'));
