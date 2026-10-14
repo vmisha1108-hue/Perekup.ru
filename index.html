@@ -4,7 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Perekyp.ru</title>
-<link rel="stylesheet" href="style.css?v=20261013-music-help">
+<link rel="stylesheet" href="style.css?v=20261014-settings">
+<link rel="stylesheet" href="themes.css?v=20261014-settings">
 </head>
 <body>
 
@@ -18,6 +19,27 @@
     </div>
 
     <div class="desk-area" id="deskArea">
+<div class="window" id="win-settings" data-title="Настройки" data-icon="⚙️">
+    <div class="win-head"><div class="wi">⚙️</div><div class="win-title">Настройки</div><div class="win-btns"><button class="min" data-min="win-settings" title="Свернуть">—</button><button class="x" data-close="win-settings" title="Закрыть">✕</button></div></div>
+    <div class="win-body settings-body">
+        <header class="settings-profile"><div class="settings-avatar" id="settingsAvatar" aria-label="Аватарка игрока">?</div><div><h1 id="settingsPlayerName">Ваш профиль</h1><p>Ваш профиль в игре</p><button type="button" disabled>Смена аватарки — скоро</button></div></header>
+        <section class="settings-section" id="settingsAppearance"><h2>Оформление</h2><p class="settings-muted">Выберите стиль рабочего стола. Приложения и правила игры остаются теми же.</p>
+            <fieldset class="settings-options settings-os"><legend>Стиль ОС</legend>
+                <label class="os-choice"><input type="radio" name="settingsOS" value="windows"><span class="os-mini os-windows"><i></i><i></i></span><strong>Windows</strong><small>Оконный стиль</small></label>
+                <label class="os-choice"><input type="radio" name="settingsOS" value="macos"><span class="os-mini os-macos"><i></i><i></i></span><strong>macOS</strong><small>Мягкий стиль</small></label>
+                <label class="os-choice"><input type="radio" name="settingsOS" value="linux"><span class="os-mini os-linux"><i></i><i></i></span><strong>Linux</strong><small>Панельный стиль</small></label>
+            </fieldset>
+            <fieldset class="settings-options settings-modes"><legend>Тема</legend><label><input type="radio" name="settingsTheme" value="light"><span>☀ Светлая</span></label><label><input type="radio" name="settingsTheme" value="dark"><span>☾ Тёмная</span></label></fieldset>
+            <fieldset class="settings-options settings-wallpapers"><legend>Обои</legend><div id="settingsWallpapers"></div></fieldset><p class="settings-muted">Пока доступны встроенные обои. Позже добавим новые изображения.</p>
+        </section>
+        <section class="settings-section"><h2>Ник и подпись</h2><p class="settings-muted">Изменения применяются к будущим договорам. Подписанные экземпляры сохраняют прежние данные.</p>
+            <form id="settingsNicknameForm" novalidate><label for="settingsNickname">Ваш ник</label><div class="settings-input-row"><input id="settingsNickname" maxlength="32" autocomplete="off" required><button type="submit">Сохранить ник</button></div><p class="settings-error" id="settingsNicknameError" role="alert"></p></form>
+            <div class="settings-signature-row"><div><h3>Текущая подпись</h3><div id="settingsSignaturePreview"></div></div><button type="button" class="settings-secondary" id="settingsEditSignature">Изменить подпись</button></div>
+            <div id="settingsSignatureEditor" hidden><form id="settingsSignatureForm" novalidate><label for="settingsSignatureCanvas">Нарисуйте новую подпись мышью или пальцем</label><canvas id="settingsSignatureCanvas" width="640" height="240" aria-label="Рисование новой подписи"></canvas><p class="settings-muted">Сначала нарисуйте, затем сохраните. Отмена оставит прежнюю подпись.</p><div class="settings-actions"><button type="button" class="settings-secondary" id="settingsClearSignature">Очистить</button><button type="button" class="settings-secondary" id="settingsCancelSignature">Отмена</button><button type="submit" id="settingsSaveSignature">Сохранить подпись</button></div><p class="settings-error" id="settingsSignatureError" role="alert"></p></form></div>
+        </section>
+        <section class="settings-section settings-danger"><h2>Сброс прогресса</h2><p>Удалит деньги, автомобили, долги, переписки, встречи и договоры. Новая игра начнётся со 100 000 ₽. Ник, подпись, оформление и настройка музыки сохранятся.</p><button type="button" id="settingsReset">Сбросить сохранения</button></section>
+    </div>
+</div>
 <div class="window" id="win-bank" data-title="Банк" data-icon="🏦">
     <div class="win-head" id="head-bank">
         <div class="wi">🏦</div><div class="win-title">Банк</div>
@@ -215,7 +237,7 @@
         <p>Perekup.ru — игра про перекупщика автомобилей. Покупайте машины, общайтесь с продавцами, торгуйтесь и перепродавайте дороже. Заработок зависит от ваших решений: выгодная покупка принесёт прибыль, а неудачная сделка, дорога или долги могут оставить вас в минусе.</p>
         <h2>С чего начать</h2>
         <p>Вы начинаете со 100 000 ₽ в Москве. Домашний гараж вмещает одну машину. Откройте авторынок и найдите автомобиль по своему бюджету.</p>
-        <ol><li>При первом входе выберите ник и нарисуйте простую подпись мышью или пальцем. Они используются в договорах. После сохранения поменять их пока нельзя.</li><li>Выберите машину, прочитайте описание и напишите продавцу. Узнайте о состоянии, пробеге, ремонте и документах, затем договоритесь о цене.</li><li>Назначьте встречу, приезжайте, дождитесь продавца и осмотрите автомобиль.</li><li>Заполните и подпишите договор. Машина появится в гараже, где её можно выставить на продажу по своей цене.</li></ol>
+        <ol><li>При первом входе выберите ник и нарисуйте простую подпись мышью или пальцем. Они используются в договорах. Ник и подпись можно позже изменить в «Настройках».</li><li>Выберите машину, прочитайте описание и напишите продавцу. Узнайте о состоянии, пробеге, ремонте и документах, затем договоритесь о цене.</li><li>Назначьте встречу, приезжайте, дождитесь продавца и осмотрите автомобиль.</li><li>Заполните и подпишите договор. Машина появится в гараже, где её можно выставить на продажу по своей цене.</li></ol>
         <h2>Авторынок и торг</h2>
         <p>Поиск начинается с города, в котором вы находитесь. Можно выбрать другой город, радиус до 2 000 км или всю Россию, искать модель и сортировать объявления. Выбор города в поиске не перемещает персонажа.</p>
         <p>В объявлении показаны фото, характеристики, история автомобиля и оценка цены относительно рынка. При входе и после сна цены немного меняются, а продавцы получают разный характер. Уже согласованные суммы и начатые переписки сохраняются.</p>
@@ -250,7 +272,11 @@
         <p>Одна реальная секунда равна одной игровой минуте. Пока окно «Часы» активно, время идёт вдвое быстрее. Пока игра закрыта, игровое время не идёт.</p>
         <p>С 22:00 до 09:00 в часах доступен сон до ближайших 09:00. Кнопки ожидания прибытия и решения банка тоже прокручивают время. Сообщения, парковка, долги и сроки встреч продолжают обрабатываться — можно проспать встречу или платёж.</p>
         <p>Календарь показывает пять ближайших встреч и встречи выбранного дня. Нажатие на встречу открывает переписку; личных заметок нет. Калькулятор помогает посчитать цену, доплату и расходы.</p>
-        <p>Внизу закреплены пять приложений: авторынок, справка, калькулятор, календарь и часы. Остальные доступны на рабочем столе. Окна можно сворачивать, двигать за заголовок и растягивать за края или углы.</p>
+        <p>Внизу закреплены шесть приложений: авторынок, справка, калькулятор, календарь, часы и настройки. Остальные доступны на рабочем столе. Окна можно сворачивать, двигать за заголовок и растягивать за края или углы.</p>
+        <h2>Настройки и оформление</h2>
+        <p>В «Настройках» можно выбрать оформление в духе Windows, macOS или Linux. Для каждого стиля есть светлая и тёмная темы и два набора встроенных обоев. Тема и выбранные обои запоминаются отдельно для каждого стиля; переключение оформления не меняет игровые правила, деньги, машины или встречи. Дополнительные обои появятся позже.</p>
+        <p>Вверху настроек показана аватарка-заглушка: менять её пока нельзя. Ниже можно изменить ник и нарисовать новую подпись. Новые данные используются в будущих договорах и текущем черновике, который нужно проверить заново. Уже подписанные договоры остаются с прежними именами и подписями.</p>
+        <p>Кнопка «Сбросить сохранения» удаляет игровой прогресс после подтверждения. Ник, подпись, оформление и настройка музыки сохраняются.</p>
         <h2>Музыка и сохранение</h2>
         <p>Фоновая музыка запускается после первого нажатия в игре и играет по кругу на небольшой громкости. Кнопка ♪ в верхней панели включает и выключает её. Выбранное выключение сохраняется. При переходе на другую вкладку музыка ставится на паузу и продолжается при возвращении.</p>
         <p>Прогресс сохраняется автоматически в этом браузере. Перезагрузка не сбрасывает деньги, машины, переписки, встречи и договоры. Сохранение не переносится автоматически на другой телефон или компьютер. Ручной сброс очищает игровой прогресс, но сохраняет ник, подпись и настройку музыки.</p>
@@ -423,7 +449,7 @@
             <label for="identityNickname">Ник</label><input id="identityNickname" maxlength="32" autocomplete="off" placeholder="Например, Перекуп77">
             <label for="identityCanvas">Нарисуйте подпись</label>
             <canvas id="identityCanvas" width="640" height="240" tabindex="0" aria-label="Поле для рисования подписи мышью или пальцем"></canvas>
-            <p class="identity-note">Подпись не делайте сложной: после сохранения сбросить её пока нельзя.</p>
+            <p class="identity-note">Подпись не делайте сложной. Позже ник и подпись можно изменить в «Настройках».</p>
             <button type="button" id="identityClear" class="identity-clear">Очистить рисунок</button>
             <p id="identityError" class="identity-error" role="alert"></p>
             <button type="submit" id="identitySave" class="stage-btn yes wide">Сохранить ник и подпись</button>
@@ -522,6 +548,7 @@
 <script src="city-market.js?v=20261010-travel"></script>
 <script src="trade-cars.js?v=20261010-market"></script>
 <script src="storage.js?v=20261012-optimize"></script>
+<script src="settings.js?v=20261014-settings"></script>
 <audio id="backgroundMusic" src="audio/mevison-background.mp3" loop preload="none"></audio>
 <script src="music.js?v=20261013-music-help"></script>
 <script src="market-pricing.js?v=20261012-review"></script>
@@ -538,7 +565,7 @@
 <script src="identity.js?v=20261012-mobile-dock"></script>
 <script src="contracts.js?v=20261012-dkp-results"></script>
 <script src="entry-reset.js?v=20261012-identity"></script>
-<script src="windows.js?v=20261012-optimize"></script>
-<script src="script.js?v=20261012-negotiation"></script>
+<script src="windows.js?v=20261014-settings"></script>
+<script src="script.js?v=20261014-settings"></script>
 </body>
 </html>

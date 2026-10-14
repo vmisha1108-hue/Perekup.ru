@@ -1,0 +1,82 @@
+/* Shared palette: all game apps keep the same DOM, data and actions. */
+:root{--ui-text:#eef3fc;--ui-secondary:#cad5e7;--ui-muted:#98a9c2;--ui-input:#101c30;--ui-surface:#17253b;--ui-panel:#1e304a;--ui-line:#3b4f6a;--ui-rgb:230 240 255;--ui-window:#17253bef;--ui-glass:#162940d9;--ui-accent:#80b8ff;--ui-on-accent:#0d203a;--ui-accent-rgb:90 165 255;--ui-shadow:0 24px 70px #07111e55;--ui-radius:12px;--wallpaper-color:#0f2b50;--wallpaper-shade:.48}
+:root[data-theme="light"]{color-scheme:light;--ui-text:#1d2b40;--ui-secondary:#425571;--ui-muted:#596b83;--ui-input:#f8faff;--ui-surface:#f0f5fc;--ui-panel:#ffffff;--ui-line:#c9d6e7;--ui-rgb:25 53 90;--ui-window:#f8fbfff2;--ui-glass:#edf5ffe8;--ui-accent:#2069d4;--ui-on-accent:#fff;--ui-shadow:0 22px 65px #173c632d;--wallpaper-color:#bfdcfc;--wallpaper-shade:1}
+:root[data-os="macos"]{--ui-radius:20px;--wallpaper-color:#413857;--ui-accent:#b7a1ff;--ui-on-accent:#261547;--ui-accent-rgb:150 120 240}
+:root[data-os="macos"][data-theme="light"]{--wallpaper-color:#f4d9e5;--ui-accent:#6750c9;--ui-on-accent:#fff;--ui-surface:#f5f2fa;--ui-panel:#fff;--ui-window:#fffaffee;--ui-glass:#faf1f9e0;--ui-input:#fcfaff;--ui-line:#d9cfe5;--ui-text:#2f2544;--ui-secondary:#625773;--ui-muted:#756982}
+:root[data-os="linux"]{--ui-radius:7px;--wallpaper-color:#24203d;--ui-accent:#b29aff;--ui-on-accent:#21153c;--ui-accent-rgb:154 117 240;--ui-window:#22253af5;--ui-surface:#202338;--ui-panel:#2b2e45;--ui-input:#171b2d;--ui-line:#464b67}
+:root[data-os="linux"][data-theme="light"]{--wallpaper-color:#d8d3ec;--ui-accent:#7153bd;--ui-on-accent:#fff;--ui-window:#f8f7fdf5;--ui-surface:#eeedf7;--ui-panel:#fff;--ui-input:#faf9ff;--ui-line:#cecbe0}
+html:not([data-theme="light"]){color-scheme:dark}
+body{color:var(--ui-text);background:var(--wallpaper-color);font-family:"Segoe UI",Arial,sans-serif}
+html[data-os="macos"] body{font-family:system-ui,-apple-system,Arial,sans-serif}
+html[data-os="linux"] body{font-family:system-ui,Arial,sans-serif}
+#desktop{background:var(--wallpaper-color)}
+#desktop::before{inset:0;background:var(--wallpaper-image) center/cover no-repeat;opacity:var(--wallpaper-shade);transition:opacity .2s}
+.topbar{background:var(--ui-glass);border-color:var(--ui-line);color:var(--ui-text)}
+.tb-location,.tb-clock{color:var(--ui-secondary)}.tb-logo span{color:var(--ui-accent)}
+.window,#win-bank{background:var(--ui-window);border-color:var(--ui-line);border-radius:var(--ui-radius);box-shadow:var(--ui-shadow)}
+.win-head{background:rgb(var(--ui-rgb) / .035);border-color:var(--ui-line)}
+.win-btns button{color:var(--ui-muted)}
+html[data-os="windows"] .win-btns button{border-radius:5px;width:34px}
+html[data-os="macos"] .win-btns{order:-1;margin-left:0;margin-right:6px}
+html[data-os="macos"] .win-btns button{width:26px;height:26px;font-size:13px;border:1px solid #0002}
+html[data-os="macos"] .win-btns .x{background:#f48992;color:#4c1420}html[data-os="macos"] .win-btns .min{background:#f8ce72;color:#483408}
+html[data-os="linux"] .win-head{height:46px}html[data-os="linux"] .win-btns button{border-radius:4px}
+.taskbar{background:var(--ui-glass);border-color:var(--ui-line);box-shadow:var(--ui-shadow)}
+html[data-os="windows"] .taskbar,html[data-os="linux"] .taskbar{left:0;bottom:0;transform:none;width:100%;max-width:100%;height:70px;border-radius:0;border-left:0;border-right:0;border-bottom:0}
+html[data-os="windows"] #taskList{justify-content:center}
+html[data-os="linux"] #taskList{justify-content:flex-start}
+html[data-os="linux"] .task-btn{border-radius:6px}
+html[data-os="macos"] .taskbar{border-radius:20px;height:76px;bottom:10px;padding:0 16px}
+html[data-os="macos"] .task-btn{border-radius:14px;background:linear-gradient(140deg,var(--ui-panel),var(--ui-surface));box-shadow:0 3px 8px #0001}
+.task-btn{color:var(--icon-color,var(--ui-accent))}.task-btn.active{color:var(--ui-accent)}
+.app-icon{width:26px;height:26px;display:block;pointer-events:none}.win-head .app-icon{width:20px;height:20px}
+.desk-icon{--icon-color:#468de0}.desk-icon[data-app="market"],.task-btn[data-app="market"]{--icon-color:#e5685d}.desk-icon[data-app="bank"]{--icon-color:#3ba281}.desk-icon[data-app="clock"],.task-btn[data-app="clock"]{--icon-color:#55a494}.desk-icon[data-app="calendar"],.task-btn[data-app="calendar"]{--icon-color:#cb6688}.desk-icon[data-app="settings"],.task-btn[data-app="settings"]{--icon-color:#8f77d4}.desk-icon[data-app="help"],.task-btn[data-app="help"]{--icon-color:#448edc}
+.desk-icon .ico{background:linear-gradient(145deg,var(--ui-panel),var(--ui-surface));color:var(--icon-color);border-color:var(--ui-line);box-shadow:0 5px 15px #0014;border-radius:13px}
+.desk-icon span{color:#fff;text-shadow:0 1px 2px #000d,0 0 5px #0007}.desk-hint{color:var(--ui-secondary)}
+html[data-os="macos"] .desk-icon .ico{border-radius:16px;background:linear-gradient(140deg,var(--ui-panel),var(--ui-surface))}
+html[data-os="linux"] .desk-icon .ico{border-radius:7px;border:1px solid var(--icon-color);background:var(--ui-surface)}
+html[data-os="linux"] .price{color:#d8a147}
+:is(.card,.hero,.stat,.document-card,.contract-result,.bank-products,.bank-loan,.garage-card,.transport-card,.shop-card){border-radius:var(--ui-radius)}
+:is(.chat-modal,.sale-modal,.car-modal,.gate-modal,.collector-call,.arrival-card){background:var(--ui-window);color:var(--ui-text);border-color:var(--ui-line);border-radius:var(--ui-radius);box-shadow:var(--ui-shadow)}
+.card,.hero,.stat,.document-card,.contract-result{background:var(--ui-panel)}
+:is(input,select,textarea){accent-color:var(--ui-accent)}
+:is(button,input,select,textarea):focus-visible{outline:2px solid var(--ui-accent);outline-offset:2px}
+:root[data-theme="light"] :is(.bank-balance-card,.bank-request,.bank-request.review,.bank-products,.bank-loan,.collector-panel,.collector-panel.active,.contract-help,.contract-signed){background:var(--ui-surface);color:var(--ui-text);border-color:var(--ui-line)}
+:root[data-theme="light"] :is(.bank-muted,.bank-balance-card>span,.bank-balance-card>div,.collector-panel p,.entry-reset-note,.entry-reset-card p,.arrival-card p){color:var(--ui-secondary)}
+:root[data-theme="light"] :is(.document-profit.positive,.contract-help summary,.bank-tabs .active,.game-help h2){color:#24745e}
+:root[data-theme="light"] :is(.document-profit.negative,.identity-error,.settings-error){color:#b42f45}
+:root[data-theme="light"] :is(.stage-btn.no,.settings-danger button){background:#ffe5eb;color:#a52942;border-color:#e7b3bf}
+:root[data-theme="light"] :is(.contract-errors,.entry-reset-loss){background:#fff0f3;color:#a72d41;border-color:#e7b3bf}
+:root[data-theme="light"] .msg.sys{background:var(--ui-surface);color:var(--ui-secondary);border-color:var(--ui-line)}
+:root[data-theme="light"] .game-help h2{color:var(--ui-accent)}
+:root[data-theme="light"] .tb-music.playing{color:var(--ui-accent);border-color:var(--ui-accent);background:rgb(var(--ui-accent-rgb) / .1)}
+:root[data-theme="light"] :is(.identity-note,.contract-field small){color:var(--ui-muted)}
+:root[data-theme="light"] :is(.contract-heading>span,.document-card small,.cal-meeting b){color:var(--ui-accent)}
+:root[data-theme="light"] :is(.bank-warning,.collector-eyebrow,.collector-cost){color:#8c5421}
+:root[data-theme="light"] .bank-history-list .income{color:#24745e}:root[data-theme="light"] .bank-history-list .expense{color:#a63c36}
+:root[data-theme="light"] :is(.cal-day.today,.cal-day.has,.meeting-steps li.current){background:rgb(var(--ui-accent-rgb) / .1);color:var(--ui-accent);border-color:var(--ui-accent)}
+:root[data-theme="light"] .settings-error{color:#b42f45!important}
+html[data-os="linux"][data-theme="light"] .price{color:#89580b}
+#win-settings{width:min(730px,94vw);height:min(790px,calc(100% - 24px))}
+.settings-body{padding:26px}.settings-profile{display:flex;align-items:center;gap:18px;margin-bottom:26px;min-width:0}
+.settings-profile h1{font-size:24px;margin:0 0 5px;overflow-wrap:anywhere}.settings-profile p{margin:0 0 8px;color:var(--ui-muted);font-size:13px}
+.settings-avatar{flex:none;width:76px;height:76px;border-radius:50%;display:grid;place-items:center;font-size:28px;font-weight:700;background:rgb(var(--ui-accent-rgb) / .15);color:var(--ui-accent);border:1px solid var(--ui-line)}
+.settings-profile button{font-size:11px;background:none;border:0;color:var(--ui-muted);padding:0;opacity:1}
+.settings-section{padding:22px;margin-bottom:18px;border:1px solid var(--ui-line);background:var(--ui-panel);border-radius:var(--ui-radius)}
+.settings-section h2{margin:0 0 10px;font-size:18px}.settings-section h3{margin:0 0 7px;font-size:13px}.settings-muted,.settings-section p{font-size:12px;line-height:1.6;color:var(--ui-muted)}
+.settings-options{border:0;padding:0;margin:22px 0 0;min-width:0}.settings-options legend{font-size:13px;font-weight:600;margin-bottom:10px}
+.settings-os{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.os-choice{min-width:0;display:grid;gap:6px;border:1px solid var(--ui-line);border-radius:10px;padding:10px;cursor:pointer;position:relative;background:var(--ui-surface)}
+.settings-options input{position:absolute;opacity:0;inset:0;width:100%;height:100%;margin:0;cursor:pointer;z-index:1}.settings-options label:has(input:focus-visible){outline:2px solid var(--ui-accent);outline-offset:3px}.settings-options label:has(input:checked){border-color:var(--ui-accent);box-shadow:0 0 0 1px var(--ui-accent)}
+.os-choice strong{font-size:13px}.os-choice small{font-size:10px;color:var(--ui-muted)}
+.os-mini{height:68px;position:relative;border-radius:6px;overflow:hidden;background:linear-gradient(140deg,#bedfff,#3788cd)}.os-mini i{position:absolute;border-radius:4px;background:#f9fcffdb;border:1px solid #fff9;box-shadow:0 3px 8px #1233;inset:10px 26px 12px 10px}.os-mini i+i{inset:27px 9px 9px 43px}.os-mini::after{content:'';position:absolute;bottom:0;width:100%;height:8px;background:#eff7ffb3}.os-macos{background:linear-gradient(135deg,#f9cbb9,#b8a5db)}.os-macos i{border-radius:7px}.os-macos::after{width:55%;left:22%;bottom:3px;border-radius:4px}.os-linux{background:linear-gradient(130deg,#564080,#181e38)}.os-linux i{background:#292e45;border-color:#9486bb;border-radius:2px}.os-linux::after{background:#161a2de8}
+.settings-modes{display:flex;gap:10px}.settings-modes label{flex:1;border:1px solid var(--ui-line);border-radius:9px;padding:10px;cursor:pointer;text-align:center;font-size:13px;position:relative}
+#settingsWallpapers{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.wallpaper-choice{display:grid;gap:7px;border:1px solid var(--ui-line);border-radius:9px;padding:7px;font-size:12px;cursor:pointer;position:relative}.wallpaper-swatch{aspect-ratio:16/9;border-radius:5px;background-color:var(--wallpaper-color);background-size:cover;background-position:center;opacity:var(--wallpaper-shade)}
+.settings-input-row{display:flex;gap:10px;margin:8px 0}.settings-section label{font-size:13px}.settings-input-row input{min-width:0;flex:1;padding:11px;border:1px solid var(--ui-line);border-radius:8px;background:var(--ui-input);color:var(--ui-text);font:inherit}
+.settings-section button{border:1px solid transparent;background:var(--ui-accent);color:var(--ui-on-accent);padding:10px 13px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer}
+.settings-section .settings-secondary{background:var(--ui-surface);color:var(--ui-text);border-color:var(--ui-line)}
+.settings-signature-row{display:flex;align-items:center;gap:15px;justify-content:space-between;margin-top:20px}.settings-signature-row>div{min-width:0}.settings-signature-row button{flex:none}
+#settingsSignatureCanvas{width:100%;height:auto;aspect-ratio:640/240;display:block;background:#f4f1e9;border:1px solid var(--ui-line);border-radius:9px;touch-action:none;margin:10px 0}
+.settings-actions{display:flex;flex-wrap:wrap;gap:8px}.settings-error{color:#ff929b!important;min-height:1em;font-size:12px}
+.settings-danger{border-color:#be60775c}.settings-danger button{background:#57313f;color:#ffbcc8;border-color:#a3597155}
+@media(max-width:600px){.settings-body{padding:16px}.settings-section{padding:15px}.settings-profile{gap:12px}.settings-profile h1{font-size:20px}.settings-avatar{width:60px;height:60px}.os-mini{height:52px}.settings-os{gap:7px}.os-choice{padding:7px}.os-choice small{font-size:9px}.settings-input-row{flex-wrap:wrap}.settings-input-row button{width:100%}.settings-signature-row{flex-wrap:wrap}.settings-signature-row button{width:100%}.taskbar{padding:0 12px!important;max-width:calc(100% - 16px)}#taskList{gap:4px!important}#taskList .task-btn{width:40px;height:44px}#taskList .app-icon{width:24px;height:24px}html[data-os="macos"] .taskbar{height:68px}.game-help h1{font-size:22px}}
+@media(prefers-reduced-motion:reduce){#desktop::before,.window,.task-btn{transition:none}}

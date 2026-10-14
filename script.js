@@ -176,7 +176,8 @@ var ICONS = [
     {id:"travel",   ico:"🧳", label:"Переезд"},
     {id:"garage",   ico:"🏠", label:"Гараж"},
     {id:"bank",     ico:"🏦", label:"Банк"},
-    {id:"documents",ico:"📄",label:"Документы"}
+    {id:"documents",ico:"📄",label:"Документы"},
+    {id:"settings",ico:"⚙️",label:"Настройки"}
 ];
 
 function loadIconPositions(){
@@ -195,7 +196,7 @@ function buildIcons(){
         var el = document.createElement("div");
         el.className = "desk-icon";
         el.dataset.app = item.id;
-        el.innerHTML = '<div class="ico">' + item.ico + '</div><span>' + item.label + '</span>';
+        el.innerHTML = '<div class="ico">' + appIconSvg(item.id) + '</div><span>' + item.label + '</span>';
 
         var pos = saved[item.id];
         var x, y;
@@ -2683,6 +2684,7 @@ window.addEventListener("DOMContentLoaded", function(){
     initContracts();
     initEntryReset();
     initIdentity();
+    initSettings();
     migrateSaleListings();
     bindUI();
     initCalc();

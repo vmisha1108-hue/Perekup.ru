@@ -49,13 +49,13 @@ const server=http.createServer(async(req,res)=>{
             await page.locator('#identityNickname').fill('Мобила_77');const box=await page.locator('#identityCanvas').boundingBox();
             await page.mouse.move(box.x+20,box.y+20);await page.mouse.down();await page.mouse.move(box.x+box.width*.6,box.y+box.height*.6,{steps:10});await page.mouse.up();assert.ok(await page.evaluate(()=>identityStrokes.length>0));await page.locator('#identityClear').click();assert.deepEqual(await page.evaluate(()=>identityStrokes),[]);
             assert.match(await page.locator('.identity-note').textContent(),/Подпись не делайте сложной/);assert.ok(await page.locator('.identity-card').evaluate(el=>el.scrollWidth<=el.clientWidth));
-            await page.screenshot({path:'/workspace/scratch/3151c7eebd10/identity-mobile.png'});await completeIdentity(page,'Мобила_77');await draft(page);const points=await page.locator('.player-signature polyline').getAttribute('points');await page.reload({waitUntil:'networkidle'});assert.equal(await page.locator('.player-signature polyline').getAttribute('points'),points);
+            await page.screenshot({path:'/workspace/scratch/3151c7eebd10/identity-mobile.png'});await completeIdentity(page,'Мобила_77');await draft(page);const points=await page.locator('#meetingContract .player-signature polyline').getAttribute('points');await page.reload({waitUntil:'networkidle'});assert.equal(await page.locator('#meetingContract .player-signature polyline').getAttribute('points'),points);
         },{width:320,height:640});
         await scenario('a touch pointer can draw and save the signature without scrolling the canvas',async page=>{
             await page.locator('#identityNickname').fill('Палец_77');await page.locator('#identityCanvas').evaluate(canvas=>{const r=canvas.getBoundingClientRect();for(const [type,x,y] of [['pointerdown',.2,.5],['pointermove',.4,.2],['pointermove',.6,.7],['pointerup',.6,.7]])canvas.dispatchEvent(new PointerEvent(type,{pointerId:1,pointerType:'touch',isPrimary:true,bubbles:true,clientX:r.x+r.width*x,clientY:r.y+r.height*y}));});
             await page.locator('#identitySave').click();assert.equal(await page.evaluate(()=>playerIdentity.nickname),'Палец_77');
         },{width:390,height:844});
-        await scenario('Android first entry accepts a real touch signature and the five dock apps fit and open',async page=>{
+        await scenario('Android first entry accepts a real touch signature and the six dock apps fit and open',async page=>{
             assert.equal(await page.evaluate(()=>matchMedia('(pointer: coarse)').matches),true);
             assert.equal(await page.locator('#identityNickname').evaluate(el=>el===document.activeElement),false);
             const card=await page.locator('.identity-card').boundingBox();assert.ok(card.x>=0 && card.y>=0 && card.x+card.width<=320 && card.y+card.height<=640);
@@ -66,11 +66,11 @@ const server=http.createServer(async(req,res)=>{
             await session.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});await session.detach();
             assert.ok(await page.evaluate(()=>validSignature(identityStrokes)),JSON.stringify(await page.evaluate(()=>({strokes:identityStrokes,pointer:identityPointer}))));
             await page.locator('#identitySave').tap();await page.locator('#identityOverlay').waitFor({state:'hidden'});assert.equal(await page.evaluate(()=>playerIdentity.nickname),'Телефон_77');
-            const apps=['market','help','calc','calendar','clock'];
+            const apps=['market','help','calc','calendar','clock','settings'];
             assert.deepEqual(await page.locator('#taskList button').evaluateAll(buttons=>buttons.map(b=>b.dataset.app)),apps);
             assert.equal(await page.locator('#taskList').evaluate(el=>el.scrollWidth<=el.clientWidth),true);
             for(const app of apps){const button=page.locator('#taskList [data-app="'+app+'"]');await button.tap();assert.ok(await page.locator('#win-'+app).isVisible());await page.locator('#win-'+app+' [data-min]').tap();await button.tap();assert.ok(await page.locator('#win-'+app).isVisible());await page.locator('#win-'+app+' [data-close]').tap();}
-            await page.locator('.desk-icon[data-app="bank"]').tap();assert.ok(await page.locator('#win-bank').isVisible());assert.equal(await page.locator('#taskList button').count(),5);
+            await page.locator('.desk-icon[data-app="bank"]').tap();assert.ok(await page.locator('#win-bank').isVisible());assert.equal(await page.locator('#taskList button').count(),6);
             await page.reload({waitUntil:'networkidle'});assert.ok(!await page.locator('#identityOverlay').isVisible());assert.equal(await page.evaluate(()=>playerIdentity.nickname),'Телефон_77');
         },{width:320,height:640},undefined,{isMobile:true,hasTouch:true,deviceScaleFactor:3,userAgent:'Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/154.0.0.0 Mobile Safari/537.36'});
         console.log(passed+' identity scenarios passed');

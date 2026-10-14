@@ -43,7 +43,7 @@ const server=http.createServer(async(req,res)=>{
             assert.ok(await page.evaluate(()=>savedDockButton===$('taskList').querySelector('[data-app="clock"]') && document.activeElement===savedDockButton));
             await page.keyboard.press('Enter');assert.ok(await page.locator('#win-clock').isVisible());assert.equal(await page.evaluate(()=>currentGameSpeed),120);
             await page.keyboard.press('Enter');await page.locator('#win-clock').waitFor({state:'hidden'});assert.equal(await page.evaluate(()=>currentGameSpeed),60);
-            await page.keyboard.press('Enter');assert.ok(await page.locator('#win-clock').isVisible());await page.locator('#win-clock [data-close]').click();await page.locator('#win-clock').waitFor({state:'hidden'});assert.equal(await page.locator('#taskList button').count(),5);
+            await page.keyboard.press('Enter');assert.ok(await page.locator('#win-clock').isVisible());await page.locator('#win-clock [data-close]').click();await page.locator('#win-clock').waitFor({state:'hidden'});assert.equal(await page.locator('#taskList button').count(),6);
         });
         await scenario('one window gesture handler drags without jumps, resizes all eight borders and persists geometry',async page=>{
             async function place(){await page.evaluate(()=>{openWin('market');const win=$('win-market');Object.assign(win.style,{left:'220px',top:'130px',width:'620px',height:'430px'});});await page.locator('#win-market').evaluate(win=>Promise.all(win.getAnimations().map(animation=>animation.finished)));return page.locator('#win-market').boundingBox();}

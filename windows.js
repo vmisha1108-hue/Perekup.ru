@@ -83,6 +83,7 @@ function openWin(id){
     if(id === "shop"){ renderShop(); }
     if(id === "bank"){ renderBank(true); }
     if(id === "documents"){ renderDocuments(); }
+    if(id === "settings"){ renderSettings(); }
     if(id === "calendar"){ renderCal(); }
     if(id === "admin"){ renderAdmin(); }
 }
@@ -136,10 +137,10 @@ function focusWin(id){
 function renderTaskbar(){
     var list=$("taskList");
     if(!list.children.length){
-        ["market","help","calc","calendar","clock"].forEach(function(id){
+        ["market","help","calc","calendar","clock","settings"].forEach(function(id){
             var icon=ICONS.find(function(item){return item.id===id;}),button=document.createElement("button");
             button.type="button";button.dataset.app=id;button.title=icon.label;
-            button.setAttribute("aria-label",icon.label);button.textContent=icon.ico;list.appendChild(button);
+            button.setAttribute("aria-label",icon.label);button.innerHTML=appIconSvg(id);list.appendChild(button);
         });
     }
     Array.from(list.children).forEach(function(button){
