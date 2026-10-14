@@ -15,4 +15,11 @@ async function completeIdentity(page,nickname='Иванов Алексей Се�
     await page.mouse.move(box.x+box.width*.35,box.y+box.height*.2,{steps:8});await page.mouse.move(box.x+box.width*.65,box.y+box.height*.7,{steps:8});await page.mouse.up();
     await page.locator('#identitySave').click();
 }
-module.exports={installEntryContinue,completeIdentity};
+// Catalogue regression scenarios exercise the secondary controls explicitly.
+function installExpandedFilters(page){
+    for(const method of ['goto','reload']){
+        const navigate=page[method].bind(page);
+        page[method]=async(...args)=>{const response=await navigate(...args);await page.evaluate(()=>{const fields=document.getElementById('marketAdvanced');if(fields){fields.hidden=false;document.getElementById('filterToggle').setAttribute('aria-expanded','true');}});return response;};
+    }
+}
+module.exports={installEntryContinue,completeIdentity,installExpandedFilters};

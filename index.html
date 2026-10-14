@@ -6,6 +6,7 @@
 <title>Perekyp.ru</title>
 <link rel="stylesheet" href="style.css?v=20261014-settings">
 <link rel="stylesheet" href="themes.css?v=20261014-settings">
+<link rel="stylesheet" href="desktop-visuals.css?v=20261014-mockups">
 </head>
 <body>
 
@@ -83,13 +84,15 @@
             </div>
         </section>
         <div class="tabs">
-            <button class="tab active" id="tabMarket">🚗 Рынок</button>
-            <button class="tab" id="tabGarage">🏠 Мой гараж</button>
-            <button class="tab" id="tabDeals">📋 Сделки</button>
+            <button class="tab active" id="tabMarket">Рынок</button>
+            <button class="tab" id="tabGarage">Мой гараж</button>
+            <button class="tab" id="tabDeals">Сделки</button>
         </div>
         <div class="filters" id="filters">
-            <input id="fSearch" type="search" placeholder="🔍 Поиск по названию">
+            <input id="fSearch" type="search" placeholder="Поиск по модели, марке…">
             <input id="fCity" type="search" list="cityOptions" placeholder="📍 Любой город" aria-label="Город поиска" autocomplete="off">
+            <button type="button" class="filter-toggle" id="filterToggle" aria-label="Фильтры и сортировка" aria-expanded="false" aria-controls="marketAdvanced">Фильтры</button>
+            <div id="marketAdvanced" class="advanced-fields" hidden>
             <button id="fLocal" class="f-reset" type="button">Искать в моём городе</button>
             <datalist id="cityOptions"></datalist>
             <select id="fRadius" aria-label="Радиус поиска" disabled>
@@ -122,6 +125,7 @@
             </select>
             <label class="f-check" id="fAffordWrap"><input type="checkbox" id="fAfford"> По карману</label>
             <button id="fReset" class="f-reset">Сбросить</button>
+            </div>
             <span class="f-count" id="fCount"></span>
         </div>
         <section id="content" class="grid"></section>
@@ -236,7 +240,7 @@
         <h1>Perekup.ru</h1>
         <p>Perekup.ru — игра про перекупщика автомобилей. Покупайте машины, общайтесь с продавцами, торгуйтесь и перепродавайте дороже. Заработок зависит от ваших решений: выгодная покупка принесёт прибыль, а неудачная сделка, дорога или долги могут оставить вас в минусе.</p>
         <h2>С чего начать</h2>
-        <p>Вы начинаете со 100 000 ₽ в Москве. Домашний гараж вмещает одну машину. Откройте авторынок и найдите автомобиль по своему бюджету.</p>
+        <p>Вы начинаете со 100 000 ₽ в Москве. Домашний гараж вмещает одну машину. Откройте авторынок и найдите автомобиль по своему бюджету. Дополнительный поиск по цене, радиусу, характеру продавца и сортировка открываются кнопкой «Фильтры».</p>
         <ol><li>При первом входе выберите ник и нарисуйте простую подпись мышью или пальцем. Они используются в договорах. Ник и подпись можно позже изменить в «Настройках».</li><li>Выберите машину, прочитайте описание и напишите продавцу. Узнайте о состоянии, пробеге, ремонте и документах, затем договоритесь о цене.</li><li>Назначьте встречу, приезжайте, дождитесь продавца и осмотрите автомобиль.</li><li>Заполните и подпишите договор. Машина появится в гараже, где её можно выставить на продажу по своей цене.</li></ol>
         <h2>Авторынок и торг</h2>
         <p>Поиск начинается с города, в котором вы находитесь. Можно выбрать другой город, радиус до 2 000 км или всю Россию, искать модель и сортировать объявления. Выбор города в поиске не перемещает персонажа.</p>
@@ -272,7 +276,7 @@
         <p>Одна реальная секунда равна одной игровой минуте. Пока окно «Часы» активно, время идёт вдвое быстрее. Пока игра закрыта, игровое время не идёт.</p>
         <p>С 22:00 до 09:00 в часах доступен сон до ближайших 09:00. Кнопки ожидания прибытия и решения банка тоже прокручивают время. Сообщения, парковка, долги и сроки встреч продолжают обрабатываться — можно проспать встречу или платёж.</p>
         <p>Календарь показывает пять ближайших встреч и встречи выбранного дня. Нажатие на встречу открывает переписку; личных заметок нет. Калькулятор помогает посчитать цену, доплату и расходы.</p>
-        <p>Внизу закреплены шесть приложений: авторынок, справка, калькулятор, календарь, часы и настройки. Остальные доступны на рабочем столе. Окна можно сворачивать, двигать за заголовок и растягивать за края или углы.</p>
+        <p>Внизу закреплены шесть приложений: авторынок, справка, калькулятор, календарь, часы и настройки. Остальные доступны на рабочем столе. Окна можно сворачивать, разворачивать на рабочий стол, двигать за заголовок и растягивать за края или углы. На большом экране переписка открывается отдельным окном рядом с авторынком; свёрнутую переписку можно снова открыть из объявления или вкладки «Сделки».</p>
         <h2>Настройки и оформление</h2>
         <p>В «Настройках» можно выбрать оформление в духе Windows, macOS или Linux. Для каждого стиля есть светлая и тёмная темы и два набора встроенных обоев. Тема и выбранные обои запоминаются отдельно для каждого стиля; переключение оформления не меняет игровые правила, деньги, машины или встречи. Дополнительные обои появятся позже.</p>
         <p>Вверху настроек показана аватарка-заглушка: менять её пока нельзя. Ниже можно изменить ник и нарисовать новую подпись. Новые данные используются в будущих договорах и текущем черновике, который нужно проверить заново. Уже подписанные договоры остаются с прежними именами и подписями.</p>
@@ -498,14 +502,14 @@
 
 <!-- ЧАТ -->
 <div class="overlay" id="overlay">
-    <div class="chat-modal">
+    <div class="chat-modal window" id="win-chat" data-title="Переписка" data-icon="💬">
+        <div class="win-head chat-window-head"><div class="wi">💬</div><div class="win-title">Переписка</div><div class="win-btns"><button class="min" data-min="win-chat" title="Свернуть">—</button><button class="x" id="chatClose" title="Закрыть переписку">✕</button></div></div>
         <div class="chat-head">
             <div class="ava" id="npcAva">🧔</div>
             <div>
                 <div class="chat-name" id="npcName">Имя</div>
                 <div class="chat-tag" id="npcTag">😐 Нейтральный</div>
             </div>
-            <button class="close" id="chatClose">✕</button>
         </div>
         <div class="mood-row">
             <span>Настроение</span>
@@ -548,7 +552,7 @@
 <script src="city-market.js?v=20261010-travel"></script>
 <script src="trade-cars.js?v=20261010-market"></script>
 <script src="storage.js?v=20261012-optimize"></script>
-<script src="settings.js?v=20261014-settings"></script>
+<script src="settings.js?v=20261014-mockups"></script>
 <audio id="backgroundMusic" src="audio/mevison-background.mp3" loop preload="none"></audio>
 <script src="music.js?v=20261013-music-help"></script>
 <script src="market-pricing.js?v=20261012-review"></script>
@@ -565,7 +569,8 @@
 <script src="identity.js?v=20261012-mobile-dock"></script>
 <script src="contracts.js?v=20261012-dkp-results"></script>
 <script src="entry-reset.js?v=20261012-identity"></script>
-<script src="windows.js?v=20261014-settings"></script>
-<script src="script.js?v=20261014-settings"></script>
+<script src="windows.js?v=20261014-mockups"></script>
+<script src="desktop-visuals.js?v=20261014-mockups"></script>
+<script src="script.js?v=20261014-mockups"></script>
 </body>
 </html>

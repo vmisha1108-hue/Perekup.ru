@@ -3,7 +3,7 @@ const fs=require('node:fs/promises');
 const path=require('node:path');
 const http=require('node:http');
 const {chromium}=require('playwright');
-const {installEntryContinue}=require('./helpers/entry.cjs');
+const {installEntryContinue,installExpandedFilters}=require('./helpers/entry.cjs');
 const root=path.resolve(__dirname,'..');
 const server=http.createServer(async(req,res)=>{
     const pathname=new URL(req.url,'http://localhost').pathname,file=path.resolve(root,'.'+(pathname==='/'?'/index.html':pathname));
@@ -17,6 +17,7 @@ const server=http.createServer(async(req,res)=>{
     async function scenario(name,run){
         const context=await browser.newContext({viewport:{width:390,height:844},isMobile:true,hasTouch:true}),page=await context.newPage(),errors=[];
         page.on('pageerror',error=>errors.push(error.message));installEntryContinue(page);
+        installExpandedFilters(page);
         await page.addInitScript(()=>{localStorage.setItem('helpPromptSeen','1');window.testNow=new Date(2030,0,15,12,14).getTime();Date.now=()=>testNow;Math.random=()=>.9;});
         try{await page.goto(url,{waitUntil:'networkidle'});await run(page);assert.deepEqual(errors,[]);console.log('PASS '+name);passed++;}finally{await context.close();}
     }

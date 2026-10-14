@@ -20,7 +20,7 @@ function applyAppearance(){
     var root=document.documentElement;
     root.dataset.os=appearance.os;root.dataset.theme=appearance.themes[appearance.os];
     root.dataset.wallpaper=appearance.wallpapers[appearance.os];
-    root.style.setProperty('--wallpaper-image','url("wallpapers/'+root.dataset.wallpaper+'.svg")');
+    root.style.setProperty('--wallpaper-image','url("'+wallpaperPath(root.dataset.wallpaper)+'")');
 }
 applyAppearance();
 function changeAppearance(kind,value){
@@ -38,7 +38,7 @@ function renderAppearanceControls(){
     var grid=$('settingsWallpapers');
     if(grid.dataset.os!==os){
         grid.dataset.os=os;
-        grid.innerHTML=OS_STYLES[os].wallpapers.map(function(w){return '<label class="wallpaper-choice"><input type="radio" name="settingsWallpaper" value="'+w.id+'"><span class="wallpaper-swatch" style="background-image:url(wallpapers/'+w.id+'.svg)"></span><span>'+w.label+'</span></label>';}).join('');
+        grid.innerHTML=OS_STYLES[os].wallpapers.map(function(w){return '<label class="wallpaper-choice"><input type="radio" name="settingsWallpaper" value="'+w.id+'"><span class="wallpaper-swatch" style="background-image:url('+wallpaperPath(w.id)+')"></span><span>'+w.label+'</span></label>';}).join('');
     }
     grid.querySelectorAll('input').forEach(function(input){input.checked=input.value===appearance.wallpapers[os];});
 }
@@ -114,6 +114,10 @@ function initSettings(){
 }
 
 var APP_ICON_PATHS={
+    chat:'<path d="M3 3h18v13H9l-6 5z"/>',
+    profile:'<circle cx="12" cy="7" r="4"/><path d="M4 22v-3a8 8 0 0 1 16 0v3"/>',
+    location:'<path d="M19 9c0 5-7 13-7 13S5 14 5 9a7 7 0 0 1 14 0z"/><circle cx="12" cy="9" r="2"/>',
+    wallet:'<path d="M3 5h17v16H3zM3 5l15-3v3m-4 6h7v5h-7z"/>',
     market:'<path d="m4 10 2-5h12l2 5M3 10h18v8H3zM6 18v2m12-2v2M6 14h2m8 0h2"/>',
     shop:'<path d="M3 10V5h18v5M3 10h18v11H3zM7 21v-7h10v7M1 10h22"/>',
     calc:'<rect x="5" y="2" width="14" height="20" rx="2"/><path d="M8 6h8M8 11h1m5 0h1m-7 4h1m5 0h1m-7 4h1m5 0h1"/>',
@@ -127,3 +131,4 @@ var APP_ICON_PATHS={
     settings:'<path d="M4 5h16M4 12h16M4 19h16"/><circle cx="8" cy="5" r="2"/><circle cx="16" cy="12" r="2"/><circle cx="10" cy="19" r="2"/>'
 };
 function appIconSvg(id){return '<svg class="app-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+(APP_ICON_PATHS[id] || '')+'</svg>';}
+function wallpaperPath(id){return 'wallpapers/'+id+(['ribbons','valley','facets'].indexOf(id)!==-1?'.jpg':'.svg');}

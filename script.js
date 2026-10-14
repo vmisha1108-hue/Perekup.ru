@@ -172,18 +172,18 @@ var ICONS = [
     {id:"calc",     ico:"🧮", label:"Калькулятор"},
     {id:"calendar", ico:"📅", label:"Календарь"},
     {id:"clock",    ico:"🕐", label:"Часы"},
-    {id:"help",     ico:"❓", label:"Справка"},
-    {id:"travel",   ico:"🧳", label:"Переезд"},
-    {id:"garage",   ico:"🏠", label:"Гараж"},
     {id:"bank",     ico:"🏦", label:"Банк"},
+    {id:"travel",   ico:"🧳", label:"Переезд"},
     {id:"documents",ico:"📄",label:"Документы"},
+    {id:"garage",   ico:"🏠", label:"Гараж"},
+    {id:"help",     ico:"❓", label:"Справка"},
     {id:"settings",ico:"⚙️",label:"Настройки"}
 ];
 
 function loadIconPositions(){
-    return readSaved("iconPos",{});
+    return localStorage.getItem('iconLayoutVersion')==='2'?readSaved("iconPos",{}):{};
 }
-function saveIconPositions(p){ localStorage.setItem("iconPos", JSON.stringify(p)); }
+function saveIconPositions(p){ localStorage.setItem("iconPos", JSON.stringify(p));localStorage.setItem('iconLayoutVersion','2'); }
 
 function buildIcons(){
     var desk = $("deskArea");
@@ -203,8 +203,8 @@ function buildIcons(){
         if(pos && typeof pos.x === "number"){
             x = pos.x; y = pos.y;
         }else{
-            var col = Math.floor(idx / 4);
-            var row = idx % 4;
+            var col = idx % 2;
+            var row = Math.floor(idx / 2);
             x = 20 + col * 112;
             y = 20 + row * 120;
         }
@@ -530,6 +530,7 @@ function bindFilters(){
 
 /* ================= РЫНОК ================= */
 function setTabs(active){
+    $('win-market').dataset.view=active;
     var tm = $("tabMarket");
     var tg = $("tabGarage");
     if(tm) tm.classList.toggle("active", active === "market");
@@ -810,6 +811,8 @@ function setMeetingDefaults(){
 function openOverlay(){
     setMeetingDefaults();
     $("overlay").classList.add("open");
+    openWin('chat');
+    arrangeConversationWindows();
     updateGameSpeed("chat");
     $("msgInput").value = "";
     $("offerInput").value = "";
@@ -818,6 +821,7 @@ function openOverlay(){
 }
 function closeChat(){
     $("overlay").classList.remove("open");
+    $('win-chat').classList.remove('open','minimized');delete openWindows.chat;
     $("win-meeting").classList.remove("open", "minimized");
     delete openWindows.meeting;
     updateGameSpeed();
@@ -847,7 +851,7 @@ function renderChat(){
     if(chat.done) deleteChat(chat); else saveChat();
     if(chat.met){ renderMeeting(); return; }
     var p = PERSONALITY[chat.npc.personality];
-    $("npcAva").textContent  = chat.npc.avatar;
+    $("npcAva").innerHTML = appIconSvg('profile');
     $("npcName").textContent = chat.npc.name;
     $("npcTag").textContent  = p.label + (chat.mode === "buy" ? " · Продавец" : " · Покупатель");
 
@@ -1383,6 +1387,7 @@ function goToMeeting(){
     }
     chat.met = true;
     $("overlay").classList.remove("open");
+    $('win-chat').classList.remove('open','minimized');delete openWindows.chat;
     openWin("meeting");
     var meeting = chat.pid ? findPending(chat.pid) : null;
     if(!meeting) return;
@@ -1664,7 +1669,7 @@ function toastDeals(text, filter){
 function buyBtn(car, owned){
     if(owned) return '<button class="buy" disabled>Уже в гараже</button>';
     if(pendingFor(car.id)) return '<button class="buy" disabled>📅 Встреча назначена</button>';
-    return '<button class="buy" data-buy="' + car.id + '">💬 Написать</button>';
+    return '<button class="buy" data-buy="' + car.id + '">'+appIconSvg('chat')+'<span>Написать</span></button>';
 }
 function sellBtn(car){
     if(vehicleMoving(car.id)) return '<button class="sell" disabled>🚛 Автомобиль в пути</button>';
@@ -1913,7 +1918,7 @@ function renderDealsTab(){
     if(!t) return;
     var attn = pending.filter(function(it){ return it.type === "ad" ? it.ready : gameMs >= it.when; }).length;
     var n = dealItems().length;
-    t.textContent = "📋 Сделки" + (n ? " · " + n : "");
+    t.textContent = "Сделки" + (n ? " · " + n : "");
     t.classList.toggle("alert", attn > 0);
 }
 
@@ -2131,7 +2136,7 @@ function calcEval(){
 }
 document.addEventListener("keydown", function(e){
     var wc = $("win-calc");
-    if(!wc || activeAppId!=="calc" || document.querySelector('.overlay.open') || !wc.classList.contains("open") || wc.classList.contains("minimized") || /^(INPUT|TEXTAREA|SELECT)$/.test((e.target || {}).tagName)) return;
+    if(!wc || activeAppId!=="calc" || document.querySelector('.overlay.open:not(#overlay)') || !wc.classList.contains("open") || wc.classList.contains("minimized") || /^(INPUT|TEXTAREA|SELECT)$/.test((e.target || {}).tagName)) return;
     if(/^[0-9+\-*/.()]$/.test(e.key)){ calcExpr += e.key; renderCalc(); }
     else if(e.key === "Enter"){ calcEval(); }
     else if(e.key === "Backspace"){ calcExpr = calcExpr.slice(0,-1); renderCalc(); }
@@ -2276,7 +2281,7 @@ function updateGameSpeed(focusedApp){
     var clockWin = $("win-clock");
     var accelerated = activeAppId === "clock" && !document.hidden && clockWin &&
         clockWin.classList.contains("open") && !clockWin.classList.contains("minimized") &&
-        !document.querySelector(".overlay.open");
+        !document.querySelector(".overlay.open:not(#overlay)");
     if(accelerated){
         document.querySelectorAll(".window.open").forEach(function(win){
             if(win !== clockWin && Number(win.style.zIndex) > Number(clockWin.style.zIndex)) accelerated = false;
@@ -2685,6 +2690,7 @@ window.addEventListener("DOMContentLoaded", function(){
     initEntryReset();
     initIdentity();
     initSettings();
+    initDesktopVisuals();
     migrateSaleListings();
     bindUI();
     initCalc();

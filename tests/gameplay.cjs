@@ -334,6 +334,7 @@ const server = http.createServer(async (request, response) => {
             assert.ok(arrivals.every(arrived => arrived > start && arrived < morning));
             assert.equal(await page.evaluate(() => currentGameSpeed), 120);
             await page.evaluate(() => showDeals());
+            await page.locator('#taskList [data-app="market"]').click();
             await page.locator('[data-dtab="in"]').click();
             assert.equal(await page.locator('[data-ad-open]').count(), 3);
             await page.reload({ waitUntil: 'networkidle' });

@@ -89,7 +89,7 @@ function openWin(id){
 }
 
 function closeWin(id){
-    if(id === "meeting"){ closeChat(); return; }
+    if(id === "meeting" || id === "chat"){ closeChat(); return; }
     var w = $("win-" + id);
     if(!w) return;
     w.classList.remove("open");
@@ -103,6 +103,7 @@ function minimizeWin(id){
     if(!w) return;
     w.classList.remove("open");
     w.classList.add("minimized");
+    if(id==='chat')$('overlay').classList.remove('open');
     updateGameSpeed();
     renderTaskbar();
 }
@@ -113,6 +114,7 @@ function restoreWin(id){
     w.classList.remove("minimized");
     void w.offsetWidth;
     w.classList.add("open");
+    if(id==='chat')$('overlay').classList.add('open');
     clampWindow(w);
     w.style.zIndex = ++zTop;
     updateGameSpeed(id);
@@ -140,7 +142,7 @@ function renderTaskbar(){
         ["market","help","calc","calendar","clock","settings"].forEach(function(id){
             var icon=ICONS.find(function(item){return item.id===id;}),button=document.createElement("button");
             button.type="button";button.dataset.app=id;button.title=icon.label;
-            button.setAttribute("aria-label",icon.label);button.innerHTML=appIconSvg(id);list.appendChild(button);
+            button.setAttribute("aria-label",icon.label);button.innerHTML='<span class="task-icon">'+appIconSvg(id)+'</span><span class="task-label">'+icon.label+'</span>';list.appendChild(button);
         });
     }
     Array.from(list.children).forEach(function(button){
@@ -216,11 +218,12 @@ function initWindowManager(){
     document.addEventListener("mousemove",moveWindowGesture);
     document.addEventListener("mouseup",finishWindowGesture);
     $("desktop").addEventListener("click",function(event){
-        var button=event.target.closest("[data-min],[data-close],#taskList [data-app]");
+        var button=event.target.closest("[data-min],[data-close],[data-max],#taskList [data-app]");
         if(!button)return;
         event.preventDefault();event.stopPropagation();
         if(button.dataset.min)minimizeWin(button.dataset.min.replace("win-",""));
         else if(button.dataset.close)closeWin(button.dataset.close.replace("win-",""));
+        else if(button.dataset.max)toggleWindowMaximize(button.dataset.max.replace('win-',''));
         else activateTaskbarApp(button.dataset.app);
     });
 }
