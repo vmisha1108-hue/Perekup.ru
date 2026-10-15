@@ -20,11 +20,12 @@ const server=http.createServer(async(req,res)=>{
     try{
         await scenario('desktop market and conversation match the side-by-side reference composition in all themes',async page=>{
             await page.evaluate(()=>{openWin('market');openBuyChat(1);});
+            await page.mouse.move(1,1); // Compare grid rows without the intentional card hover lift.
             for(const os of ['windows','macos','linux'])for(const theme of ['light','dark']){
                 await page.evaluate(({os,theme})=>{changeAppearance('os',os);changeAppearance('theme',theme);arrangeConversationWindows();document.getElementById('toasts').innerHTML='';}, {os,theme});
                 await page.locator('#win-chat').evaluate(el=>Promise.all(el.getAnimations().map(a=>a.finished)));
                 const market=await page.locator('#win-market').boundingBox(),talk=await page.locator('#win-chat').boundingBox();assert.ok(market.x+market.width<=talk.x,'windows must not overlap');assert.ok(talk.x+talk.width<=1600);assert.ok(await page.locator('#win-market .win-body').evaluate(el=>el.scrollWidth<=el.clientWidth));
-                const cards=await page.locator('#content .card').evaluateAll(els=>els.slice(0,3).map(el=>{const r=el.getBoundingClientRect(),b=el.querySelector('.buy').getBoundingClientRect();return {y:r.y,bottom:b.bottom};}));assert.equal(new Set(cards.map(c=>Math.round(c.y))).size,1);assert.ok(cards.every(c=>c.bottom<market.y+market.height));
+                const cards=await page.locator('#content .card').evaluateAll(els=>els.slice(0,3).map(el=>{const r=el.getBoundingClientRect(),b=el.querySelector('.buy').getBoundingClientRect();return {y:r.y,bottom:b.bottom};}));assert.equal(new Set(cards.map(c=>Math.round(c.y))).size,1,JSON.stringify({os,theme,market,cards}));assert.ok(cards.every(c=>c.bottom<market.y+market.height));
                 assert.equal(await page.locator('.task-label').count(),6);assert.equal(await page.locator('#win-chat [data-max]').count(),1);
                 await page.screenshot({path:'/workspace/scratch/3151c7eebd10/actual-'+os+'-'+theme+'.png'});
             }
@@ -75,7 +76,7 @@ const server=http.createServer(async(req,res)=>{
                         const viewport=document.querySelector('#win-market .win-body').getBoundingClientRect(),y=cards[0].getBoundingClientRect().top;
                         return cards.filter(c=>Math.abs(c.getBoundingClientRect().top-y)<1).map(c=>({photo:c.querySelector('.car-img').getBoundingClientRect().height,price:c.querySelector('.price').getBoundingClientRect().bottom,action:c.querySelector('.buy').getBoundingClientRect().bottom,limit:viewport.bottom}));
                     });
-                    assert.ok(rows.every(r=>r.photo<=260.5 && r.price<r.limit && r.action<r.limit),os+' first-row actions must remain on screen');
+                    assert.ok(rows.every(r=>r.photo<=260.5 && r.price<r.limit && r.action<r.limit),os+' first-row actions must remain on screen: '+JSON.stringify(rows));
                 }
                 await checkFirstRow();await page.screenshot({path:'/workspace/scratch/3151c7eebd10/market-ultrawide-'+os+'.png'});
                 await page.evaluate(()=>{closeChat();Object.assign(document.getElementById('win-market').style,{left:'260px',top:'10px',width:'900px',height:'520px'});});await checkFirstRow();

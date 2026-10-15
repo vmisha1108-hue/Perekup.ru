@@ -540,6 +540,7 @@ function setTabs(active){
     if(tg) tg.classList.toggle("active", active === "garage");
     var td = $("tabDeals");
     if(td) td.classList.toggle("active", active === "deals");
+    if($("marketSources")) $("marketSources").hidden = active !== "market";
     if($("filters")) $("filters").style.display = active === "deals" ? "none" : "";
     if($("fMood")) $("fMood").style.display = active === "market" ? "" : "none";
     if($("fAffordWrap")) $("fAffordWrap").style.display = active === "market" ? "" : "none";
@@ -2597,6 +2598,8 @@ function bindUI(){
         e.preventDefault(); e.stopPropagation();
         if(info) openCarInfo(Number(info.dataset.tradeInfo)); else closeCarInfo();
     }, true);
+    $("openDealer").addEventListener("click", function(){openWin("dealer");});
+    $("openImport").addEventListener("click", function(){openWin("import");});
     if($("tabMarket")) $("tabMarket").addEventListener("click", showMarket);
     if($("tabDeals")) $("tabDeals").addEventListener("click", showDeals);
     if($("tabGarage")) $("tabGarage").addEventListener("click", showGarage);

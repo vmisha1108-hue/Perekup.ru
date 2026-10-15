@@ -7,7 +7,7 @@ async function scenario(name,run,options={}){const context=await browser.newCont
 async function fund(page,amount=5000000){await page.evaluate(amount=>{changeBalance(amount,'Тестовое пополнение');save();},amount);}
 async function select(page,kind,id){await page.evaluate(kind=>openWin(kind),kind);await page.locator('[data-commerce-select="'+id+'"]').click();}
 async function order(page,id){await page.locator('[data-commerce-confirm]').check();await page.locator('[data-commerce-buy="'+id+'"]').click();return page.evaluate(id=>commerce.orders.find(o=>o.offerId===id).id,id);}
-async function waitStage(page,id){await page.locator('[data-commerce-wait="'+id+'"]').click();}
+async function waitStage(page,id){await page.evaluate(id=>{gameMs=commerceOrder(id).nextAt;lastRealMs=Date.now();tickPending();save();},id);}
 async function accept(page,id){await page.locator('[data-receipt="'+id+'"]').check();await page.locator('[data-commerce-accept="'+id+'"]').click();}
 try{
 await scenario('new apps have separate stock, correct images and no impact on private market or saved identity',async page=>{
@@ -15,6 +15,27 @@ await scenario('new apps have separate stock, correct images and no impact on pr
  for(const kind of ['import','dealer']){await page.locator('.desk-icon[data-app="'+kind+'"]').click();assert.ok(await page.locator('#win-'+kind).isVisible());assert.equal(await page.locator('#commerce-'+kind+' .commerce-stock').count(),kind==='import'?3:4);await page.waitForFunction(kind=>Array.from(document.querySelectorAll('#commerce-'+kind+' img')).every(i=>i.complete && i.naturalWidth>0),kind);await page.locator('#win-'+kind).evaluate(el=>Promise.all(el.getAnimations().map(a=>a.finished)));await page.screenshot({path:'/workspace/scratch/3151c7eebd10/commerce-'+kind+'.png'});await page.locator('#win-'+kind+' [data-close]').click();}
  assert.deepEqual(await page.evaluate(()=>({count:availableMarketCars().length,identity:playerIdentity,balance,garage})),before);assert.equal(await page.locator('#taskList button').count(),6);await page.evaluate(()=>openWin('import'));await page.locator('#commerce-import [data-commerce-filter]').selectOption('Япония');assert.equal(await page.locator('#commerce-import .commerce-stock').count(),1);assert.match(await page.locator('#commerce-import .commerce-stock').textContent(),/Toyota RAV4/);await page.locator('#commerce-import [data-commerce-filter]').selectOption('all');await page.evaluate(()=>closeWin('import'));
  assert.ok(await page.evaluate(()=>COMMERCE_CARS.every(c=>carById(c.id)===c && !CARS.includes(c))));
+});
+await scenario('market shortcuts open both suppliers and dealer interactions are local, optional, persistent and free',async page=>{
+ await page.evaluate(()=>openWin('market'));await page.locator('#openDealer').click();assert.ok(await page.locator('#win-dealer').isVisible());
+ await page.locator('[data-commerce-select="dealer-samara"]').click();const before=await page.evaluate(()=>({balance,gameMs,garage}));
+ for(const topic of ['inspection','drive','documents','price'])await page.locator('[data-commerce-topic="'+topic+'"]').click();
+ assert.match(await page.locator('.commerce-conversation-log').textContent(),/перебои двигателя/);assert.deepEqual(await page.evaluate(()=>({balance,gameMs,garage})),before);
+ await page.locator('[data-commerce-topic="drive"]').click();assert.equal(await page.evaluate(()=>commerce.dialogues['dealer-samara'].length),4);
+ await page.reload({waitUntil:'networkidle'});await select(page,'dealer','dealer-samara');assert.match(await page.locator('.commerce-conversation-log').textContent(),/перебои двигателя/);
+ await page.evaluate(()=>{transport.cityId=CITIES.find(c=>c.id!==moscowCity.id).id;});assert.equal(await page.evaluate(()=>askCommerceQuestion('dealer','dealer-polo','drive')),false);assert.equal(await page.evaluate(()=>commerce.dialogues['dealer-polo']),undefined);
+ await page.evaluate(()=>{closeWin('dealer');openWin('market');});await page.locator('#openImport').click();assert.ok(await page.locator('#win-import').isVisible());
+});
+await scenario('import has no skip action and broker answers reflect stages without moving the clock or charging money',async page=>{
+ await fund(page);await select(page,'import','jp-rav4');await page.locator('[data-commerce-topic="route"]').click();assert.match(await page.locator('.commerce-conversation-log').textContent(),/18 дней/);
+ const id=await order(page,'jp-rav4'),before=await page.evaluate(()=>({balance,gameMs,stage:commerce.orders[0].stage}));assert.equal(await page.locator('[data-commerce-wait]').count(),0);
+ for(const topic of ['status','documents','customs'])await page.locator('[data-commerce-topic="'+topic+'"]').click();assert.match(await page.locator('.commerce-conversation-log').textContent(),/экспортном складе/);assert.deepEqual(await page.evaluate(()=>({balance,gameMs,stage:commerce.orders[0].stage})),before);assert.match(await page.locator('.commerce-conversation-log').textContent(),/18 дней/);
+ await page.evaluate(id=>{const button=document.createElement('button');button.dataset.commerceWait=id;document.querySelector('#commerce-import').append(button);button.click();button.remove();},id);assert.deepEqual(await page.evaluate(()=>({balance,gameMs,stage:commerce.orders[0].stage})),before);
+ await waitStage(page,id);await page.locator('[data-commerce-topic="status"]').click();assert.match(await page.locator('.commerce-conversation-log').textContent(),/следует до границы/);
+ await waitStage(page,id);await page.locator('[data-commerce-topic="documents"]').click();assert.match(await page.locator('.commerce-conversation-log').textContent(),/Ждём оплату/);
+ await page.reload({waitUntil:'networkidle'});await page.evaluate(()=>openWin('import'));assert.match(await page.locator('.commerce-conversation-log').textContent(),/Ждём оплату/);await page.locator('#win-import').evaluate(el=>Promise.all(el.getAnimations().map(a=>a.finished)));await page.locator('#commerce-import .commerce-conversation').scrollIntoViewIfNeeded();await page.screenshot({path:'/workspace/scratch/3151c7eebd10/commerce-broker.png'});
+ await page.locator('[data-commerce-customs]').click();await page.locator('[data-commerce-topic="documents"]').click();assert.match(await page.locator('.commerce-conversation-log').textContent(),/документы ещё в работе/);
+ await waitStage(page,id);await page.locator('[data-commerce-topic="documents"]').click();assert.match(await page.locator('.commerce-conversation-log').textContent(),/ЭПТС оформлен/);
 });
 await scenario('dealer requires funds and signed terms, fixes discounts once, charges equipment and transfers once on acceptance',async page=>{
  await select(page,'dealer','dealer-samara');const before=await page.evaluate(()=>balance);await page.locator('[data-commerce-buy]').click();assert.equal(await page.evaluate(()=>commerce.orders.length),0);assert.equal(await page.evaluate(()=>balance),before);
@@ -51,7 +72,7 @@ await scenario('selling a delivered import uses full cost in an immutable sale c
 });
 await scenario('reset clears orders and inspection/discount state but preserves profile and malformed orders do not break boot',async page=>{
  await fund(page);await page.evaluate(()=>{placeCommerceOrder('dealer-polo',{},true);resetGameProgress(true);});assert.equal(await page.evaluate(()=>commerce.orders.length),0);assert.equal(await page.evaluate(()=>balance),100000);assert.ok(await page.evaluate(()=>hasPlayerIdentity()));
- await page.evaluate(()=>localStorage.setItem('commerce',JSON.stringify({version:1,orders:[null,{id:'bad',offerId:'missing'},{id:'x',offerId:'jp-rav4',costs:{vehicle:'oops'}}],inspections:[],discounts:null})));await page.reload({waitUntil:'networkidle'});assert.deepEqual(await page.evaluate(()=>commerce.orders),[]);
+ await page.evaluate(()=>localStorage.setItem('commerce',JSON.stringify({version:1,orders:[null,{id:'bad',offerId:'missing'},{id:'x',offerId:'jp-rav4',costs:{vehicle:'oops'}}],inspections:[],discounts:null,dialogues:{'jp-rav4':[null,{}, {topic:'bad',stage:9,question:'x',answer:'y'}]}})));await page.reload({waitUntil:'networkidle'});assert.deepEqual(await page.evaluate(()=>commerce.orders),[]);assert.deepEqual(await page.evaluate(()=>commerce.dialogues['jp-rav4']),[]);
 });
 await scenario('both new apps and stock details fit all phone themes and do not overlap desktop icons',async page=>{
  await fund(page);for(const os of ['windows','macos','linux'])for(const theme of ['light','dark']){await page.evaluate(({os,theme})=>{changeAppearance('os',os);changeAppearance('theme',theme);}, {os,theme});for(const kind of ['import','dealer']){await page.evaluate(kind=>openWin(kind),kind);assert.ok(await page.locator('#commerce-'+kind).evaluate(el=>el.scrollWidth<=el.clientWidth));await page.locator('#commerce-'+kind+' [data-commerce-list]').tap();await page.locator('#commerce-'+kind+' [data-commerce-select]').first().tap();assert.ok(await page.locator('#commerce-'+kind).evaluate(el=>el.scrollWidth<=el.clientWidth));await page.locator('#win-'+kind+' [data-close]').tap();}}
