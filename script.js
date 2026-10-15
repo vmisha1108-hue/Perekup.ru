@@ -114,22 +114,24 @@ function shortDesc(t, n){
     return cut.replace(/[,\s.;:-]+$/, "") + "…";
 }
 function carImg(car){
-    var src = car.img || ("img/" + car.id + ".jpg");
-    if(src.indexOf("img/") === 0) src += (src.indexOf("?") === -1 ? "?" : "&") + "v=20261008-plates";
-    return '<img src="' + esc(src) + '" alt="' + esc(car.name) + '"' + (car.fictional ? ' class="custom-car-photo"' : '') + ' loading="lazy" ' +
-           'onerror="this.outerHTML=\'🚗\'">';
+    var repaired=career && career.vehicles[car.id] && career.vehicles[car.id].repaired;
+    var cheap=!repaired && !car.newCar && (car.basePrice || car.price)<=100000;
+    var src=car.id===1 && !repaired?'img/wear/lada-2114.webp':car.img;
+    var image=src?'<img src="'+esc(src)+'?v=20261015-stock" alt="'+esc(car.name)+'"'+(car.fictional?' class="custom-car-photo"':'')+' loading="lazy" decoding="async" onerror="this.parentNode.classList.add(\'photo-unavailable\');this.hidden=true">':'<span class="photo-missing">Фотография модели пока недоступна</span>';
+    return '<span class="car-visual'+(cheap && car.id!==1?' car-wear'+((car.basePrice || car.price)<=40000?' car-wear-heavy':''):'')+'">'+image+'</span>';
 }
 
 function save(){
     syncBankBalance();
     saveTransport();
     saveCommerce();
+    saveCareer();
     var state={balance:balance,garage:garage,deals:deals,garageLvl:garageLvl,notes:notes,
         pending:pending,purchasePrices:purchasePrices,listings:listings,retiredMarketCars:retiredMarketCars};
     Object.keys(state).forEach(function(key){writeSaved(key,state[key]);});
     saveGameTime();
 }
-function currentGarage(){ return GARAGES[garageLvl]; }
+function currentGarage(){ return Object.assign({},GARAGES[garageLvl],{cap:GARAGES[garageLvl].cap+(career?CAREER_LEVELS[career.level].places:0)}); }
 function retireMarketCar(id){if(retiredMarketCars.indexOf(id)===-1)retiredMarketCars.push(id);}
 function availableMarketCars(){
     var excluded=new Set(garage.concat(retiredMarketCars));
@@ -180,7 +182,8 @@ var ICONS = [
     {id:"help",     ico:"❓", label:"Справка"},
     {id:"settings",ico:"⚙️",label:"Настройки"},
     {id:"import",ico:"🚢",label:"Импорт"},
-    {id:"dealer",ico:"🏢",label:"Автосалон"}
+    {id:"dealer",ico:"🏢",label:"Автосалон"},
+    {id:"business",ico:"💼",label:"Бизнес"}
 ];
 
 function loadIconPositions(){
@@ -654,6 +657,7 @@ var SELLER_NOTE = {
 };
 
 function openCarInfo(id){
+    careerStep('viewed');
     var car = carById(id);
     if(!car) return;
     $("carModalBody").dataset.carId = String(id);
@@ -690,7 +694,7 @@ function openCarInfo(id){
         '<div class="car-price">' + money(infoPrice) + '</div>' +
         '<div class="price-assessment"><span class="price-badge ' + assessment.tone + '">' + assessment.label + '</span>' +
         '<span>Оценка рынка: ' + money(car.marketPrice || car.price) + '</span></div>' +
-        specHtml + fullHtml + who +
+        specHtml + fullHtml + '<section class="car-story"><b>'+esc(carStory(car).title)+'</b><p>'+esc(carStory(car).text)+'</p></section>' + who +
         '<div class="car-actions">' + action + '</div>' +
         (!owned && !car.exchangeOnly && !meetingHere("buy",id) ? '<div class="journey-note">Для покупки нужно приехать в ' + esc(meetingCity("buy",id).name) + '. Можно заранее написать продавцу и согласовать время.</div><button class="buy" data-travel-to="' + esc(meetingCity("buy",id).id) + '">Открыть Переезд</button>' : '');
     $("carOverlay").classList.add("open");
@@ -741,6 +745,7 @@ function restoreChat(sv){
 }
 
 function openBuyChat(carId){
+    careerStep('talked');
     if(!canOpenChat()) return;
     var car = carById(carId);
     if(!car || car.exchangeOnly) return;
@@ -1130,6 +1135,7 @@ function finishBuy(price){
     retireMarketCar(chat.car.id);
     parkVehicle(chat.car.id,transport.cityId);
     purchasePrices[chat.car.id] = price;
+    careerStep('bought');
     deals++;
     save();
 
@@ -1199,6 +1205,7 @@ function finishSell(price){
         return;
     }
     changeBalance(price,'Продажа автомобиля: '+chat.car.name,'sale');
+    careerRecordSale(chat.car,price,purchaseCost(chat.car),!listings[chat.car.id] || listings[chat.car.id].disclosed!==false);
     retireMarketCar(chat.car.id);
     payParkingDebt(chat.car.id);
     garage = garage.filter(function(x){ return x !== chat.car.id; });
@@ -1605,6 +1612,9 @@ function finishTrade(price){
     var cost = Math.max(1, purchaseCost(chat.car) - difference);
     if(netDifference && !changeBalance(netDifference,'Доплата при обмене: '+chat.car.name+' → '+incoming.name,'trade'))return;
     payParkingDebt(chat.car.id);
+    // The incoming car carries the remaining basis; recognize only the realized excess.
+    careerRecordSale(chat.car,price,price-(difference+cost-purchaseCost(chat.car)),!listings[chat.car.id] || listings[chat.car.id].disclosed!==false);
+    careerStep('bought');
     garage[index] = incoming.id;
     retireMarketCar(chat.car.id);retireMarketCar(incoming.id);
     removeVehicle(chat.car.id);
@@ -1698,7 +1708,7 @@ function nextBuyerDelay(listing){
     var factor = markup > 500000 ? Math.min(8, 3 + (markup - 500000) / 500000) : 1;
     // Экспоненциальное ожидание: возможны и тишина на несколько часов, и быстрые серии.
     var draw = Math.min(1 - Number.EPSILON, Math.max(0, Math.random()));
-    return Math.max(60000, Math.round(-Math.log(1 - draw) * BUYER_WAIT_MEAN * factor * collectorBuyerMultiplier()));
+    return Math.max(60000, Math.round(-Math.log(1 - draw) * BUYER_WAIT_MEAN * factor * collectorBuyerMultiplier() * careerBuyerFactor(carById(listing.carId))));
 }
 function makeBuyerOffer(listing, arrivedAt){
     var b = pick(BUYERS.filter(function(b){ return b.name !== listing.lastBuyerName; }));
@@ -1799,6 +1809,8 @@ function openSaleForm(carId){
     $("saleCarName").textContent = car.name;
     $("salePurchase").textContent = "Цена покупки: " + money(purchaseCost(car));
     $("salePrice").value = listings[carId] ? listings[carId].price : car.price;
+    $("saleDisclosure").checked = !listings[carId] || listings[carId].disclosed!==false;
+    $("saleCondition").textContent = careerVehicle(car).inspected ? (careerVehicle(car).repaired ? "Диагностика и подготовка выполнены." : carStory(car).defect || "По диагностике недостатков не выявлено.") : "Диагностика ещё не проводилась. Не обещайте состояние, которое не проверяли.";
     $("saleSubmit").textContent = listings[carId] ? "Сохранить цену" : "Разместить объявление";
     $("saleOverlay").classList.add("open");
     updateGameSpeed("sale");
@@ -1810,7 +1822,7 @@ function closeSaleForm(){
     updateGameSpeed();
 }
 /* Объявление остаётся активным, пока машину не продадут или не снимут с продажи. */
-function postAd(carId, price){
+function postAd(carId, price, disclosed){
     var car = carById(carId);
     if(!car || garage.indexOf(carId) === -1) return false;
     if(vehicleMoving(carId)){ toast("Нельзя выставить машину во время перевозки."); return false; }
@@ -1819,9 +1831,10 @@ function postAd(carId, price){
     if(pending.some(function(it){ return it.carId === carId && it.type === "meet"; })) return false;
     endOfferChat(carId,"Объявление изменено. Прежнее предложение покупателя больше не действует.");
     removeSaleOffers(carId);
-    var listing = {carId: carId, price: price, purchasePrice: purchaseCost(car), buyerTimingVersion: BUYER_TIMING_VERSION};
+    var listing = {carId: carId, price: price, disclosed:disclosed!==false, purchasePrice: purchaseCost(car), buyerTimingVersion: BUYER_TIMING_VERSION};
     listing.nextBuyerAt = gameMs + (ADM.smoothMeet ? 0 : nextBuyerDelay(listing));
     listings[carId] = listing;
+    careerStep('listed');
     save();
     toast("📢 Объявление: " + car.name + " за " + money(price) + ". Ждём покупателей.");
     refreshList();
@@ -2042,6 +2055,7 @@ function tickPending(){
     tickTransport();
     tickBank();
     tickCommerce();
+    tickCareer();
     tickCollectors();
     tickMeeting();
     var changed = tickListings();
@@ -2486,7 +2500,8 @@ function resetGameProgress(resetClock){
     transport = newTransport();
     bank=freshBank();bankRenderKey='';bankRecord(START_BALANCE,'Стартовый баланс','opening');
     resetContracts();
-    commerce=freshCommerce();commerceSelection={import:null,dealer:null};commerceMessages={import:'',dealer:''};commerceFilters={import:'all',dealer:'all'};commerceRenderKeys={};saveCommerce();renderCommerce('import',true);renderCommerce('dealer',true);
+    commerceScreen={import:'catalog',dealer:'catalog'};commerceCatalog={import:{brand:'all',query:'',page:0},dealer:{brand:'all',query:'',page:0}};commerce=freshCommerce();commerceSelection={import:null,dealer:null};commerceMessages={import:'',dealer:''};commerceFilters={import:'all',dealer:'all'};commerceRenderKeys={};saveCommerce();renderCommerce('import',true);renderCommerce('dealer',true);
+    career=freshCareer();careerTab="overview";careerRenderKey="";careerNotice="";generateCareerOrders();applyCareerMarket();saveCareer();renderBusiness(true);
     syncCollectors();
     $("arrivalOverlay").classList.remove("open");
     persistChats();
@@ -2657,7 +2672,7 @@ function bindUI(){
     if($("chatClose")) $("chatClose").addEventListener("click", closeChat);
     $("saleForm").addEventListener("submit", function(e){
         e.preventDefault();
-        if(postAd(saleCarId, $("salePrice").value)) closeSaleForm();
+        if(postAd(saleCarId, $("salePrice").value, $("saleDisclosure").checked)) closeSaleForm();
     });
     $("saleCancel").addEventListener("click", closeSaleForm);
     $("saleOverlay").addEventListener("mousedown", function(e){ if(e.target === this) closeSaleForm(); });
@@ -2696,6 +2711,8 @@ window.addEventListener("DOMContentLoaded", function(){
     initCommerce();
     initCollectors();
     initContracts();
+    initCareer();
+    initBackups();
     initEntryReset();
     initIdentity();
     initSettings();

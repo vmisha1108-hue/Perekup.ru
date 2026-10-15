@@ -43,6 +43,7 @@ function initMarketSession(){
         car.price = Math.max(1000, Math.round(car.marketPrice * factor / 500) * 500);
     });
     localStorage.setItem('sellerSessionMoods', JSON.stringify(current));
+    if(typeof career!=='undefined' && career){CARS.forEach(function(c){c.careerSessionPrice=c.price;c.careerSessionMarket=c.marketPrice;});applyCareerMarket();}
 }
 function priceAssessment(car, askingPrice){
     var ratio = (askingPrice == null ? car.price : askingPrice) / (car.marketPrice || car.price);

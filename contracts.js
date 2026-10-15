@@ -136,6 +136,7 @@ function signContract(){
     var cost=purchasePrices[draft.carId],acquisition=commerceAcquisition(draft.carId);
     var record={version:1,id:draft.id,number:draft.number,mode:draft.mode,carId:draft.carId,city:draft.city,createdAt:draft.createdAt,signedAt:gameMs,price:draft.price,purchasePrice:draft.mode==='buy'?draft.price:Number.isSafeInteger(cost) && cost>0?cost:null,vehicle:Object.assign({},draft.vehicle),seller:draft.mode==='buy'?draft.other:player,buyer:draft.mode==='buy'?player:draft.other};
     if(acquisition && draft.mode==='sell'){record.costIncludesExpenses=true;record.costBreakdown=JSON.parse(JSON.stringify(acquisition.costs));}
+    if(draft.mode==='sell')addPreparationToContract(record,draft.carId,cost);
     contractSigning=true;
     try{
         completeDeal();
@@ -150,6 +151,10 @@ function cancelContract(){
     if(!currentContract() || chat.stage!=='contract' || !confirm('Отказаться от подписания? Автомобиль и деньги останутся у владельцев.'))return;
     chat.done=true;chat.stage='done';chat.meetingOutcome='cancelled';chat.meetingResult='Вы отказались подписывать договор. Деньги и автомобиль остались у владельцев.';
     sysSay(chat.meetingResult);renderChat();refreshList();
+}
+function addPreparationToContract(record,carId,cost){
+    var state=career && career.vehicles[carId];
+    if(state && state.repairPaid>0 && Number.isSafeInteger(cost)){record.costIncludesExpenses=true;if(!record.costBreakdown)record.costBreakdown={vehicle:cost-state.repairPaid};record.costBreakdown.preparation=state.repairPaid;}
 }
 function contractPurchasePrice(d){
     if(Number.isSafeInteger(d.purchasePrice) && d.purchasePrice>0)return d.purchasePrice;
@@ -178,7 +183,7 @@ function signedContractHtml(d){
     var player=d.mode==='buy'?d.buyer:d.seller;
     var draft={number:d.number,city:d.city,createdAt:d.createdAt,price:d.price,mode:d.mode,vehicle:d.vehicle,other:d.mode==='buy'?d.seller:d.buyer,fields:Object.assign({},player,d.vehicle)};
     var cost=d.mode==='sell'?contractPurchasePrice(d):null;
-    return renderContractPreview(draft)+'<section class="contract-result"><div><h3>Итог сделки</h3>'+(cost!==null?'<p>Куплено за '+money(cost)+'.</p>':'')+'<p class="contract-muted">'+(d.mode==='sell'?(d.costIncludesExpenses?'Прибыль рассчитана по полной себестоимости: покупка, доставка, осмотр и оформление. Прочие расходы на содержание и кредиты не учтены.':'Прибыль и убыток — разница между ценой продажи и покупки, без других расходов.'):'Расход на покупку автомобиля по этому договору.')+'</p></div>'+contractResultHtml(d)+'</section><div class="contract-signed"><b>Подписан обеими сторонами · '+fmtMeet(new Date(d.signedAt))+'</b><p>Продавец: '+esc(d.seller.fullName)+'</p>'+signatureHtml(d.seller.signature,'Подпись продавца')+'<p>Покупатель: '+esc(d.buyer.fullName)+'</p>'+signatureHtml(d.buyer.signature,'Подпись покупателя')+'<p>Автомобиль и сумма переданы. Экземпляр вашего персонажа сохранён.</p></div>';
+    return renderContractPreview(draft)+'<section class="contract-result"><div><h3>Итог сделки</h3>'+(cost!==null?'<p>Куплено за '+money(cost)+'.</p>':'')+'<p class="contract-muted">'+(d.mode==='sell'?(d.costIncludesExpenses?'Прибыль рассчитана по полной себестоимости: покупка, доставка, осмотр, оформление и подготовка. Прочие расходы на содержание и кредиты не учтены.':'Прибыль и убыток — разница между ценой продажи и покупки, без других расходов.'):'Расход на покупку автомобиля по этому договору.')+'</p></div>'+contractResultHtml(d)+'</section><div class="contract-signed"><b>Подписан обеими сторонами · '+fmtMeet(new Date(d.signedAt))+'</b><p>Продавец: '+esc(d.seller.fullName)+'</p>'+signatureHtml(d.seller.signature,'Подпись продавца')+'<p>Покупатель: '+esc(d.buyer.fullName)+'</p>'+signatureHtml(d.buyer.signature,'Подпись покупателя')+'<p>Автомобиль и сумма переданы. Экземпляр вашего персонажа сохранён.</p></div>';
 }
 function renderDocuments(){
     var body=$('documentsBody');if(!body || !openWindows.documents)return;

@@ -136,6 +136,7 @@ var APP_ICON_ART={
 };
 APP_ICON_ART.import=APP_ICON_ART.travel;
 APP_ICON_ART.dealer=APP_ICON_ART.shop;
+APP_ICON_ART.business=APP_ICON_ART.bank;
 var appIconSequence=0;
 function appIconSvg(id){
     if(APP_ICON_ART[id]){

@@ -83,6 +83,7 @@ function openWin(id){
     if(id === "shop"){ renderShop(); }
     if(id === "bank"){ renderBank(true); }
     if(id === "import" || id === "dealer"){ renderCommerce(id,true); }
+    if(id === "business")renderBusiness(true);
     if(id === "documents"){ renderDocuments(); }
     if(id === "settings"){ renderSettings(); }
     if(id === "calendar"){ renderCal(); }
@@ -122,6 +123,7 @@ function restoreWin(id){
     if(id === "travel") renderTravel();
     if(id === "import" || id === "dealer") renderCommerce(id,true);
     if(id === "garage") renderGarageApp();
+    if(id === "business")renderBusiness(true);
     if(id === "documents") renderDocuments();
     renderTaskbar();
 }
