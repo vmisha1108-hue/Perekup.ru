@@ -82,6 +82,7 @@ function openWin(id){
     if(id === "garage"){ renderGarageApp(); }
     if(id === "shop"){ renderShop(); }
     if(id === "bank"){ renderBank(true); }
+    if(id === "import" || id === "dealer"){ renderCommerce(id,true); }
     if(id === "documents"){ renderDocuments(); }
     if(id === "settings"){ renderSettings(); }
     if(id === "calendar"){ renderCal(); }
@@ -119,6 +120,7 @@ function restoreWin(id){
     w.style.zIndex = ++zTop;
     updateGameSpeed(id);
     if(id === "travel") renderTravel();
+    if(id === "import" || id === "dealer") renderCommerce(id,true);
     if(id === "garage") renderGarageApp();
     if(id === "documents") renderDocuments();
     renderTaskbar();

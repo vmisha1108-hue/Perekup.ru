@@ -2,7 +2,7 @@
 
 // Каталог не меняет состав во время игры; индекс хранит ссылки на те же машины.
 var CAR_BY_ID=Object.create(null);
-CARS.concat(TRADE_CARS).forEach(function(car){if(!CAR_BY_ID[car.id])CAR_BY_ID[car.id]=car;});
+CARS.concat(TRADE_CARS,COMMERCE_CARS).forEach(function(car){if(!CAR_BY_ID[car.id])CAR_BY_ID[car.id]=car;});
 
 /* ================= ДАННЫЕ ================= */
 var BUYERS = [
@@ -123,6 +123,7 @@ function carImg(car){
 function save(){
     syncBankBalance();
     saveTransport();
+    saveCommerce();
     var state={balance:balance,garage:garage,deals:deals,garageLvl:garageLvl,notes:notes,
         pending:pending,purchasePrices:purchasePrices,listings:listings,retiredMarketCars:retiredMarketCars};
     Object.keys(state).forEach(function(key){writeSaved(key,state[key]);});
@@ -177,7 +178,9 @@ var ICONS = [
     {id:"documents",ico:"📄",label:"Документы"},
     {id:"garage",   ico:"🏠", label:"Гараж"},
     {id:"help",     ico:"❓", label:"Справка"},
-    {id:"settings",ico:"⚙️",label:"Настройки"}
+    {id:"settings",ico:"⚙️",label:"Настройки"},
+    {id:"import",ico:"🚢",label:"Импорт"},
+    {id:"dealer",ico:"🏢",label:"Автосалон"}
 ];
 
 function loadIconPositions(){
@@ -2037,6 +2040,7 @@ function tickPending(){
     if(startupResetPending)return;
     tickTransport();
     tickBank();
+    tickCommerce();
     tickCollectors();
     tickMeeting();
     var changed = tickListings();
@@ -2481,6 +2485,7 @@ function resetGameProgress(resetClock){
     transport = newTransport();
     bank=freshBank();bankRenderKey='';bankRecord(START_BALANCE,'Стартовый баланс','opening');
     resetContracts();
+    commerce=freshCommerce();commerceSelection={import:null,dealer:null};commerceMessages={import:'',dealer:''};commerceFilters={import:'all',dealer:'all'};commerceRenderKeys={};saveCommerce();renderCommerce('import',true);renderCommerce('dealer',true);
     syncCollectors();
     $("arrivalOverlay").classList.remove("open");
     persistChats();
@@ -2685,6 +2690,7 @@ window.addEventListener("DOMContentLoaded", function(){
     migrateStartingBalance();
     initBank();
     initTransport();
+    initCommerce();
     initCollectors();
     initContracts();
     initEntryReset();

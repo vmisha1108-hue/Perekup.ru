@@ -133,8 +133,9 @@ function signContract(){
     if(errors.length){displayContractErrors(errors);return false;}
     var player={fullName:playerIdentity.nickname,passport:contractNormal(draft.fields.passport),address:contractNormal(draft.fields.address),signature:JSON.parse(JSON.stringify(playerIdentity.signature))};
     // Capture the actual cost before selling removes it from purchasePrices.
-    var cost=purchasePrices[draft.carId];
+    var cost=purchasePrices[draft.carId],acquisition=commerceAcquisition(draft.carId);
     var record={version:1,id:draft.id,number:draft.number,mode:draft.mode,carId:draft.carId,city:draft.city,createdAt:draft.createdAt,signedAt:gameMs,price:draft.price,purchasePrice:draft.mode==='buy'?draft.price:Number.isSafeInteger(cost) && cost>0?cost:null,vehicle:Object.assign({},draft.vehicle),seller:draft.mode==='buy'?draft.other:player,buyer:draft.mode==='buy'?player:draft.other};
+    if(acquisition && draft.mode==='sell'){record.costIncludesExpenses=true;record.costBreakdown=JSON.parse(JSON.stringify(acquisition.costs));}
     contractSigning=true;
     try{
         completeDeal();
@@ -161,7 +162,7 @@ function contractPurchasePrice(d){
     return previous && previous.mode==='buy'?previous.price:null;
 }
 function contractResultHtml(d){
-    var html='<span class="document-result"><span class="document-result-label">'+(d.mode==='buy'?'Потрачено':'Выручка')+'</span><strong>'+money(d.price)+'</strong>';
+    var html='<span class="document-result"><span class="document-result-label">'+(d.channel==='import'?'По договору':d.mode==='buy'?'Потрачено':'Выручка')+'</span><strong>'+money(d.price)+'</strong>';
     if(d.mode==='sell'){
         var cost=contractPurchasePrice(d);
         if(cost===null)html+='<span class="document-result-unknown">Цена покупки неизвестна</span>';
@@ -173,10 +174,11 @@ function contractResultHtml(d){
     return html+'</span>';
 }
 function signedContractHtml(d){
+    if(['import','dealer'].indexOf(d.channel)!==-1 && isRecord(d.costBreakdown) && Number.isSafeInteger(d.paidAtSigning) && typeof d.terms==='string')return commerceDocumentHtml(d);
     var player=d.mode==='buy'?d.buyer:d.seller;
     var draft={number:d.number,city:d.city,createdAt:d.createdAt,price:d.price,mode:d.mode,vehicle:d.vehicle,other:d.mode==='buy'?d.seller:d.buyer,fields:Object.assign({},player,d.vehicle)};
     var cost=d.mode==='sell'?contractPurchasePrice(d):null;
-    return renderContractPreview(draft)+'<section class="contract-result"><div><h3>Итог сделки</h3>'+(cost!==null?'<p>Куплено за '+money(cost)+'.</p>':'')+'<p class="contract-muted">'+(d.mode==='sell'?'Прибыль и убыток — разница между ценой продажи и покупки, без других расходов.':'Расход на покупку автомобиля по этому договору.')+'</p></div>'+contractResultHtml(d)+'</section><div class="contract-signed"><b>Подписан обеими сторонами · '+fmtMeet(new Date(d.signedAt))+'</b><p>Продавец: '+esc(d.seller.fullName)+'</p>'+signatureHtml(d.seller.signature,'Подпись продавца')+'<p>Покупатель: '+esc(d.buyer.fullName)+'</p>'+signatureHtml(d.buyer.signature,'Подпись покупателя')+'<p>Автомобиль и сумма переданы. Экземпляр вашего персонажа сохранён.</p></div>';
+    return renderContractPreview(draft)+'<section class="contract-result"><div><h3>Итог сделки</h3>'+(cost!==null?'<p>Куплено за '+money(cost)+'.</p>':'')+'<p class="contract-muted">'+(d.mode==='sell'?(d.costIncludesExpenses?'Прибыль рассчитана по полной себестоимости: покупка, доставка, осмотр и оформление. Прочие расходы на содержание и кредиты не учтены.':'Прибыль и убыток — разница между ценой продажи и покупки, без других расходов.'):'Расход на покупку автомобиля по этому договору.')+'</p></div>'+contractResultHtml(d)+'</section><div class="contract-signed"><b>Подписан обеими сторонами · '+fmtMeet(new Date(d.signedAt))+'</b><p>Продавец: '+esc(d.seller.fullName)+'</p>'+signatureHtml(d.seller.signature,'Подпись продавца')+'<p>Покупатель: '+esc(d.buyer.fullName)+'</p>'+signatureHtml(d.buyer.signature,'Подпись покупателя')+'<p>Автомобиль и сумма переданы. Экземпляр вашего персонажа сохранён.</p></div>';
 }
 function renderDocuments(){
     var body=$('documentsBody');if(!body || !openWindows.documents)return;

@@ -134,6 +134,8 @@ var APP_ICON_ART={
     help:'<path fill="url(#app-paper)" d="M10 10C12-1 37-2 38 11c1 8-9 10-10 16v3h-8v-4c0-9 10-10 10-15 0-5-11-6-13 2z"/><circle fill="url(#app-paper)" cx="24" cy="40" r="4.5"/>',
     settings:'<path fill="url(#app-paper)" fill-rule="evenodd" d="m20 1-1 6-5 2-5-3-6 6 3 5-2 5-4 1v8l6 1 2 5-3 5 6 6 5-3 5 2 1 4h8l1-6 5-2 5 3 6-6-3-5 2-5 4-1v-8l-6-1-2-5 3-5-6-6-5 3-5-2-1-4zm4 14a9 9 0 1 0 0 18 9 9 0 0 0 0-18z" transform="translate(3 2) scale(.88)"/><circle fill="#768a9a" cx="24.1" cy="23.1" r="5.5"/><circle fill="#dae3ea" cx="24.1" cy="23.1" r="3"/>'
 };
+APP_ICON_ART.import=APP_ICON_ART.travel;
+APP_ICON_ART.dealer=APP_ICON_ART.shop;
 var appIconSequence=0;
 function appIconSvg(id){
     if(APP_ICON_ART[id]){

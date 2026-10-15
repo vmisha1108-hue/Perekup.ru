@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "python3 -m http.server 8000",
-    "test": "node tests/gameplay.cjs && node tests/cities.cjs && node tests/dialogue.cjs && node tests/travel.cjs && node tests/human-dialogue.cjs && node tests/bank.cjs && node tests/collectors.cjs && node tests/regressions.cjs && node tests/contracts.cjs && node tests/entry-reset.cjs && node tests/identity.cjs && node tests/meetings-calendar.cjs && node tests/optimization.cjs && node tests/negotiation.cjs && node tests/music-help.cjs && node tests/settings.cjs && node tests/visual-layout.cjs",
+    "test": "node tests/gameplay.cjs && node tests/cities.cjs && node tests/dialogue.cjs && node tests/travel.cjs && node tests/human-dialogue.cjs && node tests/bank.cjs && node tests/collectors.cjs && node tests/regressions.cjs && node tests/contracts.cjs && node tests/entry-reset.cjs && node tests/identity.cjs && node tests/meetings-calendar.cjs && node tests/optimization.cjs && node tests/negotiation.cjs && node tests/music-help.cjs && node tests/settings.cjs && node tests/visual-layout.cjs && node tests/commerce.cjs",
     "test:music": "node tests/music-help.cjs",
     "sync:help": "python3 scripts/sync-help.py",
     "test:negotiation": "node tests/negotiation.cjs",
@@ -18,7 +18,8 @@
     "test:bank": "node tests/bank.cjs",
     "test:dialogue": "node tests/dialogue.cjs && node tests/human-dialogue.cjs",
     "test:settings": "node tests/settings.cjs",
-    "test:visuals": "node tests/visual-layout.cjs"
+    "test:visuals": "node tests/visual-layout.cjs",
+    "test:commerce": "node tests/commerce.cjs"
   },
   "engines": {
     "node": ">=22"
