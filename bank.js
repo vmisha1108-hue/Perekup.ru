@@ -65,6 +65,7 @@ function syncBankBalance(){
     if(bank && bank.knownBalance!==balance) bankRecord(balance-bank.knownBalance,'Корректировка баланса','adjustment');
 }
 function changeBalance(amount,label,kind,when){
+    if(marketGameOver())return false;
     if(!Number.isSafeInteger(amount) || !Number.isSafeInteger(balance+amount) || balance+amount<0) return false;
     syncBankBalance();balance+=amount;bankRecord(amount,label,kind,when);
     localStorage.setItem('balance',String(balance));return true;

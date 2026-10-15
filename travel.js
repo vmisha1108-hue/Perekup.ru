@@ -85,6 +85,7 @@ function meetingHere(mode,id){
     return !transport.trip && city.id === transport.cityId && !(mode === "sell" && vehicleMoving(id));
 }
 function guardDealLocation(){
+    if(marketGameOver())return false;
     if(meetingHere(chat.mode,chat.car.id)) return true;
     sysSay("❌ Сделка возможна только при личном осмотре в городе " + meetingCity(chat.mode,chat.car.id).name + ".");
     chat.done = true;

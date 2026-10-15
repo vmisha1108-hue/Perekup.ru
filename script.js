@@ -114,6 +114,10 @@ function shortDesc(t, n){
     return cut.replace(/[,\s.;:-]+$/, "") + "…";
 }
 function carImg(car){
+    if(car.illustration){
+        var art=car.illustration,w=art.width/art.columns,h=art.height/art.rows;
+        return '<span class="car-visual import-art-wrap"><svg class="import-model-art" viewBox="0 0 '+w+' '+h+'" role="img" aria-label="'+esc(car.modelFamily || car.name)+' — рисованная иллюстрация"><svg width="'+w+'" height="'+h+'" viewBox="'+(art.column*w)+' '+(art.row*h)+' '+w+' '+h+'" overflow="hidden"><image href="'+esc(art.src)+'" width="'+art.width+'" height="'+art.height+'" /></svg></svg></span>';
+    }
     var repaired=career && career.vehicles[car.id] && career.vehicles[car.id].repaired;
     var cheap=!repaired && !car.newCar && (car.basePrice || car.price)<=100000;
     var src=car.id===1 && !repaired?'img/wear/lada-2114.webp':car.img;
@@ -126,6 +130,7 @@ function save(){
     saveTransport();
     saveCommerce();
     saveCareer();
+    saveMarketRisks();
     var state={balance:balance,garage:garage,deals:deals,garageLvl:garageLvl,notes:notes,
         pending:pending,purchasePrices:purchasePrices,listings:listings,retiredMarketCars:retiredMarketCars};
     Object.keys(state).forEach(function(key){writeSaved(key,state[key]);});
@@ -745,6 +750,7 @@ function restoreChat(sv){
 }
 
 function openBuyChat(carId){
+    if(marketGameOver())return;
     careerStep('talked');
     if(!canOpenChat()) return;
     var car = carById(carId);
@@ -1130,11 +1136,12 @@ function finishBuy(price){
         chat.done = true;
         return;
     }
-    spend(price,'Покупка автомобиля: '+chat.car.name);
+    if(!spend(price,'Покупка автомобиля: '+chat.car.name))return;
     garage.push(chat.car.id);
     retireMarketCar(chat.car.id);
     parkVehicle(chat.car.id,transport.cityId);
     purchasePrices[chat.car.id] = price;
+    var riskResult=applyMarketPurchase(chat.car,price);
     careerStep('bought');
     deals++;
     save();
@@ -1145,7 +1152,7 @@ function finishBuy(price){
         evil:   "Расчёт получил. Ключи и документы передаю, удачи на дороге."
     };
     npcSay(deals2[chat.npc.personality]);
-    sysSay('✅ Куплено: ' + chat.car.name + ' за ' + money(price));
+    sysSay('✅ Куплено: ' + chat.car.name + ' за ' + money(price) + riskResult);
     chat.done = true;
 }
 
@@ -1447,6 +1454,11 @@ function tickMeeting(){
         changed = true;
     }
     if(flow.stage === "inspection" && gameMs >= flow.inspectionUntil){
+        if(chat.mode==='buy' && !chat.trade){
+            checkMarketCar(chat.car,false);
+            var risk=marketRiskFor(chat.car);
+            if(risk && risk.discovered)sysSay('🔧 При осмотре обнаружена скрытая поломка: '+marketFaultText(risk)+'.');
+        }
         flow.event = rollEvent() || meetingConfirmation();
         flow.stage = "event";
         chat.stage = "event";
@@ -1462,6 +1474,7 @@ function renderMeeting(){
     if(!chat || !chat.met) return;
     var meeting = findPending(chat.pid), flow = meeting && meeting.flow;
     var stage = chat.done ? "done" : chat.stage;
+    renderMarketInspection();
     $("meetingTitle").textContent = "Встреча · " + chat.car.name;
     $("meetingPerson").textContent = chat.npc.avatar + " " + chat.npc.name +
         (chat.mode === "sell" ? " · Покупатель" : " · Продавец");
@@ -1573,6 +1586,7 @@ function refuseEvent(){
 }
 
 function completeDeal(){
+    if(marketGameOver())return false;
     if(!chat || chat.done)return false;
     if(!chat.trade && !contractSigning){beginContract();return false;}
     if(chat.trade) finishTrade(chat.price); else if(chat.mode === "buy") finishBuy(chat.price); else finishSell(chat.price);
@@ -1811,6 +1825,7 @@ function openSaleForm(carId){
     $("salePrice").value = listings[carId] ? listings[carId].price : car.price;
     $("saleDisclosure").checked = !listings[carId] || listings[carId].disclosed!==false;
     $("saleCondition").textContent = careerVehicle(car).inspected ? (careerVehicle(car).repaired ? "Диагностика и подготовка выполнены." : carStory(car).defect || "По диагностике недостатков не выявлено.") : "Диагностика ещё не проводилась. Не обещайте состояние, которое не проверяли.";
+    var mechanical=unrepairedMarketFault(car);if(mechanical)$("saleCondition").textContent+=' Известная скрытая поломка: '+marketFaultText(mechanical)+'.';
     $("saleSubmit").textContent = listings[carId] ? "Сохранить цену" : "Разместить объявление";
     $("saleOverlay").classList.add("open");
     updateGameSpeed("sale");
@@ -1823,6 +1838,7 @@ function closeSaleForm(){
 }
 /* Объявление остаётся активным, пока машину не продадут или не снимут с продажи. */
 function postAd(carId, price, disclosed){
+    if(marketGameOver())return false;
     var car = carById(carId);
     if(!car || garage.indexOf(carId) === -1) return false;
     if(vehicleMoving(carId)){ toast("Нельзя выставить машину во время перевозки."); return false; }
@@ -2051,7 +2067,7 @@ function showDeals(){
 
 // проверяется каждый тик игрового времени
 function tickPending(){
-    if(startupResetPending)return;
+    if(startupResetPending || marketGameOver())return;
     tickTransport();
     tickBank();
     tickCommerce();
@@ -2237,6 +2253,7 @@ function saveGameTime(){
 }
 
 function canSleep(){
+    if(marketGameOver())return false;
     var hour = gameNow().getHours();
     return !transport.trip && (hour >= 22 || hour < 9) && !(chat && chat.met && !chat.done);
 }
@@ -2285,7 +2302,7 @@ function offerFirstVisitHelp(){
 }
 
 function advanceGameTime(now){
-    if(startupResetPending){lastRealMs=now;return;}
+    if(startupResetPending || marketGameOver()){lastRealMs=now;return;}
     var delta = now - lastRealMs;
     lastRealMs = now;
     if(delta < 0) delta = 0;
@@ -2409,7 +2426,7 @@ function saveAdminFlags(){ localStorage.setItem("adminFlags", JSON.stringify(ADM
 
 // деньги: в режиме «деньги не списываются» всегда хватает
 function canAfford(p){ return ADM.infMoney || balance >= p; }
-function spend(p,label){ return ADM.infMoney ? true : changeBalance(-p,label || 'Расход по счёту','expense'); }
+function spend(p,label){ return marketGameOver()?false:ADM.infMoney ? true : changeBalance(-p,label || 'Расход по счёту','expense'); }
 
 function openAdminGate(){
     $("gatePass").value = "";
@@ -2494,6 +2511,7 @@ function admReset(){
     resetGameProgress(false);
 }
 function resetGameProgress(resetClock){
+    resetMarketRisks();
     if(resetClock){gameMs=Date.now();lastRealMs=Date.now();lastDayKey='';lastClockStr='';calYear=gameNow().getFullYear();calMonth=gameNow().getMonth();}
     balance = START_BALANCE; garage = []; deals = 0; garageLvl = 0; notes = {}; pending = [];
     purchasePrices = {}; listings = {}; chatStore = {}; retiredMarketCars=[];
@@ -2513,6 +2531,7 @@ function resetGameProgress(resetClock){
     admApply();
 }
 function admTime(ms){
+    if(marketGameOver())return;
     ms = Number(ms);
     if(!isFinite(ms) || ms <= 0) return;
     gameMs += ms;
@@ -2712,6 +2731,7 @@ window.addEventListener("DOMContentLoaded", function(){
     initCollectors();
     initContracts();
     initCareer();
+    initMarketRisks();
     initBackups();
     initEntryReset();
     initIdentity();
@@ -2732,4 +2752,5 @@ window.addEventListener("DOMContentLoaded", function(){
     renderShop();
     renderTaskbar();
     offerEntryReset();
+    showMarketRiskNotice();
 });

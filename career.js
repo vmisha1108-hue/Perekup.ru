@@ -79,13 +79,15 @@ function prepareCareerCar(id,repair){
 }
 function careerConditionHtml(car){
     var state=careerVehicle(car),story=carStory(car);
-    return '<section class="vehicle-condition"><b>'+esc(story.title)+'</b><p>'+esc(state.repaired?'Подготовка выполнена, выявленные недостатки устранены.':state.inspected?story.defect || 'Диагностика не выявила требующих ремонта недостатков.':'Состояние можно уточнить диагностикой.')+'</p>'+(state.inspected?(!state.repaired && story.repair?'<button data-career-repair="'+car.id+'">Подготовить · '+money(story.repair)+'</button>':''):'<button data-career-inspect="'+car.id+'">Диагностика · 1 500 ₽</button>')+'</section>';
+    return '<section class="vehicle-condition"><b>'+esc(story.title)+'</b><p>'+esc(state.repaired?'Подготовка выполнена, выявленные недостатки устранены.':state.inspected?story.defect || 'Диагностика не выявила требующих ремонта недостатков.':'Состояние можно уточнить диагностикой.')+'</p>'+(state.inspected?(!state.repaired && story.repair?'<button data-career-repair="'+car.id+'">Подготовить · '+money(story.repair)+'</button>':''):'<button data-career-inspect="'+car.id+'">Диагностика · 1 500 ₽</button>')+'</section>'+marketConditionHtml(car);
 }
 function careerRecordSale(car,price,cost,disclosed){
     if(!career)return;
-    var state=careerVehicle(car),story=carStory(car),hidden=disclosed===false && (state.inspected || /проект|ремонт|восстанов/i.test(car.desc+' '+car.full)) && story.defect && !state.repaired;
+    var state=careerVehicle(car),story=carStory(car),mechanical=unrepairedMarketFault(car);
+    var knownWear=(state.inspected || /проект|ремонт|восстанов/i.test(car.desc+' '+car.full)) && story.defect && !state.repaired;
+    var hidden=disclosed===false && (mechanical || knownWear);
     career.sales++;career.profit+=price-cost;career.reputation=clamp(career.reputation+(hidden?-10:3),0,100);
-    if(hidden){var amount=Math.min(story.repair,Math.max(1000,Math.round(price*.1)));career.complaints.push({id:'claim-'+(++career.sequence),text:'Покупатель '+car.name+' обнаружил известные вам недостатки, не указанные в объявлении.',amount:amount,paid:false});toast('Покупатель оставил претензию. Репутация снижена; подробности в «Бизнесе».');}
+    if(hidden){var amount=Math.min((knownWear?story.repair:0)+(mechanical?mechanical.repairCost:0),Math.max(1000,Math.round(price*.1)));career.complaints.push({id:'claim-'+(++career.sequence),text:'Покупатель '+car.name+' обнаружил известные вам недостатки, не указанные в объявлении.',amount:amount,paid:false});toast('Покупатель оставил претензию. Репутация снижена; подробности в «Бизнесе».');}
     careerStep('sold');career.revision++;saveCareer();
 }
 function upgradeCareer(){
@@ -136,7 +138,7 @@ function careerCarMatches(order,car){
     if(order.type==='model' && (car.name.toLowerCase().indexOf((order.brand+' '+order.model).toLowerCase())!==0 || !/^(?:$|[ ,])/u.test(car.name.slice((order.brand+' '+order.model).length))))return false;
     if(order.type==='family' && !careerSegment(car,{segment:'suv'}))return false;
     var state=careerVehicle(car),story=carStory(car);
-    return order.type==='project' || car.newCar || (state.inspected && (!story.defect || state.repaired));
+    return order.type==='project' || car.newCar || (state.inspected && (!story.defect || state.repaired) && !unrepairedMarketFault(car));
 }
 function fulfillCareerOrder(id,carId,acknowledged){
     advanceGameTime(Date.now());tickPending();
@@ -175,6 +177,7 @@ function renderBusiness(force){
     var level=CAREER_LEVELS[career.level],next=CAREER_LEVELS[career.level+1],html='<header><p class="business-eyebrow">Ваш путь в автобизнесе</p><h2>'+level.name+'</h2><p>Цель прохождения — открыть свой автосалон. После этого можно продолжать свободную игру.</p></header><div class="business-stats"><div><small>Репутация</small><b>'+career.reputation+' / 100</b></div><div><small>Продаж</small><b>'+career.sales+'</b></div><div><small>Результат продаж</small><b>'+money(career.profit)+'</b></div></div><nav class="business-tabs">'+[['overview','Развитие'],['orders','Заказы клиентов'],['news','Новости рынка']].map(function(t){return '<button data-career-tab="'+t[0]+'" aria-pressed="'+(careerTab===t[0])+'">'+t[1]+'</button>';}).join('')+'</nav>';
     if(careerNotice)html+='<p role="status" class="business-notice">'+esc(careerNotice)+'</p>';
     if(careerTab==='overview'){
+        html+='<section class="business-card"><h3>Риски авторынка</h3><p>При покупке: 3% на угон с немедленным изъятием машины, 30% на скрытую механическую поломку. После пяти покупок угнанных машин игра заканчивается.</p><p>Изъятий: '+(marketRisks?marketRisks.seizures.length:0)+' / 5 · Убытки от изъятий: '+money(marketRisks?marketRisks.seizures.reduce(function(sum,s){return sum+s.loss;},0):0)+'.</p></section>';
         html+='<section class="business-card"><h3>'+(next?'Следующая цель: '+next.name:'Вы открыли свой автосалон!')+'</h3>'+(next?'<p>Продаж: '+career.sales+' / '+next.sales+'<br>Результат продаж: '+money(career.profit)+' / '+money(next.profit)+'<br>Репутация: '+career.reputation+' / '+next.reputation+'<br>Инвестиция: '+money(next.price)+'</p><p>После открытия: '+next.places+' дополнительных мест в московском гараже.</p><button data-career-upgrade>Открыть бизнес</button>':'<p>Основная цель достигнута. Новые заказы и события продолжают появляться; развивайте репутацию и собирайте автопарк.</p>')+'<small>Результат — сумма прибыли и убытков по продажам с учётом себестоимости и урегулированных претензий. Кредиты, гаражи и прочие расходы бизнеса сюда не входят.</small></section>';
         if(career.level===3)html+='<section class="business-card"><h3>Витрина вашего салона</h3><p>Машин на продаже: '+Object.keys(listings).length+'. Новые клиентские заказы приносят на 20% больше вознаграждения.</p><ul>'+Object.keys(listings).slice(0,8).map(function(id){return '<li>'+esc(carById(Number(id)).name)+' · '+money(listings[id].price)+'</li>';}).join('')+'</ul><button data-career-open="garage">Подготовить и выставить автомобиль</button></section>';
         html+='<section class="business-card"><h3>Помощник по подбору</h3><p>После уровня «Автобизнес» можно заключить договор с подборщиком за 30 000 ₽. Он ускоряет появление откликов на 25%. Покупки и подписи остаются за вами.</p>'+(career.assistant?'<b>Помощник работает</b>':'<button data-career-hire'+(career.level<2?' disabled':'')+'>Нанять · 30 000 ₽</button>')+'</section>';

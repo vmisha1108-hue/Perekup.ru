@@ -1,7 +1,7 @@
 'use strict';
 
 var pendingBackup=null;
-var BACKUP_KEYS=['balance','garage','deals','garageLvl','notes','pending','purchasePrices','listings','retiredMarketCars','gameMs','bank','transport','commerce','career','contracts','chats','playerIdentity','appearance','musicSettings','helpPromptSeen','startingBalanceVersion','sellerSessionMoods','marketLocation','iconPos','iconLayoutVersion'];
+var BACKUP_KEYS=['balance','garage','deals','garageLvl','notes','pending','purchasePrices','listings','retiredMarketCars','gameMs','bank','transport','commerce','career','marketRisks','contracts','chats','playerIdentity','appearance','musicSettings','helpPromptSeen','startingBalanceVersion','sellerSessionMoods','marketLocation','iconPos','iconLayoutVersion'];
 function backupAllowed(key){return BACKUP_KEYS.indexOf(key)!==-1 || /^window_(market|shop|calc|calendar|clock|bank|travel|documents|garage|help|settings|import|dealer|business|chat)$/.test(key);}
 function gameBackup(){
     save();saveContracts();persistChats();
@@ -15,7 +15,7 @@ function validateGameBackup(value){
     if(!Number.isSafeInteger(decoded.balance) || decoded.balance<0 || !Array.isArray(decoded.garage) || decoded.garage.some(function(id){return !Number.isSafeInteger(id) || !carById(id);}) || new Set(decoded.garage).size!==decoded.garage.length)throw new Error('Повреждены баланс или список автомобилей.');
     if(!isRecord(decoded.playerIdentity) || decoded.playerIdentity.version!==1 || !validNickname(decoded.playerIdentity.nickname) || !validSignature(decoded.playerIdentity.signature))throw new Error('В копии нет корректного ника и подписи.');
     if(!Number.isSafeInteger(decoded.gameMs) || decoded.gameMs<0 || decoded.gameMs>4102444800000)throw new Error('Некорректная игровая дата.');
-    ['bank','transport','commerce','career','contracts','chats','purchasePrices','listings','notes'].forEach(function(key){if(key in decoded && !isRecord(decoded[key]))throw new Error('Повреждён раздел '+key+'.');});
+    ['bank','transport','commerce','career','marketRisks','contracts','chats','purchasePrices','listings','notes'].forEach(function(key){if(key in decoded && !isRecord(decoded[key]))throw new Error('Повреждён раздел '+key+'.');});
     ['pending','retiredMarketCars'].forEach(function(key){if(key in decoded && !Array.isArray(decoded[key]))throw new Error('Повреждён раздел '+key+'.');});
     return value;
 }

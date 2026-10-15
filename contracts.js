@@ -135,6 +135,8 @@ function signContract(){
     // Capture the actual cost before selling removes it from purchasePrices.
     var cost=purchasePrices[draft.carId],acquisition=commerceAcquisition(draft.carId);
     var record={version:1,id:draft.id,number:draft.number,mode:draft.mode,carId:draft.carId,city:draft.city,createdAt:draft.createdAt,signedAt:gameMs,price:draft.price,purchasePrice:draft.mode==='buy'?draft.price:Number.isSafeInteger(cost) && cost>0?cost:null,vehicle:Object.assign({},draft.vehicle),seller:draft.mode==='buy'?draft.other:player,buyer:draft.mode==='buy'?player:draft.other};
+    var risk=marketRiskFor(chat.car);
+    if(draft.mode==='buy' && risk && risk.pickerPaid){record.purchasePrice+=risk.pickerPaid;record.costIncludesExpenses=true;record.costBreakdown={vehicle:draft.price,preparation:risk.pickerPaid};}
     if(acquisition && draft.mode==='sell'){record.costIncludesExpenses=true;record.costBreakdown=JSON.parse(JSON.stringify(acquisition.costs));}
     if(draft.mode==='sell')addPreparationToContract(record,draft.carId,cost);
     contractSigning=true;
