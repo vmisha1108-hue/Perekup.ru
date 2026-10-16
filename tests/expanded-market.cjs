@@ -32,6 +32,22 @@ const server=http.createServer((req,res)=>{const pathname=new URL(req.url,'http:
  await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));const browser=await chromium.launch({executablePath:process.env.CHROMIUM_PATH||'/usr/bin/chromium',args:['--no-sandbox']});let passed=1;
  async function scenario(name,run,viewport={width:1280,height:900}){const context=await browser.newContext({viewport}),page=await context.newPage(),errors=[];installEntryContinue(page);installExpandedFilters(page);page.on('pageerror',e=>errors.push(e.message));await page.addInitScript(()=>{localStorage.setItem('helpPromptSeen','1');localStorage.setItem('musicSettings','{"enabled":false}');Date.now=()=>new Date(2030,0,15,12).getTime();Math.random=()=>.9;});try{await page.goto('http://127.0.0.1:'+server.address().port,{waitUntil:'networkidle'});await run(page);assert.deepEqual(errors,[]);console.log('PASS '+name);passed++;}finally{await context.close();}}
  try{
+  await scenario('visible national scope and show-all controls expose all 4000 cards without opening advanced filters',async page=>{
+   await page.evaluate(()=>{openWin('market');$('marketAdvanced').hidden=true;$('filterToggle').setAttribute('aria-expanded','false');});
+   assert.ok(await page.locator('#marketAllRussia').isVisible());assert.ok(await page.locator('#fLocal').isVisible());
+   await page.locator('#fSearch').fill('BMW');await page.locator('#marketAllRussia').click();
+   assert.equal(await page.locator('#fSearch').inputValue(),'');assert.ok(!await page.locator('#marketAdvanced').isVisible());
+   assert.match(await page.locator('#fCount').textContent(),/В каталоге: 4000.*Найдено: 4000.*Показано: 60/);
+   assert.equal(await page.locator('#content .card').count(),60);
+   await page.locator('#marketShowAll').click();assert.equal(await page.locator('#content .card').count(),4000);
+   assert.equal(await page.locator('#content .card').evaluateAll(cards=>new Set(cards.map(c=>c.dataset.info)).size),4000);
+   assert.match(await page.locator('#fCount').textContent(),/Показано: 4000/);assert.ok(!await page.locator('#marketShowAll').isVisible());
+   assert.ok(await page.locator('#win-market .win-body').evaluate(el=>el.scrollWidth<=el.clientWidth+1));
+   await page.locator('#win-market .win-body').evaluate(el=>el.scrollTop=0);await page.locator('#fLocal').click();
+   assert.equal(await page.locator('#content .card').count(),60);assert.equal(await page.evaluate(()=>filters.city),await page.evaluate(()=>playerCity().id));
+   await page.locator('#marketAllRussia').click();await page.reload({waitUntil:'networkidle'});await page.evaluate(()=>openWin('market'));
+   assert.equal(await page.locator('#fCity').inputValue(),'');assert.match(await page.locator('#fCount').textContent(),/Найдено: 4000/);
+  },{width:390,height:844});
   await scenario('prices stay in range across session refreshes and market events, with affordable opening inventory',async page=>{
    const result=await page.evaluate(()=>{let valid=true;for(let i=0;i<20;i++){initMarketSession();career.cycle=i;applyCareerMarket();valid=valid&&CARS.every(c=>c.price>=10000&&c.price<=99000000);}return {valid,local:CARS.filter(c=>c.cityId===moscowCity.id&&c.price<=START_BALANCE).length,all:CARS.length};});assert.equal(result.valid,true);assert.ok(result.local>=10);assert.equal(result.all,4000);
   });

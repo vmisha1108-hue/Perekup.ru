@@ -89,3 +89,14 @@ html[data-os="macos"] .win-btns button:hover .window-control-icon,html[data-os="
 .wallpaper-swatch{display:block;width:100%;height:auto;object-fit:cover;opacity:1}
 @container(max-width:580px){#win-market[data-view="market"] .grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:600px){#win-market[data-view="market"] .grid{grid-template-columns:repeat(2,minmax(0,1fr))}#win-market[data-view="market"] .card .car-img{max-height:none}}
+
+/* Market scope and pagination stay outside the collapsed advanced filters. */
+.market-scope{display:flex;flex-wrap:wrap;gap:8px;width:100%}.market-scope[hidden]{display:none}.market-scope button{min-height:36px;flex:1 1 160px;font-size:12px}.market-scope button[aria-pressed="true"]{border-color:var(--ui-accent);color:var(--ui-accent);font-weight:700}.market-pagination{display:flex;flex-wrap:wrap;gap:8px}.market-pagination .market-more{flex:1 1 180px}.market-pagination button[hidden]{display:none}#win-market .filters .f-count{font-size:12px;line-height:1.5;opacity:1;color:var(--ui-text)}
+@container(max-height:520px){
+    #win-market .tabs{margin-bottom:8px}
+    #win-market .tabs .tab{padding-top:6px;padding-bottom:6px;min-height:32px}
+    #win-market .filters{gap:6px;margin-bottom:8px}
+    #win-market .filters input[type=search],#win-market .filter-toggle{height:32px}
+    #win-market .market-scope button{min-height:28px;padding:5px 8px;font-size:11px}
+    #win-market .filters .f-count{font-size:11px;line-height:1.3}
+}

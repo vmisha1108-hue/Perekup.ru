@@ -485,7 +485,12 @@ function saveMarketLocation(){
 }
 function updateLocationControls(){
     var city = CITY_BY_ID[filters.city];
-    $("fLocal").textContent = "Искать: " + playerCity().name;
+    $("fLocal").textContent = "Мой город · " + playerCity().name;
+    $("fLocal").setAttribute('aria-pressed',String(filters.city===playerCity().id && filters.radius==='0'));
+    if($("marketAllRussia")){
+        $("marketAllRussia").textContent='Вся Россия · '+CARS.length.toLocaleString('ru-RU');
+        $("marketAllRussia").setAttribute('aria-pressed',String(!filters.city || filters.radius==='all'));
+    }
     $("fCity").value = city ? city.label : "";
     $("fRadius").value = filters.radius;
     $("fRadius").disabled = !city;
@@ -532,16 +537,17 @@ function bindFilters(){
     $("fMax").addEventListener("input", function(){ filters.max = this.value; marketLimit = 60; refreshList(); });
     $("fMood").addEventListener("change", function(){ filters.mood = this.value; marketLimit = 60; refreshList(); });
     $("fAfford").addEventListener("change", function(){ filters.afford = this.checked; marketLimit = 60; refreshList(); });
-    $("fReset").addEventListener("click", function(){
-        filters = {q:"", sort:"default", min:"", max:"", mood:"all", afford:false, city:playerCity().id, radius:"0"};
-        marketLimit = 60;
-        $("fSearch").value = ""; $("fSort").value = "default";
-        $("fMin").value = ""; $("fMax").value = "";
-        $("fMood").value = "all"; $("fAfford").checked = false;
-        saveMarketLocation();
-        updateLocationControls();
-        refreshList();
-    });
+    $("fReset").addEventListener("click", function(){resetMarketFilters(playerCity().id);});
+    $("marketAllRussia").addEventListener("click", function(){resetMarketFilters("");});
+    $("marketShowAll").addEventListener("click", function(){marketLimit=availableMarketCars().length;showMarket();});
+}
+
+function resetMarketFilters(cityId){
+    filters={q:"",sort:"default",min:"",max:"",mood:"all",afford:false,city:cityId,radius:cityId?"0":"all"};
+    marketLimit=60;
+    $("fSearch").value="";$("fSort").value="default";$("fMin").value="";$("fMax").value="";
+    $("fMood").value="all";$("fAfford").checked=false;
+    saveMarketLocation();updateLocationControls();refreshList();
 }
 
 /* ================= РЫНОК ================= */
@@ -561,6 +567,8 @@ function setTabs(active){
     if($("fLocal")) $("fLocal").hidden = active !== "market";
     if($("fRadius")) $("fRadius").hidden = active !== "market";
     if($("marketMore")) $("marketMore").hidden = true;
+    if($("marketShowAll")) $("marketShowAll").hidden = true;
+    if($("marketAllRussia")) $("marketAllRussia").parentElement.hidden=active!=="market";
     updateLocationControls();
 }
 function showMarket(){
@@ -585,10 +593,12 @@ function showMarket(){
             '</div></article>';
     }).join("");
     if(!shown.length) $("content").innerHTML = noResults();
-    updateResultCount(shown.length, available.length);
-    if(pageCars.length < shown.length){
-        $("fCount").textContent = "Найдено: " + shown.length + " из " + available.length + " · на экране " + pageCars.length;
-        $("marketMore").hidden = false;
+    $("fCount").textContent='В каталоге: '+CARS.length+' · В продаже: '+available.length+' · Найдено: '+shown.length+' · Показано: '+pageCars.length;
+    if(pageCars.length<shown.length){
+        $("marketMore").hidden=false;
+        $("marketMore").textContent='Показать ещё '+Math.min(60,shown.length-pageCars.length)+' машин';
+        $("marketShowAll").hidden=false;
+        $("marketShowAll").textContent='Показать все найденные · '+shown.length;
     }
     updateStats();
 }
