@@ -42,6 +42,7 @@
             <div id="settingsSignatureEditor" hidden><form id="settingsSignatureForm" novalidate><label for="settingsSignatureCanvas">Нарисуйте новую подпись мышью или пальцем</label><canvas id="settingsSignatureCanvas" width="640" height="240" aria-label="Рисование новой подписи"></canvas><p class="settings-muted">Сначала нарисуйте, затем сохраните. Отмена оставит прежнюю подпись.</p><div class="settings-actions"><button type="button" class="settings-secondary" id="settingsClearSignature">Очистить</button><button type="button" class="settings-secondary" id="settingsCancelSignature">Отмена</button><button type="submit" id="settingsSaveSignature">Сохранить подпись</button></div><p class="settings-error" id="settingsSignatureError" role="alert"></p></form></div>
         </section>
         <section class="settings-section"><h2>Резервная копия</h2><p>Сохраните прогресс в файл, чтобы перенести игру или восстановить её после очистки браузера. В копию входят ник, подпись, деньги, автомобили, заказы и договоры.</p><button type="button" id="backupExport">Скачать сохранение</button><label class="backup-file">Выбрать файл сохранения<input type="file" id="backupFile" accept=".json,application/json"></label><p id="backupStatus" role="status"></p><button type="button" id="backupRestore" hidden>Заменить текущий прогресс этой копией</button></section>
+        <section class="settings-section"><h2>ИИ-продавец · проба</h2><p>Только Дмитрий с Ладой 2114 Самара, 2006. Остальные продавцы работают как раньше. Бесплатные модели OpenRouter могут отвечать с задержкой или быть недоступны.</p><p>Сообщения из этого чата и описание машины передаются OpenRouter и провайдеру модели. Ключ хранится только в памяти до закрытия или перезагрузки вкладки, в сохранение не попадает.</p><p><a href="https://openrouter.ai/settings/keys" target="_blank" rel="noopener noreferrer">Получить личный ключ OpenRouter</a></p><form id="aiSellerForm"><label for="aiSellerKey">Личный API-ключ</label><div class="settings-input-row"><input id="aiSellerKey" type="password" autocomplete="off" placeholder="Вставьте ключ" required><button type="submit">Подключить</button></div></form><button id="aiSellerDisconnect" type="button">Отключить ИИ</button><p id="aiSellerStatus" role="status">ИИ отключён. Работают обычные диалоги.</p></section>
         <section class="settings-section settings-danger"><h2>Сброс прогресса</h2><p>Удалит деньги, автомобили, долги, переписки, встречи и договоры. Новая игра начнётся со 100 000 ₽. Ник, подпись, оформление и настройка музыки сохранятся.</p><button type="button" id="settingsReset">Сбросить сохранения</button></section>
     </div>
 </div>
@@ -632,5 +633,6 @@
 <script src="tuning.js?v=20261016-tuning-tabs"></script>
 <script src="market-photo-crops.js?v=20261016-market-grid"></script>
 <script src="script.js?v=20261016-tuning"></script>
+<script src="ai-seller.js?v=20261016-ai-trial"></script>
 </body>
 </html>
