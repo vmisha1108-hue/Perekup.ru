@@ -22,7 +22,7 @@ const server=http.createServer(async(req,res)=>{
         installEntryContinue(page);await page.addInitScript(()=>{localStorage.setItem('helpPromptSeen','1');window.testNow=new Date(2030,0,15,12).getTime();Date.now=()=>testNow;Math.random=()=>.9;});
         try{await page.goto('http://127.0.0.1:'+server.address().port,{waitUntil:'networkidle'});await run(page);assert.deepEqual(errors,[]);passed++;console.log('PASS '+name);}finally{await context.close();}
     }
-    async function delinquent(page,kind='micro',days=90){
+    async function delinquent(page,kind='micro',days=30){
         return page.evaluate(({kind,days})=>{
             Math.random=()=>0;
             if(kind==='credit'){requestCredit(50000,12);waitForBank();acceptCredit();}
@@ -34,16 +34,16 @@ const server=http.createServer(async(req,res)=>{
         },{kind,days});
     }
     try{
-        await scenario('90-day threshold is measured from unpaid deadline for both loan kinds',async page=>{
-            const micro=await delinquent(page,'micro',89);
+        await scenario('30-day threshold is measured from unpaid deadline for both loan kinds',async page=>{
+            const micro=await delinquent(page,'micro',29);
             assert.equal(await page.evaluate(()=>collectorPressureLevel()),0);
-            await page.evaluate(id=>{gameMs=bank.loans.find(l=>l.id===id).overdueAt+90*BANK_DAY-1;tickPending();},micro);
+            await page.evaluate(id=>{gameMs=bank.loans.find(l=>l.id===id).overdueAt+30*BANK_DAY-1;tickPending();},micro);
             assert.equal(await page.evaluate(()=>collectorPressureLevel()),0);
             await page.evaluate(()=>{gameMs++;tickPending();});
             assert.equal(await page.evaluate(()=>collectorPressureLevel()),1);assert.ok(await page.evaluate(()=>bank.collectors.active));
             await page.evaluate(()=>{balance=100000;bank=freshBank();syncCollectors();});
-            await delinquent(page,'credit',89);assert.equal(await page.evaluate(()=>collectorPressureLevel()),0);
-            await page.evaluate(()=>{gameMs=bankActive('credit').overdueAt+90*BANK_DAY;tickPending();});
+            await delinquent(page,'credit',29);assert.equal(await page.evaluate(()=>collectorPressureLevel()),0);
+            await page.evaluate(()=>{gameMs=bankActive('credit').overdueAt+30*BANK_DAY;tickPending();});
             assert.equal(await page.evaluate(()=>collectorPressureLevel()),1);
         });
         await scenario('performing long-term credit never triggers collectors merely because it is old',async page=>{
@@ -86,7 +86,7 @@ const server=http.createServer(async(req,res)=>{
         await scenario('pressure grows at 120 and 180 days and slows new buyer responses',async page=>{
             const base=await page.evaluate(()=>{Math.random=()=>.5;return nextBuyerDelay({price:100000,purchasePrice:100000});});
             await delinquent(page);
-            for(const [days,level,factor] of [[90,1,1.5],[120,2,2],[180,3,3]]){
+            for(const [days,level,factor] of [[30,1,1.5],[120,2,2],[180,3,3]]){
                 const current=await page.evaluate(days=>{gameMs=bankActive('micro').overdueAt+days*BANK_DAY;tickBank();Math.random=()=>.5;return {level:collectorPressureLevel(),delay:nextBuyerDelay({price:100000,purchasePrice:100000})};},days);
                 assert.equal(current.level,level);assert.ok(Math.abs(current.delay-base*factor)<2);
             }
@@ -132,7 +132,7 @@ const server=http.createServer(async(req,res)=>{
         await scenario('both overdue loan kinds keep pressure until all aged arrears are cleared',async page=>{
             await page.evaluate(()=>{
                 Math.random=()=>0;requestCredit(50000,12);waitForBank();acceptCredit();takeMicro(10000);spend(balance,'Расход');
-                gameMs=bankActive('credit').nextDueAt+90*BANK_DAY;tickPending();
+                gameMs=bankActive('credit').nextDueAt+30*BANK_DAY;tickPending();
             });
             assert.equal(await page.evaluate(()=>bank.collectors.loanIds.length),2);
             await page.evaluate(()=>{changeBalance(loanDebt(bankActive('micro')),'Доход','income');tickPending();});

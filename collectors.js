@@ -1,6 +1,6 @@
 'use strict';
 
-var COLLECTOR_GRACE = 90*BANK_DAY;
+var COLLECTOR_GRACE = 30*BANK_DAY;
 var collectorBusy = false, collectorPreviousFocus = null;
 function collectorState(){
     if(!bank) return null;
@@ -49,7 +49,7 @@ function syncCollectors(){
     if(s.active && wasActive && s.nextEventAt===null){s.nextEventAt=gameMs+30*60000;changed=true;}
     if(s.active && !wasActive){
         s.nextEventAt=gameMs+30*60000;
-        collectorLog('started','Просрочка достигла 90 дней. Долг передан игровому отделу взыскания.');
+        collectorLog('started','Просрочка достигла 30 дней. Долг передан игровому отделу взыскания.');
         toast('📞 Коллекторы подключились к просроченному долгу. Подробности в Банке.',function(){openWin('bank');});
     }else if(!s.active){
         s.call=null;s.nextEventAt=null;hideCollectorCall();
