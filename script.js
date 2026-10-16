@@ -2525,7 +2525,7 @@ function resetGameProgress(resetClock){
     if(resetClock){gameMs=Date.now();lastRealMs=Date.now();lastDayKey='';lastClockStr='';calYear=gameNow().getFullYear();calMonth=gameNow().getMonth();}
     balance = START_BALANCE; garage = []; deals = 0; garageLvl = 0; notes = {}; pending = [];
     purchasePrices = {}; listings = {}; chatStore = {}; retiredMarketCars=[];
-    transport = newTransport();garageTab="cars";tuningSelection=null;tuningDraft=null;tuningBefore=false;
+    transport = newTransport();garageTab="cars";
     bank=freshBank();bankRenderKey='';bankRecord(START_BALANCE,'Стартовый баланс','opening');
     resetContracts();
     commerceScreen={import:'catalog',dealer:'catalog'};commerceCatalog={import:{brand:'all',query:'',page:0},dealer:{brand:'all',query:'',page:0}};commerce=freshCommerce();commerceSelection={import:null,dealer:null};commerceMessages={import:'',dealer:''};commerceFilters={import:'all',dealer:'all'};commerceRenderKeys={};saveCommerce();renderCommerce('import',true);renderCommerce('dealer',true);
