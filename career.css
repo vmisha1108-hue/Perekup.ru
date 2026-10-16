@@ -6,3 +6,6 @@
 .car-img .car-visual>img,.car-modal-img .car-visual>img,.commerce-photo .car-visual>img,.vehicle-image .car-visual>img,.trade-photo .car-visual>img,#meetingCarImage .car-visual>img{width:100%;height:100%;object-fit:contain;object-position:center}
 .commerce-stock>.commerce-photo{flex-shrink:0}
 .showroom-art-wrap{background:var(--ui-input)}
+
+/* Fill dealer frames while preserving the vehicle proportions. */
+#commerce-dealer .commerce-photo:has(.showroom-art-wrap){width:100%;height:auto;aspect-ratio:3/2;align-self:start}

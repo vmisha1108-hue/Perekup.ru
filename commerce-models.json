@@ -738,7 +738,9 @@
     "engine": "2.5 л, гибрид, вариатор",
     "body": "кроссовер",
     "country": "Япония",
-    "photoFile": "File:LEXUS NX350h AWD F-SPORT China(6).jpg"
+    "photoFile": "File:LEXUS NX350h AWD F-SPORT China(6).jpg",
+    "variant": "300h",
+    "variantSource": "https://media.lexus.ca/en/releases/2018/stand-out-from-the-crowd-in-the-2019-lexus-nx-series.html"
   },
   {
     "key": "lexus-ux",
@@ -749,7 +751,9 @@
     "engine": "2.0 л, гибрид, вариатор",
     "body": "кроссовер",
     "country": "Япония",
-    "photoFile": "File:Lexus UX (Front), Jakarta, Indonesia.jpg"
+    "photoFile": "File:Lexus UX (Front), Jakarta, Indonesia.jpg",
+    "variant": "250h",
+    "variantSource": "https://media.lexus.co.uk/new-ux-250h-crossover-delivers-wide-ranging-benefits-with-fourth-generation-lexus-self-charging-hybrid-powertrain/"
   },
   {
     "key": "lexus-lm",

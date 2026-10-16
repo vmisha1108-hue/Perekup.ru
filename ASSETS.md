@@ -1,3 +1,7 @@
+## Catalogue framing and model labels
+
+Dealer frames use a 3:2 aspect ratio and proportional SVG fill, removing side bars without stretching the vehicle shape. Import drawings retain their fitted framing. Import titles show the stored vehicle year again; the NX 300h (2.5 hybrid) and UX 250h (2.0 hybrid) suffixes are sourced from Lexus manufacturer press releases linked in `commerce-models.json`. Existing stock keys, car IDs, prices and archived contract snapshots are unchanged.
+
 # Dealer showroom images and complete car framing
 
 The built-in `image_gen` tool generated two photographic game atlases for all 49 active dealer models. Final files: `img/commerce/dealer-showroom-v1.webp` (25 models) and `img/commerce/dealer-showroom-v2.webp` (24 models, one empty cell), each 1254 × 1254. Their adjacent JSON manifests assign explicit pixel rectangles to model keys. These are generated model illustrations in a consistent showroom, not documentary photographs of specific stock vehicles. Existing stock IDs, prices, documents and saved purchases are unchanged.
