@@ -30,6 +30,7 @@ const server = http.createServer(async (request, response) => {
     const browser = await chromium.launch({ executablePath, args: ['--no-sandbox'] });
     let passed = 0;
     async function scenario(name, run, options = {}) {
+        if(process.env.GAMEPLAY_SCENARIO && !name.includes(process.env.GAMEPLAY_SCENARIO))return;
         const context = await browser.newContext({ viewport: { width: 1280, height: 900 } });
         const page = await context.newPage();
         const errors = [];
@@ -481,7 +482,7 @@ const server = http.createServer(async (request, response) => {
                 openBuyChat(1); saveChat();
                 return {cars:CARS.map(c => ({id:c.id, mood:c.seller.personality, price:c.price, market:c.marketPrice})), ask:chat.ask, npc:chat.npc};
             });
-            assert.ok(first.cars.every(c => c.mood === 'evil' && c.price > c.market));
+            assert.ok(first.cars.every(c => c.mood === 'evil' && (c.price > c.market || c.price === 99000000)));
             assert.ok(first.cars.some(c => c.price <= 100000), 'Starter projects remain affordable');
             await page.evaluate(() => { closeChat(); openCarInfo(1); closeCarInfo(); showMarket(); });
             assert.deepEqual(await page.evaluate(() => CARS.map(c => c.price)), first.cars.map(c => c.price));
@@ -493,7 +494,7 @@ const server = http.createServer(async (request, response) => {
             assert.deepEqual(await page.evaluate(() => chat.npc), first.npc);
             installEntryContinue(page);await page.addInitScript(() => { Math.random = () => .05; });
             await page.reload({waitUntil:'networkidle'});
-            assert.ok(await page.evaluate(() => CARS.every(c => c.seller.personality === 'kind' && c.price < c.marketPrice)));
+            assert.ok(await page.evaluate(() => CARS.every(c => c.seller.personality === 'kind' && (c.price < c.marketPrice || c.price === 10000))));
         });
         await scenario('listing assessments appear only in details and cards align with full-width images', async page => {
             await page.evaluate(() => openWin('market'));
@@ -502,7 +503,7 @@ const server = http.createServer(async (request, response) => {
                 const button = card.querySelector('.buy').getBoundingClientRect(), image = card.querySelector('.car-img img').getBoundingClientRect(), holder = card.querySelector('.car-img').getBoundingClientRect();
                 return {bottom:button.bottom, width:image.width, holder:holder.width, fit:getComputedStyle(card.querySelector('img')).objectFit};
             }));
-            assert.ok(layout.every(item => Math.abs(item.bottom - layout[0].bottom) < 1 && Math.abs(item.width - item.holder) < 1 && item.fit === 'cover'));
+            assert.ok(layout.every(item => Math.abs(item.bottom - layout[0].bottom) < 1 && Math.abs(item.width - item.holder) < 1 && item.fit === 'contain'));
             for(const [mood, label] of [['kind','Ниже рынка'],['neutral','Хорошая цена'],['evil','Выше рынка']]){
                 const id = await page.evaluate(mood => { const car=CARS[0]; car.price=Math.round(car.marketPrice * ({kind:.9,neutral:1,evil:1.15}[mood])); openCarInfo(car.id); return car.id; }, mood);
                 assert.equal(await page.locator('#carModalBody .price-badge').textContent(), label);

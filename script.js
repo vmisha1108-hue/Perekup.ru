@@ -576,7 +576,7 @@ function showMarket(){
             '<div class="car-img">' + carImg(car) + '</div>' +
             '<div class="info">' +
                 '<div class="name">' + esc(car.name) + '</div>' +
-                '<div class="car-location">' + esc(carLocationText(car, filters.city)) + (car.legend ? ' · 🏁 Легенда' : '') + '</div>' +
+                '<div class="car-location">' + esc(carLocationText(car, filters.city)) + (car.legend ? ' · 🏁 Легенда' : car.rare ? ' · 💎 Редкая' : '') + '</div>' +
                 '<div class="meta">' + esc(shortDesc(vehicleDesc(car), 60)) + '</div>' +
                 '<div class="more">Подробнее ›</div>' +
                 '<div class="seller">' + car.seller.avatar + ' ' + car.seller.name + ' · ' + p.label + '</div>' +

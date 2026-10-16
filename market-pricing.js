@@ -39,8 +39,8 @@ function initMarketSession(){
         current[car.id] = mood;
         var factor = mood === 'kind' ? 0.85 + Math.random() * 0.09
             : mood === 'evil' ? 1.08 + Math.random() * 0.14 : 0.97 + Math.random() * 0.06;
-        car.marketPrice = Math.max(1000, Math.round(car.marketPrice * marketMove / 500) * 500);
-        car.price = Math.max(1000, Math.round(car.marketPrice * factor / 500) * 500);
+        car.marketPrice = Math.max(10000, Math.min(99000000, Math.round(car.marketPrice * marketMove / 500) * 500));
+        car.price = Math.max(10000, Math.min(99000000, Math.round(car.marketPrice * factor / 500) * 500));
     });
     localStorage.setItem('sellerSessionMoods', JSON.stringify(current));
     if(typeof career!=='undefined' && career){CARS.forEach(function(c){c.careerSessionPrice=c.price;c.careerSessionMarket=c.marketPrice;});applyCareerMarket();}

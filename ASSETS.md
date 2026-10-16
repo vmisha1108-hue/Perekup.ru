@@ -6,7 +6,7 @@ The exact final prompt set and built-in mode are recorded in `data/urban-generat
 
 ## Private-market image audit and reviewed frames
 
-All 837 current private-market photos were checked for existence, decoding and contact-sheet slicing artefacts. The 87 corrections in `data/market-photo-crops.json` remove divider lines and fragments of neighbouring panels at display time. Original raster files are untouched. Each reviewed entry records source dimensions and SHA-256; `python3 scripts/build-market-photo-crops.py` validates the originals and compiles the small `market-photo-crops.js` browser lookup. The same proportional SVG frame is used in cards, detailed views and the garage. Cosmetic wear overlays remain separate.
+All 837 original private-market photos were checked for existence, decoding and contact-sheet slicing artefacts. The 87 corrections in `data/market-photo-crops.json` remove divider lines and fragments of neighbouring panels at display time. Original raster files are untouched. Each reviewed entry records source dimensions and SHA-256; `python3 scripts/build-market-photo-crops.py` validates the originals and compiles the small `market-photo-crops.js` browser lookup. The same proportional SVG frame is used in cards, detailed views and the garage. Cosmetic wear overlays remain separate.
 
 ## Catalogue framing and model labels
 
@@ -63,3 +63,7 @@ Russian dealer selection was informed by official model ranges, including:
 - https://livan-motors.ru/model/x3pro/
 
 `commerce-models.json` is the curated source, `scripts/fetch-commerce-photos.py` refreshes the local photograph cache, and `scripts/build-commerce-models.py` compiles the browser data and attribution page. The game does not fetch catalogue data or photographs from third-party sites at runtime.
+
+## Expanded private market
+
+`expanded-cars.js` adds 3,163 deterministic fictional listings to the original 837, for 4,000 total. Its frozen source-model order and reserved ID namespace preserve saved ownership and conversations. Added listings reuse the exact source model illustration through `sourceCarId`; they do not claim a newly generated photograph for each vehicle. Equipment, mileage and disclosed condition belong to the individual listing and are described separately. The original photo crop manifest still audits the original 837 physical model illustrations. No new raster assets were created for this expansion.

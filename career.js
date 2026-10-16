@@ -47,7 +47,7 @@ function careerSegment(car,event){
     return false;
 }
 function applyCareerMarket(){
-    var event=careerEvent();CARS.forEach(function(car){var factor=careerSegment(car,event)?event.factor:1;car.price=Math.round(car.careerSessionPrice*factor/500)*500;car.marketPrice=Math.round(car.careerSessionMarket*factor/500)*500;});
+    var event=careerEvent();CARS.forEach(function(car){var factor=careerSegment(car,event)?event.factor:1;car.price=Math.max(10000,Math.min(99000000,Math.round(car.careerSessionPrice*factor/500)*500));car.marketPrice=Math.max(10000,Math.min(99000000,Math.round(car.careerSessionMarket*factor/500)*500));});
 }
 function careerFx(){return career?careerEvent().fx:1;}
 function careerBuyerFactor(car){
@@ -62,6 +62,7 @@ function careerVehicle(car){
 }
 function carStory(car){
     if(car.newCar)return {title:'Новый автомобиль',text:'Предпродажная подготовка выполнена. Проверьте выбранную комплектацию и VIN при выдаче.',defect:'',repair:0};
+    if(car.expanded && car.story)return {title:car.story.title,text:car.story.text,defect:car.story.defect,repair:car.story.repair};
     var seed=hashStr('car-history:'+car.id)>>>0,cheap=(car.basePrice || car.price)<=100000;
     var stories=[['Продажа перед переездом','Владелец переезжает и освобождает парковочное место. Быстрая сделка ему удобнее долгой переписки.'],['Семейный автомобиль','Машиной пользовались каждый день. На осмотре стоит проверить ходовую и следы бытовых повреждений.'],['После долгой стоянки','Автомобиль некоторое время стоял без движения. Проверьте жидкости, аккумулятор и тормоза.'],['Бережный владелец','Владелец готов рассказать об обслуживании. Сверьте его рассказ с состоянием машины.'],['Редкая комплектация','Автомобиль может заинтересовать ценителя марки. Подбор покупателя потребует терпения.'],['Рабочая лошадка','У машины заметные следы повседневной эксплуатации. Низкая цена требует внимательного осмотра.']];
     var story=stories[seed%stories.length],defect=cheap?'Потёртости кузова; нужны расходники и обслуживание подвески.':seed%5===0?'Износ тормозов и подвески: требуется обслуживание.':'';

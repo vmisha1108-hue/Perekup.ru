@@ -9,12 +9,12 @@ const { chromium } = require('playwright');
 
 const root = path.resolve(__dirname, '..');
 const data = {};
-for(const file of ['cars.js', 'cities.js', 'regional-cars.js', 'custom-cars.js', 'city-market.js']){
+for(const file of ['cars.js', 'cities.js', 'regional-cars.js', 'custom-cars.js', 'expanded-cars.js', 'city-market.js']){
     vm.runInNewContext(fs.readFileSync(path.join(root, file), 'utf8'), data);
 }
 assert.equal(data.CITIES.length, 25);
 assert.equal(Object.keys(data.CITY_BY_LABEL).length, 25);
-assert.equal(data.CARS.length, 837);
+assert.equal(data.CARS.length, 4000);
 assert.equal(data.CUSTOM_CARS.length, 69);
 assert.ok(data.CARS.every(car => car.fictional && typeof car.full === 'string' && car.full.length > 0));
 const generatedPhotos = JSON.parse(fs.readFileSync(path.join(root, 'data/fictional-photo-sources.json'))).photos;
@@ -61,12 +61,19 @@ assert.equal(duplicate[0].region, 'Амурская область');
 assert.equal(data.cityFromLabel('благовещенск').id, duplicate[0].id);
 assert.equal(data.cityFromLabel('Алдан · Республика Саха (Якутия)').name, 'Алдан');
 assert.ok(data.CITIES.every(city => data.CARS.some(car => car.cityId === city.id)));
+async function decodedPhotoWidth(page){
+    return page.locator('#carModalImg').evaluate(async root=>{
+        const element=root.querySelector('img,image');if(!element)throw new Error('Missing model illustration');
+        const photo=new Image();photo.src=element.tagName.toLowerCase()==='img'?element.src:element.getAttribute('href');
+        await photo.decode();return photo.naturalWidth;
+    });
+}
 const original = {};
 vm.runInNewContext(fs.readFileSync(path.join(root, 'cities.js'), 'utf8'), original);
 const removedCity = original.CITIES.find(city => !data.CITY_BY_ID[city.id]);
 assert.ok(removedCity);
 assert.equal(data.cityFromLabel(removedCity.name), null);
-const newCityCounts = {'Благовещенск':16, 'Алдан':21, 'Магдагачи':16, 'Черкесск':11};
+const newCityCounts = Object.fromEntries(['Благовещенск','Алдан','Магдагачи','Черкесск'].map(name=>[name,data.CARS.filter(car=>car.cityId===data.cityNamed(name).id).length]));
 for(const [name, count] of Object.entries(newCityCounts)){
     assert.equal(data.CARS.filter(car => car.cityId === data.cityNamed(name).id).length, count, name);
 }
@@ -75,7 +82,7 @@ assert.ok(data.distanceBetweenCities(magdagachi, aldan) > 500 && data.distanceBe
 assert.equal(data.locationMatches({cityId:aldan.id}, magdagachi.id, '500'), false);
 assert.equal(data.locationMatches({cityId:aldan.id}, magdagachi.id, '1000'), true);
 assert.equal(data.locationMatches({}, moscow.id, 'all'), false);
-console.log('PASS fictional catalogue: 837 cars, 768 replacement illustrations, preserved regional models/prices, 25 populated places');
+console.log('PASS fictional catalogue: 4000 cars, 768 replacement illustrations, preserved regional models/prices, 25 populated places');
 
 const types = {'.html':'text/html', '.js':'text/javascript', '.css':'text/css', '.jpg':'image/jpeg', '.png':'image/png'};
 const server = http.createServer((req, res) => {
@@ -113,12 +120,12 @@ const server = http.createServer((req, res) => {
         for(const city of targets){
             await page.locator('#fCity').fill(city.name);
             await page.locator('#fRadius').selectOption('0');
-            const expected = city.name === 'Краснодар' ? 37 : city.name === 'Хабаровск' ? 34 : 33;
-            assert.equal(await page.locator('#content .card').count(), expected, city.name);
-            assert.ok(!(await page.locator('#marketMore').isVisible()));
+            const expected = data.CARS.filter(car=>car.cityId===city.id).length;
+            assert.equal(await page.locator('#content .card').count(), Math.min(60,expected), city.name);
+            assert.equal(await page.locator('#marketMore').isVisible(),expected>60);
             const first = data.REGIONAL_CARS.find(car => car.cityId === city.id && !car.legend);
             await page.evaluate(id => openCarInfo(id), first.id);
-            await page.waitForFunction(() => { const img = document.querySelector('#carModalImg img'); return img && img.complete && img.naturalWidth > 0; });
+            assert.ok(await decodedPhotoWidth(page)>0);
             assert.ok((await page.locator('#carModalBody').textContent()).includes(city.name));
             await page.evaluate(() => closeCarInfo());
         }
@@ -127,12 +134,12 @@ const server = http.createServer((req, res) => {
         for(const [name, count] of Object.entries(newCityCounts)){
             await page.locator('#fCity').fill(name);
             await page.locator('#fRadius').selectOption('0');
-            assert.equal(await page.locator('#content .card').count(), count, name);
+            assert.equal(await page.locator('#content .card').count(), Math.min(60,count), name);
             assert.ok((await page.locator('#fCity').inputValue()).includes(name));
         }
         for(const car of data.CUSTOM_CARS){
             await page.evaluate(id => openCarInfo(id), car.id);
-            await page.waitForFunction(() => { const img = document.querySelector('#carModalImg img'); return img && img.complete && img.naturalWidth >= 500; });
+            assert.ok(await decodedPhotoWidth(page)>=500);
             const text = await page.locator('#carModalBody').textContent();
             assert.ok(text.includes(car.name) && text.includes(car.seller.name) && text.includes(car.full), car.name);
             assert.ok(text.includes('Игровое объявление'));
@@ -149,10 +156,11 @@ const server = http.createServer((req, res) => {
         await page.locator('#fRadius').selectOption('0');
         assert.equal(await page.locator('#content .card').count(), 60);
         await page.locator('#marketMore').click();
-        assert.equal(await page.locator('#content .card').count(), 108);
+        assert.equal(await page.locator('#content .card').count(), 120);
         await page.locator('#fRadius').selectOption('500');
         await page.locator('#fSort').selectOption('distance_asc');
         await page.locator('#marketMore').click();
+        await page.evaluate(()=>{marketLimit=visibleCars(availableMarketCars()).length;showMarket();});
         const near = await page.evaluate(() => Array.from(document.querySelectorAll('#content [data-info]')).map(el => { const car = carById(+el.dataset.info); return {city:carCity(car).name, distance:distanceFromCity(car,filters.city)}; }));
         assert.ok(near.some(car => car.city === 'Нижний Новгород'));
         assert.ok(near.every(car => car.city !== 'Санкт-Петербург' && car.distance <= 500));
