@@ -9,3 +9,8 @@
 
 /* Fill dealer frames while preserving the vehicle proportions. */
 #commerce-dealer .commerce-photo:has(.showroom-art-wrap){width:100%;height:auto;aspect-ratio:3/2;align-self:start}
+
+.garage-tabs{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0}.garage-tabs button{min-height:42px;flex:1 1 100px}.garage-tabs button[aria-selected=false]{background:var(--ui-surface)!important;color:var(--ui-text)!important;border:1px solid var(--ui-line)!important}.garage-service-note{padding:10px;border:1px solid var(--ui-line);border-radius:8px;background:var(--ui-surface);color:var(--ui-secondary);font-size:12px;line-height:1.5}#garagePanel h3:focus-visible{outline:2px solid var(--ui-accent);outline-offset:4px}
+#garagePanel>.journey-note{color:var(--ui-secondary)}
+
+#garageBody .garage-repair-card{display:grid;grid-template-columns:76px minmax(0,1fr);gap:12px;padding:14px;align-items:start}#garageBody .garage-repair-card .vehicle-image{grid-column:1;grid-row:1/span 2;width:76px;height:68px;aspect-ratio:auto;border-radius:8px}#garageBody .garage-repair-card .vehicle-content{display:contents}.garage-repair-card h3,.garage-repair-card .vehicle-location{grid-column:2;margin:0}.garage-repair-card h3{font-size:16px;scroll-margin-top:68px}.garage-repair-card .vehicle-location{color:var(--ui-secondary);font-size:12px}.garage-repair-card .vehicle-condition,.garage-repair-card .garage-service-note{grid-column:1/-1;margin:0}.garage-repair-card .vehicle-condition p{color:var(--ui-secondary);line-height:1.5}.garage-repair-card button{max-width:100%;white-space:normal}#garageBody .garage-tabs{position:sticky;top:-1px;z-index:1;background:var(--ui-window);padding:8px 0}
