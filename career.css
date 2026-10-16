@@ -2,6 +2,7 @@
 @media(max-width:600px){.business-body{padding:14px}.business-stats{grid-template-columns:1fr 1fr}.business-stats>div:last-child{grid-column:1/-1}.business-stats b{font-size:18px}.business-card{padding:12px}.business-tabs button{flex:1 1 110px}.business-body header h2{font-size:22px}.business-card button{max-width:100%}.backup-file{max-width:100%}.commerce-stock>.commerce-photo-note{grid-column:1/-1}}
 
 /* Keep the full photograph in every car frame, including short and square cards. */
+.car-photo-frame{display:block;width:100%;height:100%}
 .car-visual>img{object-fit:contain;object-position:center}
 .car-img .car-visual>img,.car-modal-img .car-visual>img,.commerce-photo .car-visual>img,.vehicle-image .car-visual>img,.trade-photo .car-visual>img,#meetingCarImage .car-visual>img{width:100%;height:100%;object-fit:contain;object-position:center}
 .commerce-stock>.commerce-photo{flex-shrink:0}

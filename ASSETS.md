@@ -1,3 +1,7 @@
+## Private-market image audit and reviewed frames
+
+All 837 current private-market photos were checked for existence, decoding and contact-sheet slicing artefacts. The 87 corrections in `data/market-photo-crops.json` remove divider lines and fragments of neighbouring panels at display time. Original raster files are untouched. Each reviewed entry records source dimensions and SHA-256; `python3 scripts/build-market-photo-crops.py` validates the originals and compiles the small `market-photo-crops.js` browser lookup. The same proportional SVG frame is used in cards, detailed views and the garage. Cosmetic wear overlays remain separate.
+
 ## Catalogue framing and model labels
 
 Dealer frames use a 3:2 aspect ratio and proportional SVG fill, removing side bars without stretching the vehicle shape. Import drawings retain their fitted framing. Import titles show the stored vehicle year again; the NX 300h (2.5 hybrid) and UX 250h (2.0 hybrid) suffixes are sourced from Lexus manufacturer press releases linked in `commerce-models.json`. Existing stock keys, car IDs, prices and archived contract snapshots are unchanged.

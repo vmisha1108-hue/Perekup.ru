@@ -76,6 +76,10 @@ html[data-os="macos"] .win-btns button:hover .window-control-icon,html[data-os="
 /* Limit photo growth to the space left below the market filters. */
 #win-market[data-view="market"] .grid{grid-template-columns:repeat(auto-fill,minmax(min(240px,100%),1fr))}
 #win-market[data-view="market"] .card .car-img{max-height:clamp(80px,calc(100cqh - 300px),260px)}
+#win-market[data-view="market"] .card,#win-market[data-view="market"] .card .info{min-width:0}
+#win-market[data-view="market"] .card .car-img{position:relative}
+#win-market[data-view="market"] .card .car-img>.car-visual{position:absolute;inset:0}
+#win-market[data-view="market"] .card .info>.price{margin-top:auto;overflow-wrap:anywhere}
 @container (min-width:1000px) and (max-height:430px){
     #win-market[data-view="market"] .grid{grid-template-columns:repeat(auto-fill,minmax(320px,1fr))}
     #win-market[data-view="market"] .card{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);gap:4px}

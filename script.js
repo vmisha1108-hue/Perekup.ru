@@ -113,15 +113,19 @@ function shortDesc(t, n){
     if(sp > n * 0.6) cut = cut.slice(0, sp);
     return cut.replace(/[,\s.;:-]+$/, "") + "…";
 }
+function carPhotoFrame(src,width,height,region,label,fill,extraClass){
+    return '<svg class="car-photo-frame '+(extraClass || '')+'" viewBox="0 0 '+region[2]+' '+region[3]+'" preserveAspectRatio="xMidYMid '+(fill?'slice':'meet')+'" role="img" aria-label="'+esc(label)+'"><svg width="'+region[2]+'" height="'+region[3]+'" viewBox="'+region.join(' ')+'" overflow="hidden"><image href="'+esc(src)+'" width="'+width+'" height="'+height+'" onerror="this.closest(\'.car-visual\').classList.add(\'photo-unavailable\');this.closest(\'.car-photo-frame\').style.display=\'none\'" /></svg></svg>';
+}
 function carImg(car){
     if(car.illustration){
-        var art=car.illustration,region=art.region || [art.column*art.width/art.columns,art.row*art.height/art.rows,art.width/art.columns,art.height/art.rows],w=region[2],h=region[3];
-        return '<span class="car-visual import-art-wrap'+(art.kind==='showroom'?' showroom-art-wrap':'')+'"><svg class="import-model-art" viewBox="0 0 '+w+' '+h+'" preserveAspectRatio="xMidYMid '+(art.kind==='showroom'?'slice':'meet')+'" role="img" aria-label="'+esc(car.modelFamily || car.name)+(art.kind==='showroom'?' — изображение в автосалоне':' — рисованная иллюстрация')+'"><svg width="'+w+'" height="'+h+'" viewBox="'+region.join(' ')+'" overflow="hidden"><image href="'+esc(art.src)+'" width="'+art.width+'" height="'+art.height+'" /></svg></svg></span>';
+        var art=car.illustration,region=art.region || [art.column*art.width/art.columns,art.row*art.height/art.rows,art.width/art.columns,art.height/art.rows];
+        return '<span class="car-visual import-art-wrap'+(art.kind==='showroom'?' showroom-art-wrap':'')+'">'+carPhotoFrame(art.src,art.width,art.height,region,(car.modelFamily || car.name)+(art.kind==='showroom'?' — изображение в автосалоне':' — рисованная иллюстрация'),art.kind==='showroom','import-model-art')+'</span>';
     }
     var repaired=career && career.vehicles[car.id] && career.vehicles[car.id].repaired;
     var cheap=!repaired && !car.newCar && (car.basePrice || car.price)<=100000;
     var src=car.id===1 && !repaired?'img/wear/lada-2114.webp':car.img;
-    var image=src?'<img src="'+esc(src)+'?v=20261015-stock" alt="'+esc(car.name)+'"'+(car.fictional?' class="custom-car-photo"':'')+' loading="lazy" decoding="async" onerror="this.parentNode.classList.add(\'photo-unavailable\');this.hidden=true">':'<span class="photo-missing">Фотография модели пока недоступна</span>';
+    var crop=MARKET_PHOTO_CROPS[src];
+    var image=crop?carPhotoFrame(src+'?v=20261016-market-grid',crop[0],crop[1],crop.slice(2),car.name,false,'market-photo-frame'):src?'<img src="'+esc(src)+'?v=20261015-stock" alt="'+esc(car.name)+'"'+(car.fictional?' class="custom-car-photo"':'')+' loading="lazy" decoding="async" onerror="this.parentNode.classList.add(\'photo-unavailable\');this.hidden=true">':'<span class="photo-missing">Фотография модели пока недоступна</span>';
     return '<span class="car-visual'+(cheap && car.id!==1?' car-wear'+((car.basePrice || car.price)<=40000?' car-wear-heavy':''):'')+'">'+image+'</span>';
 }
 
