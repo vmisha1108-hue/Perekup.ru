@@ -1,0 +1,180 @@
+{
+  "image": "img/commerce/dealer-showroom-v2.webp",
+  "kind": "showroom",
+  "width": 1254,
+  "height": 1254,
+  "columns": 5,
+  "rows": 5,
+  "models": [
+    "jetour-dashing",
+    "jetour-t2",
+    "jetour-x70-plus",
+    "tank-500",
+    "tank-700",
+    "baic-u5-plus",
+    "baic-x55",
+    "jac-js6",
+    "kaiyi-e5",
+    "swm-g05",
+    "dongfeng-shine-max",
+    "gac-gs3",
+    "bestune-b70",
+    "sollers-st6",
+    "evolute-i-pro",
+    "belgee-x70",
+    "hongqi-h5",
+    "voyah-free",
+    "kgm-torres",
+    "soueast-s07",
+    "livan-x3-pro",
+    "forthing-t5-evo",
+    "dfsk-500",
+    "tenet-t7"
+  ],
+  "regions": {
+    "jetour-dashing": [
+      2,
+      32,
+      246,
+      192
+    ],
+    "jetour-t2": [
+      252,
+      32,
+      248,
+      192
+    ],
+    "jetour-x70-plus": [
+      504,
+      32,
+      246,
+      192
+    ],
+    "tank-500": [
+      754,
+      32,
+      247,
+      192
+    ],
+    "tank-700": [
+      1005,
+      32,
+      247,
+      192
+    ],
+    "baic-u5-plus": [
+      2,
+      283,
+      246,
+      192
+    ],
+    "baic-x55": [
+      252,
+      283,
+      248,
+      192
+    ],
+    "jac-js6": [
+      504,
+      283,
+      246,
+      192
+    ],
+    "kaiyi-e5": [
+      754,
+      283,
+      247,
+      192
+    ],
+    "swm-g05": [
+      1005,
+      283,
+      247,
+      192
+    ],
+    "dongfeng-shine-max": [
+      2,
+      534,
+      246,
+      192
+    ],
+    "gac-gs3": [
+      252,
+      534,
+      248,
+      192
+    ],
+    "bestune-b70": [
+      504,
+      534,
+      246,
+      192
+    ],
+    "sollers-st6": [
+      754,
+      534,
+      247,
+      192
+    ],
+    "evolute-i-pro": [
+      1005,
+      534,
+      247,
+      192
+    ],
+    "belgee-x70": [
+      2,
+      785,
+      246,
+      179
+    ],
+    "hongqi-h5": [
+      252,
+      785,
+      248,
+      179
+    ],
+    "voyah-free": [
+      504,
+      785,
+      246,
+      179
+    ],
+    "kgm-torres": [
+      754,
+      785,
+      247,
+      179
+    ],
+    "soueast-s07": [
+      1005,
+      785,
+      247,
+      179
+    ],
+    "livan-x3-pro": [
+      2,
+      1023,
+      246,
+      204
+    ],
+    "forthing-t5-evo": [
+      252,
+      1023,
+      248,
+      204
+    ],
+    "dfsk-500": [
+      504,
+      1023,
+      246,
+      204
+    ],
+    "tenet-t7": [
+      754,
+      1023,
+      247,
+      204
+    ]
+  }
+}

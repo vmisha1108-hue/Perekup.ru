@@ -115,8 +115,8 @@ function shortDesc(t, n){
 }
 function carImg(car){
     if(car.illustration){
-        var art=car.illustration,w=art.width/art.columns,h=art.height/art.rows;
-        return '<span class="car-visual import-art-wrap"><svg class="import-model-art" viewBox="0 0 '+w+' '+h+'" role="img" aria-label="'+esc(car.modelFamily || car.name)+' — рисованная иллюстрация"><svg width="'+w+'" height="'+h+'" viewBox="'+(art.column*w)+' '+(art.row*h)+' '+w+' '+h+'" overflow="hidden"><image href="'+esc(art.src)+'" width="'+art.width+'" height="'+art.height+'" /></svg></svg></span>';
+        var art=car.illustration,region=art.region || [art.column*art.width/art.columns,art.row*art.height/art.rows,art.width/art.columns,art.height/art.rows],w=region[2],h=region[3];
+        return '<span class="car-visual import-art-wrap'+(art.kind==='showroom'?' showroom-art-wrap':'')+'"><svg class="import-model-art" viewBox="0 0 '+w+' '+h+'" preserveAspectRatio="xMidYMid meet" role="img" aria-label="'+esc(car.modelFamily || car.name)+(art.kind==='showroom'?' — изображение в автосалоне':' — рисованная иллюстрация')+'"><svg width="'+w+'" height="'+h+'" viewBox="'+region.join(' ')+'" overflow="hidden"><image href="'+esc(art.src)+'" width="'+art.width+'" height="'+art.height+'" /></svg></svg></span>';
     }
     var repaired=career && career.vehicles[car.id] && career.vehicles[car.id].repaired;
     var cheap=!repaired && !car.newCar && (car.basePrice || car.price)<=100000;

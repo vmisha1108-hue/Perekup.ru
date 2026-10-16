@@ -31,7 +31,7 @@ function buildCommerceStock(){
                 if(route && kind==='import')Object.assign(offer,{country:model.country,currency:route.currency,rate:route.rate,foreign:Math.round(vehicle/route.rate),delivery:route.delivery,duty:Math.round(vehicle*.23/1000)*1000,util:Math.round((vehicle<2000000?180000:340000)/1000)*1000,days:route.days,steering:route.steering});
                 var full='Цвет — '+colour+'. '+report+' Комплектация: '+trim+'. '+(kind==='import'?'Руль: '+route.steering+'.':'Автомобиль из наличия автосалона.');
                 cars.push({id:carId,name:model.brand+' '+model.model+', '+year,brand:model.brand,modelFamily:model.brand+' '+model.model,body:model.body,price:vehicle,basePrice:vehicle,marketPrice:Math.round(vehicle*(kind==='import'?1.6:.98)/1000)*1000,img:model.photo || '',photoCaption:'Фото модели · цвет экземпляра: '+colour,desc:model.engine+', '+mileage.toLocaleString('ru-RU')+' км, '+trim,full:full,cityId:moscowCity.id,seller:{name:offer.seller,avatar:'👨‍💼',personality:'neutral'},commerceOffer:id,newCar:offer.newCar});
-                if(model.illustration){cars[cars.length-1].illustration=model.illustration;cars[cars.length-1].photoCaption='Рисованная иллюстрация модели · цвет и комплектация условные';}
+                if(model.illustration){cars[cars.length-1].illustration=model.illustration;cars[cars.length-1].photoCaption=(model.illustration.kind==='showroom'?'Изображение модели в автосалоне':'Рисованная иллюстрация модели')+' · цвет и комплектация условные';}
                 offers.push(offer);
             }
         });
