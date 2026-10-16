@@ -110,7 +110,7 @@ function tuningBuyerEffect(car,buyer){
 }
 function garageTuningHtml(){
  var cars=garage.map(carById).filter(supportsTuning);
- if(!cars.length)return '<div class="empty">Тюнинг доступен для подготовленных JDM-моделей, легендарных иномарок, BMW и Mercedes. Купите такую машину: например, Mark II, Chaser, Supra, Skyline, RX-7 или M3 E30. Российские марки не поддерживаются.</div>';
+ if(!cars.length)return '<div class="empty">Тюнинг доступен не для всех машин.</div>';
  if(!cars.some(function(c){return c.id===tuningSelection;})){tuningSelection=cars[0].id;tuningDraft=null;tuningBefore=false;}
  var car=carById(tuningSelection),state=careerVehicle(car),job=state.tuningJob,reason=tuningReason(car);
  if(!tuningDraft || !validTuningAppearance(tuningDraft))tuningDraft=vehicleAppearance(car);
