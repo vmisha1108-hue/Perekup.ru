@@ -116,7 +116,8 @@ function shortDesc(t, n){
 function carPhotoFrame(src,width,height,region,label,fill,extraClass){
     return '<svg class="car-photo-frame '+(extraClass || '')+'" viewBox="0 0 '+region[2]+' '+region[3]+'" preserveAspectRatio="xMidYMid '+(fill?'slice':'meet')+'" role="img" aria-label="'+esc(label)+'"><svg width="'+region[2]+'" height="'+region[3]+'" viewBox="'+region.join(' ')+'" overflow="hidden"><image href="'+esc(src)+'" width="'+width+'" height="'+height+'" onerror="this.closest(\'.car-visual\').classList.add(\'photo-unavailable\');this.closest(\'.car-photo-frame\').style.display=\'none\'" /></svg></svg>';
 }
-function carImg(car){
+function carImg(car,appearance){
+    var customized=vehicleAppearancePhoto(car,appearance);if(customized)return customized;
     if(car.illustration){
         var art=car.illustration,region=art.region || [art.column*art.width/art.columns,art.row*art.height/art.rows,art.width/art.columns,art.height/art.rows];
         return '<span class="car-visual import-art-wrap'+(art.kind==='showroom'?' showroom-art-wrap':'')+'">'+carPhotoFrame(art.src,art.width,art.height,region,(car.modelFamily || car.name)+(art.kind==='showroom'?' — изображение в автосалоне':' — рисованная иллюстрация'),art.kind==='showroom','import-model-art')+'</span>';
@@ -681,7 +682,7 @@ function openCarInfo(id){
     var specHtml = specs.length
         ? '<ul class="car-specs">' + specs.map(function(x){ return '<li>' + esc(x) + '</li>'; }).join("") + '</ul>'
         : '';
-    var fullHtml = car.full ? '<p class="car-full">' + esc(car.full) + '</p>' : '';
+    var fullHtml = car.full ? '<p class="car-full">' + (owned && tuningActiveValue(car)?'<b>Описание продавца до доработок:</b> ':'') + esc(car.visualModel?car.full.replace(/Цвет\s*[—:-]\s*[^.!]+/i,'Цвет — '+vehicleColor(vehicleAppearance(car).color).name.toLowerCase()):car.full) + '</p>' : '';
 
     var who = inGarage
         ? '<div class="car-seller"><b>Рыночная цена:</b> ' + money(car.marketPrice || car.price) + '</div>'
@@ -703,7 +704,7 @@ function openCarInfo(id){
         '<div class="car-price">' + money(infoPrice) + '</div>' +
         '<div class="price-assessment"><span class="price-badge ' + assessment.tone + '">' + assessment.label + '</span>' +
         '<span>Оценка рынка: ' + money(car.marketPrice || car.price) + '</span></div>' +
-        specHtml + fullHtml + '<section class="car-story"><b>'+esc(carStory(car).title)+'</b><p>'+esc(carStory(car).text)+'</p></section>' + who +
+        specHtml + fullHtml + (tuningSummary(car)?'<p class="car-full">'+esc(tuningSummary(car))+'</p>':'') + '<section class="car-story"><b>'+esc(carStory(car).title)+'</b><p>'+esc(carStory(car).text)+'</p></section>' + who +
         '<div class="car-actions">' + action + '</div>' +
         (!owned && !car.exchangeOnly && !meetingHere("buy",id) ? '<div class="journey-note">Для покупки нужно приехать в ' + esc(meetingCity("buy",id).name) + '. Можно заранее написать продавцу и согласовать время.</div><button class="buy" data-travel-to="' + esc(meetingCity("buy",id).id) + '">Открыть Переезд</button>' : '');
     $("carOverlay").classList.add("open");
@@ -802,6 +803,7 @@ function openSellChat(carId, ad){
         if(rcs){ chat = rcs; openOverlay(); return; }
     }
     npcSay(humanOpening());
+    if(ad && ad.tuningNote)npcSay(ad.tuningNote);
     if(chat.trade) npcSay('Предлагаю обмен на ' + carById(chat.trade.carId).name + '. ' + tradeTerms(chat.trade, bid));
     sysSay("📢 Цена в объявлении: " + money(chat.listingPrice));
     openOverlay();
@@ -1704,6 +1706,7 @@ function buyBtn(car, owned){
     return '<button class="buy" data-buy="' + car.id + '">'+appIconSvg('chat')+'<span>Написать</span></button>';
 }
 function sellBtn(car){
+    if(vehicleInWorkshop(car.id))return '<button class="sell" disabled>Машина в мастерской</button>';
     if(vehicleMoving(car.id)) return '<button class="sell" disabled>🚛 Автомобиль в пути</button>';
     var it = pendingFor(car.id);
     if(!it){
@@ -1735,6 +1738,7 @@ function makeBuyerOffer(listing, arrivedAt){
     var bid = kind < 0.15 ? Math.min(Number.MAX_SAFE_INTEGER, Math.max(price + 1, Math.round(price * (1.01 + Math.random() * 0.09))))
         : kind < 0.50 ? price : Math.max(1, Math.round(price * (0.75 + Math.random() * 0.20)));
     listing.lastBuyerName = b.name;
+    var tuningEffect=tuningBuyerEffect(carById(listing.carId),b);bid=Math.max(1,Math.min(Number.MAX_SAFE_INTEGER,bid+tuningEffect.amount));
     var offered = null;
     if(kind >= 0.50 && kind < 0.75){
         var pool = TRADE_CARS.filter(function(car){
@@ -1747,7 +1751,7 @@ function makeBuyerOffer(listing, arrivedAt){
     return {
         id: newPid(), type: "ad", mode: "sell", carId: listing.carId,
         npc: {name: b.name, avatar: b.avatar, personality: b.personality, mood: clamp(p.mood + rnd(-8, 8), 5, 95)},
-        listingPrice: price, bid: bid, trade: offered, maxBid: Math.min(Number.MAX_SAFE_INTEGER, Math.max(bid, Math.round(bid * 1.05))),
+        listingPrice: price, bid: bid, tuningNote:tuningEffect.text, trade: offered, maxBid: Math.min(Number.MAX_SAFE_INTEGER, Math.max(bid, Math.round(bid * 1.05))),
         readyAt: arrivedAt == null ? gameMs : arrivedAt, ready: true
     };
 }
@@ -1819,16 +1823,17 @@ function migrateSaleListings(){
 function openSaleForm(carId){
     var car = carById(carId);
     if(!car || garage.indexOf(carId) === -1) return;
-    if(vehicleMoving(carId)){ toast("Дождитесь окончания перевозки, прежде чем выставлять машину."); return; }
+    if(vehicleMoving(carId)){ toast(vehicleInWorkshop(carId)?"Дождитесь завершения тюнинга, прежде чем выставлять машину.":"Дождитесь окончания перевозки, прежде чем выставлять машину."); return; }
     if(pending.some(function(it){ return it.carId === carId && it.type === "meet"; })){
         toast("📅 Сначала завершите назначенную встречу."); return;
     }
     saleCarId = carId;
     $("saleCarName").textContent = car.name;
-    $("salePurchase").textContent = "Цена покупки: " + money(purchaseCost(car));
+    $("salePurchase").textContent = "Себестоимость: " + money(purchaseCost(car));
     $("salePrice").value = listings[carId] ? listings[carId].price : car.price;
     $("saleDisclosure").checked = !listings[carId] || listings[carId].disclosed!==false;
     $("saleCondition").textContent = careerVehicle(car).inspected ? (careerVehicle(car).repaired ? "Диагностика и подготовка выполнены." : carStory(car).defect || "По диагностике недостатков не выявлено.") : "Диагностика ещё не проводилась. Не обещайте состояние, которое не проверяли.";
+    if(tuningSummary(car))$('saleCondition').textContent+=' '+tuningSummary(car);
     var mechanical=unrepairedMarketFault(car);if(mechanical)$("saleCondition").textContent+=' Известная скрытая поломка: '+marketFaultText(mechanical)+'.';
     $("saleSubmit").textContent = listings[carId] ? "Сохранить цену" : "Разместить объявление";
     $("saleOverlay").classList.add("open");
@@ -1845,7 +1850,7 @@ function postAd(carId, price, disclosed){
     if(marketGameOver())return false;
     var car = carById(carId);
     if(!car || garage.indexOf(carId) === -1) return false;
-    if(vehicleMoving(carId)){ toast("Нельзя выставить машину во время перевозки."); return false; }
+    if(vehicleMoving(carId)){ toast(vehicleInWorkshop(carId)?"Машина в мастерской. Продажа доступна после завершения работ.":"Нельзя выставить машину во время перевозки."); return false; }
     price = Number(price);
     if(!Number.isSafeInteger(price) || price < 1){ toast("Укажите целую положительную цену в рублях."); return false; }
     if(pending.some(function(it){ return it.carId === carId && it.type === "meet"; })) return false;
@@ -2075,6 +2080,7 @@ function tickPending(){
     tickTransport();
     tickBank();
     tickCommerce();
+    tickTuning();
     tickCareer();
     tickCollectors();
     tickMeeting();
@@ -2519,7 +2525,7 @@ function resetGameProgress(resetClock){
     if(resetClock){gameMs=Date.now();lastRealMs=Date.now();lastDayKey='';lastClockStr='';calYear=gameNow().getFullYear();calMonth=gameNow().getMonth();}
     balance = START_BALANCE; garage = []; deals = 0; garageLvl = 0; notes = {}; pending = [];
     purchasePrices = {}; listings = {}; chatStore = {}; retiredMarketCars=[];
-    transport = newTransport();garageTab="cars";
+    transport = newTransport();garageTab="cars";tuningSelection=null;tuningDraft=null;tuningBefore=false;
     bank=freshBank();bankRenderKey='';bankRecord(START_BALANCE,'Стартовый баланс','opening');
     resetContracts();
     commerceScreen={import:'catalog',dealer:'catalog'};commerceCatalog={import:{brand:'all',query:'',page:0},dealer:{brand:'all',query:'',page:0}};commerce=freshCommerce();commerceSelection={import:null,dealer:null};commerceMessages={import:'',dealer:''};commerceFilters={import:'all',dealer:'all'};commerceRenderKeys={};saveCommerce();renderCommerce('import',true);renderCommerce('dealer',true);
@@ -2737,6 +2743,7 @@ window.addEventListener("DOMContentLoaded", function(){
     initContracts();
     initCareer();
     initMarketRisks();
+    initTuning();
     initBackups();
     initEntryReset();
     initIdentity();

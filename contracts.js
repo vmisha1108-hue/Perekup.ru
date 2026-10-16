@@ -13,8 +13,8 @@ function contractVehicle(car){
     for(var i=0;i<14;i++){seed=(Math.imul(seed,1664525)+1013904223)>>>0;vin+=alphabet[seed%alphabet.length];}
     var serial=String(100000+car.id%900000),region=car.cityId===moscowCity.id?'77':String(10+car.id%89);
     var color=/цвет\s*[—:-]\s*([^.!\n]+)/i.exec(car.full || '');
-    return {name:car.name,year:carStats(car).year,color:color?color[1].trim():['белый','серебристый','чёрный','синий'][car.id%4],
-        vin:vin,plate:'А'+String(100+car.id%900)+'МР '+region,pts:region+' ТА '+serial,sts:region+' 01 '+serial,description:vehicleDesc(car)};
+    return {name:car.name,year:carStats(car).year,color:vehicleVisual(car)?vehicleColor(vehicleAppearance(car).color).name.toLowerCase():color?color[1].trim():['белый','серебристый','чёрный','синий'][car.id%4],
+        vin:vin,plate:'А'+String(100+car.id%900)+'МР '+region,pts:region+' ТА '+serial,sts:region+' 01 '+serial,description:vehicleDesc(car)+(tuningSummary(car)?'. '+tuningSummary(car):'')};
 }
 function contractOtherParty(npc,city){
     var female=/Анна|Марина|Люба|Светлана|Ольга|Елена|Наталья|Ирина|Юлия|Татьяна/.test(npc.name);
@@ -156,7 +156,9 @@ function cancelContract(){
 }
 function addPreparationToContract(record,carId,cost){
     var state=career && career.vehicles[carId];
-    if(state && state.repairPaid>0 && Number.isSafeInteger(cost)){record.costIncludesExpenses=true;if(!record.costBreakdown)record.costBreakdown={vehicle:cost-state.repairPaid};record.costBreakdown.preparation=state.repairPaid;}
+    var tuning=state && state.tuningPaid || 0,preparation=state && state.repairPaid || 0;
+    if((preparation || tuning) && Number.isSafeInteger(cost)){record.costIncludesExpenses=true;if(!record.costBreakdown)record.costBreakdown={vehicle:cost-preparation-tuning};if(preparation)record.costBreakdown.preparation=preparation;if(tuning)record.costBreakdown.tuning=tuning;}
+    if(state && state.appearance)record.vehicle.appearance=Object.assign({},state.appearance);
 }
 function contractPurchasePrice(d){
     if(Number.isSafeInteger(d.purchasePrice) && d.purchasePrice>0)return d.purchasePrice;

@@ -64,7 +64,7 @@ function parkVehicle(id, cityId, at){
     rebalanceHome();
 }
 function removeVehicle(id){ delete transport.vehicles[id]; rebalanceHome(); }
-function vehicleMoving(id){ var v = vehicleState(id); return !!(v && (v.place === "road" || v.place === "carrier")); }
+function vehicleMoving(id){ var v = vehicleState(id); return vehicleInWorkshop(id) || !!(v && (v.place === "road" || v.place === "carrier")); }
 function locationText(id){
     var v = vehicleState(id);
     if(!v) return carLocationText(carById(id), filters.city);
@@ -253,6 +253,7 @@ function renderTravel(){
 }
 function garageRepairReason(id){
     var vehicle=vehicleState(id);
+    if(vehicleInWorkshop(id))return 'Машина в мастерской: дождитесь завершения тюнинга.';
     if(transport.trip)return 'Вы в пути. Дождитесь прибытия, чтобы заняться ремонтом.';
     if(vehicleMoving(id))return 'Машина в дороге. Дождитесь окончания перевозки.';
     if(!vehicle || vehicle.cityId!==transport.cityId)return 'Для ремонта нужно приехать в город машины: '+meetingCity('sell',id).name+'.';
@@ -267,7 +268,7 @@ function garageRepairsHtml(){
     }).join('')+'</div>';
 }
 function setGarageTab(tab,carId){
-    if(['cars','repair'].indexOf(tab)===-1)return;
+    if(['cars','repair','tuning'].indexOf(tab)===-1)return;
     garageTab=tab;renderGarageApp();
     var target=carId?$('garageBody').querySelector('[data-garage-service="'+carId+'"] h3'):$('garage-tab-'+tab);
     if(target){target.focus({preventScroll:true});target.scrollIntoView({block:'nearest'});}
@@ -277,11 +278,12 @@ function renderGarageApp(){
     rebalanceHome();
     var debt=garage.reduce(function(sum,id){return sum+parkingDebt(id);},0);
     var header='<div class="journey-heading"><span>🏠 Домашняя база · Москва</span><h2>Гараж: ' + homeOccupancy() + ' / ' + currentGarage().cap + '</h2><p>Во владении: ' + garage.length + ' · Двор бесплатный' + (debt ? ' · Долг за парковку: ' + money(debt) : '') + '</p><button data-open-garage-shop>Расширить гараж</button></div>';
-    var tabs='<nav class="garage-tabs" role="tablist" aria-label="Разделы гаража">'+[['cars','Машины'],['repair','Ремонт']].map(function(tab){return '<button type="button" role="tab" id="garage-tab-'+tab[0]+'" data-garage-tab="'+tab[0]+'" aria-selected="'+(garageTab===tab[0])+'" aria-controls="garagePanel" tabindex="'+(garageTab===tab[0]?'0':'-1')+'">'+tab[1]+'</button>';}).join('')+'</nav>';
-    $('garageBody').innerHTML=header+tabs+'<section id="garagePanel" role="tabpanel" aria-labelledby="garage-tab-'+garageTab+'">'+(garageTab==='repair'?garageRepairsHtml():(!garage.length ? '<div class="empty">Здесь появятся ваши автомобили и их местоположение.</div>' : '<div class="vehicle-grid">' + garage.map(function(id){
+    if(garageTab==='tuning')header='<p class="tuning-garage-summary">Ваши машины · '+garage.length+' · Визуальные доработки</p>';
+    var tabs='<nav class="garage-tabs" role="tablist" aria-label="Разделы гаража">'+[['cars','Машины'],['repair','Ремонт'],['tuning','Тюнинг']].map(function(tab){return '<button type="button" role="tab" id="garage-tab-'+tab[0]+'" data-garage-tab="'+tab[0]+'" aria-selected="'+(garageTab===tab[0])+'" aria-controls="garagePanel" tabindex="'+(garageTab===tab[0]?'0':'-1')+'">'+tab[1]+'</button>';}).join('')+'</nav>';
+    $('garageBody').innerHTML=header+tabs+'<section id="garagePanel" role="tabpanel" aria-labelledby="garage-tab-'+garageTab+'">'+(garageTab==='tuning'?garageTuningHtml():garageTab==='repair'?garageRepairsHtml():(!garage.length ? '<div class="empty">Здесь появятся ваши автомобили и их местоположение.</div>' : '<div class="vehicle-grid">' + garage.map(function(id){
         var car = carById(id), v = vehicleState(id), quote = shippingQuote(id);
         var shipment = transport.shipments.find(function(s){ return s.carId === id; });
-        return '<article class="vehicle-card"><button class="vehicle-image" data-vehicle-info="' + id + '">' + carImg(car) + '</button><div class="vehicle-content"><h3>' + esc(car.name) + '</h3><div class="vehicle-location">📍 ' + esc(locationText(id)) + '</div><p>' + esc(vehicleDesc(car)) + '</p><p>Куплено за ' + money(purchaseCost(car)) + '</p>' + (v.place === "parking" ? '<p>Следующие 100 ₽: ' + fmtMeet(new Date(v.nextChargeAt)) + '</p>' : '') + (v.debt ? '<p class="parking-debt">Долг: ' + money(v.debt) + '</p><button data-pay-parking="' + id + '">Оплатить долг</button>' : '') + (shipment ? '<p>Москва: ' + fmtMeet(new Date(shipment.arrivesAt)) + '</p><button data-wait-transport>Дождаться автовоза</button>' : '') + (quote ? '<div class="carrier-quote">🚛 В Москву: ' + money(quote.price) + ' · ' + fmtDur(quote.duration) + '<button data-ship-vehicle="' + id + '"' + (!canAfford(quote.price + parkingDebt(id)) || carHasMeeting(id) ? ' disabled' : '') + '>Заказать автовоз</button>' + (carHasMeeting(id) ? '<small>Сначала завершите или отмените встречу.</small>' : '') + '</div>' : '') + (!vehicleMoving(id) ? '<button data-vehicle-sell="' + id + '">Выставить на продажу</button>' : '') + '<button data-garage-repair="'+id+'">Ремонт и диагностика</button>' + '</div></article>';
+        return '<article class="vehicle-card"><button class="vehicle-image" data-vehicle-info="' + id + '">' + carImg(car) + '</button><div class="vehicle-content"><h3>' + esc(car.name) + '</h3><div class="vehicle-location">📍 ' + esc(locationText(id)) + '</div><p>' + esc(vehicleDesc(car)) + '</p><p>Себестоимость: ' + money(purchaseCost(car)) + '</p>' + (v.place === "parking" ? '<p>Следующие 100 ₽: ' + fmtMeet(new Date(v.nextChargeAt)) + '</p>' : '') + (v.debt ? '<p class="parking-debt">Долг: ' + money(v.debt) + '</p><button data-pay-parking="' + id + '">Оплатить долг</button>' : '') + (shipment ? '<p>Москва: ' + fmtMeet(new Date(shipment.arrivesAt)) + '</p><button data-wait-transport>Дождаться автовоза</button>' : '') + (quote ? '<div class="carrier-quote">🚛 В Москву: ' + money(quote.price) + ' · ' + fmtDur(quote.duration) + '<button data-ship-vehicle="' + id + '"' + (!canAfford(quote.price + parkingDebt(id)) || carHasMeeting(id) ? ' disabled' : '') + '>Заказать автовоз</button>' + (carHasMeeting(id) ? '<small>Сначала завершите или отмените встречу.</small>' : '') + '</div>' : '') + (!vehicleMoving(id) ? '<button data-vehicle-sell="' + id + '">Выставить на продажу</button>' : '') + '<button data-garage-repair="'+id+'">Ремонт и диагностика</button>'+(supportsTuning(car)?'<button data-garage-tuning="'+id+'">Тюнинг'+(vehicleInWorkshop(id)?' · идёт установка':'')+'</button>':'')+'<p class="vehicle-tuning-summary">'+esc(tuningSummary(car))+'</p>' + '</div></article>';
     }).join("") + '</div>'))+'</section>';
     if(garageTab==='repair')$('garageBody').querySelectorAll('[data-garage-service]').forEach(function(card){if(garageRepairReason(Number(card.dataset.garageService)))card.querySelectorAll('[data-career-inspect],[data-career-repair],[data-market-repair]').forEach(function(button){button.disabled=true;});});
 }
@@ -301,7 +303,7 @@ function bindTransport(){
     });
     $('garageBody').addEventListener('keydown',function(event){
         if(!event.target.closest('[data-garage-tab]') || ['ArrowLeft','ArrowRight','Home','End'].indexOf(event.key)===-1)return;
-        event.preventDefault();setGarageTab(event.key==='Home'?'cars':event.key==='End'?'repair':garageTab==='cars'?'repair':'cars');
+        event.preventDefault();var tabs=['cars','repair','tuning'],i=tabs.indexOf(garageTab);setGarageTab(event.key==='Home'?'cars':event.key==='End'?'tuning':tabs[(i+(event.key==='ArrowRight'?1:2))%3]);
     });
     $('garageBody').addEventListener('click',function(event){var b=event.target.closest('[data-career-inspect],[data-career-repair]');if(!b)return;var repair=!!b.dataset.careerRepair,id=Number(b.dataset.careerRepair || b.dataset.careerInspect);if(!prepareCareerCar(id,repair))toast('Проверьте баланс, местоположение и назначенные встречи. Для подготовки сначала нужна диагностика.');});
     document.addEventListener("keydown",function(event){ if(event.key === "Escape" && $("arrivalOverlay").classList.contains("open")) closeArrival(); });
