@@ -5,3 +5,10 @@
 
 #garageBody{container-type:inline-size}.tuning-garage-summary{font-size:12px;color:var(--ui-muted);margin:4px 0}.tuning-heading{margin:12px 0}.tuning-photo{background:var(--ui-surface)}
 @media(max-width:700px){#garageBody .garage-tabs{gap:6px;margin:7px 0}#garageBody .garage-tabs button{flex:1 1 0;font-size:12px;min-width:0;padding:9px 5px}.tuning-heading h3{font-size:20px}.tuning-heading label{margin-top:9px}.tuning-caption{margin-bottom:0}}
+
+/* Let imported street photos define their frame height from the SVG viewBox. */
+#commerce-import .commerce-photo:has(.urban-photo-wrap),
+#commerce-import .commerce-order-photo:has(.urban-photo-wrap){height:auto;aspect-ratio:auto;align-self:start}
+#commerce-import .commerce-photo>.urban-photo-wrap,
+#commerce-import .commerce-order-photo>.urban-photo-wrap,
+#commerce-import .urban-photo-wrap>.urban-model-photo{height:auto}
