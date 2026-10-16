@@ -725,7 +725,7 @@ button.sell.ready{background:var(--ui-accent);color:var(--ui-on-accent)}
 .toast{
     pointer-events:auto;cursor:pointer;
     background:var(--ui-surface);border:1px solid #2f6b4f;border-left:4px solid var(--ui-accent);
-    border-radius:12px;padding:11px 14px;font-size:13.5px;line-height:1.4;color:#e8ecf3;
+    border-radius:12px;padding:11px 14px;font-size:13.5px;line-height:1.4;color:var(--ui-text);
     box-shadow:0 12px 36px rgba(0,0,0,.55);
 }
 
