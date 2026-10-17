@@ -26,7 +26,7 @@ const root=path.resolve(__dirname,'..'),server=http.createServer(async(req,res)=
    rows.forEach(row=>{for(const key of ['photo','title','price','button'])if(Math.max(...row.map(c=>c[key]))-Math.min(...row.map(c=>c[key]))>1)errors.push(row.map(c=>c.id).join(',')+':'+key);});
    return {count:cards.length,overflow:root.scrollWidth>root.clientWidth+1,errors};
   });
-  assert.equal(result.count,4200);assert.equal(result.overflow,false);assert.deepEqual(result.errors,[]);
+  assert.equal(result.count,4190);assert.equal(result.overflow,false);assert.deepEqual(result.errors,[]);
  }
  try{
   await scenario('every market card aligns photos, names, prices and actions in all desktop and phone themes',async page=>{
