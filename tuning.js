@@ -26,13 +26,14 @@ var TUNING_PARTS={
 };
 var vehiclePhotoSequence=0;
 function vehicleColor(key){return VEHICLE_COLORS.find(function(c){return c.id===key;}) || null;}
-function tuningModel(car){var rule=car && TUNING_RULES.find(function(r){return r[1].test(car.name);});return rule?rule[0]:car && car.visualModel && /^(?:BMW|Mercedes)/.test(car.name)?car.visualModel:null;}
+function tuningModel(car){var name=car && (car.sourceModelName || car.name),rule=car && TUNING_RULES.find(function(r){return r[1].test(name);});return rule?rule[0]:car && car.visualModel && /^(?:BMW|Mercedes)/.test(car.name)?car.visualModel:null;}
 function vehicleVisual(car){
  var key=car && car.visualModel || tuningModel(car);
  return key && typeof VEHICLE_VISUALS!=='undefined'?VEHICLE_VISUALS[key] || null:null;
 }
 function supportsTuning(car){return !!(car && !/^(?:Лада|Lada|ВАЗ|VAZ|УАЗ|ЗИЛ|ГАЗ|Волга|Москвич|Жигули|ЗАЗ)/i.test(car.name) && tuningModel(car) && vehicleVisual(car));}
 function colorFromDescription(car){
+ if(car.catalogueColor && vehicleColor(car.catalogueColor))return car.catalogueColor;
  var text=(car.full || '').toLowerCase();
  if(/бел[ыао]/.test(text))return 'white';if(/ч[её]рн/.test(text))return 'black';if(/красн/.test(text))return 'red';if(/син[иья]/.test(text))return 'blue';if(/зел[её]н/.test(text))return 'green';return 'silver';
 }

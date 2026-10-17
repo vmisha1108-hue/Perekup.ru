@@ -6,7 +6,7 @@
 <title>Perekyp.ru</title>
 <link rel="stylesheet" href="style.css?v=20261016-toast-contrast">
 <link rel="stylesheet" href="themes.css?v=20261014-settings">
-<link rel="stylesheet" href="desktop-visuals.css?v=20261016-market-scope">
+<link rel="stylesheet" href="desktop-visuals.css?v=20261016-market-grid">
 <link rel="stylesheet" href="commerce.css?v=20261015-career">
 <link rel="stylesheet" href="tuning.css?v=20261016-remove-garage-tuning">
 <link rel="stylesheet" href="career.css?v=20261016-tuning-tabs">
@@ -94,11 +94,11 @@
         </div>
         <div class="filters" id="filters">
             <div class="market-sources" id="marketSources"><span>Другие способы покупки</span><button type="button" id="openDealer">Автосалон · Москва</button><button type="button" id="openImport">Машины из-за границы</button></div>
-            <div class="market-scope" aria-label="Где искать автомобили"><button id="marketAllRussia" class="f-reset" type="button">Вся Россия</button><button id="fLocal" class="f-reset" type="button">Мой город</button></div>
             <input id="fSearch" type="search" placeholder="Поиск по модели, марке…">
             <input id="fCity" type="search" list="cityOptions" placeholder="📍 Любой город" aria-label="Город поиска" autocomplete="off">
             <button type="button" class="filter-toggle" id="filterToggle" aria-label="Фильтры и сортировка" aria-expanded="false" aria-controls="marketAdvanced">Фильтры</button>
             <div id="marketAdvanced" class="advanced-fields" hidden>
+            <button id="fLocal" class="f-reset" type="button">Искать в моём городе</button>
             <datalist id="cityOptions"></datalist>
             <select id="fRadius" aria-label="Радиус поиска" disabled>
                 <option value="0">Только этот город</option>
@@ -134,7 +134,7 @@
             <span class="f-count" id="fCount"></span>
         </div>
         <section id="content" class="grid"></section>
-        <div class="market-pagination"><button id="marketMore" class="f-reset market-more" hidden>Показать ещё 60 машин</button><button id="marketShowAll" class="f-reset market-more" hidden>Показать все найденные</button></div>
+        <button id="marketMore" class="f-reset market-more" hidden>Показать ещё 60 машин</button>
     </div>
 </div>
 
@@ -265,9 +265,9 @@
         <p>Каждые пять игровых дней меняется ситуация на рынке: растёт спрос на кроссоверы или дешёвые машины, меняется стоимость валютной части импорта, появляются скидки в салоне или снижается оценка электромобилей. Уведомления и история находятся в «Бизнесе», на вкладке «Новости рынка». Там видны действующий эффект и дата следующего изменения.</p>
         <p>Эффект применяется к текущим рыночным оценкам и новым расчётам; повторные проверки не накапливают проценты. Договоры поставки, согласованные цены встреч и уже подписанные суммы не пересчитываются. Пока импортный автомобиль в пути, можно торговать другими машинами и заниматься заказами.</p>
         <h2>Авторынок и торг</h2>
-        <p>На авторынке 4 000 игровых объявлений разных марок: от недорогих проектов за 10 000 ₽ до коллекционных машин за 99 000 000 ₽. У новых экземпляров разные комплектации, пробег, состояние и рассказы владельцев. Есть повседневные машины, эффектные купе, представительские седаны, внедорожники, редкие версии и легенды. Дешёвый спорткар может требовать многомиллионного восстановления: например, Lamborghini Diablo за 200 000 ₽ продаётся разобранной, с ориентиром работ 18 500 000 ₽. Диагностика и подготовка учитывают заявленные работы конкретного экземпляра. Цены объявлений меняются в пределах указанного диапазона.</p>
-        <p>Иллюстрации соответствующей модели могут использоваться в нескольких объявлениях. Комплектацию и состояние конкретной машины сверяйте с её описанием; одинаковых новых объявлений нет.</p>
-        <p>Поиск начинается с города, в котором вы находитесь. Кнопка «Вся Россия» над поиском сбрасывает ограничения и открывает весь каталог; выбранный охват запоминается. Счётчик отдельно показывает весь каталог, машины в продаже, результат фильтров и количество карточек на экране. Кнопками под списком можно добавить следующую страницу или показать все найденные машины сразу. Можно выбрать другой город, радиус до 2 000 км или всю Россию, искать модель и сортировать объявления. Выбор города в поиске не перемещает персонажа.</p>
+        <p>На авторынке 4 200 игровых объявлений разных марок: от недорогих проектов за 10 000 ₽ до коллекционных машин за 99 000 000 ₽. У новых экземпляров разные комплектации, пробег, состояние и рассказы владельцев. Есть повседневные машины, эффектные купе, представительские седаны, внедорожники, редкие версии и легенды. Дешёвый спорткар может требовать многомиллионного восстановления: например, Lamborghini Diablo за 200 000 ₽ продаётся разобранной, с ориентиром работ 18 500 000 ₽. Диагностика и подготовка учитывают заявленные работы конкретного экземпляра. Цены объявлений меняются в пределах указанного диапазона.</p>
+        <p>Фон фотографии соответствует городу автомобиля. В Алдане и Якутске показаны зимние улицы со снегом. Для похожих моделей различаются кадрирование и положение в кадре, а для моделей с точной разметкой кузова — цвет. Иллюстрации моделей используются как основа игровых фотокомпозиций; комплектацию и состояние конкретной машины сверяйте с её описанием.</p>
+        <p>Поиск начинается с города, в котором вы находитесь. Можно выбрать другой город, радиус до 2 000 км или всю Россию, искать модель и сортировать объявления. Выбор города в поиске не перемещает персонажа.</p>
         <p>В объявлении показаны фото, характеристики, история автомобиля и оценка цены относительно рынка. При входе и после сна цены немного меняются, а продавцы получают разный характер. Уже согласованные суммы и начатые переписки сохраняются.</p>
         <p>Собеседники — игровые персонажи с разным настроением. Они отвечают на вопросы, реагируют на вежливость и оскорбления. Обычно можно сторговать 10–20 тысяч рублей; скидки в 30 или 50 тысяч бывают редко. У дешёвых машин уступки меньше. Суммы можно писать в рублях, тысячах и миллионах.</p>
         <p>Купленная машина исчезает из каталога. Она остаётся вашей, но исходное объявление не возвращается после сна, перезагрузки или перепродажи.</p>
@@ -597,7 +597,7 @@
 <script src="cities.js?v=20261008-cities"></script>
 <script src="regional-cars.js?v=20261010-fictional"></script>
 <script src="custom-cars.js?v=20261016-market-4000"></script>
-<script src="expanded-cars.js?v=20261016-market-4000"></script>
+<script src="expanded-cars.js?v=20261016-city-photos"></script>
 <script src="city-market.js?v=20261016-market-4000"></script>
 <script src="trade-cars.js?v=20261010-market"></script>
 <script src="storage.js?v=20261012-optimize"></script>
@@ -627,8 +627,10 @@
 <script src="commerce-stock.js?v=20261016-tuning"></script>
 <script src="commerce.js?v=20261016-tuning"></script>
 <script src="vehicle-visuals.js?v=20261016-tuning"></script>
-<script src="tuning.js?v=20261016-remove-garage-tuning"></script>
+<script src="tuning.js?v=20261016-city-photos"></script>
+<script src="city-vehicle-masks.js?v=20261016-city-photos"></script>
+<script src="city-photos.js?v=20261016-city-photos"></script>
 <script src="market-photo-crops.js?v=20261016-market-grid"></script>
-<script src="script.js?v=20261016-market-scope"></script>
+<script src="script.js?v=20261016-city-photos"></script>
 </body>
 </html>

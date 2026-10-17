@@ -1,0 +1,7027 @@
+[
+  {
+    "key": "img/fictional/1.jpg",
+    "src": "img/fictional/1.jpg",
+    "model": "Лада 2114 Самара, 2006"
+  },
+  {
+    "key": "img/fictional/2.jpg",
+    "src": "img/fictional/2.jpg",
+    "model": "Opel Vectra, 2003"
+  },
+  {
+    "key": "img/fictional/3.jpg",
+    "src": "img/fictional/3.jpg",
+    "model": "Opel Vectra, 2003"
+  },
+  {
+    "key": "img/fictional/4.jpg",
+    "src": "img/fictional/4.jpg",
+    "model": "ГАЗ-31105 Волга, 2004"
+  },
+  {
+    "key": "img/fictional/5.jpg",
+    "src": "img/fictional/5.jpg",
+    "model": "Mitsubishi Colt, 2005"
+  },
+  {
+    "key": "img/fictional/6.jpg",
+    "src": "img/fictional/6.jpg",
+    "model": "Kia Stinger, 2018"
+  },
+  {
+    "key": "img/fictional/7.jpg",
+    "src": "img/fictional/7.jpg",
+    "model": "Kia Stinger, 2022"
+  },
+  {
+    "key": "img/fictional/8.jpg",
+    "src": "img/fictional/8.jpg",
+    "model": "Mercedes-Benz E-Класс, 2014"
+  },
+  {
+    "key": "img/fictional/9.jpg",
+    "src": "img/fictional/9.jpg",
+    "model": "Mercedes-Benz E-Класс, 2015"
+  },
+  {
+    "key": "img/fictional/10.jpg",
+    "src": "img/fictional/10.jpg",
+    "model": "Mercedes-Benz E-Класс, 2020"
+  },
+  {
+    "key": "img/fictional/11.jpg",
+    "src": "img/fictional/11.jpg",
+    "model": "Mercedes-Benz E-Класс, 2026"
+  },
+  {
+    "key": "img/fictional/12.jpg",
+    "src": "img/fictional/12.jpg",
+    "model": "BMW X7, 2026"
+  },
+  {
+    "key": "img/fictional/19.jpg",
+    "src": "img/fictional/19.jpg",
+    "model": "Daewoo Nexia, 2010"
+  },
+  {
+    "key": "img/fictional/20.jpg",
+    "src": "img/fictional/20.jpg",
+    "model": "Lada Priora, 2012"
+  },
+  {
+    "key": "img/fictional/21.jpg",
+    "src": "img/fictional/21.jpg",
+    "model": "Lada Granta, 2018"
+  },
+  {
+    "key": "img/fictional/22.jpg",
+    "src": "img/fictional/22.jpg",
+    "model": "Volkswagen Polo, 2015"
+  },
+  {
+    "key": "img/fictional/23.jpg",
+    "src": "img/fictional/23.jpg",
+    "model": "Renault Duster, 2015"
+  },
+  {
+    "key": "img/fictional/24.jpg",
+    "src": "img/fictional/24.jpg",
+    "model": "Kia Sportage, 2013"
+  },
+  {
+    "key": "img/fictional/25.jpg",
+    "src": "img/fictional/25.jpg",
+    "region": [
+      0,
+      0,
+      414,
+      401
+    ],
+    "model": "BMW 5 Series, 2008"
+  },
+  {
+    "key": "img/fictional/26.jpg",
+    "src": "img/fictional/26.jpg",
+    "region": [
+      0,
+      0,
+      414,
+      401
+    ],
+    "model": "Hyundai Creta, 2017"
+  },
+  {
+    "key": "img/fictional/27.jpg",
+    "src": "img/fictional/27.jpg",
+    "region": [
+      0,
+      0,
+      414,
+      401
+    ],
+    "model": "Audi A6, 2010"
+  },
+  {
+    "key": "img/fictional/28.jpg",
+    "src": "img/fictional/28.jpg",
+    "region": [
+      0,
+      0,
+      414,
+      388
+    ],
+    "model": "Mazda CX-5, 2014"
+  },
+  {
+    "key": "img/fictional/29.jpg",
+    "src": "img/fictional/29.jpg",
+    "region": [
+      0,
+      0,
+      414,
+      388
+    ],
+    "model": "Toyota RAV4, 2013"
+  },
+  {
+    "key": "img/fictional/30.jpg",
+    "src": "img/fictional/30.jpg",
+    "region": [
+      2,
+      0,
+      412,
+      388
+    ],
+    "model": "Haval Jolion, 2021"
+  },
+  {
+    "key": "img/fictional/31.jpg",
+    "src": "img/fictional/31.jpg",
+    "model": "BMW X5, 2012"
+  },
+  {
+    "key": "img/fictional/32.jpg",
+    "src": "img/fictional/32.jpg",
+    "model": "Porsche Cayenne, 2011"
+  },
+  {
+    "key": "img/fictional/33.jpg",
+    "src": "img/fictional/33.jpg",
+    "region": [
+      2,
+      0,
+      412,
+      414
+    ],
+    "model": "Toyota Land Cruiser, 2010"
+  },
+  {
+    "key": "img/fictional/34.jpg",
+    "src": "img/fictional/34.jpg",
+    "model": "Ford Focus II, 2009"
+  },
+  {
+    "key": "img/fictional/35.jpg",
+    "src": "img/fictional/35.jpg",
+    "model": "Daewoo Matiz, 2010"
+  },
+  {
+    "key": "img/fictional/36.jpg",
+    "src": "img/fictional/36.jpg",
+    "model": "Daewoo Matiz, 2015"
+  },
+  {
+    "key": "img/fictional/37.jpg",
+    "src": "img/fictional/37.jpg",
+    "region": [
+      0,
+      0,
+      414,
+      411
+    ],
+    "model": "Opel Astra H, 2008"
+  },
+  {
+    "key": "img/fictional/38.jpg",
+    "src": "img/fictional/38.jpg",
+    "region": [
+      0,
+      0,
+      414,
+      411
+    ],
+    "model": "Nissan Tiida, 2011"
+  },
+  {
+    "key": "img/fictional/39.jpg",
+    "src": "img/fictional/39.jpg",
+    "region": [
+      0,
+      0,
+      414,
+      411
+    ],
+    "model": "Nissan Note, 2013"
+  },
+  {
+    "key": "img/fictional/40.jpg",
+    "src": "img/fictional/40.jpg",
+    "model": "BYD F3, 2012"
+  },
+  {
+    "key": "img/fictional/41.jpg",
+    "src": "img/fictional/41.jpg",
+    "model": "Ford Focus II, 2008"
+  },
+  {
+    "key": "img/fictional/42.jpg",
+    "src": "img/fictional/42.jpg",
+    "model": "Lada Granta, 2017"
+  },
+  {
+    "key": "img/fictional/43.jpg",
+    "src": "img/fictional/43.jpg",
+    "model": "Lada Priora, 2014"
+  },
+  {
+    "key": "img/fictional/44.jpg",
+    "src": "img/fictional/44.jpg",
+    "model": "Geely GC6, 2015"
+  },
+  {
+    "key": "img/fictional/45.jpg",
+    "src": "img/fictional/45.jpg",
+    "model": "Hyundai Solaris, 2011"
+  },
+  {
+    "key": "img/fictional/46.jpg",
+    "src": "img/fictional/46.jpg",
+    "model": "Renault Logan, 2008"
+  },
+  {
+    "key": "img/fictional/47.jpg",
+    "src": "img/fictional/47.jpg",
+    "model": "Chevrolet Cruze, 2012"
+  },
+  {
+    "key": "img/fictional/48.jpg",
+    "src": "img/fictional/48.jpg",
+    "model": "Chevrolet Aveo, 2014"
+  },
+  {
+    "key": "img/fictional/91.jpg",
+    "src": "img/fictional/91.jpg",
+    "model": "Toyota Corolla, 1997"
+  },
+  {
+    "key": "img/fictional/92.jpg",
+    "src": "img/fictional/92.jpg",
+    "model": "Toyota Corolla, 2000"
+  },
+  {
+    "key": "img/fictional/93.jpg",
+    "src": "img/fictional/93.jpg",
+    "model": "Toyota Corolla, 2003"
+  },
+  {
+    "key": "img/fictional/94.jpg",
+    "src": "img/fictional/94.jpg",
+    "model": "Toyota Corolla, 2005"
+  },
+  {
+    "key": "img/fictional/95.jpg",
+    "src": "img/fictional/95.jpg",
+    "model": "Toyota Corolla, 2006"
+  },
+  {
+    "key": "img/fictional/96.jpg",
+    "src": "img/fictional/96.jpg",
+    "model": "Toyota Corolla, 2007"
+  },
+  {
+    "key": "img/fictional/97.jpg",
+    "src": "img/fictional/97.jpg",
+    "model": "Toyota Corolla, 2008"
+  },
+  {
+    "key": "img/fictional/98.jpg",
+    "src": "img/fictional/98.jpg",
+    "model": "Toyota Corolla, 2009"
+  },
+  {
+    "key": "img/fictional/99.jpg",
+    "src": "img/fictional/99.jpg",
+    "model": "Toyota Camry, 2002"
+  },
+  {
+    "key": "img/fictional/100.jpg",
+    "src": "img/fictional/100.jpg",
+    "model": "Toyota Camry, 2005"
+  },
+  {
+    "key": "img/fictional/101.jpg",
+    "src": "img/fictional/101.jpg",
+    "model": "Toyota Avensis, 2001"
+  },
+  {
+    "key": "img/fictional/102.jpg",
+    "src": "img/fictional/102.jpg",
+    "model": "Toyota Avensis, 2002"
+  },
+  {
+    "key": "img/fictional/103.jpg",
+    "src": "img/fictional/103.jpg",
+    "model": "Toyota Avensis, 2008"
+  },
+  {
+    "key": "img/fictional/104.jpg",
+    "src": "img/fictional/104.jpg",
+    "model": "Toyota RAV4, 2004"
+  },
+  {
+    "key": "img/fictional/105.jpg",
+    "src": "img/fictional/105.jpg",
+    "model": "Toyota RAV4, 2005"
+  },
+  {
+    "key": "img/fictional/106.jpg",
+    "src": "img/fictional/106.jpg",
+    "model": "Toyota Yaris, 2010"
+  },
+  {
+    "key": "img/fictional/107.jpg",
+    "src": "img/fictional/107.jpg",
+    "model": "Lada (ВАЗ) 2106 4-speed, 1990"
+  },
+  {
+    "key": "img/fictional/108.jpg",
+    "src": "img/fictional/108.jpg",
+    "model": "Daewoo Matiz I Рестайлинг, 2004"
+  },
+  {
+    "key": "img/fictional/109.jpg",
+    "src": "img/fictional/109.jpg",
+    "model": "Ford Mondeo II, 1997"
+  },
+  {
+    "key": "img/fictional/110.jpg",
+    "src": "img/fictional/110.jpg",
+    "model": "Nissan Expert, 1999"
+  },
+  {
+    "key": "img/fictional/111.jpg",
+    "src": "img/fictional/111.jpg",
+    "model": "Chevrolet Lanos I, 2006"
+  },
+  {
+    "key": "img/fictional/112.jpg",
+    "src": "img/fictional/112.jpg",
+    "model": "Volkswagen Passat B4, 1996"
+  },
+  {
+    "key": "img/fictional/113.jpg",
+    "src": "img/fictional/113.jpg",
+    "model": "Toyota Camry V30, 1993"
+  },
+  {
+    "key": "img/fictional/114.jpg",
+    "src": "img/fictional/114.jpg",
+    "model": "ГАЗ 31029 Волга, 1997"
+  },
+  {
+    "key": "img/fictional/115.jpg",
+    "src": "img/fictional/115.jpg",
+    "model": "Opel Vectra B, 1998"
+  },
+  {
+    "key": "img/fictional/116.jpg",
+    "src": "img/fictional/116.jpg",
+    "model": "Mitsubishi Lancer VI, 1998"
+  },
+  {
+    "key": "img/fictional/117.jpg",
+    "src": "img/fictional/117.jpg",
+    "model": "Ford Focus III, 2012"
+  },
+  {
+    "key": "img/fictional/118.jpg",
+    "src": "img/fictional/118.jpg",
+    "model": "Renault Logan II, 2015"
+  },
+  {
+    "key": "img/fictional/119.jpg",
+    "src": "img/fictional/119.jpg",
+    "model": "Hyundai Santa Fe Classic, 2008"
+  },
+  {
+    "key": "img/fictional/120.jpg",
+    "src": "img/fictional/120.jpg",
+    "model": "Kia Sportage II, 2007"
+  },
+  {
+    "key": "img/fictional/121.jpg",
+    "src": "img/fictional/121.jpg",
+    "model": "Volkswagen Jetta V, 2010"
+  },
+  {
+    "key": "img/fictional/122.jpg",
+    "src": "img/fictional/122.jpg",
+    "model": "Skoda Rapid I, 2014"
+  },
+  {
+    "key": "img/fictional/123.jpg",
+    "src": "img/fictional/123.jpg",
+    "model": "Nissan Qashqai I, 2007"
+  },
+  {
+    "key": "img/fictional/124.jpg",
+    "src": "img/fictional/124.jpg",
+    "model": "Toyota Corolla X (E140, E150), 2008"
+  },
+  {
+    "key": "img/fictional/125.jpg",
+    "src": "img/fictional/125.jpg",
+    "model": "Chevrolet Captiva I, 2008"
+  },
+  {
+    "key": "img/fictional/126.jpg",
+    "src": "img/fictional/126.jpg",
+    "model": "Honda N-BOX II Рестайлинг, 2021"
+  },
+  {
+    "key": "img/fictional/127.jpg",
+    "src": "img/fictional/127.jpg",
+    "model": "Audi A3 II (8P) Рестайлинг 2, 2011"
+  },
+  {
+    "key": "img/fictional/128.jpg",
+    "src": "img/fictional/128.jpg",
+    "model": "Mercedes-Benz B-Класс 200 I (W245), 2008"
+  },
+  {
+    "key": "img/fictional/129.jpg",
+    "src": "img/fictional/129.jpg",
+    "model": "Volvo XC70 I Рестайлинг, 2005"
+  },
+  {
+    "key": "img/fictional/130.jpg",
+    "src": "img/fictional/130.jpg",
+    "model": "Mazda 3 II (BL), 2010"
+  },
+  {
+    "key": "img/fictional/131.jpg",
+    "src": "img/fictional/131.jpg",
+    "model": "Mitsubishi Outlander I, 2007"
+  },
+  {
+    "key": "img/fictional/132.jpg",
+    "src": "img/fictional/132.jpg",
+    "model": "Suzuki Grand Vitara II, 2005"
+  },
+  {
+    "key": "img/fictional/133.jpg",
+    "src": "img/fictional/133.jpg",
+    "model": "Peugeot Partner II Рестайлинг, 2013"
+  },
+  {
+    "key": "img/fictional/134.jpg",
+    "src": "img/fictional/134.jpg",
+    "model": "Opel Antara I Рестайлинг, 2012"
+  },
+  {
+    "key": "img/fictional/135.jpg",
+    "src": "img/fictional/135.jpg",
+    "model": "Citroen C-Crosser, 2011"
+  },
+  {
+    "key": "img/fictional/136.jpg",
+    "src": "img/fictional/136.jpg",
+    "model": "Land Rover Range Rover Supercharged III Рестайлинг, 2005"
+  },
+  {
+    "key": "img/fictional/137.jpg",
+    "src": "img/fictional/137.jpg",
+    "model": "Ravon R4, 2017"
+  },
+  {
+    "key": "img/fictional/138.jpg",
+    "src": "img/fictional/138.jpg",
+    "model": "Geely Emgrand X7 I Рестайлинг 2, 2019"
+  },
+  {
+    "key": "img/fictional/139.jpg",
+    "src": "img/fictional/139.jpg",
+    "model": "Lada (ВАЗ) Largus I, 2018"
+  },
+  {
+    "key": "img/fictional/140.jpg",
+    "src": "img/fictional/140.jpg",
+    "model": "УАЗ Патриот I Рестайлинг, 2012"
+  },
+  {
+    "key": "img/fictional/141.jpg",
+    "src": "img/fictional/141.jpg",
+    "model": "Zotye T600, 2018"
+  },
+  {
+    "key": "img/fictional/142.jpg",
+    "src": "img/fictional/142.jpg",
+    "model": "Changan CS35, 2018"
+  },
+  {
+    "key": "img/fictional/143.jpg",
+    "src": "img/fictional/143.jpg",
+    "model": "SsangYong Actyon Sports II, 2012"
+  },
+  {
+    "key": "img/fictional/144.jpg",
+    "src": "img/fictional/144.jpg",
+    "model": "Ford Focus III, 2014"
+  },
+  {
+    "key": "img/fictional/145.jpg",
+    "src": "img/fictional/145.jpg",
+    "model": "Renault Duster I Рестайлинг, 2016"
+  },
+  {
+    "key": "img/fictional/146.jpg",
+    "src": "img/fictional/146.jpg",
+    "model": "Hyundai Solaris I, 2012"
+  },
+  {
+    "key": "img/fictional/147.jpg",
+    "src": "img/fictional/147.jpg",
+    "model": "Toyota Chaser Tourer V, 1997"
+  },
+  {
+    "key": "img/fictional/148.jpg",
+    "src": "img/fictional/148.jpg",
+    "model": "Toyota Supra RZ, 1996"
+  },
+  {
+    "key": "img/fictional/149.jpg",
+    "src": "img/fictional/149.jpg",
+    "model": "Nissan Skyline GT-R V-Spec R34, 1999"
+  },
+  {
+    "key": "img/fictional/150.jpg",
+    "src": "img/fictional/150.jpg",
+    "model": "Mazda RX-7 FD, 1994"
+  },
+  {
+    "key": "img/fictional/151.jpg",
+    "src": "img/fictional/151.jpg",
+    "model": "Nissan Silvia Varietta S15, 2000"
+  },
+  {
+    "key": "img/fictional/152.jpg",
+    "src": "img/fictional/152.jpg",
+    "model": "Mitsubishi Lancer Evolution VI, 1999"
+  },
+  {
+    "key": "img/fictional/153.jpg",
+    "src": "img/fictional/153.jpg",
+    "model": "BMW M3 E30, 1990"
+  },
+  {
+    "key": "img/fictional/154.jpg",
+    "src": "img/fictional/154.jpg",
+    "model": "Ferrari F40, 1990"
+  },
+  {
+    "key": "img/fictional/155.jpg",
+    "src": "img/fictional/155.jpg",
+    "model": "Lamborghini Diablo, 1992"
+  },
+  {
+    "key": "img/fictional/156.jpg",
+    "src": "img/fictional/156.jpg",
+    "model": "Porsche Cayenne GTS без фары, 2008"
+  },
+  {
+    "key": "img/fictional/1063001.jpg",
+    "src": "img/fictional/1063001.jpg",
+    "model": "Lada (ВАЗ) 21093i, 2003"
+  },
+  {
+    "key": "img/fictional/1063002.jpg",
+    "src": "img/fictional/1063002.jpg",
+    "model": "Lada (ВАЗ) 2110, 2006"
+  },
+  {
+    "key": "img/fictional/1063003.jpg",
+    "src": "img/fictional/1063003.jpg",
+    "model": "Daewoo Matiz I Рестайлинг, 2012"
+  },
+  {
+    "key": "img/fictional/1063004.jpg",
+    "src": "img/fictional/1063004.jpg",
+    "model": "Daewoo Matiz I Рестайлинг, 2010"
+  },
+  {
+    "key": "img/fictional/1063005.jpg",
+    "src": "img/fictional/1063005.jpg",
+    "model": "Lada (ВАЗ) Granta I, 2013"
+  },
+  {
+    "key": "img/fictional/1063006.jpg",
+    "src": "img/fictional/1063006.jpg",
+    "model": "Renault Logan I, 2006"
+  },
+  {
+    "key": "img/fictional/1063007.jpg",
+    "src": "img/fictional/1063007.jpg",
+    "model": "Subaru Impreza II Рестайлинг 2, 2006"
+  },
+  {
+    "key": "img/fictional/1063008.jpg",
+    "src": "img/fictional/1063008.jpg",
+    "model": "Audi A4 IV (B8), 2008"
+  },
+  {
+    "key": "img/fictional/1063009.jpg",
+    "src": "img/fictional/1063009.jpg",
+    "model": "Infiniti FX35 I (S50), 2004"
+  },
+  {
+    "key": "img/fictional/1063010.jpg",
+    "src": "img/fictional/1063010.jpg",
+    "model": "Renault Duster I, 2015"
+  },
+  {
+    "key": "img/fictional/1063011.jpg",
+    "src": "img/fictional/1063011.jpg",
+    "model": "Chery Tiggo 5 I Рестайлинг, 2018"
+  },
+  {
+    "key": "img/fictional/1063012.jpg",
+    "src": "img/fictional/1063012.jpg",
+    "model": "Skoda Octavia III (A7), 2013"
+  },
+  {
+    "key": "img/fictional/1063013.jpg",
+    "src": "img/fictional/1063013.jpg",
+    "model": "Kia Soul III, 2019"
+  },
+  {
+    "key": "img/fictional/1063014.jpg",
+    "src": "img/fictional/1063014.jpg",
+    "model": "Infiniti FX35 II (S51), 2009"
+  },
+  {
+    "key": "img/fictional/1063015.jpg",
+    "src": "img/fictional/1063015.jpg",
+    "model": "Audi A3 III (8V) Рестайлинг, 2019"
+  },
+  {
+    "key": "img/fictional/1063016.jpg",
+    "src": "img/fictional/1063016.jpg",
+    "model": "Mercedes-Benz R-Класс 350 Long I Рестайлинг 2, 2012"
+  },
+  {
+    "key": "img/fictional/1063017.jpg",
+    "src": "img/fictional/1063017.jpg",
+    "model": "Hyundai Palisade I, 2019"
+  },
+  {
+    "key": "img/fictional/1063018.jpg",
+    "src": "img/fictional/1063018.jpg",
+    "model": "Mercedes-Benz GLS 450 II (X167), 2020"
+  },
+  {
+    "key": "img/fictional/1063019.jpg",
+    "src": "img/fictional/1063019.jpg",
+    "model": "Mercedes-Benz GLE AMG 53 AMG II (V167), 2022"
+  },
+  {
+    "key": "img/fictional/1063020.jpg",
+    "src": "img/fictional/1063020.jpg",
+    "model": "Maybach 57 I, 2003"
+  },
+  {
+    "key": "img/fictional/1063021.jpg",
+    "src": "img/fictional/1063021.jpg",
+    "model": "Nissan Expert, 2002"
+  },
+  {
+    "key": "img/fictional/1063022.jpg",
+    "src": "img/fictional/1063022.jpg",
+    "model": "Daewoo Nexia I Рестайлинг, 2008"
+  },
+  {
+    "key": "img/fictional/1063023.jpg",
+    "src": "img/fictional/1063023.jpg",
+    "model": "Chevrolet Lanos I, 2006"
+  },
+  {
+    "key": "img/fictional/1063024.jpg",
+    "src": "img/fictional/1063024.jpg",
+    "model": "Toyota Corolla VIII (E110), 1997"
+  },
+  {
+    "key": "img/fictional/1063025.jpg",
+    "src": "img/fictional/1063025.jpg",
+    "model": "Opel Astra F, 1993"
+  },
+  {
+    "key": "img/fictional/1063026.jpg",
+    "src": "img/fictional/1063026.jpg",
+    "model": "Chevrolet Lanos I, 2008"
+  },
+  {
+    "key": "img/fictional/1063027.jpg",
+    "src": "img/fictional/1063027.jpg",
+    "model": "FAW V5, 2013"
+  },
+  {
+    "key": "img/fictional/1063028.jpg",
+    "src": "img/fictional/1063028.jpg",
+    "model": "Hyundai Trajet I Рестайлинг, 2006"
+  },
+  {
+    "key": "img/fictional/1063029.jpg",
+    "src": "img/fictional/1063029.jpg",
+    "model": "Datsun on-DO I, 2019"
+  },
+  {
+    "key": "img/fictional/1063030.jpg",
+    "src": "img/fictional/1063030.jpg",
+    "model": "Mazda 3 I (BK) Рестайлинг, 2007"
+  },
+  {
+    "key": "img/fictional/1063901.jpg",
+    "src": "img/fictional/1063901.jpg",
+    "model": "Mazda RX-7 FD, 1994"
+  },
+  {
+    "key": "img/fictional/1063902.jpg",
+    "src": "img/fictional/1063902.jpg",
+    "model": "Nissan Silvia Varietta S15, 2000"
+  },
+  {
+    "key": "img/fictional/1063903.jpg",
+    "src": "img/fictional/1063903.jpg",
+    "model": "Mitsubishi Lancer Evolution VI, 1999"
+  },
+  {
+    "key": "img/fictional/1122001.jpg",
+    "src": "img/fictional/1122001.jpg",
+    "model": "Mazda Demio I (DW), 1998"
+  },
+  {
+    "key": "img/fictional/1122002.jpg",
+    "src": "img/fictional/1122002.jpg",
+    "model": "Lada (ВАЗ) 2104, 1990"
+  },
+  {
+    "key": "img/fictional/1122003.jpg",
+    "src": "img/fictional/1122003.jpg",
+    "model": "Daewoo Nexia I Рестайлинг, 2008"
+  },
+  {
+    "key": "img/fictional/1122004.jpg",
+    "src": "img/fictional/1122004.jpg",
+    "model": "Lada (ВАЗ) 2115, 2004"
+  },
+  {
+    "key": "img/fictional/1122005.jpg",
+    "src": "img/fictional/1122005.jpg",
+    "model": "Volkswagen Polo III, 1997"
+  },
+  {
+    "key": "img/fictional/1122006.jpg",
+    "src": "img/fictional/1122006.jpg",
+    "model": "Chevrolet Lanos I, 2007"
+  },
+  {
+    "key": "img/fictional/1122007.jpg",
+    "src": "img/fictional/1122007.jpg",
+    "model": "Daewoo Leganza, 1999"
+  },
+  {
+    "key": "img/fictional/1122008.jpg",
+    "src": "img/fictional/1122008.jpg",
+    "model": "Peugeot 3008 I, 2011"
+  },
+  {
+    "key": "img/fictional/1122009.jpg",
+    "src": "img/fictional/1122009.jpg",
+    "model": "Lada (ВАЗ) Granta I Рестайлинг, 2020"
+  },
+  {
+    "key": "img/fictional/1122010.jpg",
+    "src": "img/fictional/1122010.jpg",
+    "model": "Chevrolet Cruze I Рестайлинг, 2014"
+  },
+  {
+    "key": "img/fictional/1122011.jpg",
+    "src": "img/fictional/1122011.jpg",
+    "model": "Hyundai ix35 I, 2011"
+  },
+  {
+    "key": "img/fictional/1122012.jpg",
+    "src": "img/fictional/1122012.jpg",
+    "model": "Kia Rio III Рестайлинг, 2015"
+  },
+  {
+    "key": "img/fictional/1122013.jpg",
+    "src": "img/fictional/1122013.jpg",
+    "model": "Renault Duster I Рестайлинг, 2017"
+  },
+  {
+    "key": "img/fictional/1122014.jpg",
+    "src": "img/fictional/1122014.jpg",
+    "model": "Toyota Highlander II (XU40), 2009"
+  },
+  {
+    "key": "img/fictional/1122015.jpg",
+    "src": "img/fictional/1122015.jpg",
+    "model": "Hyundai Solaris II, 2020"
+  },
+  {
+    "key": "img/fictional/1122016.jpg",
+    "src": "img/fictional/1122016.jpg",
+    "model": "Kia Soul III, 2021"
+  },
+  {
+    "key": "img/fictional/1122017.jpg",
+    "src": "img/fictional/1122017.jpg",
+    "model": "Volkswagen Multivan T6 Рестайлинг, 2020"
+  },
+  {
+    "key": "img/fictional/1122018.jpg",
+    "src": "img/fictional/1122018.jpg",
+    "model": "Volkswagen Touareg III, 2020"
+  },
+  {
+    "key": "img/fictional/1122019.jpg",
+    "src": "img/fictional/1122019.jpg",
+    "model": "Land Rover Range Rover Velar I, 2020"
+  },
+  {
+    "key": "img/fictional/1122020.jpg",
+    "src": "img/fictional/1122020.jpg",
+    "model": "Volvo XC90 II Рестайлинг 1, 2021"
+  },
+  {
+    "key": "img/fictional/1122021.jpg",
+    "src": "img/fictional/1122021.jpg",
+    "model": "Daewoo Matiz I Рестайлинг, 2006"
+  },
+  {
+    "key": "img/fictional/1122022.jpg",
+    "src": "img/fictional/1122022.jpg",
+    "model": "Chery Bonus (A13), 2011"
+  },
+  {
+    "key": "img/fictional/1122023.jpg",
+    "src": "img/fictional/1122023.jpg",
+    "model": "Chevrolet Lanos I, 2008"
+  },
+  {
+    "key": "img/fictional/1122024.jpg",
+    "src": "img/fictional/1122024.jpg",
+    "model": "Chery QQ6 (S21), 2008"
+  },
+  {
+    "key": "img/fictional/1122025.jpg",
+    "src": "img/fictional/1122025.jpg",
+    "model": "Opel Ascona C, 1981"
+  },
+  {
+    "key": "img/fictional/1122026.jpg",
+    "src": "img/fictional/1122026.jpg",
+    "model": "Renault Laguna I, 1997"
+  },
+  {
+    "key": "img/fictional/1122027.jpg",
+    "src": "img/fictional/1122027.jpg",
+    "model": "Lifan Breez (520), 2010"
+  },
+  {
+    "key": "img/fictional/1122028.jpg",
+    "src": "img/fictional/1122028.jpg",
+    "model": "Ford Fiesta Mk4, 1999"
+  },
+  {
+    "key": "img/fictional/1122029.jpg",
+    "src": "img/fictional/1122029.jpg",
+    "model": "Москвич 21412-01, 1997"
+  },
+  {
+    "key": "img/fictional/1122030.jpg",
+    "src": "img/fictional/1122030.jpg",
+    "model": "Skoda Octavia I (A4) Рестайлинг, 2009"
+  },
+  {
+    "key": "img/fictional/1122901.jpg",
+    "src": "img/fictional/1122901.jpg",
+    "model": "Porsche Cayenne GTS без фары, 2008"
+  },
+  {
+    "key": "img/fictional/1122902.jpg",
+    "src": "img/fictional/1122902.jpg",
+    "model": "Toyota Chaser Tourer V, 1997"
+  },
+  {
+    "key": "img/fictional/1122903.jpg",
+    "src": "img/fictional/1122903.jpg",
+    "model": "Toyota Supra RZ, 1996"
+  },
+  {
+    "key": "img/fictional/1160001.jpg",
+    "src": "img/fictional/1160001.jpg",
+    "model": "Daewoo Nexia I Рестайлинг, 2011"
+  },
+  {
+    "key": "img/fictional/1160002.jpg",
+    "src": "img/fictional/1160002.jpg",
+    "model": "Hyundai Avante II Рестайлинг, 1998"
+  },
+  {
+    "key": "img/fictional/1160003.jpg",
+    "src": "img/fictional/1160003.jpg",
+    "model": "Lada (ВАЗ) 2115, 2005"
+  },
+  {
+    "key": "img/fictional/1160004.jpg",
+    "src": "img/fictional/1160004.jpg",
+    "model": "Lada (ВАЗ) 2110, 2003"
+  },
+  {
+    "key": "img/fictional/1160005.jpg",
+    "src": "img/fictional/1160005.jpg",
+    "model": "ГАЗ 24 Волга 24 I (24), 1981"
+  },
+  {
+    "key": "img/fictional/1160006.jpg",
+    "src": "img/fictional/1160006.jpg",
+    "model": "Lada (ВАЗ) 2107, 2009"
+  },
+  {
+    "key": "img/fictional/1160007.jpg",
+    "src": "img/fictional/1160007.jpg",
+    "model": "Chevrolet Aveo II, 2013"
+  },
+  {
+    "key": "img/fictional/1160008.jpg",
+    "src": "img/fictional/1160008.jpg",
+    "model": "Renault Logan II Рестайлинг, 2019"
+  },
+  {
+    "key": "img/fictional/1160009.jpg",
+    "src": "img/fictional/1160009.jpg",
+    "model": "BMW X3 25i I (E83), 2004"
+  },
+  {
+    "key": "img/fictional/1160010.jpg",
+    "src": "img/fictional/1160010.jpg",
+    "model": "Mazda RX-8 I, 2003"
+  },
+  {
+    "key": "img/fictional/1160011.jpg",
+    "src": "img/fictional/1160011.jpg",
+    "model": "Subaru Outback II, 2002"
+  },
+  {
+    "key": "img/fictional/1160012.jpg",
+    "src": "img/fictional/1160012.jpg",
+    "model": "Skoda Octavia III (A7), 2014"
+  },
+  {
+    "key": "img/fictional/1160013.jpg",
+    "src": "img/fictional/1160013.jpg",
+    "model": "BMW X1 20d I (E84) Рестайлинг, 2014"
+  },
+  {
+    "key": "img/fictional/1160014.jpg",
+    "src": "img/fictional/1160014.jpg",
+    "model": "Toyota Avensis II Рестайлинг, 2007"
+  },
+  {
+    "key": "img/fictional/1160015.jpg",
+    "src": "img/fictional/1160015.jpg",
+    "model": "Chery Tiggo 8 Pro Max I, 2022"
+  },
+  {
+    "key": "img/fictional/1160016.jpg",
+    "src": "img/fictional/1160016.jpg",
+    "model": "Renault Sandero Stepway II Рестайлинг, 2019"
+  },
+  {
+    "key": "img/fictional/1160017.jpg",
+    "src": "img/fictional/1160017.jpg",
+    "model": "Volkswagen Golf VIII, 2021"
+  },
+  {
+    "key": "img/fictional/1160018.jpg",
+    "src": "img/fictional/1160018.jpg",
+    "model": "Mazda CX-5 II, 2018"
+  },
+  {
+    "key": "img/fictional/1160019.jpg",
+    "src": "img/fictional/1160019.jpg",
+    "region": [
+      0,
+      0,
+      414,
+      404
+    ],
+    "model": "Toyota RAV4 V (XA50), 2019"
+  },
+  {
+    "key": "img/fictional/1160020.jpg",
+    "src": "img/fictional/1160020.jpg",
+    "region": [
+      0,
+      0,
+      414,
+      404
+    ],
+    "model": "Audi RS 5 II (F5) Рестайлинг, 2021"
+  },
+  {
+    "key": "img/fictional/1160021.jpg",
+    "src": "img/fictional/1160021.jpg",
+    "region": [
+      0,
+      0,
+      414,
+      403
+    ],
+    "model": "Ford Mustang VI Рестайлинг, 2019"
+  },
+  {
+    "key": "img/fictional/1160022.jpg",
+    "src": "img/fictional/1160022.jpg",
+    "model": "BMW X5 40i IV (G05/G18), 2019"
+  },
+  {
+    "key": "img/fictional/1160023.jpg",
+    "src": "img/fictional/1160023.jpg",
+    "model": "Hyundai Palisade I Рестайлинг, 2022"
+  },
+  {
+    "key": "img/fictional/1160024.jpg",
+    "src": "img/fictional/1160024.jpg",
+    "model": "Daewoo Nexia I, 2003"
+  },
+  {
+    "key": "img/fictional/1160025.jpg",
+    "src": "img/fictional/1160025.jpg",
+    "model": "Daewoo Nexia I Рестайлинг, 2012"
+  },
+  {
+    "key": "img/fictional/1160026.jpg",
+    "src": "img/fictional/1160026.jpg",
+    "model": "Ford Mondeo III, 2001"
+  },
+  {
+    "key": "img/fictional/1160027.jpg",
+    "src": "img/fictional/1160027.jpg",
+    "model": "Москвич 408ИЭ, 1970"
+  },
+  {
+    "key": "img/fictional/1160028.jpg",
+    "src": "img/fictional/1160028.jpg",
+    "model": "Chery Bonus (A13), 2011"
+  },
+  {
+    "key": "img/fictional/1160029.jpg",
+    "src": "img/fictional/1160029.jpg",
+    "model": "Renault Symbol I Рестайлинг 2, 2007"
+  },
+  {
+    "key": "img/fictional/1160030.jpg",
+    "src": "img/fictional/1160030.jpg",
+    "model": "Москвич 2141-01, 1992"
+  },
+  {
+    "key": "img/fictional/1160901.jpg",
+    "src": "img/fictional/1160901.jpg",
+    "model": "Nissan Silvia Varietta S15, 2000"
+  },
+  {
+    "key": "img/fictional/1160902.jpg",
+    "src": "img/fictional/1160902.jpg",
+    "model": "Mitsubishi Lancer Evolution VI, 1999"
+  },
+  {
+    "key": "img/fictional/1160903.jpg",
+    "src": "img/fictional/1160903.jpg",
+    "model": "BMW M3 E30, 1990"
+  },
+  {
+    "key": "img/fictional/1224001.jpg",
+    "src": "img/fictional/1224001.jpg",
+    "model": "Nissan Bluebird SR18 XI (U14), 1996"
+  },
+  {
+    "key": "img/fictional/1224002.jpg",
+    "src": "img/fictional/1224002.jpg",
+    "model": "Nissan Stanza II (T12), 1986"
+  },
+  {
+    "key": "img/fictional/1224003.jpg",
+    "src": "img/fictional/1224003.jpg",
+    "model": "Lada (ВАЗ) 2109, 1997"
+  },
+  {
+    "key": "img/fictional/1224004.jpg",
+    "src": "img/fictional/1224004.jpg",
+    "model": "Nissan Cube I (Z10), 1999"
+  },
+  {
+    "key": "img/fictional/1224005.jpg",
+    "src": "img/fictional/1224005.jpg",
+    "model": "Toyota RAV4 II (XA20), 2001"
+  },
+  {
+    "key": "img/fictional/1224006.jpg",
+    "src": "img/fictional/1224006.jpg",
+    "model": "BMW X5 4.4i I (E53) Рестайлинг, 2005"
+  },
+  {
+    "key": "img/fictional/1224007.jpg",
+    "src": "img/fictional/1224007.jpg",
+    "model": "Toyota Corona Premio X (T210), 1996"
+  },
+  {
+    "key": "img/fictional/1224008.jpg",
+    "src": "img/fictional/1224008.jpg",
+    "model": "Honda Saber II, 1998"
+  },
+  {
+    "key": "img/fictional/1224009.jpg",
+    "src": "img/fictional/1224009.jpg",
+    "model": "Kia Soul I Рестайлинг, 2013"
+  },
+  {
+    "key": "img/fictional/1224010.jpg",
+    "src": "img/fictional/1224010.jpg",
+    "model": "Peugeot 4007, 2008"
+  },
+  {
+    "key": "img/fictional/1224011.jpg",
+    "src": "img/fictional/1224011.jpg",
+    "model": "Audi A4 IV (B8), 2011"
+  },
+  {
+    "key": "img/fictional/1224012.jpg",
+    "src": "img/fictional/1224012.jpg",
+    "model": "Chevrolet Cobalt II Рестайлинг, 2022"
+  },
+  {
+    "key": "img/fictional/1224013.jpg",
+    "src": "img/fictional/1224013.jpg",
+    "model": "Audi A3 III (8V), 2014"
+  },
+  {
+    "key": "img/fictional/1224014.jpg",
+    "src": "img/fictional/1224014.jpg",
+    "model": "BMW X1 18i sDrive II (F48), 2019"
+  },
+  {
+    "key": "img/fictional/1224015.jpg",
+    "src": "img/fictional/1224015.jpg",
+    "model": "Toyota RAV4 IV (XA40), 2014"
+  },
+  {
+    "key": "img/fictional/1224016.jpg",
+    "src": "img/fictional/1224016.jpg",
+    "model": "Subaru Levorg I Рестайлинг, 2018"
+  },
+  {
+    "key": "img/fictional/1224017.jpg",
+    "src": "img/fictional/1224017.jpg",
+    "model": "Infiniti QX80 I Рестайлинг, 2015"
+  },
+  {
+    "key": "img/fictional/1224018.jpg",
+    "src": "img/fictional/1224018.jpg",
+    "model": "BMW 3 серии 330i V (E90/E91/E92/E93) Рестайлинг, 2010"
+  },
+  {
+    "key": "img/fictional/1224019.jpg",
+    "src": "img/fictional/1224019.jpg",
+    "model": "Mercedes-Benz C-Класс 200 IV (W205) Рестайлинг, 2018"
+  },
+  {
+    "key": "img/fictional/1224020.jpg",
+    "src": "img/fictional/1224020.jpg",
+    "model": "BYD Song Pro 8.3 kWh I Рестайлинг, 2022"
+  },
+  {
+    "key": "img/fictional/1224021.jpg",
+    "src": "img/fictional/1224021.jpg",
+    "model": "Land Rover Range Rover IV Рестайлинг, 2018"
+  },
+  {
+    "key": "img/fictional/1224022.jpg",
+    "src": "img/fictional/1224022.jpg",
+    "model": "Mercedes-Benz S-Класс 560 Long VI (W222, C217) Рестайлинг, 2019"
+  },
+  {
+    "key": "img/fictional/1224023.jpg",
+    "src": "img/fictional/1224023.jpg",
+    "model": "Land Rover Range Rover IV Рестайлинг, 2019"
+  },
+  {
+    "key": "img/fictional/1224024.jpg",
+    "src": "img/fictional/1224024.jpg",
+    "model": "Lexus GX 460 II Рестайлинг 2, 2020"
+  },
+  {
+    "key": "img/fictional/1224025.jpg",
+    "src": "img/fictional/1224025.jpg",
+    "model": "Lada (ВАЗ) 2104 4-speed, 2000"
+  },
+  {
+    "key": "img/fictional/1224026.jpg",
+    "src": "img/fictional/1224026.jpg",
+    "model": "Иж 2125 Комби 21251, 1987"
+  },
+  {
+    "key": "img/fictional/1224027.jpg",
+    "src": "img/fictional/1224027.jpg",
+    "region": [
+      2,
+      0,
+      412,
+      414
+    ],
+    "model": "ГАЗ 3110 Волга, 1999"
+  },
+  {
+    "key": "img/fictional/1224028.jpg",
+    "src": "img/fictional/1224028.jpg",
+    "model": "Ford Focus III, 2012"
+  },
+  {
+    "key": "img/fictional/1224029.jpg",
+    "src": "img/fictional/1224029.jpg",
+    "model": "Ford Focus II Рестайлинг, 2010"
+  },
+  {
+    "key": "img/fictional/1224030.jpg",
+    "src": "img/fictional/1224030.jpg",
+    "model": "Mitsubishi Lancer X, 2008"
+  },
+  {
+    "key": "img/fictional/1224901.jpg",
+    "src": "img/fictional/1224901.jpg",
+    "model": "Toyota Chaser Tourer V, 1997"
+  },
+  {
+    "key": "img/fictional/1224902.jpg",
+    "src": "img/fictional/1224902.jpg",
+    "model": "Toyota Supra RZ, 1996"
+  },
+  {
+    "key": "img/fictional/1224903.jpg",
+    "src": "img/fictional/1224903.jpg",
+    "model": "Nissan Skyline GT-R V-Spec R34, 1999"
+  },
+  {
+    "key": "img/fictional/1382001.jpg",
+    "src": "img/fictional/1382001.jpg",
+    "model": "Lada (ВАЗ) 2115, 2008"
+  },
+  {
+    "key": "img/fictional/1382002.jpg",
+    "src": "img/fictional/1382002.jpg",
+    "model": "Daewoo Nexia I, 1998"
+  },
+  {
+    "key": "img/fictional/1382003.jpg",
+    "src": "img/fictional/1382003.jpg",
+    "model": "Lada (ВАЗ) 21093i, 2003"
+  },
+  {
+    "key": "img/fictional/1382004.jpg",
+    "src": "img/fictional/1382004.jpg",
+    "model": "Lifan Breez (520), 2008"
+  },
+  {
+    "key": "img/fictional/1382005.jpg",
+    "src": "img/fictional/1382005.jpg",
+    "model": "Lada (ВАЗ) Priora I Рестайлинг, 2014"
+  },
+  {
+    "key": "img/fictional/1382006.jpg",
+    "src": "img/fictional/1382006.jpg",
+    "model": "Rover 75 I, 1999"
+  },
+  {
+    "key": "img/fictional/1382007.jpg",
+    "src": "img/fictional/1382007.jpg",
+    "model": "УАЗ Хантер 315195, 2014"
+  },
+  {
+    "key": "img/fictional/1382008.jpg",
+    "src": "img/fictional/1382008.jpg",
+    "model": "Peugeot 308 I, 2008"
+  },
+  {
+    "key": "img/fictional/1382009.jpg",
+    "src": "img/fictional/1382009.jpg",
+    "model": "Mitsubishi ASX I, 2013"
+  },
+  {
+    "key": "img/fictional/1382010.jpg",
+    "src": "img/fictional/1382010.jpg",
+    "model": "Nissan Almera III (G15), 2018"
+  },
+  {
+    "key": "img/fictional/1382011.jpg",
+    "src": "img/fictional/1382011.jpg",
+    "model": "Volkswagen Tiguan I Рестайлинг, 2014"
+  },
+  {
+    "key": "img/fictional/1382012.jpg",
+    "src": "img/fictional/1382012.jpg",
+    "model": "SEAT Leon III, 2014"
+  },
+  {
+    "key": "img/fictional/1382013.jpg",
+    "src": "img/fictional/1382013.jpg",
+    "model": "Nissan Murano III (Z52), 2018"
+  },
+  {
+    "key": "img/fictional/1382014.jpg",
+    "src": "img/fictional/1382014.jpg",
+    "model": "Audi Q3 I (8U), 2013"
+  },
+  {
+    "key": "img/fictional/1382015.jpg",
+    "src": "img/fictional/1382015.jpg",
+    "model": "Volkswagen Polo Plus (China Market), 2022"
+  },
+  {
+    "key": "img/fictional/1382016.jpg",
+    "src": "img/fictional/1382016.jpg",
+    "model": "Volkswagen Touareg II, 2012"
+  },
+  {
+    "key": "img/fictional/1382017.jpg",
+    "src": "img/fictional/1382017.jpg",
+    "model": "Jaguar F-Pace I, 2019"
+  },
+  {
+    "key": "img/fictional/1382018.jpg",
+    "src": "img/fictional/1382018.jpg",
+    "model": "Mazda CX-5 II, 2020"
+  },
+  {
+    "key": "img/fictional/1382019.jpg",
+    "src": "img/fictional/1382019.jpg",
+    "model": "Hyundai Tucson IV, 2021"
+  },
+  {
+    "key": "img/fictional/1382020.jpg",
+    "src": "img/fictional/1382020.jpg",
+    "model": "Cadillac Escalade ESV IV, 2016"
+  },
+  {
+    "key": "img/fictional/1382021.jpg",
+    "src": "img/fictional/1382021.jpg",
+    "model": "Lifan Breez (520), 2008"
+  },
+  {
+    "key": "img/fictional/1382022.jpg",
+    "src": "img/fictional/1382022.jpg",
+    "model": "Ford Escort V, 1992"
+  },
+  {
+    "key": "img/fictional/1382023.jpg",
+    "src": "img/fictional/1382023.jpg",
+    "model": "Chery Sweet (QQ), 2006"
+  },
+  {
+    "key": "img/fictional/1382024.jpg",
+    "src": "img/fictional/1382024.jpg",
+    "model": "Mazda 626 IV (GE), 1996"
+  },
+  {
+    "key": "img/fictional/1382025.jpg",
+    "src": "img/fictional/1382025.jpg",
+    "model": "ГАЗ 31029 Волга, 1996"
+  },
+  {
+    "key": "img/fictional/1382026.jpg",
+    "src": "img/fictional/1382026.jpg",
+    "model": "Honda Domani I, 1995"
+  },
+  {
+    "key": "img/fictional/1382027.jpg",
+    "src": "img/fictional/1382027.jpg",
+    "model": "ЛуАЗ 969М, 1987"
+  },
+  {
+    "key": "img/fictional/1382028.jpg",
+    "src": "img/fictional/1382028.jpg",
+    "model": "Иж 2715 I Рестайлинг, 1992"
+  },
+  {
+    "key": "img/fictional/1382029.jpg",
+    "src": "img/fictional/1382029.jpg",
+    "model": "Mazda 2 II (DE), 2008"
+  },
+  {
+    "key": "img/fictional/1382030.jpg",
+    "src": "img/fictional/1382030.jpg",
+    "model": "Datsun on-DO I, 2019"
+  },
+  {
+    "key": "img/fictional/1382901.jpg",
+    "src": "img/fictional/1382901.jpg",
+    "model": "Nissan Skyline GT-R V-Spec R34, 1999"
+  },
+  {
+    "key": "img/fictional/1382902.jpg",
+    "src": "img/fictional/1382902.jpg",
+    "model": "Mazda RX-7 FD, 1994"
+  },
+  {
+    "key": "img/fictional/1382903.jpg",
+    "src": "img/fictional/1382903.jpg",
+    "model": "Nissan Silvia Varietta S15, 2000"
+  },
+  {
+    "key": "img/fictional/1412001.jpg",
+    "src": "img/fictional/1412001.jpg",
+    "model": "Lada (ВАЗ) 1111 Ока КамАЗ, 2004"
+  },
+  {
+    "key": "img/fictional/1412002.jpg",
+    "src": "img/fictional/1412002.jpg",
+    "model": "ЗАЗ Chance, 2012"
+  },
+  {
+    "key": "img/fictional/1412003.jpg",
+    "src": "img/fictional/1412003.jpg",
+    "model": "Ford Focus I Рестайлинг, 2005"
+  },
+  {
+    "key": "img/fictional/1412004.jpg",
+    "src": "img/fictional/1412004.jpg",
+    "model": "Opel Astra G, 1998"
+  },
+  {
+    "key": "img/fictional/1412005.jpg",
+    "src": "img/fictional/1412005.jpg",
+    "model": "Toyota Vitz I (P10), 1999"
+  },
+  {
+    "key": "img/fictional/1412006.jpg",
+    "src": "img/fictional/1412006.jpg",
+    "model": "Lada (ВАЗ) Granta I, 2015"
+  },
+  {
+    "key": "img/fictional/1412007.jpg",
+    "src": "img/fictional/1412007.jpg",
+    "model": "Audi TT I (8N), 2002"
+  },
+  {
+    "key": "img/fictional/1412008.jpg",
+    "src": "img/fictional/1412008.jpg",
+    "model": "Honda Stepwgn I Рестайлинг, 1999"
+  },
+  {
+    "key": "img/fictional/1412009.jpg",
+    "src": "img/fictional/1412009.jpg",
+    "model": "УАЗ Хантер 2924, 2021"
+  },
+  {
+    "key": "img/fictional/1412010.jpg",
+    "src": "img/fictional/1412010.jpg",
+    "model": "Lada (ВАЗ) Granta I Рестайлинг, 2020"
+  },
+  {
+    "key": "img/fictional/1412011.jpg",
+    "src": "img/fictional/1412011.jpg",
+    "model": "Toyota Avensis II Рестайлинг, 2008"
+  },
+  {
+    "key": "img/fictional/1412012.jpg",
+    "src": "img/fictional/1412012.jpg",
+    "model": "Toyota Ipsum II (M20), 2001"
+  },
+  {
+    "key": "img/fictional/1412013.jpg",
+    "src": "img/fictional/1412013.jpg",
+    "model": "Nissan X-Trail II Рестайлинг, 2012"
+  },
+  {
+    "key": "img/fictional/1412014.jpg",
+    "src": "img/fictional/1412014.jpg",
+    "model": "Dongfeng 580 I Рестайлинг, 2022"
+  },
+  {
+    "key": "img/fictional/1412015.jpg",
+    "src": "img/fictional/1412015.jpg",
+    "model": "Honda Stepwgn Spada IV, 2011"
+  },
+  {
+    "key": "img/fictional/1412016.jpg",
+    "src": "img/fictional/1412016.jpg",
+    "model": "Chery Tiggo 7 Pro I, 2022"
+  },
+  {
+    "key": "img/fictional/1412017.jpg",
+    "src": "img/fictional/1412017.jpg",
+    "model": "Land Rover Defender 110 II, 2021"
+  },
+  {
+    "key": "img/fictional/1412018.jpg",
+    "src": "img/fictional/1412018.jpg",
+    "model": "Mazda CX-5 II, 2018"
+  },
+  {
+    "key": "img/fictional/1412019.jpg",
+    "src": "img/fictional/1412019.jpg",
+    "model": "Mercedes-Benz E-Класс 350 V (W213, S213, C238) Рестайлинг, 2021"
+  },
+  {
+    "key": "img/fictional/1412020.jpg",
+    "src": "img/fictional/1412020.jpg",
+    "model": "Land Rover Range Rover IV, 2017"
+  },
+  {
+    "key": "img/fictional/1412021.jpg",
+    "src": "img/fictional/1412021.jpg",
+    "model": "Ram 1500 Crew Cab V, 2022"
+  },
+  {
+    "key": "img/fictional/1412022.jpg",
+    "src": "img/fictional/1412022.jpg",
+    "model": "BMW X5 M Competition III (F95), 2020"
+  },
+  {
+    "key": "img/fictional/1412023.jpg",
+    "src": "img/fictional/1412023.jpg",
+    "model": "Honda Civic IV, 1991"
+  },
+  {
+    "key": "img/fictional/1412024.jpg",
+    "src": "img/fictional/1412024.jpg",
+    "model": "Daewoo Nexia I, 2004"
+  },
+  {
+    "key": "img/fictional/1412025.jpg",
+    "src": "img/fictional/1412025.jpg",
+    "region": [
+      0,
+      0,
+      411,
+      412
+    ],
+    "model": "Nissan Bluebird SR18 XI (U14), 1996"
+  },
+  {
+    "key": "img/fictional/1412026.jpg",
+    "src": "img/fictional/1412026.jpg",
+    "region": [
+      0,
+      0,
+      414,
+      412
+    ],
+    "model": "Opel Rekord E, 1982"
+  },
+  {
+    "key": "img/fictional/1412027.jpg",
+    "src": "img/fictional/1412027.jpg",
+    "region": [
+      5,
+      0,
+      409,
+      412
+    ],
+    "model": "Nissan Sunny B14, 1998"
+  },
+  {
+    "key": "img/fictional/1412028.jpg",
+    "src": "img/fictional/1412028.jpg",
+    "region": [
+      0,
+      0,
+      411,
+      411
+    ],
+    "model": "ГАЗ 31029 Волга, 1994"
+  },
+  {
+    "key": "img/fictional/1412029.jpg",
+    "src": "img/fictional/1412029.jpg",
+    "region": [
+      0,
+      0,
+      414,
+      411
+    ],
+    "model": "Москвич 412 ИЭ, 1974"
+  },
+  {
+    "key": "img/fictional/1412030.jpg",
+    "src": "img/fictional/1412030.jpg",
+    "region": [
+      5,
+      0,
+      409,
+      411
+    ],
+    "model": "ГАЗ 3110 Волга, 2000"
+  },
+  {
+    "key": "img/fictional/1412901.jpg",
+    "src": "img/fictional/1412901.jpg",
+    "region": [
+      0,
+      0,
+      411,
+      414
+    ],
+    "model": "BMW M3 E30, 1990"
+  },
+  {
+    "key": "img/fictional/1412902.jpg",
+    "src": "img/fictional/1412902.jpg",
+    "model": "Porsche Cayenne GTS без фары, 2008"
+  },
+  {
+    "key": "img/fictional/1412903.jpg",
+    "src": "img/fictional/1412903.jpg",
+    "region": [
+      5,
+      0,
+      409,
+      414
+    ],
+    "model": "Toyota Chaser Tourer V, 1997"
+  },
+  {
+    "key": "img/fictional/1620001.jpg",
+    "src": "img/fictional/1620001.jpg",
+    "model": "Skoda Fabia I Рестайлинг, 2006"
+  },
+  {
+    "key": "img/fictional/1620002.jpg",
+    "src": "img/fictional/1620002.jpg",
+    "model": "Geely MK Cross I, 2013"
+  },
+  {
+    "key": "img/fictional/1620003.jpg",
+    "src": "img/fictional/1620003.jpg",
+    "model": "Lada (ВАЗ) 2114, 2008"
+  },
+  {
+    "key": "img/fictional/1620004.jpg",
+    "src": "img/fictional/1620004.jpg",
+    "model": "Lada (ВАЗ) Kalina I, 2007"
+  },
+  {
+    "key": "img/fictional/1620005.jpg",
+    "src": "img/fictional/1620005.jpg",
+    "model": "Kia Rio II Рестайлинг, 2009"
+  },
+  {
+    "key": "img/fictional/1620006.jpg",
+    "src": "img/fictional/1620006.jpg",
+    "model": "Hyundai Sonata IV (EF) Рестайлинг, 2004"
+  },
+  {
+    "key": "img/fictional/1620007.jpg",
+    "src": "img/fictional/1620007.jpg",
+    "model": "Renault Kangoo II, 2012"
+  },
+  {
+    "key": "img/fictional/1620008.jpg",
+    "src": "img/fictional/1620008.jpg",
+    "model": "Chevrolet Niva I Рестайлинг, 2012"
+  },
+  {
+    "key": "img/fictional/1620009.jpg",
+    "src": "img/fictional/1620009.jpg",
+    "model": "Mitsubishi Pajero Sport I Рестайлинг, 2005"
+  },
+  {
+    "key": "img/fictional/1620010.jpg",
+    "src": "img/fictional/1620010.jpg",
+    "region": [
+      0,
+      0,
+      412,
+      411
+    ],
+    "model": "Lada (ВАЗ) Largus Cross I, 2020"
+  },
+  {
+    "key": "img/fictional/1620011.jpg",
+    "src": "img/fictional/1620011.jpg",
+    "region": [
+      0,
+      0,
+      414,
+      411
+    ],
+    "model": "Volkswagen Jetta VI, 2012"
+  },
+  {
+    "key": "img/fictional/1620012.jpg",
+    "src": "img/fictional/1620012.jpg",
+    "region": [
+      2,
+      0,
+      412,
+      411
+    ],
+    "model": "Hyundai Solaris II Рестайлинг, 2021"
+  },
+  {
+    "key": "img/fictional/1620013.jpg",
+    "src": "img/fictional/1620013.jpg",
+    "region": [
+      0,
+      0,
+      412,
+      405
+    ],
+    "model": "Toyota Auris II, 2015"
+  },
+  {
+    "key": "img/fictional/1620014.jpg",
+    "src": "img/fictional/1620014.jpg",
+    "region": [
+      0,
+      0,
+      414,
+      405
+    ],
+    "model": "Skoda Rapid I, 2016"
+  },
+  {
+    "key": "img/fictional/1620015.jpg",
+    "src": "img/fictional/1620015.jpg",
+    "region": [
+      2,
+      0,
+      412,
+      405
+    ],
+    "model": "Subaru Forester IV, 2014"
+  },
+  {
+    "key": "img/fictional/1620016.jpg",
+    "src": "img/fictional/1620016.jpg",
+    "region": [
+      0,
+      0,
+      412,
+      414
+    ],
+    "model": "Kia K5 III, 2021"
+  },
+  {
+    "key": "img/fictional/1620017.jpg",
+    "src": "img/fictional/1620017.jpg",
+    "model": "Exeed VX I, 2022"
+  },
+  {
+    "key": "img/fictional/1620018.jpg",
+    "src": "img/fictional/1620018.jpg",
+    "region": [
+      2,
+      0,
+      412,
+      414
+    ],
+    "model": "Toyota Highlander IV (XU70), 2021"
+  },
+  {
+    "key": "img/fictional/1620019.jpg",
+    "src": "img/fictional/1620019.jpg",
+    "model": "BMW X4 20i II (G02) Рестайлинг, 2021"
+  },
+  {
+    "key": "img/fictional/1620020.jpg",
+    "src": "img/fictional/1620020.jpg",
+    "model": "BMW 4 серии 430i xDrive G22, G23, G26, 2022"
+  },
+  {
+    "key": "img/fictional/1620021.jpg",
+    "src": "img/fictional/1620021.jpg",
+    "model": "BMW X4 M Competition I (F98), 2020"
+  },
+  {
+    "key": "img/fictional/1620022.jpg",
+    "src": "img/fictional/1620022.jpg",
+    "model": "Renault Logan I, 2006"
+  },
+  {
+    "key": "img/fictional/1620023.jpg",
+    "src": "img/fictional/1620023.jpg",
+    "model": "Chrysler Neon I, 1996"
+  },
+  {
+    "key": "img/fictional/1620024.jpg",
+    "src": "img/fictional/1620024.jpg",
+    "model": "Mitsubishi Mirage V, 1999"
+  },
+  {
+    "key": "img/fictional/1620025.jpg",
+    "src": "img/fictional/1620025.jpg",
+    "model": "Volkswagen Passat B3, 1988"
+  },
+  {
+    "key": "img/fictional/1620026.jpg",
+    "src": "img/fictional/1620026.jpg",
+    "model": "Mitsubishi Galant VI, 1990"
+  },
+  {
+    "key": "img/fictional/1620027.jpg",
+    "src": "img/fictional/1620027.jpg",
+    "model": "Daewoo Nexia I Рестайлинг, 2008"
+  },
+  {
+    "key": "img/fictional/1620028.jpg",
+    "src": "img/fictional/1620028.jpg",
+    "model": "Daewoo Nexia I Рестайлинг, 2011"
+  },
+  {
+    "key": "img/fictional/1620029.jpg",
+    "src": "img/fictional/1620029.jpg",
+    "model": "Peugeot 206, 2007"
+  },
+  {
+    "key": "img/fictional/1620030.jpg",
+    "src": "img/fictional/1620030.jpg",
+    "model": "Daewoo Nexia I Рестайлинг, 2013"
+  },
+  {
+    "key": "img/fictional/1620901.jpg",
+    "src": "img/fictional/1620901.jpg",
+    "model": "Nissan Silvia Varietta S15, 2000"
+  },
+  {
+    "key": "img/fictional/1620902.jpg",
+    "src": "img/fictional/1620902.jpg",
+    "model": "Mitsubishi Lancer Evolution VI, 1999"
+  },
+  {
+    "key": "img/fictional/1620903.jpg",
+    "src": "img/fictional/1620903.jpg",
+    "model": "BMW M3 E30, 1990"
+  },
+  {
+    "key": "img/fictional/1648001.jpg",
+    "src": "img/fictional/1648001.jpg",
+    "model": "Lada (ВАЗ) 2110, 2005"
+  },
+  {
+    "key": "img/fictional/1648002.jpg",
+    "src": "img/fictional/1648002.jpg",
+    "model": "Kia Rio I Рестайлинг, 2005"
+  },
+  {
+    "key": "img/fictional/1648003.jpg",
+    "src": "img/fictional/1648003.jpg",
+    "model": "Mercedes-Benz E-Класс 230 II (W210, S210), 1996"
+  },
+  {
+    "key": "img/fictional/1648004.jpg",
+    "src": "img/fictional/1648004.jpg",
+    "region": [
+      0,
+      0,
+      414,
+      412
+    ],
+    "model": "Opel Omega B, 1996"
+  },
+  {
+    "key": "img/fictional/1648005.jpg",
+    "src": "img/fictional/1648005.jpg",
+    "region": [
+      0,
+      0,
+      414,
+      412
+    ],
+    "model": "Toyota Camry IV (XV20) Рестайлинг, 2000"
+  },
+  {
+    "key": "img/fictional/1648006.jpg",
+    "src": "img/fictional/1648006.jpg",
+    "region": [
+      2,
+      0,
+      412,
+      412
+    ],
+    "model": "Hyundai Verna II, 2006"
+  },
+  {
+    "key": "img/fictional/1648007.jpg",
+    "src": "img/fictional/1648007.jpg",
+    "model": "Toyota Caldina I Рестайлинг, 1997"
+  },
+  {
+    "key": "img/fictional/1648008.jpg",
+    "src": "img/fictional/1648008.jpg",
+    "model": "Mazda Demio II (DY), 2007"
+  },
+  {
+    "key": "img/fictional/1648009.jpg",
+    "src": "img/fictional/1648009.jpg",
+    "region": [
+      2,
+      0,
+      412,
+      414
+    ],
+    "model": "Toyota Camry VI (XV40), 2008"
+  },
+  {
+    "key": "img/fictional/1648010.jpg",
+    "src": "img/fictional/1648010.jpg",
+    "region": [
+      0,
+      0,
+      412,
+      414
+    ],
+    "model": "Chevrolet Cruze I, 2011"
+  },
+  {
+    "key": "img/fictional/1648011.jpg",
+    "src": "img/fictional/1648011.jpg",
+    "region": [
+      0,
+      2,
+      414,
+      412
+    ],
+    "model": "Mitsubishi Lancer X Рестайлинг, 2012"
+  },
+  {
+    "key": "img/fictional/1648012.jpg",
+    "src": "img/fictional/1648012.jpg",
+    "model": "Lexus RX 400h II, 2005"
+  },
+  {
+    "key": "img/fictional/1648013.jpg",
+    "src": "img/fictional/1648013.jpg",
+    "model": "Mazda 3 IV (BP), 2020"
+  },
+  {
+    "key": "img/fictional/1648014.jpg",
+    "src": "img/fictional/1648014.jpg",
+    "model": "Subaru Impreza V Рестайлинг, 2021"
+  },
+  {
+    "key": "img/fictional/1648015.jpg",
+    "src": "img/fictional/1648015.jpg",
+    "model": "BMW X3 28i xDrive II (F25), 2011"
+  },
+  {
+    "key": "img/fictional/1648016.jpg",
+    "src": "img/fictional/1648016.jpg",
+    "model": "Skoda Rapid II, 2021"
+  },
+  {
+    "key": "img/fictional/1648017.jpg",
+    "src": "img/fictional/1648017.jpg",
+    "model": "Nissan X-Trail III, 2017"
+  },
+  {
+    "key": "img/fictional/1648018.jpg",
+    "src": "img/fictional/1648018.jpg",
+    "model": "Ram 1500 Quad Cab IV (DS/DJ), 2019"
+  },
+  {
+    "key": "img/fictional/1648019.jpg",
+    "src": "img/fictional/1648019.jpg",
+    "model": "Volkswagen Tiguan II, 2018"
+  },
+  {
+    "key": "img/fictional/1648020.jpg",
+    "src": "img/fictional/1648020.jpg",
+    "model": "BMW 5 серии 540i xDrive VII (G30/G31/G38), 2019"
+  },
+  {
+    "key": "img/fictional/1648021.jpg",
+    "src": "img/fictional/1648021.jpg",
+    "model": "BMW M5 VI (F90), 2020"
+  },
+  {
+    "key": "img/fictional/1648022.jpg",
+    "src": "img/fictional/1648022.jpg",
+    "model": "Ram 1500 Crew Cab V, 2022"
+  },
+  {
+    "key": "img/fictional/1648023.jpg",
+    "src": "img/fictional/1648023.jpg",
+    "model": "Ram 1500 Crew Cab V, 2022"
+  },
+  {
+    "key": "img/fictional/1648024.jpg",
+    "src": "img/fictional/1648024.jpg",
+    "model": "Lada (ВАЗ) 2111, 2002"
+  },
+  {
+    "key": "img/fictional/1648025.jpg",
+    "src": "img/fictional/1648025.jpg",
+    "model": "Nissan Sunny B15, 1998"
+  },
+  {
+    "key": "img/fictional/1648026.jpg",
+    "src": "img/fictional/1648026.jpg",
+    "model": "Lada (ВАЗ) 21093i, 2003"
+  },
+  {
+    "key": "img/fictional/1648027.jpg",
+    "src": "img/fictional/1648027.jpg",
+    "model": "Daewoo Matiz I Рестайлинг, 2009"
+  },
+  {
+    "key": "img/fictional/1648028.jpg",
+    "src": "img/fictional/1648028.jpg",
+    "model": "Honda Domani I, 1994"
+  },
+  {
+    "key": "img/fictional/1648029.jpg",
+    "src": "img/fictional/1648029.jpg",
+    "model": "Honda Accord V, 1995"
+  },
+  {
+    "key": "img/fictional/1648030.jpg",
+    "src": "img/fictional/1648030.jpg",
+    "model": "Mitsubishi Mirage V, 1999"
+  },
+  {
+    "key": "img/fictional/1648901.jpg",
+    "src": "img/fictional/1648901.jpg",
+    "model": "Mazda RX-7 FD, 1994"
+  },
+  {
+    "key": "img/fictional/1648902.jpg",
+    "src": "img/fictional/1648902.jpg",
+    "model": "Nissan Silvia Varietta S15, 2000"
+  },
+  {
+    "key": "img/fictional/1648903.jpg",
+    "src": "img/fictional/1648903.jpg",
+    "model": "Mitsubishi Lancer Evolution VI, 1999"
+  },
+  {
+    "key": "img/fictional/1657001.jpg",
+    "src": "img/fictional/1657001.jpg",
+    "region": [
+      0,
+      0,
+      414,
+      412
+    ],
+    "model": "Lada (ВАЗ) 21099, 2001"
+  },
+  {
+    "key": "img/fictional/1657002.jpg",
+    "src": "img/fictional/1657002.jpg",
+    "model": "Nissan Pulsar V (N15), 1996"
+  },
+  {
+    "key": "img/fictional/1657003.jpg",
+    "src": "img/fictional/1657003.jpg",
+    "region": [
+      0,
+      0,
+      414,
+      412
+    ],
+    "model": "Lada (ВАЗ) 2106, 1997"
+  },
+  {
+    "key": "img/fictional/1657004.jpg",
+    "src": "img/fictional/1657004.jpg",
+    "model": "ЗАЗ Sens, 2007"
+  },
+  {
+    "key": "img/fictional/1657005.jpg",
+    "src": "img/fictional/1657005.jpg",
+    "model": "Toyota Carina V (T170), 1989"
+  },
+  {
+    "key": "img/fictional/1657006.jpg",
+    "src": "img/fictional/1657006.jpg",
+    "model": "Kia Rio III Рестайлинг, 2016"
+  },
+  {
+    "key": "img/fictional/1657007.jpg",
+    "src": "img/fictional/1657007.jpg",
+    "model": "Ford Focus II Рестайлинг, 2009"
+  },
+  {
+    "key": "img/fictional/1657008.jpg",
+    "src": "img/fictional/1657008.jpg",
+    "model": "Vortex Tingo I, 2011"
+  },
+  {
+    "key": "img/fictional/1657009.jpg",
+    "src": "img/fictional/1657009.jpg",
+    "model": "Nissan Qashqai+2 I, 2009"
+  },
+  {
+    "key": "img/fictional/1657010.jpg",
+    "src": "img/fictional/1657010.jpg",
+    "region": [
+      0,
+      0,
+      414,
+      412
+    ],
+    "model": "Nissan Qashqai+2 I Рестайлинг, 2011"
+  },
+  {
+    "key": "img/fictional/1657011.jpg",
+    "src": "img/fictional/1657011.jpg",
+    "region": [
+      0,
+      0,
+      414,
+      412
+    ],
+    "model": "Chevrolet Captiva I, 2007"
+  },
+  {
+    "key": "img/fictional/1657012.jpg",
+    "src": "img/fictional/1657012.jpg",
+    "region": [
+      0,
+      0,
+      414,
+      412
+    ],
+    "model": "Honda Accord VIII, 2010"
+  },
+  {
+    "key": "img/fictional/1657013.jpg",
+    "src": "img/fictional/1657013.jpg",
+    "model": "Oshan X5, 2021"
+  },
+  {
+    "key": "img/fictional/1657014.jpg",
+    "src": "img/fictional/1657014.jpg",
+    "model": "Renault Arkana I, 2021"
+  },
+  {
+    "key": "img/fictional/1657015.jpg",
+    "src": "img/fictional/1657015.jpg",
+    "model": "Chery Tiggo 7 Pro I, 2021"
+  },
+  {
+    "key": "img/fictional/1657016.jpg",
+    "src": "img/fictional/1657016.jpg",
+    "model": "Honda Vezel I, 2015"
+  },
+  {
+    "key": "img/fictional/1657017.jpg",
+    "src": "img/fictional/1657017.jpg",
+    "model": "Infiniti QX70, 2014"
+  },
+  {
+    "key": "img/fictional/1657018.jpg",
+    "src": "img/fictional/1657018.jpg",
+    "model": "Haval H9 I Рестайлинг, 2021"
+  },
+  {
+    "key": "img/fictional/1657019.jpg",
+    "src": "img/fictional/1657019.jpg",
+    "region": [
+      0,
+      0,
+      414,
+      410
+    ],
+    "model": "Toyota Highlander II (XU40) Рестайлинг, 2012"
+  },
+  {
+    "key": "img/fictional/1657020.jpg",
+    "src": "img/fictional/1657020.jpg",
+    "region": [
+      0,
+      0,
+      414,
+      410
+    ],
+    "model": "Toyota Land Cruiser Prado 150 Series Рестайлинг 1, 2014"
+  },
+  {
+    "key": "img/fictional/1657021.jpg",
+    "src": "img/fictional/1657021.jpg",
+    "region": [
+      0,
+      0,
+      414,
+      410
+    ],
+    "model": "BMW X4 20i II (G02) Рестайлинг, 2022"
+  },
+  {
+    "key": "img/fictional/1657022.jpg",
+    "src": "img/fictional/1657022.jpg",
+    "model": "BMW X5 M50d IV (G05/G18), 2019"
+  },
+  {
+    "key": "img/fictional/1657023.jpg",
+    "src": "img/fictional/1657023.jpg",
+    "model": "BMW X5 30d IV (G05/G18), 2021"
+  },
+  {
+    "key": "img/fictional/1657024.jpg",
+    "src": "img/fictional/1657024.jpg",
+    "model": "Lada (ВАЗ) 2110, 2006"
+  },
+  {
+    "key": "img/fictional/1657025.jpg",
+    "src": "img/fictional/1657025.jpg",
+    "region": [
+      0,
+      0,
+      414,
+      410
+    ],
+    "model": "ГАЗ 31029 Волга, 1994"
+  },
+  {
+    "key": "img/fictional/1657026.jpg",
+    "src": "img/fictional/1657026.jpg",
+    "region": [
+      2,
+      0,
+      412,
+      410
+    ],
+    "model": "ЗАЗ Chance, 2011"
+  },
+  {
+    "key": "img/fictional/1657027.jpg",
+    "src": "img/fictional/1657027.jpg",
+    "region": [
+      2,
+      0,
+      412,
+      410
+    ],
+    "model": "Chery QQ6 (S21), 2008"
+  },
+  {
+    "key": "img/fictional/1657028.jpg",
+    "src": "img/fictional/1657028.jpg",
+    "region": [
+      0,
+      0,
+      414,
+      401
+    ],
+    "model": "Москвич 412 ИЭ, 1977"
+  },
+  {
+    "key": "img/fictional/1657029.jpg",
+    "src": "img/fictional/1657029.jpg",
+    "region": [
+      2,
+      0,
+      412,
+      401
+    ],
+    "model": "Mazda Capella IV, 1990"
+  },
+  {
+    "key": "img/fictional/1657030.jpg",
+    "src": "img/fictional/1657030.jpg",
+    "region": [
+      2,
+      0,
+      412,
+      401
+    ],
+    "model": "ГАЗ 24 Волга 24 I (24), 1983"
+  },
+  {
+    "key": "img/fictional/1657901.jpg",
+    "src": "img/fictional/1657901.jpg",
+    "model": "Mitsubishi Lancer Evolution VI, 1999"
+  },
+  {
+    "key": "img/fictional/1657902.jpg",
+    "src": "img/fictional/1657902.jpg",
+    "region": [
+      2,
+      0,
+      412,
+      414
+    ],
+    "model": "BMW M3 E30, 1990"
+  },
+  {
+    "key": "img/fictional/1657903.jpg",
+    "src": "img/fictional/1657903.jpg",
+    "region": [
+      2,
+      0,
+      412,
+      414
+    ],
+    "model": "Porsche Cayenne GTS без фары, 2008"
+  },
+  {
+    "key": "img/fictional/1707001.jpg",
+    "src": "img/fictional/1707001.jpg",
+    "model": "Daewoo Nexia I, 2008"
+  },
+  {
+    "key": "img/fictional/1707002.jpg",
+    "src": "img/fictional/1707002.jpg",
+    "model": "Lada (ВАЗ) 2115, 2008"
+  },
+  {
+    "key": "img/fictional/1707003.jpg",
+    "src": "img/fictional/1707003.jpg",
+    "model": "Lada (ВАЗ) Kalina I, 2007"
+  },
+  {
+    "key": "img/fictional/1707004.jpg",
+    "src": "img/fictional/1707004.jpg",
+    "model": "Lada (ВАЗ) 2112, 2005"
+  },
+  {
+    "key": "img/fictional/1707005.jpg",
+    "src": "img/fictional/1707005.jpg",
+    "model": "Toyota Corolla IX (E120, E130) Рестайлинг, 2005"
+  },
+  {
+    "key": "img/fictional/1707006.jpg",
+    "src": "img/fictional/1707006.jpg",
+    "model": "Renault Logan I, 2006"
+  },
+  {
+    "key": "img/fictional/1707007.jpg",
+    "src": "img/fictional/1707007.jpg",
+    "model": "Volkswagen Polo V, 2012"
+  },
+  {
+    "key": "img/fictional/1707008.jpg",
+    "src": "img/fictional/1707008.jpg",
+    "model": "Chevrolet Lacetti I, 2007"
+  },
+  {
+    "key": "img/fictional/1707009.jpg",
+    "src": "img/fictional/1707009.jpg",
+    "model": "Toyota Corolla IX (E120, E130), 2003"
+  },
+  {
+    "key": "img/fictional/1707010.jpg",
+    "src": "img/fictional/1707010.jpg",
+    "model": "Mitsubishi ASX I Рестайлинг, 2013"
+  },
+  {
+    "key": "img/fictional/1707011.jpg",
+    "src": "img/fictional/1707011.jpg",
+    "model": "Volkswagen Tiguan I Рестайлинг, 2011"
+  },
+  {
+    "key": "img/fictional/1707012.jpg",
+    "src": "img/fictional/1707012.jpg",
+    "model": "Mitsubishi Lancer X Рестайлинг, 2012"
+  },
+  {
+    "key": "img/fictional/1707013.jpg",
+    "src": "img/fictional/1707013.jpg",
+    "model": "Hyundai Equus II Рестайлинг, 2015"
+  },
+  {
+    "key": "img/fictional/1707014.jpg",
+    "src": "img/fictional/1707014.jpg",
+    "model": "Skoda Rapid II, 2021"
+  },
+  {
+    "key": "img/fictional/1707015.jpg",
+    "src": "img/fictional/1707015.jpg",
+    "model": "Mitsubishi Outlander III, 2013"
+  },
+  {
+    "key": "img/fictional/1707016.jpg",
+    "src": "img/fictional/1707016.jpg",
+    "model": "Volkswagen Jetta 8-speed VII, 2021"
+  },
+  {
+    "key": "img/fictional/1707017.jpg",
+    "src": "img/fictional/1707017.jpg",
+    "model": "Toyota Tundra Double Cab II, 2011"
+  },
+  {
+    "key": "img/fictional/1707018.jpg",
+    "src": "img/fictional/1707018.jpg",
+    "model": "Ford Explorer V Рестайлинг, 2015"
+  },
+  {
+    "key": "img/fictional/1707019.jpg",
+    "src": "img/fictional/1707019.jpg",
+    "model": "Kia Sorento III Prime Рестайлинг, 2019"
+  },
+  {
+    "key": "img/fictional/1707020.jpg",
+    "src": "img/fictional/1707020.jpg",
+    "model": "BMW X5 40i IV (G05/G18), 2019"
+  },
+  {
+    "key": "img/fictional/1707021.jpg",
+    "src": "img/fictional/1707021.jpg",
+    "model": "Mercedes-Benz AMG GT 4-Door Coupe 43 I, 2021"
+  },
+  {
+    "key": "img/fictional/1707022.jpg",
+    "src": "img/fictional/1707022.jpg",
+    "model": "Land Rover Range Rover IV Рестайлинг, 2018"
+  },
+  {
+    "key": "img/fictional/1707023.jpg",
+    "src": "img/fictional/1707023.jpg",
+    "model": "Mercedes-Benz GLE 450 II (V167), 2019"
+  },
+  {
+    "key": "img/fictional/1707024.jpg",
+    "src": "img/fictional/1707024.jpg",
+    "model": "Lexus LX 570 III Рестайлинг 2, 2018"
+  },
+  {
+    "key": "img/fictional/1707025.jpg",
+    "src": "img/fictional/1707025.jpg",
+    "model": "Renault Scenic II, 2004"
+  },
+  {
+    "key": "img/fictional/1707026.jpg",
+    "src": "img/fictional/1707026.jpg",
+    "model": "Daewoo Nexia I, 2007"
+  },
+  {
+    "key": "img/fictional/1707027.jpg",
+    "src": "img/fictional/1707027.jpg",
+    "model": "Daewoo Nexia I Рестайлинг, 2011"
+  },
+  {
+    "key": "img/fictional/1707028.jpg",
+    "src": "img/fictional/1707028.jpg",
+    "model": "Opel Vectra B Рестайлинг, 2001"
+  },
+  {
+    "key": "img/fictional/1707029.jpg",
+    "src": "img/fictional/1707029.jpg",
+    "model": "Renault Logan I, 2006"
+  },
+  {
+    "key": "img/fictional/1707030.jpg",
+    "src": "img/fictional/1707030.jpg",
+    "model": "Mazda Capella IV, 1999"
+  },
+  {
+    "key": "img/fictional/1707901.jpg",
+    "src": "img/fictional/1707901.jpg",
+    "model": "Toyota Supra RZ, 1996"
+  },
+  {
+    "key": "img/fictional/1707902.jpg",
+    "src": "img/fictional/1707902.jpg",
+    "model": "Nissan Skyline GT-R V-Spec R34, 1999"
+  },
+  {
+    "key": "img/fictional/1707903.jpg",
+    "src": "img/fictional/1707903.jpg",
+    "model": "Mazda RX-7 FD, 1994"
+  },
+  {
+    "key": "img/fictional/1718001.jpg",
+    "src": "img/fictional/1718001.jpg",
+    "model": "УАЗ 469Б, 1983"
+  },
+  {
+    "key": "img/fictional/1718002.jpg",
+    "src": "img/fictional/1718002.jpg",
+    "model": "Lada (ВАЗ) 2115, 2007"
+  },
+  {
+    "key": "img/fictional/1718003.jpg",
+    "src": "img/fictional/1718003.jpg",
+    "model": "Toyota Vitz II (XP90), 2006"
+  },
+  {
+    "key": "img/fictional/1718004.jpg",
+    "src": "img/fictional/1718004.jpg",
+    "model": "Honda Partner I, 2002"
+  },
+  {
+    "key": "img/fictional/1718005.jpg",
+    "src": "img/fictional/1718005.jpg",
+    "model": "Toyota Corona IX (T190), 1993"
+  },
+  {
+    "key": "img/fictional/1718006.jpg",
+    "src": "img/fictional/1718006.jpg",
+    "model": "Mazda Familia V (BF), 1988"
+  },
+  {
+    "key": "img/fictional/1718007.jpg",
+    "src": "img/fictional/1718007.jpg",
+    "model": "Lexus RX 450h IV, 2017"
+  },
+  {
+    "key": "img/fictional/1718008.jpg",
+    "src": "img/fictional/1718008.jpg",
+    "model": "Mercedes-Benz SL-Класс AMG SL 43 43 AMG IV (R232), 2022"
+  },
+  {
+    "key": "img/fictional/1718009.jpg",
+    "src": "img/fictional/1718009.jpg",
+    "model": "Mercedes-Benz GLE Coupe 400 d II (C167), 2020"
+  },
+  {
+    "key": "img/fictional/1718010.jpg",
+    "src": "img/fictional/1718010.jpg",
+    "model": "ГАЗ ГАЗ 67, 1949"
+  },
+  {
+    "key": "img/fictional/1718011.jpg",
+    "src": "img/fictional/1718011.jpg",
+    "model": "Toyota Porte II, 2012"
+  },
+  {
+    "key": "img/fictional/1718012.jpg",
+    "src": "img/fictional/1718012.jpg",
+    "model": "Suzuki Swift IV Рестайлинг, 2013"
+  },
+  {
+    "key": "img/fictional/1718013.jpg",
+    "src": "img/fictional/1718013.jpg",
+    "model": "Kia Sportage I, 1994"
+  },
+  {
+    "key": "img/fictional/1718014.jpg",
+    "src": "img/fictional/1718014.jpg",
+    "model": "Nissan Skyline IX (R33), 1993"
+  },
+  {
+    "key": "img/fictional/1718015.jpg",
+    "src": "img/fictional/1718015.jpg",
+    "model": "Honda HR-V I Рестайлинг, 2002"
+  },
+  {
+    "key": "img/fictional/1718016.jpg",
+    "src": "img/fictional/1718016.jpg",
+    "model": "Suzuki Swift I (Japan), 2001"
+  },
+  {
+    "key": "img/fictional/1718017.jpg",
+    "src": "img/fictional/1718017.jpg",
+    "model": "Honda HR-V I, 2001"
+  },
+  {
+    "key": "img/fictional/1718018.jpg",
+    "src": "img/fictional/1718018.jpg",
+    "model": "Nissan Datsun D21, 1987"
+  },
+  {
+    "key": "img/fictional/1718019.jpg",
+    "src": "img/fictional/1718019.jpg",
+    "model": "Nissan Note I Рестайлинг, 2011"
+  },
+  {
+    "key": "img/fictional/1718020.jpg",
+    "src": "img/fictional/1718020.jpg",
+    "model": "Toyota Caldina I, 1993"
+  },
+  {
+    "key": "img/fictional/1718021.jpg",
+    "src": "img/fictional/1718021.jpg",
+    "model": "Honda HR-V I, 1999"
+  },
+  {
+    "key": "img/fictional/1718022.jpg",
+    "src": "img/fictional/1718022.jpg",
+    "region": [
+      0,
+      0,
+      414,
+      410
+    ],
+    "model": "Honda CR-V I, 1996"
+  },
+  {
+    "key": "img/fictional/1718023.jpg",
+    "src": "img/fictional/1718023.jpg",
+    "region": [
+      2,
+      0,
+      412,
+      409
+    ],
+    "model": "Toyota RAV4 II (XA20), 2001"
+  },
+  {
+    "key": "img/fictional/1718024.jpg",
+    "src": "img/fictional/1718024.jpg",
+    "region": [
+      0,
+      0,
+      414,
+      408
+    ],
+    "model": "Toyota Corolla VIII (E110) Рестайлинг, 1999"
+  },
+  {
+    "key": "img/fictional/1718025.jpg",
+    "src": "img/fictional/1718025.jpg",
+    "region": [
+      0,
+      0,
+      414,
+      388
+    ],
+    "model": "Toyota Caldina II, 1998"
+  },
+  {
+    "key": "img/fictional/1718026.jpg",
+    "src": "img/fictional/1718026.jpg",
+    "region": [
+      2,
+      0,
+      412,
+      388
+    ],
+    "model": "Volkswagen Jetta V, 2006"
+  },
+  {
+    "key": "img/fictional/1718027.jpg",
+    "src": "img/fictional/1718027.jpg",
+    "region": [
+      0,
+      0,
+      414,
+      388
+    ],
+    "model": "Toyota Town Ace II Рестайлинг 2, 1990"
+  },
+  {
+    "key": "img/fictional/1718028.jpg",
+    "src": "img/fictional/1718028.jpg",
+    "model": "Toyota Porte I, 2006"
+  },
+  {
+    "key": "img/fictional/1718029.jpg",
+    "src": "img/fictional/1718029.jpg",
+    "region": [
+      2,
+      0,
+      412,
+      414
+    ],
+    "model": "Chevrolet Niva I Рестайлинг, 2012"
+  },
+  {
+    "key": "img/fictional/1718030.jpg",
+    "src": "img/fictional/1718030.jpg",
+    "model": "Toyota Vitz II (XP90), 2009"
+  },
+  {
+    "key": "img/fictional/1718901.jpg",
+    "src": "img/fictional/1718901.jpg",
+    "model": "BMW M3 E30, 1990"
+  },
+  {
+    "key": "img/fictional/1718902.jpg",
+    "src": "img/fictional/1718902.jpg",
+    "model": "Porsche Cayenne GTS без фары, 2008"
+  },
+  {
+    "key": "img/fictional/1718903.jpg",
+    "src": "img/fictional/1718903.jpg",
+    "model": "Toyota Chaser Tourer V, 1997"
+  },
+  {
+    "key": "img/fictional/1758001.jpg",
+    "src": "img/fictional/1758001.jpg",
+    "model": "Lada (ВАЗ) 2110, 2003"
+  },
+  {
+    "key": "img/fictional/1758002.jpg",
+    "src": "img/fictional/1758002.jpg",
+    "model": "Lada (ВАЗ) 2107, 2010"
+  },
+  {
+    "key": "img/fictional/1758003.jpg",
+    "src": "img/fictional/1758003.jpg",
+    "model": "Volkswagen Bora I, 2002"
+  },
+  {
+    "key": "img/fictional/1758004.jpg",
+    "src": "img/fictional/1758004.jpg",
+    "model": "Lada (ВАЗ) 21099, 2003"
+  },
+  {
+    "key": "img/fictional/1758005.jpg",
+    "src": "img/fictional/1758005.jpg",
+    "model": "Volkswagen Passat B6, 2006"
+  },
+  {
+    "key": "img/fictional/1758006.jpg",
+    "src": "img/fictional/1758006.jpg",
+    "model": "Renault Logan II, 2016"
+  },
+  {
+    "key": "img/fictional/1758007.jpg",
+    "src": "img/fictional/1758007.jpg",
+    "model": "Volkswagen Passat B6, 2007"
+  },
+  {
+    "key": "img/fictional/1758008.jpg",
+    "src": "img/fictional/1758008.jpg",
+    "model": "Renault Sandero I, 2013"
+  },
+  {
+    "key": "img/fictional/1758009.jpg",
+    "src": "img/fictional/1758009.jpg",
+    "model": "Suzuki Kizashi, 2012"
+  },
+  {
+    "key": "img/fictional/1758010.jpg",
+    "src": "img/fictional/1758010.jpg",
+    "model": "Ford Kuga II, 2014"
+  },
+  {
+    "key": "img/fictional/1758011.jpg",
+    "src": "img/fictional/1758011.jpg",
+    "model": "Nissan Terrano III (D10), 2014"
+  },
+  {
+    "key": "img/fictional/1758012.jpg",
+    "src": "img/fictional/1758012.jpg",
+    "model": "УАЗ Патриот I Рестайлинг 3, 2019"
+  },
+  {
+    "key": "img/fictional/1758013.jpg",
+    "src": "img/fictional/1758013.jpg",
+    "model": "Haval F7 I, 2021"
+  },
+  {
+    "key": "img/fictional/1758014.jpg",
+    "src": "img/fictional/1758014.jpg",
+    "model": "Infiniti QX70, 2015"
+  },
+  {
+    "key": "img/fictional/1758015.jpg",
+    "src": "img/fictional/1758015.jpg",
+    "model": "Chery Tiggo 8 I, 2020"
+  },
+  {
+    "key": "img/fictional/1758016.jpg",
+    "src": "img/fictional/1758016.jpg",
+    "model": "BMW X6 M I (E71) Рестайлинг, 2012"
+  },
+  {
+    "key": "img/fictional/1758017.jpg",
+    "src": "img/fictional/1758017.jpg",
+    "model": "Kia Sportage IV, 2016"
+  },
+  {
+    "key": "img/fictional/1758018.jpg",
+    "src": "img/fictional/1758018.jpg",
+    "model": "Lexus RX 300 IV, 2019"
+  },
+  {
+    "key": "img/fictional/1758019.jpg",
+    "src": "img/fictional/1758019.jpg",
+    "model": "Mercedes-Benz GLE 400 d II (V167), 2020"
+  },
+  {
+    "key": "img/fictional/1758020.jpg",
+    "src": "img/fictional/1758020.jpg",
+    "model": "BMW X7 40i I (G07), 2020"
+  },
+  {
+    "key": "img/fictional/1758021.jpg",
+    "src": "img/fictional/1758021.jpg",
+    "model": "Land Rover Range Rover IV, 2017"
+  },
+  {
+    "key": "img/fictional/1758022.jpg",
+    "src": "img/fictional/1758022.jpg",
+    "model": "Mercedes-Benz GLE Coupe 350 d II (C167), 2021"
+  },
+  {
+    "key": "img/fictional/1758023.jpg",
+    "src": "img/fictional/1758023.jpg",
+    "model": "Ford Escort V Рестайлинг 1, 1993"
+  },
+  {
+    "key": "img/fictional/1758024.jpg",
+    "src": "img/fictional/1758024.jpg",
+    "model": "Ford Fiesta Mk4, 1997"
+  },
+  {
+    "key": "img/fictional/1758025.jpg",
+    "src": "img/fictional/1758025.jpg",
+    "model": "Saab 9000 I Рестайлинг, 1992"
+  },
+  {
+    "key": "img/fictional/1758026.jpg",
+    "src": "img/fictional/1758026.jpg",
+    "model": "Mitsubishi Galant VIII Рестайлинг, 1998"
+  },
+  {
+    "key": "img/fictional/1758027.jpg",
+    "src": "img/fictional/1758027.jpg",
+    "model": "Audi 200 II (C3), 1984"
+  },
+  {
+    "key": "img/fictional/1758028.jpg",
+    "src": "img/fictional/1758028.jpg",
+    "model": "Skoda Felicia I Рестайлинг, 1998"
+  },
+  {
+    "key": "img/fictional/1758029.jpg",
+    "src": "img/fictional/1758029.jpg",
+    "model": "Mitsubishi Galant VII, 1993"
+  },
+  {
+    "key": "img/fictional/1758030.jpg",
+    "src": "img/fictional/1758030.jpg",
+    "model": "Chery Amulet (A15) I, 2006"
+  },
+  {
+    "key": "img/fictional/1758901.jpg",
+    "src": "img/fictional/1758901.jpg",
+    "model": "Toyota Chaser Tourer V, 1997"
+  },
+  {
+    "key": "img/fictional/1758902.jpg",
+    "src": "img/fictional/1758902.jpg",
+    "model": "Toyota Supra RZ, 1996"
+  },
+  {
+    "key": "img/fictional/1758903.jpg",
+    "src": "img/fictional/1758903.jpg",
+    "model": "Nissan Skyline GT-R V-Spec R34, 1999"
+  },
+  {
+    "key": "img/fictional/1783001.jpg",
+    "src": "img/fictional/1783001.jpg",
+    "region": [
+      0,
+      0,
+      414,
+      412
+    ],
+    "model": "Lada (ВАЗ) 2110, 2004"
+  },
+  {
+    "key": "img/fictional/1783002.jpg",
+    "src": "img/fictional/1783002.jpg",
+    "region": [
+      0,
+      0,
+      414,
+      411
+    ],
+    "model": "Lada (ВАЗ) 2109 21093i, 2003"
+  },
+  {
+    "key": "img/fictional/1783003.jpg",
+    "src": "img/fictional/1783003.jpg",
+    "region": [
+      0,
+      0,
+      414,
+      411
+    ],
+    "model": "Lada (ВАЗ) 2114, 2006"
+  },
+  {
+    "key": "img/fictional/1783004.jpg",
+    "src": "img/fictional/1783004.jpg",
+    "region": [
+      0,
+      0,
+      414,
+      411
+    ],
+    "model": "Mitsubishi Carisma I Рестайлинг, 2002"
+  },
+  {
+    "key": "img/fictional/1783005.jpg",
+    "src": "img/fictional/1783005.jpg",
+    "region": [
+      0,
+      0,
+      414,
+      411
+    ],
+    "model": "Chevrolet Aveo I, 2004"
+  },
+  {
+    "key": "img/fictional/1783006.jpg",
+    "src": "img/fictional/1783006.jpg",
+    "region": [
+      0,
+      0,
+      414,
+      411
+    ],
+    "model": "Renault Sandero I, 2011"
+  },
+  {
+    "key": "img/fictional/1783007.jpg",
+    "src": "img/fictional/1783007.jpg",
+    "model": "Datsun on-DO I, 2019"
+  },
+  {
+    "key": "img/fictional/1783008.jpg",
+    "src": "img/fictional/1783008.jpg",
+    "model": "Great Wall Hover H3 I, 2013"
+  },
+  {
+    "key": "img/fictional/1783009.jpg",
+    "src": "img/fictional/1783009.jpg",
+    "model": "Hyundai Solaris II, 2018"
+  },
+  {
+    "key": "img/fictional/1783010.jpg",
+    "src": "img/fictional/1783010.jpg",
+    "model": "Opel Astra J Рестайлинг, 2013"
+  },
+  {
+    "key": "img/fictional/1783011.jpg",
+    "src": "img/fictional/1783011.jpg",
+    "model": "Ford Galaxy II, 2007"
+  },
+  {
+    "key": "img/fictional/1783012.jpg",
+    "src": "img/fictional/1783012.jpg",
+    "model": "Kia Soul I Рестайлинг, 2012"
+  },
+  {
+    "key": "img/fictional/1783013.jpg",
+    "src": "img/fictional/1783013.jpg",
+    "model": "Mitsubishi Pajero IV, 2010"
+  },
+  {
+    "key": "img/fictional/1783014.jpg",
+    "src": "img/fictional/1783014.jpg",
+    "model": "Dongfeng Aeolus AX7 Plus, 2022"
+  },
+  {
+    "key": "img/fictional/1783015.jpg",
+    "src": "img/fictional/1783015.jpg",
+    "model": "Kia Cerato IV, 2018"
+  },
+  {
+    "key": "img/fictional/1783016.jpg",
+    "src": "img/fictional/1783016.jpg",
+    "model": "Ford Kuga II Рестайлинг, 2017"
+  },
+  {
+    "key": "img/fictional/1783017.jpg",
+    "src": "img/fictional/1783017.jpg",
+    "model": "Genesis GV80 I, 2020"
+  },
+  {
+    "key": "img/fictional/1783018.jpg",
+    "src": "img/fictional/1783018.jpg",
+    "model": "Toyota RAV4 IV (XA40) Рестайлинг, 2017"
+  },
+  {
+    "key": "img/fictional/1783019.jpg",
+    "src": "img/fictional/1783019.jpg",
+    "model": "Toyota Land Cruiser 200 Series, 2011"
+  },
+  {
+    "key": "img/fictional/1783020.jpg",
+    "src": "img/fictional/1783020.jpg",
+    "model": "Tank 300 I, 2022"
+  },
+  {
+    "key": "img/fictional/1783021.jpg",
+    "src": "img/fictional/1783021.jpg",
+    "model": "Daewoo Nexia I, 2007"
+  },
+  {
+    "key": "img/fictional/1783022.jpg",
+    "src": "img/fictional/1783022.jpg",
+    "model": "Plymouth Laser, 1994"
+  },
+  {
+    "key": "img/fictional/1783023.jpg",
+    "src": "img/fictional/1783023.jpg",
+    "model": "Chevrolet Lanos I, 2008"
+  },
+  {
+    "key": "img/fictional/1783024.jpg",
+    "src": "img/fictional/1783024.jpg",
+    "model": "Mitsubishi Space Wagon I, 1987"
+  },
+  {
+    "key": "img/fictional/1783025.jpg",
+    "src": "img/fictional/1783025.jpg",
+    "model": "Chevrolet Lanos I, 2007"
+  },
+  {
+    "key": "img/fictional/1783026.jpg",
+    "src": "img/fictional/1783026.jpg",
+    "model": "Renault Symbol I Рестайлинг 2, 2007"
+  },
+  {
+    "key": "img/fictional/1783027.jpg",
+    "src": "img/fictional/1783027.jpg",
+    "model": "Daewoo Nexia I, 2001"
+  },
+  {
+    "key": "img/fictional/1783028.jpg",
+    "src": "img/fictional/1783028.jpg",
+    "model": "Mazda 3 II (BL), 2010"
+  },
+  {
+    "key": "img/fictional/1783029.jpg",
+    "src": "img/fictional/1783029.jpg",
+    "model": "Kia Spectra I Рестайлинг 2, 2007"
+  },
+  {
+    "key": "img/fictional/1783030.jpg",
+    "src": "img/fictional/1783030.jpg",
+    "model": "ZX Grand Tiger I, 2007"
+  },
+  {
+    "key": "img/fictional/1783901.jpg",
+    "src": "img/fictional/1783901.jpg",
+    "model": "Nissan Skyline GT-R V-Spec R34, 1999"
+  },
+  {
+    "key": "img/fictional/1783902.jpg",
+    "src": "img/fictional/1783902.jpg",
+    "model": "Mazda RX-7 FD, 1994"
+  },
+  {
+    "key": "img/fictional/1783903.jpg",
+    "src": "img/fictional/1783903.jpg",
+    "model": "Nissan Silvia Varietta S15, 2000"
+  },
+  {
+    "key": "img/fictional/1787001.jpg",
+    "src": "img/fictional/1787001.jpg",
+    "model": "Opel Astra G, 2001"
+  },
+  {
+    "key": "img/fictional/1787002.jpg",
+    "src": "img/fictional/1787002.jpg",
+    "model": "Chevrolet Lanos I, 2006"
+  },
+  {
+    "key": "img/fictional/1787003.jpg",
+    "src": "img/fictional/1787003.jpg",
+    "model": "Lada (ВАЗ) 2104, 2007"
+  },
+  {
+    "key": "img/fictional/1787004.jpg",
+    "src": "img/fictional/1787004.jpg",
+    "model": "ГАЗ 24 Волга 2417 II (2410), 1989"
+  },
+  {
+    "key": "img/fictional/1787005.jpg",
+    "src": "img/fictional/1787005.jpg",
+    "model": "Daewoo Nexia I Рестайлинг, 2012"
+  },
+  {
+    "key": "img/fictional/1787006.jpg",
+    "src": "img/fictional/1787006.jpg",
+    "model": "Volkswagen Polo V, 2013"
+  },
+  {
+    "key": "img/fictional/1787007.jpg",
+    "src": "img/fictional/1787007.jpg",
+    "model": "Renault Logan I, 2007"
+  },
+  {
+    "key": "img/fictional/1787008.jpg",
+    "src": "img/fictional/1787008.jpg",
+    "model": "Citroen C-Crosser, 2009"
+  },
+  {
+    "key": "img/fictional/1787009.jpg",
+    "src": "img/fictional/1787009.jpg",
+    "model": "Kia Rio 5-speed III, 2012"
+  },
+  {
+    "key": "img/fictional/1787010.jpg",
+    "src": "img/fictional/1787010.jpg",
+    "model": "Volkswagen Tiguan I Рестайлинг, 2012"
+  },
+  {
+    "key": "img/fictional/1787011.jpg",
+    "src": "img/fictional/1787011.jpg",
+    "model": "Nissan X-Trail II Рестайлинг, 2013"
+  },
+  {
+    "key": "img/fictional/1787012.jpg",
+    "src": "img/fictional/1787012.jpg",
+    "model": "Nissan Qashqai I Рестайлинг, 2011"
+  },
+  {
+    "key": "img/fictional/1787013.jpg",
+    "src": "img/fictional/1787013.jpg",
+    "model": "Hyundai Creta I, 2019"
+  },
+  {
+    "key": "img/fictional/1787014.jpg",
+    "src": "img/fictional/1787014.jpg",
+    "model": "BMW 1 серии 135i I (E82/E88) Рестайлинг 2, 2010"
+  },
+  {
+    "key": "img/fictional/1787015.jpg",
+    "src": "img/fictional/1787015.jpg",
+    "model": "Infiniti Q50 I, 2014"
+  },
+  {
+    "key": "img/fictional/1787016.jpg",
+    "src": "img/fictional/1787016.jpg",
+    "region": [
+      0,
+      0,
+      414,
+      412
+    ],
+    "model": "Hyundai Creta I Рестайлинг, 2020"
+  },
+  {
+    "key": "img/fictional/1787017.jpg",
+    "src": "img/fictional/1787017.jpg",
+    "region": [
+      0,
+      0,
+      414,
+      412
+    ],
+    "model": "Volkswagen Touareg III, 2019"
+  },
+  {
+    "key": "img/fictional/1787018.jpg",
+    "src": "img/fictional/1787018.jpg",
+    "region": [
+      0,
+      0,
+      414,
+      412
+    ],
+    "model": "Mitsubishi Outlander III Рестайлинг 3, 2019"
+  },
+  {
+    "key": "img/fictional/1787019.jpg",
+    "src": "img/fictional/1787019.jpg",
+    "model": "Nissan Almera I (N15), 1998"
+  },
+  {
+    "key": "img/fictional/1787020.jpg",
+    "src": "img/fictional/1787020.jpg",
+    "model": "Daewoo Matiz I Рестайлинг, 2010"
+  },
+  {
+    "key": "img/fictional/1787021.jpg",
+    "src": "img/fictional/1787021.jpg",
+    "model": "Kia Spectra I Рестайлинг 2, 2007"
+  },
+  {
+    "key": "img/fictional/1787022.jpg",
+    "src": "img/fictional/1787022.jpg",
+    "model": "Hyundai Elantra III (XD), 2003"
+  },
+  {
+    "key": "img/fictional/1787023.jpg",
+    "src": "img/fictional/1787023.jpg",
+    "model": "Lifan Smily I (320), 2012"
+  },
+  {
+    "key": "img/fictional/1787024.jpg",
+    "src": "img/fictional/1787024.jpg",
+    "model": "Chery M11 (A3), 2013"
+  },
+  {
+    "key": "img/fictional/1787025.jpg",
+    "src": "img/fictional/1787025.jpg",
+    "model": "Mitsubishi Carisma I, 1997"
+  },
+  {
+    "key": "img/fictional/1787026.jpg",
+    "src": "img/fictional/1787026.jpg",
+    "model": "Lada (ВАЗ) 2107, 2010"
+  },
+  {
+    "key": "img/fictional/1787027.jpg",
+    "src": "img/fictional/1787027.jpg",
+    "model": "Chery QQ6 (S21), 2009"
+  },
+  {
+    "key": "img/fictional/1787028.jpg",
+    "src": "img/fictional/1787028.jpg",
+    "model": "Chevrolet Lanos I, 2006"
+  },
+  {
+    "key": "img/fictional/1787029.jpg",
+    "src": "img/fictional/1787029.jpg",
+    "model": "Lada (ВАЗ) 2109, 1989"
+  },
+  {
+    "key": "img/fictional/1787030.jpg",
+    "src": "img/fictional/1787030.jpg",
+    "model": "Chery IndiS (S18D) I, 2012"
+  },
+  {
+    "key": "img/fictional/1787901.jpg",
+    "src": "img/fictional/1787901.jpg",
+    "model": "Toyota Chaser Tourer V, 1997"
+  },
+  {
+    "key": "img/fictional/1787902.jpg",
+    "src": "img/fictional/1787902.jpg",
+    "model": "Toyota Supra RZ, 1996"
+  },
+  {
+    "key": "img/fictional/1787903.jpg",
+    "src": "img/fictional/1787903.jpg",
+    "model": "Nissan Skyline GT-R V-Spec R34, 1999"
+  },
+  {
+    "key": "img/fictional/1833001.jpg",
+    "src": "img/fictional/1833001.jpg",
+    "model": "ГАЗ 24 Волга 2401 I (24), 1981"
+  },
+  {
+    "key": "img/fictional/1833002.jpg",
+    "src": "img/fictional/1833002.jpg",
+    "model": "Geely MK Cross I, 2012"
+  },
+  {
+    "key": "img/fictional/1833003.jpg",
+    "src": "img/fictional/1833003.jpg",
+    "model": "Daewoo Nexia I, 2004"
+  },
+  {
+    "key": "img/fictional/1833004.jpg",
+    "src": "img/fictional/1833004.jpg",
+    "model": "Hyundai Accent ТагАЗ II, 2008"
+  },
+  {
+    "key": "img/fictional/1833005.jpg",
+    "src": "img/fictional/1833005.jpg",
+    "model": "Chevrolet Lacetti I, 2012"
+  },
+  {
+    "key": "img/fictional/1833006.jpg",
+    "src": "img/fictional/1833006.jpg",
+    "model": "Ford Mondeo III Рестайлинг, 2005"
+  },
+  {
+    "key": "img/fictional/1833007.jpg",
+    "src": "img/fictional/1833007.jpg",
+    "model": "Ford Focus II Рестайлинг, 2010"
+  },
+  {
+    "key": "img/fictional/1833008.jpg",
+    "src": "img/fictional/1833008.jpg",
+    "model": "Hyundai Solaris I Рестайлинг, 2015"
+  },
+  {
+    "key": "img/fictional/1833009.jpg",
+    "src": "img/fictional/1833009.jpg",
+    "model": "Honda Civic VIII, 2008"
+  },
+  {
+    "key": "img/fictional/1833010.jpg",
+    "src": "img/fictional/1833010.jpg",
+    "model": "Renault Sandero Stepway II Рестайлинг, 2018"
+  },
+  {
+    "key": "img/fictional/1833011.jpg",
+    "src": "img/fictional/1833011.jpg",
+    "model": "Ford Focus II Рестайлинг, 2010"
+  },
+  {
+    "key": "img/fictional/1833012.jpg",
+    "src": "img/fictional/1833012.jpg",
+    "model": "Lada (ВАЗ) Granta I, 2012"
+  },
+  {
+    "key": "img/fictional/1833013.jpg",
+    "src": "img/fictional/1833013.jpg",
+    "model": "Hyundai ix35 I Рестайлинг, 2014"
+  },
+  {
+    "key": "img/fictional/1833014.jpg",
+    "src": "img/fictional/1833014.jpg",
+    "model": "Kia Rio X IV Рестайлинг, 2021"
+  },
+  {
+    "key": "img/fictional/1833015.jpg",
+    "src": "img/fictional/1833015.jpg",
+    "model": "Chery Tiggo 8 Pro Max I, 2022"
+  },
+  {
+    "key": "img/fictional/1833016.jpg",
+    "src": "img/fictional/1833016.jpg",
+    "model": "Geely Coolray I, 2022"
+  },
+  {
+    "key": "img/fictional/1833017.jpg",
+    "src": "img/fictional/1833017.jpg",
+    "model": "BMW 3 серии 318i VII (G2x), 2021"
+  },
+  {
+    "key": "img/fictional/1833018.jpg",
+    "src": "img/fictional/1833018.jpg",
+    "model": "Nissan X-Terra, 2020"
+  },
+  {
+    "key": "img/fictional/1833019.jpg",
+    "src": "img/fictional/1833019.jpg",
+    "model": "Land Rover Range Rover IV Рестайлинг, 2021"
+  },
+  {
+    "key": "img/fictional/1833020.jpg",
+    "src": "img/fictional/1833020.jpg",
+    "model": "Lada (ВАЗ) 2115, 2010"
+  },
+  {
+    "key": "img/fictional/1833021.jpg",
+    "src": "img/fictional/1833021.jpg",
+    "model": "ЗАЗ Chance, 2009"
+  },
+  {
+    "key": "img/fictional/1833022.jpg",
+    "src": "img/fictional/1833022.jpg",
+    "model": "Lada (ВАЗ) 2110, 2001"
+  },
+  {
+    "key": "img/fictional/1833023.jpg",
+    "src": "img/fictional/1833023.jpg",
+    "model": "Toyota Carina E, 1997"
+  },
+  {
+    "key": "img/fictional/1833024.jpg",
+    "src": "img/fictional/1833024.jpg",
+    "model": "Toyota Corona IX (T190), 1997"
+  },
+  {
+    "key": "img/fictional/1833025.jpg",
+    "src": "img/fictional/1833025.jpg",
+    "model": "Lifan Breez (520), 2008"
+  },
+  {
+    "key": "img/fictional/1833026.jpg",
+    "src": "img/fictional/1833026.jpg",
+    "model": "Daewoo Nexia I, 2006"
+  },
+  {
+    "key": "img/fictional/1833027.jpg",
+    "src": "img/fictional/1833027.jpg",
+    "model": "Daewoo Nexia I, 2008"
+  },
+  {
+    "key": "img/fictional/1833028.jpg",
+    "src": "img/fictional/1833028.jpg",
+    "model": "Chevrolet Lanos I, 2006"
+  },
+  {
+    "key": "img/fictional/1833029.jpg",
+    "src": "img/fictional/1833029.jpg",
+    "region": [
+      0,
+      0,
+      414,
+      412
+    ],
+    "model": "УАЗ 3151, 1988"
+  },
+  {
+    "key": "img/fictional/1833030.jpg",
+    "src": "img/fictional/1833030.jpg",
+    "region": [
+      0,
+      0,
+      414,
+      412
+    ],
+    "model": "ГАЗ 24 Волга 2410 II (2410), 1991"
+  },
+  {
+    "key": "img/fictional/1833901.jpg",
+    "src": "img/fictional/1833901.jpg",
+    "model": "BMW M3 E30, 1990"
+  },
+  {
+    "key": "img/fictional/1833902.jpg",
+    "src": "img/fictional/1833902.jpg",
+    "model": "Porsche Cayenne GTS без фары, 2008"
+  },
+  {
+    "key": "img/fictional/1833903.jpg",
+    "src": "img/fictional/1833903.jpg",
+    "model": "Toyota Chaser Tourer V, 1997"
+  },
+  {
+    "key": "img/fictional/1928001.jpg",
+    "src": "img/fictional/1928001.jpg",
+    "model": "Lada (ВАЗ) Kalina I, 2006"
+  },
+  {
+    "key": "img/fictional/1928002.jpg",
+    "src": "img/fictional/1928002.jpg",
+    "model": "Lada (ВАЗ) 2114, 2008"
+  },
+  {
+    "key": "img/fictional/1928003.jpg",
+    "src": "img/fictional/1928003.jpg",
+    "model": "Lada (ВАЗ) Granta I, 2013"
+  },
+  {
+    "key": "img/fictional/1928004.jpg",
+    "src": "img/fictional/1928004.jpg",
+    "model": "Daewoo Nexia I Рестайлинг, 2009"
+  },
+  {
+    "key": "img/fictional/1928005.jpg",
+    "src": "img/fictional/1928005.jpg",
+    "model": "Hyundai Solaris I, 2012"
+  },
+  {
+    "key": "img/fictional/1928006.jpg",
+    "src": "img/fictional/1928006.jpg",
+    "model": "Daewoo Gentra II, 2013"
+  },
+  {
+    "key": "img/fictional/1928007.jpg",
+    "src": "img/fictional/1928007.jpg",
+    "model": "Skoda Octavia II (A5) Рестайлинг, 2012"
+  },
+  {
+    "key": "img/fictional/1928008.jpg",
+    "src": "img/fictional/1928008.jpg",
+    "model": "Ford Focus II Рестайлинг, 2011"
+  },
+  {
+    "key": "img/fictional/1928009.jpg",
+    "src": "img/fictional/1928009.jpg",
+    "model": "Renault Duster I, 2013"
+  },
+  {
+    "key": "img/fictional/1928010.jpg",
+    "src": "img/fictional/1928010.jpg",
+    "model": "Hyundai i30 I Рестайлинг, 2011"
+  },
+  {
+    "key": "img/fictional/1928011.jpg",
+    "src": "img/fictional/1928011.jpg",
+    "model": "Peugeot 508 I Рестайлинг, 2014"
+  },
+  {
+    "key": "img/fictional/1928012.jpg",
+    "src": "img/fictional/1928012.jpg",
+    "model": "Kia Optima IV Рестайлинг, 2018"
+  },
+  {
+    "key": "img/fictional/1928013.jpg",
+    "src": "img/fictional/1928013.jpg",
+    "model": "Mitsubishi RVR III Рестайлинг 3, 2019"
+  },
+  {
+    "key": "img/fictional/1928014.jpg",
+    "src": "img/fictional/1928014.jpg",
+    "model": "Mercedes-Benz M-Класс 500 III (W166), 2012"
+  },
+  {
+    "key": "img/fictional/1928015.jpg",
+    "src": "img/fictional/1928015.jpg",
+    "model": "Mazda CX-5 I, 2014"
+  },
+  {
+    "key": "img/fictional/1928016.jpg",
+    "src": "img/fictional/1928016.jpg",
+    "model": "Mercedes-Benz M-Класс 350 III (W166), 2013"
+  },
+  {
+    "key": "img/fictional/1928017.jpg",
+    "src": "img/fictional/1928017.jpg",
+    "model": "Land Rover Defender 110 I Рестайлинг, 2014"
+  },
+  {
+    "key": "img/fictional/1928018.jpg",
+    "src": "img/fictional/1928018.jpg",
+    "model": "Audi S8 III (D4) Рестайлинг, 2016"
+  },
+  {
+    "key": "img/fictional/1928019.jpg",
+    "src": "img/fictional/1928019.jpg",
+    "model": "Ram 1500 Crew Cab V, 2021"
+  },
+  {
+    "key": "img/fictional/1928020.jpg",
+    "src": "img/fictional/1928020.jpg",
+    "model": "Renault Logan I, 2007"
+  },
+  {
+    "key": "img/fictional/1928021.jpg",
+    "src": "img/fictional/1928021.jpg",
+    "model": "Volkswagen Passat B5, 1998"
+  },
+  {
+    "key": "img/fictional/1928022.jpg",
+    "src": "img/fictional/1928022.jpg",
+    "model": "ЗАЗ Chance, 2011"
+  },
+  {
+    "key": "img/fictional/1928023.jpg",
+    "src": "img/fictional/1928023.jpg",
+    "model": "Nissan Primera II (P11) Рестайлинг, 2001"
+  },
+  {
+    "key": "img/fictional/1928024.jpg",
+    "src": "img/fictional/1928024.jpg",
+    "model": "Lifan Breez (520), 2010"
+  },
+  {
+    "key": "img/fictional/1928025.jpg",
+    "src": "img/fictional/1928025.jpg",
+    "model": "Renault Logan I, 2007"
+  },
+  {
+    "key": "img/fictional/1928026.jpg",
+    "src": "img/fictional/1928026.jpg",
+    "model": "ЗАЗ Chance, 2010"
+  },
+  {
+    "key": "img/fictional/1928027.jpg",
+    "src": "img/fictional/1928027.jpg",
+    "model": "Skoda Fabia I, 2003"
+  },
+  {
+    "key": "img/fictional/1928028.jpg",
+    "src": "img/fictional/1928028.jpg",
+    "model": "Daewoo Nexia I Рестайлинг, 2011"
+  },
+  {
+    "key": "img/fictional/1928029.jpg",
+    "src": "img/fictional/1928029.jpg",
+    "model": "ГАЗ 24 Волга 2411 II (2410), 1987"
+  },
+  {
+    "key": "img/fictional/1928030.jpg",
+    "src": "img/fictional/1928030.jpg",
+    "model": "Chevrolet Cruze I, 2012"
+  },
+  {
+    "key": "img/fictional/1928901.jpg",
+    "src": "img/fictional/1928901.jpg",
+    "model": "Toyota Supra RZ, 1996"
+  },
+  {
+    "key": "img/fictional/1928902.jpg",
+    "src": "img/fictional/1928902.jpg",
+    "model": "Nissan Skyline GT-R V-Spec R34, 1999"
+  },
+  {
+    "key": "img/fictional/1928903.jpg",
+    "src": "img/fictional/1928903.jpg",
+    "model": "Mazda RX-7 FD, 1994"
+  },
+  {
+    "key": "img/fictional/1996001.jpg",
+    "src": "img/fictional/1996001.jpg",
+    "model": "Lada (ВАЗ) 2110, 1999"
+  },
+  {
+    "key": "img/fictional/1996002.jpg",
+    "src": "img/fictional/1996002.jpg",
+    "model": "Lada (ВАЗ) 2112, 2003"
+  },
+  {
+    "key": "img/fictional/1996003.jpg",
+    "src": "img/fictional/1996003.jpg",
+    "model": "Daewoo Nexia I Рестайлинг, 2012"
+  },
+  {
+    "key": "img/fictional/1996004.jpg",
+    "src": "img/fictional/1996004.jpg",
+    "region": [
+      0,
+      0,
+      414,
+      410
+    ],
+    "model": "Lada (ВАЗ) Priora I, 2011"
+  },
+  {
+    "key": "img/fictional/1996005.jpg",
+    "src": "img/fictional/1996005.jpg",
+    "region": [
+      0,
+      0,
+      414,
+      410
+    ],
+    "model": "Kia Cerato I Рестайлинг, 2008"
+  },
+  {
+    "key": "img/fictional/1996006.jpg",
+    "src": "img/fictional/1996006.jpg",
+    "region": [
+      2,
+      0,
+      412,
+      410
+    ],
+    "model": "Kia Rio III, 2011"
+  },
+  {
+    "key": "img/fictional/1996007.jpg",
+    "src": "img/fictional/1996007.jpg",
+    "region": [
+      0,
+      0,
+      412,
+      411
+    ],
+    "model": "Subaru Impreza III, 2008"
+  },
+  {
+    "key": "img/fictional/1996008.jpg",
+    "src": "img/fictional/1996008.jpg",
+    "region": [
+      2,
+      0,
+      410,
+      411
+    ],
+    "model": "Ford Fusion I Рестайлинг, 2008"
+  },
+  {
+    "key": "img/fictional/1996009.jpg",
+    "src": "img/fictional/1996009.jpg",
+    "region": [
+      0,
+      0,
+      414,
+      411
+    ],
+    "model": "Audi Q7 I (4L), 2007"
+  },
+  {
+    "key": "img/fictional/1996010.jpg",
+    "src": "img/fictional/1996010.jpg",
+    "model": "Mitsubishi Outlander II Рестайлинг, 2010"
+  },
+  {
+    "key": "img/fictional/1996011.jpg",
+    "src": "img/fictional/1996011.jpg",
+    "region": [
+      2,
+      0,
+      412,
+      414
+    ],
+    "model": "Great Wall Hover H3 I Рестайлинг, 2014"
+  },
+  {
+    "key": "img/fictional/1996012.jpg",
+    "src": "img/fictional/1996012.jpg",
+    "region": [
+      2,
+      0,
+      412,
+      414
+    ],
+    "model": "Mazda CX-7 I, 2007"
+  },
+  {
+    "key": "img/fictional/1996013.jpg",
+    "src": "img/fictional/1996013.jpg",
+    "region": [
+      0,
+      0,
+      414,
+      405
+    ],
+    "model": "Hyundai Creta I, 2019"
+  },
+  {
+    "key": "img/fictional/1996014.jpg",
+    "src": "img/fictional/1996014.jpg",
+    "region": [
+      0,
+      0,
+      414,
+      405
+    ],
+    "model": "Land Rover Range Rover III Рестайлинг 2, 2010"
+  },
+  {
+    "key": "img/fictional/1996015.jpg",
+    "src": "img/fictional/1996015.jpg",
+    "region": [
+      0,
+      0,
+      414,
+      405
+    ],
+    "model": "Audi A7 I (4G), 2012"
+  },
+  {
+    "key": "img/fictional/1996016.jpg",
+    "src": "img/fictional/1996016.jpg",
+    "region": [
+      0,
+      0,
+      414,
+      380
+    ],
+    "model": "Chery Tiggo 4 I Рестайлинг, 2021"
+  },
+  {
+    "key": "img/fictional/1996017.jpg",
+    "src": "img/fictional/1996017.jpg",
+    "region": [
+      0,
+      0,
+      414,
+      380
+    ],
+    "model": "Audi A6 45 TFSI V (C8), 2020"
+  },
+  {
+    "key": "img/fictional/1996018.jpg",
+    "src": "img/fictional/1996018.jpg",
+    "region": [
+      0,
+      0,
+      414,
+      380
+    ],
+    "model": "BMW X7 40i I (G07), 2019"
+  },
+  {
+    "key": "img/fictional/1996019.jpg",
+    "src": "img/fictional/1996019.jpg",
+    "model": "Mercedes-Benz G-Класс AMG 63 AMG I (W463) Рестайлинг 2, 2015"
+  },
+  {
+    "key": "img/fictional/1996020.jpg",
+    "src": "img/fictional/1996020.jpg",
+    "model": "Porsche Cayenne GTS III, 2021"
+  },
+  {
+    "key": "img/fictional/1996021.jpg",
+    "src": "img/fictional/1996021.jpg",
+    "model": "Daewoo Nexia I Рестайлинг, 2011"
+  },
+  {
+    "key": "img/fictional/1996022.jpg",
+    "src": "img/fictional/1996022.jpg",
+    "model": "Daewoo Matiz I Рестайлинг, 2012"
+  },
+  {
+    "key": "img/fictional/1996023.jpg",
+    "src": "img/fictional/1996023.jpg",
+    "model": "Mazda Demio II (DY), 2003"
+  },
+  {
+    "key": "img/fictional/1996024.jpg",
+    "src": "img/fictional/1996024.jpg",
+    "model": "ГАЗ 3110 Волга, 2000"
+  },
+  {
+    "key": "img/fictional/1996025.jpg",
+    "src": "img/fictional/1996025.jpg",
+    "model": "Ford Fiesta Mk4, 1998"
+  },
+  {
+    "key": "img/fictional/1996026.jpg",
+    "src": "img/fictional/1996026.jpg",
+    "model": "Lifan Breez (520), 2011"
+  },
+  {
+    "key": "img/fictional/1996027.jpg",
+    "src": "img/fictional/1996027.jpg",
+    "model": "Citroen Xantia I, 1997"
+  },
+  {
+    "key": "img/fictional/1996028.jpg",
+    "src": "img/fictional/1996028.jpg",
+    "model": "Opel Astra 16LZ2 F, 1997"
+  },
+  {
+    "key": "img/fictional/1996029.jpg",
+    "src": "img/fictional/1996029.jpg",
+    "model": "Mitsubishi Lancer X, 2007"
+  },
+  {
+    "key": "img/fictional/1996030.jpg",
+    "src": "img/fictional/1996030.jpg",
+    "model": "Honda CR-V I Рестайлинг, 1999"
+  },
+  {
+    "key": "img/fictional/1996901.jpg",
+    "src": "img/fictional/1996901.jpg",
+    "model": "Mitsubishi Lancer Evolution VI, 1999"
+  },
+  {
+    "key": "img/fictional/1996902.jpg",
+    "src": "img/fictional/1996902.jpg",
+    "model": "BMW M3 E30, 1990"
+  },
+  {
+    "key": "img/fictional/1996903.jpg",
+    "src": "img/fictional/1996903.jpg",
+    "model": "Porsche Cayenne GTS без фары, 2008"
+  },
+  {
+    "key": "img/fictional/2016001.jpg",
+    "src": "img/fictional/2016001.jpg",
+    "model": "Lada (ВАЗ) 2107, 2006"
+  },
+  {
+    "key": "img/fictional/2016002.jpg",
+    "src": "img/fictional/2016002.jpg",
+    "model": "Toyota Vista IV (V40), 1995"
+  },
+  {
+    "key": "img/fictional/2016003.jpg",
+    "src": "img/fictional/2016003.jpg",
+    "model": "ГАЗ 3110 Волга, 2000"
+  },
+  {
+    "key": "img/fictional/2016004.jpg",
+    "src": "img/fictional/2016004.jpg",
+    "model": "Nissan March III (K12), 2009"
+  },
+  {
+    "key": "img/fictional/2016005.jpg",
+    "src": "img/fictional/2016005.jpg",
+    "model": "Hyundai Solaris I, 2011"
+  },
+  {
+    "key": "img/fictional/2016006.jpg",
+    "src": "img/fictional/2016006.jpg",
+    "model": "Honda Airwave I Рестайлинг, 2008"
+  },
+  {
+    "key": "img/fictional/2016007.jpg",
+    "src": "img/fictional/2016007.jpg",
+    "model": "Toyota Probox I, 2002"
+  },
+  {
+    "key": "img/fictional/2016008.jpg",
+    "src": "img/fictional/2016008.jpg",
+    "model": "Nissan Note e-Power II Рестайлинг, 2019"
+  },
+  {
+    "key": "img/fictional/2016009.jpg",
+    "src": "img/fictional/2016009.jpg",
+    "model": "Honda Shuttle II, 2016"
+  },
+  {
+    "key": "img/fictional/2016010.jpg",
+    "src": "img/fictional/2016010.jpg",
+    "model": "Toyota Alphard I, 2004"
+  },
+  {
+    "key": "img/fictional/2016011.jpg",
+    "src": "img/fictional/2016011.jpg",
+    "model": "Mazda CX-8 I, 2019"
+  },
+  {
+    "key": "img/fictional/2016012.jpg",
+    "src": "img/fictional/2016012.jpg",
+    "model": "Lexus LS Long 600h L IV, 2008"
+  },
+  {
+    "key": "img/fictional/2016013.jpg",
+    "src": "img/fictional/2016013.jpg",
+    "model": "SsangYong Rexton IV Рестайлинг, 2021"
+  },
+  {
+    "key": "img/fictional/2016014.jpg",
+    "src": "img/fictional/2016014.jpg",
+    "model": "Nissan Tiida Latio I, 2012"
+  },
+  {
+    "key": "img/fictional/2016015.jpg",
+    "src": "img/fictional/2016015.jpg",
+    "model": "Lada (ВАЗ) 2121 (4x4) I Рестайлинг, 2006"
+  },
+  {
+    "key": "img/fictional/2016016.jpg",
+    "src": "img/fictional/2016016.jpg",
+    "model": "Honda Airwave I, 2006"
+  },
+  {
+    "key": "img/fictional/2016017.jpg",
+    "src": "img/fictional/2016017.jpg",
+    "model": "Mazda MPV II (LW), 2000"
+  },
+  {
+    "key": "img/fictional/2016018.jpg",
+    "src": "img/fictional/2016018.jpg",
+    "model": "Mercedes-Benz C-Класс 200 II (W203), 2003"
+  },
+  {
+    "key": "img/fictional/2016019.jpg",
+    "src": "img/fictional/2016019.jpg",
+    "model": "Mitsubishi Mirage VI, 2012"
+  },
+  {
+    "key": "img/fictional/2016020.jpg",
+    "src": "img/fictional/2016020.jpg",
+    "model": "УАЗ Пикап I Рестайлинг 2, 2017"
+  },
+  {
+    "key": "img/fictional/2016021.jpg",
+    "src": "img/fictional/2016021.jpg",
+    "model": "Mazda MPV II (LW), 2001"
+  },
+  {
+    "key": "img/fictional/2016022.jpg",
+    "src": "img/fictional/2016022.jpg",
+    "model": "Land Rover Freelander I Рестайлинг, 2005"
+  },
+  {
+    "key": "img/fictional/2016023.jpg",
+    "src": "img/fictional/2016023.jpg",
+    "model": "Volvo XC90 I, 2004"
+  },
+  {
+    "key": "img/fictional/2016024.jpg",
+    "src": "img/fictional/2016024.jpg",
+    "model": "Toyota Corolla Spacio II, 2001"
+  },
+  {
+    "key": "img/fictional/2016025.jpg",
+    "src": "img/fictional/2016025.jpg",
+    "model": "Toyota Corolla VIII (E110) Рестайлинг, 1999"
+  },
+  {
+    "key": "img/fictional/2016026.jpg",
+    "src": "img/fictional/2016026.jpg",
+    "model": "Toyota Vitz III (XP130), 2013"
+  },
+  {
+    "key": "img/fictional/2016027.jpg",
+    "src": "img/fictional/2016027.jpg",
+    "model": "Nissan Presage I, 1999"
+  },
+  {
+    "key": "img/fictional/2016028.jpg",
+    "src": "img/fictional/2016028.jpg",
+    "model": "Nissan Bassara, 2001"
+  },
+  {
+    "key": "img/fictional/2016029.jpg",
+    "src": "img/fictional/2016029.jpg",
+    "model": "Honda HR-V I Рестайлинг, 2005"
+  },
+  {
+    "key": "img/fictional/2016030.jpg",
+    "src": "img/fictional/2016030.jpg",
+    "model": "Honda Insight II, 2009"
+  },
+  {
+    "key": "img/fictional/2016901.jpg",
+    "src": "img/fictional/2016901.jpg",
+    "model": "Mazda RX-7 FD, 1994"
+  },
+  {
+    "key": "img/fictional/2016902.jpg",
+    "src": "img/fictional/2016902.jpg",
+    "model": "Nissan Silvia Varietta S15, 2000"
+  },
+  {
+    "key": "img/fictional/2016903.jpg",
+    "src": "img/fictional/2016903.jpg",
+    "model": "Mitsubishi Lancer Evolution VI, 1999"
+  },
+  {
+    "key": "img/fictional/2065001.jpg",
+    "src": "img/fictional/2065001.jpg",
+    "model": "Lada (ВАЗ) 21099, 2002"
+  },
+  {
+    "key": "img/fictional/2065002.jpg",
+    "src": "img/fictional/2065002.jpg",
+    "model": "Lada (ВАЗ) 2109, 1996"
+  },
+  {
+    "key": "img/fictional/2065003.jpg",
+    "src": "img/fictional/2065003.jpg",
+    "model": "Lada (ВАЗ) 2110, 2005"
+  },
+  {
+    "key": "img/fictional/2065004.jpg",
+    "src": "img/fictional/2065004.jpg",
+    "model": "Chery Amulet (A15) I, 2008"
+  },
+  {
+    "key": "img/fictional/2065005.jpg",
+    "src": "img/fictional/2065005.jpg",
+    "model": "Daewoo Nexia I, 2007"
+  },
+  {
+    "key": "img/fictional/2065006.jpg",
+    "src": "img/fictional/2065006.jpg",
+    "model": "Chevrolet Cruze I Рестайлинг, 2013"
+  },
+  {
+    "key": "img/fictional/2065007.jpg",
+    "src": "img/fictional/2065007.jpg",
+    "model": "Chevrolet Cruze I Рестайлинг, 2013"
+  },
+  {
+    "key": "img/fictional/2065008.jpg",
+    "src": "img/fictional/2065008.jpg",
+    "model": "Datsun on-DO I, 2017"
+  },
+  {
+    "key": "img/fictional/2065009.jpg",
+    "src": "img/fictional/2065009.jpg",
+    "model": "Kia Soul I Рестайлинг, 2012"
+  },
+  {
+    "key": "img/fictional/2065010.jpg",
+    "src": "img/fictional/2065010.jpg",
+    "model": "Hyundai ix35 I, 2013"
+  },
+  {
+    "key": "img/fictional/2065011.jpg",
+    "src": "img/fictional/2065011.jpg",
+    "model": "Hyundai Solaris I, 2011"
+  },
+  {
+    "key": "img/fictional/2065012.jpg",
+    "src": "img/fictional/2065012.jpg",
+    "model": "Nissan Qashqai I Рестайлинг, 2012"
+  },
+  {
+    "key": "img/fictional/2065013.jpg",
+    "src": "img/fictional/2065013.jpg",
+    "model": "Mazda 6 III (GJ), 2012"
+  },
+  {
+    "key": "img/fictional/2065014.jpg",
+    "src": "img/fictional/2065014.jpg",
+    "model": "Volkswagen Jetta VI, 2014"
+  },
+  {
+    "key": "img/fictional/2065015.jpg",
+    "src": "img/fictional/2065015.jpg",
+    "model": "Mitsubishi Pajero Sport II, 2012"
+  },
+  {
+    "key": "img/fictional/2065016.jpg",
+    "src": "img/fictional/2065016.jpg",
+    "model": "Renault Duster I Рестайлинг, 2019"
+  },
+  {
+    "key": "img/fictional/2065017.jpg",
+    "src": "img/fictional/2065017.jpg",
+    "model": "Kia K5 III, 2021"
+  },
+  {
+    "key": "img/fictional/2065018.jpg",
+    "src": "img/fictional/2065018.jpg",
+    "model": "Nissan Patrol V (Y61) Рестайлинг, 2007"
+  },
+  {
+    "key": "img/fictional/2065019.jpg",
+    "src": "img/fictional/2065019.jpg",
+    "model": "Mitsubishi Outlander III Рестайлинг 3, 2022"
+  },
+  {
+    "key": "img/fictional/2065020.jpg",
+    "src": "img/fictional/2065020.jpg",
+    "model": "GAC GN8 I, 2021"
+  },
+  {
+    "key": "img/fictional/2065021.jpg",
+    "src": "img/fictional/2065021.jpg",
+    "model": "Land Rover Range Rover IV Рестайлинг, 2020"
+  },
+  {
+    "key": "img/fictional/2065022.jpg",
+    "src": "img/fictional/2065022.jpg",
+    "model": "Mercedes-Benz GLE 350 II (V167), 2021"
+  },
+  {
+    "key": "img/fictional/2065023.jpg",
+    "src": "img/fictional/2065023.jpg",
+    "model": "Dodge RAM IV (DS/DJ), 2015"
+  },
+  {
+    "key": "img/fictional/2065024.jpg",
+    "src": "img/fictional/2065024.jpg",
+    "model": "Genesis GV80 I, 2021"
+  },
+  {
+    "key": "img/fictional/2065025.jpg",
+    "src": "img/fictional/2065025.jpg",
+    "model": "Mazda Familia VII (BH), 1997"
+  },
+  {
+    "key": "img/fictional/2065026.jpg",
+    "src": "img/fictional/2065026.jpg",
+    "model": "Nissan March III (K12), 2002"
+  },
+  {
+    "key": "img/fictional/2065027.jpg",
+    "src": "img/fictional/2065027.jpg",
+    "model": "Toyota Corona EXiV I (ST180), 1991"
+  },
+  {
+    "key": "img/fictional/2065028.jpg",
+    "src": "img/fictional/2065028.jpg",
+    "model": "Daewoo Nexia I Рестайлинг, 2008"
+  },
+  {
+    "key": "img/fictional/2065029.jpg",
+    "src": "img/fictional/2065029.jpg",
+    "model": "Chery Fora (A21), 2008"
+  },
+  {
+    "key": "img/fictional/2065030.jpg",
+    "src": "img/fictional/2065030.jpg",
+    "model": "ЗАЗ Chance, 2010"
+  },
+  {
+    "key": "img/fictional/2065901.jpg",
+    "src": "img/fictional/2065901.jpg",
+    "model": "Porsche Cayenne GTS без фары, 2008"
+  },
+  {
+    "key": "img/fictional/2065902.jpg",
+    "src": "img/fictional/2065902.jpg",
+    "model": "Toyota Chaser Tourer V, 1997"
+  },
+  {
+    "key": "img/fictional/2065903.jpg",
+    "src": "img/fictional/2065903.jpg",
+    "model": "Toyota Supra RZ, 1996"
+  },
+  {
+    "key": "img/fictional/2098001.jpg",
+    "src": "img/fictional/2098001.jpg",
+    "model": "Toyota Corolla VII (E100), 2000"
+  },
+  {
+    "key": "img/fictional/2098002.jpg",
+    "src": "img/fictional/2098002.jpg",
+    "model": "Toyota Crown VIII (S130), 1994"
+  },
+  {
+    "key": "img/fictional/2098003.jpg",
+    "src": "img/fictional/2098003.jpg",
+    "model": "Toyota Ist I Рестайлинг, 2007"
+  },
+  {
+    "key": "img/fictional/2098004.jpg",
+    "src": "img/fictional/2098004.jpg",
+    "model": "Nissan Tino, 1999"
+  },
+  {
+    "key": "img/fictional/2098005.jpg",
+    "src": "img/fictional/2098005.jpg",
+    "model": "Nissan NV200, 2016"
+  },
+  {
+    "key": "img/fictional/2098006.jpg",
+    "src": "img/fictional/2098006.jpg",
+    "model": "Nissan X-Trail II, 2008"
+  },
+  {
+    "key": "img/fictional/2098007.jpg",
+    "src": "img/fictional/2098007.jpg",
+    "model": "Kia Sorento I Рестайлинг, 2008"
+  },
+  {
+    "key": "img/fictional/2098008.jpg",
+    "src": "img/fictional/2098008.jpg",
+    "model": "Mitsubishi Pajero III, 2002"
+  },
+  {
+    "key": "img/fictional/2098009.jpg",
+    "src": "img/fictional/2098009.jpg",
+    "model": "Hummer H2 I Рестайлинг, 2007"
+  },
+  {
+    "key": "img/fictional/2098010.jpg",
+    "src": "img/fictional/2098010.jpg",
+    "model": "Lexus RX 350 III, 2010"
+  },
+  {
+    "key": "img/fictional/2098011.jpg",
+    "src": "img/fictional/2098011.jpg",
+    "model": "Mitsubishi ASX I Рестайлинг, 2014"
+  },
+  {
+    "key": "img/fictional/2098012.jpg",
+    "src": "img/fictional/2098012.jpg",
+    "model": "Ford Edge I Рестайлинг, 2014"
+  },
+  {
+    "key": "img/fictional/2098013.jpg",
+    "src": "img/fictional/2098013.jpg",
+    "model": "Honda Vezel I Рестайлинг, 2019"
+  },
+  {
+    "key": "img/fictional/2098014.jpg",
+    "src": "img/fictional/2098014.jpg",
+    "model": "Subaru Levorg II, 2020"
+  },
+  {
+    "key": "img/fictional/2098015.jpg",
+    "src": "img/fictional/2098015.jpg",
+    "model": "Kia Mohave 8-speed I, 2012"
+  },
+  {
+    "key": "img/fictional/2098016.jpg",
+    "src": "img/fictional/2098016.jpg",
+    "model": "Mazda RX-7 III (FD), 1996"
+  },
+  {
+    "key": "img/fictional/2098017.jpg",
+    "src": "img/fictional/2098017.jpg",
+    "model": "Lexus GX 460 II Рестайлинг 2, 2021"
+  },
+  {
+    "key": "img/fictional/2098018.jpg",
+    "src": "img/fictional/2098018.jpg",
+    "model": "Lexus RX 350 IV Рестайлинг, 2019"
+  },
+  {
+    "key": "img/fictional/2098019.jpg",
+    "src": "img/fictional/2098019.jpg",
+    "model": "Mercedes-Benz G-Класс 500 Euro 2 II (W463), 2000"
+  },
+  {
+    "key": "img/fictional/2098020.jpg",
+    "src": "img/fictional/2098020.jpg",
+    "model": "Porsche Cayenne Coupé III, 2021"
+  },
+  {
+    "key": "img/fictional/2098021.jpg",
+    "src": "img/fictional/2098021.jpg",
+    "model": "Suzuki Escudo II, 1998"
+  },
+  {
+    "key": "img/fictional/2098022.jpg",
+    "src": "img/fictional/2098022.jpg",
+    "model": "Lada (ВАЗ) 21099, 1998"
+  },
+  {
+    "key": "img/fictional/2098023.jpg",
+    "src": "img/fictional/2098023.jpg",
+    "model": "Ford Focus III, 2012"
+  },
+  {
+    "key": "img/fictional/2098024.jpg",
+    "src": "img/fictional/2098024.jpg",
+    "model": "SsangYong Musso Sports I Рестайлинг, 2004"
+  },
+  {
+    "key": "img/fictional/2098025.jpg",
+    "src": "img/fictional/2098025.jpg",
+    "model": "Ford Focus II Рестайлинг, 2010"
+  },
+  {
+    "key": "img/fictional/2098026.jpg",
+    "src": "img/fictional/2098026.jpg",
+    "model": "ЛуАЗ 969М, 1990"
+  },
+  {
+    "key": "img/fictional/2098027.jpg",
+    "src": "img/fictional/2098027.jpg",
+    "model": "Chevrolet Niva I, 2006"
+  },
+  {
+    "key": "img/fictional/2098028.jpg",
+    "src": "img/fictional/2098028.jpg",
+    "model": "Chevrolet Blazer II, 1997"
+  },
+  {
+    "key": "img/fictional/2098029.jpg",
+    "src": "img/fictional/2098029.jpg",
+    "model": "Honda Civic VIII, 2005"
+  },
+  {
+    "key": "img/fictional/2098030.jpg",
+    "src": "img/fictional/2098030.jpg",
+    "model": "Suzuki Grand Vitara I Рестайлинг, 2001"
+  },
+  {
+    "key": "img/fictional/2098901.jpg",
+    "src": "img/fictional/2098901.jpg",
+    "model": "Toyota Supra RZ, 1996"
+  },
+  {
+    "key": "img/fictional/2098902.jpg",
+    "src": "img/fictional/2098902.jpg",
+    "model": "Nissan Skyline GT-R V-Spec R34, 1999"
+  },
+  {
+    "key": "img/fictional/2098903.jpg",
+    "src": "img/fictional/2098903.jpg",
+    "model": "Mazda RX-7 FD, 1994"
+  },
+  {
+    "key": "img/custom/3000001.jpg",
+    "src": "img/custom/3000001.jpg",
+    "model": "Toyota C-HR, 2018"
+  },
+  {
+    "key": "img/custom/3000002.jpg",
+    "src": "img/custom/3000002.jpg",
+    "model": "Toyota Land Cruiser Prado, 2017"
+  },
+  {
+    "key": "img/custom/3000003.jpg",
+    "src": "img/custom/3000003.jpg",
+    "model": "BMW X6 M Competition, 2021"
+  },
+  {
+    "key": "img/custom/3000004.jpg",
+    "src": "img/custom/3000004.jpg",
+    "model": "Toyota Chaser Tourer V, 1999"
+  },
+  {
+    "key": "img/custom/3000005.jpg",
+    "src": "img/custom/3000005.jpg",
+    "model": "ЗИЛ-130, 1968"
+  },
+  {
+    "key": "img/custom/3000006.jpg",
+    "src": "img/custom/3000006.jpg",
+    "model": "Toyota Probox Hybrid, 2020"
+  },
+  {
+    "key": "img/custom/3000007.jpg",
+    "src": "img/custom/3000007.jpg",
+    "model": "Toyota Mark II, 1994"
+  },
+  {
+    "key": "img/custom/3000008.jpg",
+    "src": "img/custom/3000008.jpg",
+    "model": "Nissan Laurel, 1999"
+  },
+  {
+    "key": "img/custom/3000009.jpg",
+    "src": "img/custom/3000009.jpg",
+    "model": "Mazda RX-8, 2006"
+  },
+  {
+    "key": "img/custom/3000010.jpg",
+    "src": "img/custom/3000010.jpg",
+    "model": "Honda Fit RS, 2019"
+  },
+  {
+    "key": "img/custom/3000011.jpg",
+    "src": "img/custom/3000011.jpg",
+    "model": "Toyota Corolla, 1993"
+  },
+  {
+    "key": "img/custom/3000012.jpg",
+    "src": "img/custom/3000012.jpg",
+    "model": "Mitsubishi Pajero, 2014"
+  },
+  {
+    "key": "img/custom/3000013.jpg",
+    "src": "img/custom/3000013.jpg",
+    "model": "Lexus IS F, 2009"
+  },
+  {
+    "key": "img/custom/3000014.jpg",
+    "src": "img/custom/3000014.jpg",
+    "model": "Toyota Celsior, 2005"
+  },
+  {
+    "key": "img/custom/3000015.jpg",
+    "src": "img/custom/3000015.jpg",
+    "model": "Nissan Silvia, 1995"
+  },
+  {
+    "key": "img/custom/3000016.jpg",
+    "src": "img/custom/3000016.jpg",
+    "model": "Suzuki Jimny, 2013"
+  },
+  {
+    "key": "img/custom/3000017.jpg",
+    "src": "img/custom/3000017.jpg",
+    "model": "Toyota Crown Crossover RS Advanced, 2023"
+  },
+  {
+    "key": "img/custom/3000018.jpg",
+    "src": "img/custom/3000018.jpg",
+    "model": "ЗАЗ-968М, 1989"
+  },
+  {
+    "key": "img/custom/3000019.jpg",
+    "src": "img/custom/3000019.jpg",
+    "model": "Волга ГАЗ-24, 1978"
+  },
+  {
+    "key": "img/custom/3000020.jpg",
+    "src": "img/custom/3000020.jpg",
+    "model": "ГАЗ-51, 1964"
+  },
+  {
+    "key": "img/custom/3000021.jpg",
+    "src": "img/custom/3000021.jpg",
+    "model": "Москвич-412, 1977"
+  },
+  {
+    "key": "img/custom/3000022.jpg",
+    "src": "img/custom/3000022.jpg",
+    "model": "Жигули ВАЗ-2101, 1974"
+  },
+  {
+    "key": "img/custom/3000023.jpg",
+    "src": "img/custom/3000023.jpg",
+    "model": "ВАЗ-21063, 1989"
+  },
+  {
+    "key": "img/custom/3000024.jpg",
+    "src": "img/custom/3000024.jpg",
+    "model": "Mercedes-AMG G 63, 2022"
+  },
+  {
+    "key": "img/custom/3000025.jpg",
+    "src": "img/custom/3000025.jpg",
+    "model": "Honda NSX Type S, 2022"
+  },
+  {
+    "key": "img/custom/3000026.jpg",
+    "src": "img/custom/3000026.jpg",
+    "model": "Mitsubishi Lancer Evolution IX MR, 2006"
+  },
+  {
+    "key": "img/custom/3000027.jpg",
+    "src": "img/custom/3000027.jpg",
+    "model": "Audi RS5 Coupe, 2020"
+  },
+  {
+    "key": "img/custom/3000028-s8.jpg",
+    "src": "img/custom/3000028-s8.jpg",
+    "model": "Audi S8, 2019"
+  },
+  {
+    "key": "img/custom/3000029.jpg",
+    "src": "img/custom/3000029.jpg",
+    "model": "ВАЗ-2109, 2001"
+  },
+  {
+    "key": "img/custom/3000030.jpg",
+    "src": "img/custom/3000030.jpg",
+    "model": "УАЗ Hunter, 2018"
+  },
+  {
+    "key": "img/custom/3000031.jpg",
+    "src": "img/custom/3000031.jpg",
+    "model": "Toyota Land Cruiser 100, 1999"
+  },
+  {
+    "key": "img/custom/3000032.jpg",
+    "src": "img/custom/3000032.jpg",
+    "model": "Toyota Land Cruiser 200, 2016"
+  },
+  {
+    "key": "img/custom/3000033.jpg",
+    "src": "img/custom/3000033.jpg",
+    "model": "Nissan Safari, 1999"
+  },
+  {
+    "key": "img/custom/3000034.jpg",
+    "src": "img/custom/3000034.jpg",
+    "model": "Subaru Forester XT, 2014"
+  },
+  {
+    "key": "img/custom/3000035.jpg",
+    "src": "img/custom/3000035.jpg",
+    "model": "Toyota Hilux, 2016"
+  },
+  {
+    "key": "img/custom/3000036.jpg",
+    "src": "img/custom/3000036.jpg",
+    "model": "Mazda CX-5, 2018"
+  },
+  {
+    "key": "img/custom/3000037.jpg",
+    "src": "img/custom/3000037.jpg",
+    "model": "Lexus LX 570, 2016"
+  },
+  {
+    "key": "img/custom/3000038.jpg",
+    "src": "img/custom/3000038.jpg",
+    "model": "Mitsubishi Pajero Sport, 2016"
+  },
+  {
+    "key": "img/custom/3000039.jpg",
+    "src": "img/custom/3000039.jpg",
+    "model": "Porsche 911 GT3, 2022"
+  },
+  {
+    "key": "img/custom/3000040.jpg",
+    "src": "img/custom/3000040.jpg",
+    "model": "BMW M3 Competition, 2022"
+  },
+  {
+    "key": "img/custom/3000041.jpg",
+    "src": "img/custom/3000041.jpg",
+    "model": "Alfa Romeo Giulia Quadrifoglio, 2020"
+  },
+  {
+    "key": "img/custom/3000042.jpg",
+    "src": "img/custom/3000042.jpg",
+    "model": "Mercedes-Benz CLS 63 AMG, 2008"
+  },
+  {
+    "key": "img/custom/3000043.jpg",
+    "src": "img/custom/3000043.jpg",
+    "region": [
+      0,
+      0,
+      508,
+      506
+    ],
+    "model": "УАЗ-3909 Буханка, 2020"
+  },
+  {
+    "key": "img/custom/3000044.jpg",
+    "src": "img/custom/3000044.jpg",
+    "model": "Toyota RAV4 Adventure, 2020"
+  },
+  {
+    "key": "img/custom/3000045.jpg",
+    "src": "img/custom/3000045.jpg",
+    "region": [
+      2,
+      0,
+      506,
+      506
+    ],
+    "model": "Toyota Caldina GT-T, 1998"
+  },
+  {
+    "key": "img/custom/3000046.jpg",
+    "src": "img/custom/3000046.jpg",
+    "model": "Cadillac Escalade-V, 2023"
+  },
+  {
+    "key": "img/custom/3000047.jpg",
+    "src": "img/custom/3000047.jpg",
+    "model": "Honda CR-V, 2018"
+  },
+  {
+    "key": "img/custom/3000048.jpg",
+    "src": "img/custom/3000048.jpg",
+    "region": [
+      2,
+      0,
+      506,
+      508
+    ],
+    "model": "УАЗ Patriot ДПС, 2021"
+  },
+  {
+    "key": "img/custom/3000049.jpg",
+    "src": "img/custom/3000049.jpg",
+    "model": "ВАЗ-2107, 2003"
+  },
+  {
+    "key": "img/custom/3000050.jpg",
+    "src": "img/custom/3000050.jpg",
+    "model": "Toyota Succeed, 2008"
+  },
+  {
+    "key": "img/custom/3000051.jpg",
+    "src": "img/custom/3000051.jpg",
+    "model": "Nissan X-Trail, 2013"
+  },
+  {
+    "key": "img/custom/3000052.jpg",
+    "src": "img/custom/3000052.jpg",
+    "model": "Toyota Prius, 2016"
+  },
+  {
+    "key": "img/custom/3000053.jpg",
+    "src": "img/custom/3000053.jpg",
+    "model": "Subaru Legacy B4, 2007"
+  },
+  {
+    "key": "img/custom/3000054.jpg",
+    "src": "img/custom/3000054.jpg",
+    "model": "Mazda Atenza, 2014"
+  },
+  {
+    "key": "img/custom/3000055.jpg",
+    "src": "img/custom/3000055.jpg",
+    "model": "Mitsubishi Delica D:5, 2018"
+  },
+  {
+    "key": "img/custom/3000056.jpg",
+    "src": "img/custom/3000056.jpg",
+    "model": "Suzuki Escudo, 2007"
+  },
+  {
+    "key": "img/custom/3000057.jpg",
+    "src": "img/custom/3000057.jpg",
+    "model": "Toyota Land Cruiser 200, 2018"
+  },
+  {
+    "key": "img/custom/3000058.jpg",
+    "src": "img/custom/3000058.jpg",
+    "model": "Lexus RX 350, 2017"
+  },
+  {
+    "key": "img/custom/3000059.jpg",
+    "src": "img/custom/3000059.jpg",
+    "model": "Bugatti Chiron Sport, 2019"
+  },
+  {
+    "key": "img/custom/3000060.jpg",
+    "src": "img/custom/3000060.jpg",
+    "model": "ВАЗ-2106, 1998"
+  },
+  {
+    "key": "img/custom/3000061.jpg",
+    "src": "img/custom/3000061.jpg",
+    "model": "Lada Priora, 2014"
+  },
+  {
+    "key": "img/custom/3000062.jpg",
+    "src": "img/custom/3000062.jpg",
+    "model": "Lada Niva Legend, 2021"
+  },
+  {
+    "key": "img/custom/3000063.jpg",
+    "src": "img/custom/3000063.jpg",
+    "model": "BMW 330i, 2020"
+  },
+  {
+    "key": "img/custom/3000064.jpg",
+    "src": "img/custom/3000064.jpg",
+    "model": "Mercedes-Benz E 350, 2014"
+  },
+  {
+    "key": "img/custom/3000065.jpg",
+    "src": "img/custom/3000065.jpg",
+    "model": "Audi A6, 2018"
+  },
+  {
+    "key": "img/custom/3000066.jpg",
+    "src": "img/custom/3000066.jpg",
+    "model": "Lexus GS 350, 2014"
+  },
+  {
+    "key": "img/custom/3000067.jpg",
+    "src": "img/custom/3000067.jpg",
+    "model": "Toyota Camry, 2019"
+  },
+  {
+    "key": "img/custom/3000068.jpg",
+    "src": "img/custom/3000068.jpg",
+    "model": "Porsche Macan S, 2018"
+  },
+  {
+    "key": "img/custom/3000069.jpg",
+    "src": "img/custom/3000069.jpg",
+    "model": "Toyota Land Cruiser Prado, 2020"
+  },
+  {
+    "key": "img/trade/4000001.jpg",
+    "src": "img/trade/4000001.jpg",
+    "model": "ВАЗ 2107, 2004"
+  },
+  {
+    "key": "img/trade/4000002.jpg",
+    "src": "img/trade/4000002.jpg",
+    "model": "ВАЗ 2109, 2001"
+  },
+  {
+    "key": "img/trade/4000003.jpg",
+    "src": "img/trade/4000003.jpg",
+    "model": "ВАЗ 2110, 2005"
+  },
+  {
+    "key": "img/trade/4000004.jpg",
+    "src": "img/trade/4000004.jpg",
+    "model": "Daewoo Nexia, 2006"
+  },
+  {
+    "key": "img/trade/4000005.jpg",
+    "src": "img/trade/4000005.jpg",
+    "model": "ГАЗ 3110 Волга, 2002"
+  },
+  {
+    "key": "img/trade/4000006.jpg",
+    "src": "img/trade/4000006.jpg",
+    "model": "Opel Astra F, 1996"
+  },
+  {
+    "key": "img/trade/4000007.jpg",
+    "src": "img/trade/4000007.jpg",
+    "model": "Volkswagen Golf III, 1995"
+  },
+  {
+    "key": "img/trade/4000008.jpg",
+    "src": "img/trade/4000008.jpg",
+    "model": "Лада Калина, 2008"
+  },
+  {
+    "key": "img/trade/4000009.jpg",
+    "src": "img/trade/4000009.jpg",
+    "model": "Renault Logan, 2011"
+  },
+  {
+    "key": "img/trade/4000010.jpg",
+    "src": "img/trade/4000010.jpg",
+    "model": "Ford Focus II, 2009"
+  },
+  {
+    "key": "img/trade/4000011.jpg",
+    "src": "img/trade/4000011.jpg",
+    "model": "Toyota Corolla, 2005"
+  },
+  {
+    "key": "img/trade/4000012.jpg",
+    "src": "img/trade/4000012.jpg",
+    "model": "Honda Fit, 2008"
+  },
+  {
+    "key": "img/trade/4000013.jpg",
+    "src": "img/trade/4000013.jpg",
+    "model": "Hyundai Solaris, 2013"
+  },
+  {
+    "key": "img/trade/4000014.jpg",
+    "src": "img/trade/4000014.jpg",
+    "model": "Kia Rio, 2014"
+  },
+  {
+    "key": "img/trade/4000015.jpg",
+    "src": "img/trade/4000015.jpg",
+    "model": "Skoda Octavia, 2012"
+  },
+  {
+    "key": "img/trade/4000016.jpg",
+    "src": "img/trade/4000016.jpg",
+    "model": "Volkswagen Polo, 2015"
+  },
+  {
+    "key": "img/trade/4000017.jpg",
+    "src": "img/trade/4000017.jpg",
+    "model": "Toyota Camry, 2008"
+  },
+  {
+    "key": "img/trade/4000018.jpg",
+    "src": "img/trade/4000018.jpg",
+    "model": "Honda Accord, 2008"
+  },
+  {
+    "key": "img/trade/4000019.jpg",
+    "src": "img/trade/4000019.jpg",
+    "model": "Mazda 6, 2012"
+  },
+  {
+    "key": "img/trade/4000020.jpg",
+    "src": "img/trade/4000020.jpg",
+    "model": "Subaru Forester, 2011"
+  },
+  {
+    "key": "img/trade/4000021.jpg",
+    "src": "img/trade/4000021.jpg",
+    "model": "Mitsubishi Outlander, 2013"
+  },
+  {
+    "key": "img/trade/4000022.jpg",
+    "src": "img/trade/4000022.jpg",
+    "model": "Nissan X-Trail, 2014"
+  },
+  {
+    "key": "img/trade/4000023.jpg",
+    "src": "img/trade/4000023.jpg",
+    "model": "Toyota Mark II, 1997"
+  },
+  {
+    "key": "img/trade/4000024.jpg",
+    "src": "img/trade/4000024.jpg",
+    "model": "Toyota Chaser, 1998"
+  },
+  {
+    "key": "img/trade/4000025.jpg",
+    "src": "img/trade/4000025.jpg",
+    "model": "BMW 330i, 2016"
+  },
+  {
+    "key": "img/trade/4000026.jpg",
+    "src": "img/trade/4000026.jpg",
+    "model": "Mercedes-Benz E 200, 2017"
+  },
+  {
+    "key": "img/trade/4000027.jpg",
+    "src": "img/trade/4000027.jpg",
+    "model": "Audi A6, 2017"
+  },
+  {
+    "key": "img/trade/4000028.jpg",
+    "src": "img/trade/4000028.jpg",
+    "model": "Lexus GS 350, 2013"
+  },
+  {
+    "key": "img/trade/4000029.jpg",
+    "src": "img/trade/4000029.jpg",
+    "model": "Toyota Land Cruiser Prado, 2015"
+  },
+  {
+    "key": "img/trade/4000030.jpg",
+    "src": "img/trade/4000030.jpg",
+    "model": "Volkswagen Touareg, 2016"
+  },
+  {
+    "key": "img/trade/4000031.jpg",
+    "src": "img/trade/4000031.jpg",
+    "model": "Porsche Cayenne, 2014"
+  },
+  {
+    "key": "img/trade/4000032.jpg",
+    "src": "img/trade/4000032.jpg",
+    "model": "Ford Mustang, 2015"
+  },
+  {
+    "key": "img/trade/4000033.jpg",
+    "src": "img/trade/4000033.jpg",
+    "model": "Toyota Supra, 1995"
+  },
+  {
+    "key": "img/trade/4000034.jpg",
+    "src": "img/trade/4000034.jpg",
+    "model": "Nissan Skyline GT-R, 1997"
+  },
+  {
+    "key": "img/trade/4000035.jpg",
+    "src": "img/trade/4000035.jpg",
+    "model": "Mitsubishi Lancer Evolution IX, 2006"
+  },
+  {
+    "key": "img/trade/4000036.jpg",
+    "src": "img/trade/4000036.jpg",
+    "model": "Mazda RX-7, 1998"
+  },
+  {
+    "key": "img/trade/4000037.jpg",
+    "src": "img/trade/4000037.jpg",
+    "model": "BMW M3, 2018"
+  },
+  {
+    "key": "img/trade/4000038.jpg",
+    "src": "img/trade/4000038.jpg",
+    "model": "Mercedes-AMG C 63, 2017"
+  },
+  {
+    "key": "img/trade/4000039.jpg",
+    "src": "img/trade/4000039.jpg",
+    "model": "Porsche 911 Carrera, 2017"
+  },
+  {
+    "key": "img/trade/4000040.jpg",
+    "src": "img/trade/4000040.jpg",
+    "model": "Ferrari California, 2012"
+  },
+  {
+    "key": "img/commerce/lada-vesta.webp",
+    "src": "img/commerce/lada-vesta.webp",
+    "model": "Lada Vesta, 2026"
+  },
+  {
+    "key": "img/commerce/lada-iskra.webp",
+    "src": "img/commerce/lada-iskra.webp",
+    "model": "Lada Iskra, 2026"
+  },
+  {
+    "key": "img/commerce/lada-aura.webp",
+    "src": "img/commerce/lada-aura.webp",
+    "model": "Lada Aura, 2026"
+  },
+  {
+    "key": "img/commerce/lada-niva-travel.webp",
+    "src": "img/commerce/lada-niva-travel.webp",
+    "model": "Lada Niva Travel, 2026"
+  },
+  {
+    "key": "img/commerce/uaz-profi.webp",
+    "src": "img/commerce/uaz-profi.webp",
+    "model": "УАЗ Профи, 2026"
+  },
+  {
+    "key": "img/commerce/moskvich-3.webp",
+    "src": "img/commerce/moskvich-3.webp",
+    "model": "Москвич 3, 2026"
+  },
+  {
+    "key": "img/commerce/moskvich-6.webp",
+    "src": "img/commerce/moskvich-6.webp",
+    "model": "Москвич 6, 2026"
+  },
+  {
+    "key": "img/commerce/haval-m6.webp",
+    "src": "img/commerce/haval-m6.webp",
+    "model": "Haval M6, 2026"
+  },
+  {
+    "key": "img/commerce/haval-h3.webp",
+    "src": "img/commerce/haval-h3.webp",
+    "model": "Haval H3, 2026"
+  },
+  {
+    "key": "img/commerce/haval-h5.webp",
+    "src": "img/commerce/haval-h5.webp",
+    "model": "Haval H5, 2026"
+  },
+  {
+    "key": "img/commerce/haval-h7.webp",
+    "src": "img/commerce/haval-h7.webp",
+    "model": "Haval H7, 2026"
+  },
+  {
+    "key": "img/commerce/chery-arrizo-8.webp",
+    "src": "img/commerce/chery-arrizo-8.webp",
+    "model": "Chery Arrizo 8, 2026"
+  },
+  {
+    "key": "img/commerce/chery-tiggo-9.webp",
+    "src": "img/commerce/chery-tiggo-9.webp",
+    "model": "Chery Tiggo 9, 2026"
+  },
+  {
+    "key": "img/commerce/geely-monjaro.webp",
+    "src": "img/commerce/geely-monjaro.webp",
+    "model": "Geely Monjaro, 2026"
+  },
+  {
+    "key": "img/commerce/geely-atlas.webp",
+    "src": "img/commerce/geely-atlas.webp",
+    "model": "Geely Atlas, 2026"
+  },
+  {
+    "key": "img/commerce/geely-preface.webp",
+    "src": "img/commerce/geely-preface.webp",
+    "model": "Geely Preface, 2026"
+  },
+  {
+    "key": "img/commerce/changan-uni-v.webp",
+    "src": "img/commerce/changan-uni-v.webp",
+    "model": "Changan UNI-V, 2026"
+  },
+  {
+    "key": "img/commerce/changan-uni-k.webp",
+    "src": "img/commerce/changan-uni-k.webp",
+    "model": "Changan UNI-K, 2026"
+  },
+  {
+    "key": "img/commerce/changan-cs55-plus.webp",
+    "src": "img/commerce/changan-cs55-plus.webp",
+    "model": "Changan CS55 Plus, 2026"
+  },
+  {
+    "key": "img/commerce/omoda-c5.webp",
+    "src": "img/commerce/omoda-c5.webp",
+    "model": "Omoda C5, 2026"
+  },
+  {
+    "key": "img/commerce/omoda-s5.webp",
+    "src": "img/commerce/omoda-s5.webp",
+    "model": "Omoda S5, 2026"
+  },
+  {
+    "key": "img/commerce/jaecoo-j7.webp",
+    "src": "img/commerce/jaecoo-j7.webp",
+    "model": "Jaecoo J7, 2026"
+  },
+  {
+    "key": "img/commerce/jaecoo-j8.webp",
+    "src": "img/commerce/jaecoo-j8.webp",
+    "model": "Jaecoo J8, 2026"
+  },
+  {
+    "key": "img/commerce/exeed-rx.webp",
+    "src": "img/commerce/exeed-rx.webp",
+    "model": "Exeed RX, 2026"
+  },
+  {
+    "key": "img/commerce/exeed-txl.webp",
+    "src": "img/commerce/exeed-txl.webp",
+    "model": "Exeed TXL, 2026"
+  },
+  {
+    "key": "img/commerce/jetour-dashing.webp",
+    "src": "img/commerce/jetour-dashing.webp",
+    "model": "Jetour Dashing, 2026"
+  },
+  {
+    "key": "img/commerce/jetour-t2.webp",
+    "src": "img/commerce/jetour-t2.webp",
+    "model": "Jetour T2, 2026"
+  },
+  {
+    "key": "img/commerce/jetour-x70-plus.webp",
+    "src": "img/commerce/jetour-x70-plus.webp",
+    "model": "Jetour X70 Plus, 2026"
+  },
+  {
+    "key": "img/commerce/tank-500.webp",
+    "src": "img/commerce/tank-500.webp",
+    "model": "Tank 500, 2026"
+  },
+  {
+    "key": "img/commerce/tank-700.webp",
+    "src": "img/commerce/tank-700.webp",
+    "model": "Tank 700, 2026"
+  },
+  {
+    "key": "img/commerce/baic-u5-plus.webp",
+    "src": "img/commerce/baic-u5-plus.webp",
+    "model": "BAIC U5 Plus, 2026"
+  },
+  {
+    "key": "img/commerce/baic-x55.webp",
+    "src": "img/commerce/baic-x55.webp",
+    "model": "BAIC X55, 2026"
+  },
+  {
+    "key": "img/commerce/jac-js6.webp",
+    "src": "img/commerce/jac-js6.webp",
+    "model": "JAC JS6, 2026"
+  },
+  {
+    "key": "img/commerce/kaiyi-e5.webp",
+    "src": "img/commerce/kaiyi-e5.webp",
+    "model": "Kaiyi E5, 2026"
+  },
+  {
+    "key": "img/commerce/swm-g05.webp",
+    "src": "img/commerce/swm-g05.webp",
+    "model": "SWM G05, 2026"
+  },
+  {
+    "key": "img/commerce/dongfeng-shine-max.webp",
+    "src": "img/commerce/dongfeng-shine-max.webp",
+    "model": "Dongfeng Shine Max, 2026"
+  },
+  {
+    "key": "img/commerce/gac-gs3.webp",
+    "src": "img/commerce/gac-gs3.webp",
+    "model": "GAC GS3, 2026"
+  },
+  {
+    "key": "img/commerce/bestune-b70.webp",
+    "src": "img/commerce/bestune-b70.webp",
+    "model": "Bestune B70, 2026"
+  },
+  {
+    "key": "img/commerce/sollers-st6.webp",
+    "src": "img/commerce/sollers-st6.webp",
+    "model": "Sollers ST6, 2026"
+  },
+  {
+    "key": "img/commerce/evolute-i-pro.webp",
+    "src": "img/commerce/evolute-i-pro.webp",
+    "model": "Evolute i-PRO, 2026"
+  },
+  {
+    "key": "img/commerce/belgee-x70.webp",
+    "src": "img/commerce/belgee-x70.webp",
+    "model": "Belgee X70, 2026"
+  },
+  {
+    "key": "img/commerce/hongqi-h5.webp",
+    "src": "img/commerce/hongqi-h5.webp",
+    "model": "Hongqi H5, 2026"
+  },
+  {
+    "key": "img/commerce/voyah-free.webp",
+    "src": "img/commerce/voyah-free.webp",
+    "model": "Voyah Free, 2026"
+  },
+  {
+    "key": "img/commerce/kgm-torres.webp",
+    "src": "img/commerce/kgm-torres.webp",
+    "model": "KGM Torres, 2026"
+  },
+  {
+    "key": "img/commerce/soueast-s07.webp",
+    "src": "img/commerce/soueast-s07.webp",
+    "model": "Soueast S07, 2026"
+  },
+  {
+    "key": "img/commerce/livan-x3-pro.webp",
+    "src": "img/commerce/livan-x3-pro.webp",
+    "model": "Livan X3 Pro, 2026"
+  },
+  {
+    "key": "img/commerce/forthing-t5-evo.webp",
+    "src": "img/commerce/forthing-t5-evo.webp",
+    "model": "Forthing T5 Evo, 2026"
+  },
+  {
+    "key": "img/commerce/dfsk-500.webp",
+    "src": "img/commerce/dfsk-500.webp",
+    "model": "DFSK 500, 2026"
+  },
+  {
+    "key": "img/commerce/tenet-t7.webp",
+    "src": "img/commerce/tenet-t7.webp",
+    "model": "TENET T7, 2026"
+  },
+  {
+    "key": "img/commerce/toyota-raize.webp",
+    "src": "img/commerce/toyota-raize.webp",
+    "model": "Toyota Raize, 2019"
+  },
+  {
+    "key": "img/commerce/toyota-yaris-cross.webp",
+    "src": "img/commerce/toyota-yaris-cross.webp",
+    "model": "Toyota Yaris Cross, 2022"
+  },
+  {
+    "key": "img/commerce/toyota-corolla-cross.webp",
+    "src": "img/commerce/toyota-corolla-cross.webp",
+    "model": "Toyota Corolla Cross, 2022"
+  },
+  {
+    "key": "img/commerce/toyota-vellfire.webp",
+    "src": "img/commerce/toyota-vellfire.webp",
+    "model": "Toyota Vellfire, 2019"
+  },
+  {
+    "key": "img/commerce/toyota-noah.webp",
+    "src": "img/commerce/toyota-noah.webp",
+    "model": "Toyota Noah, 2019"
+  },
+  {
+    "key": "img/commerce/toyota-voxy.webp",
+    "src": "img/commerce/toyota-voxy.webp",
+    "model": "Toyota Voxy, 2019"
+  },
+  {
+    "key": "img/commerce/toyota-harrier.webp",
+    "src": "img/commerce/toyota-harrier.webp",
+    "model": "Toyota Harrier, 2019"
+  },
+  {
+    "key": "img/commerce/toyota-sienta.webp",
+    "src": "img/commerce/toyota-sienta.webp",
+    "model": "Toyota Sienta, 2019"
+  },
+  {
+    "key": "img/commerce/nissan-serena.webp",
+    "src": "img/commerce/nissan-serena.webp",
+    "model": "Nissan Serena, 2019"
+  },
+  {
+    "key": "img/commerce/nissan-kicks.webp",
+    "src": "img/commerce/nissan-kicks.webp",
+    "model": "Nissan Kicks, 2019"
+  },
+  {
+    "key": "img/commerce/nissan-ariya.webp",
+    "src": "img/commerce/nissan-ariya.webp",
+    "model": "Nissan Ariya, 2022"
+  },
+  {
+    "key": "img/commerce/honda-zr-v.webp",
+    "src": "img/commerce/honda-zr-v.webp",
+    "model": "Honda ZR-V, 2022"
+  },
+  {
+    "key": "img/commerce/honda-freed.webp",
+    "src": "img/commerce/honda-freed.webp",
+    "model": "Honda Freed, 2019"
+  },
+  {
+    "key": "img/commerce/acura-integra.webp",
+    "src": "img/commerce/acura-integra.webp",
+    "model": "Acura Integra, 2023"
+  },
+  {
+    "key": "img/commerce/lexus-nx.webp",
+    "src": "img/commerce/lexus-nx.webp",
+    "model": "Lexus NX 300h, 2019"
+  },
+  {
+    "key": "img/commerce/lexus-ux.webp",
+    "src": "img/commerce/lexus-ux.webp",
+    "model": "Lexus UX 250h, 2019"
+  },
+  {
+    "key": "img/commerce/lexus-lm.webp",
+    "src": "img/commerce/lexus-lm.webp",
+    "model": "Lexus LM, 2022"
+  },
+  {
+    "key": "img/commerce/bmw-i4.webp",
+    "src": "img/commerce/bmw-i4.webp",
+    "model": "BMW i4, 2022"
+  },
+  {
+    "key": "img/commerce/bmw-ix.webp",
+    "src": "img/commerce/bmw-ix.webp",
+    "model": "BMW iX, 2022"
+  },
+  {
+    "key": "img/commerce/audi-q4-e-tron.webp",
+    "src": "img/commerce/audi-q4-e-tron.webp",
+    "model": "Audi Q4 e-tron, 2022"
+  },
+  {
+    "key": "img/commerce/audi-q8.webp",
+    "src": "img/commerce/audi-q8.webp",
+    "model": "Audi Q8, 2019"
+  },
+  {
+    "key": "img/commerce/mercedes-benz-glb.webp",
+    "src": "img/commerce/mercedes-benz-glb.webp",
+    "model": "Mercedes-Benz GLB, 2019"
+  },
+  {
+    "key": "img/commerce/mercedes-benz-eqb.webp",
+    "src": "img/commerce/mercedes-benz-eqb.webp",
+    "model": "Mercedes-Benz EQB, 2022"
+  },
+  {
+    "key": "img/commerce/hyundai-staria.webp",
+    "src": "img/commerce/hyundai-staria.webp",
+    "model": "Hyundai Staria, 2022"
+  },
+  {
+    "key": "img/commerce/hyundai-casper.webp",
+    "src": "img/commerce/hyundai-casper.webp",
+    "model": "Hyundai Casper, 2024"
+  },
+  {
+    "key": "img/commerce/hyundai-ioniq-5.webp",
+    "src": "img/commerce/hyundai-ioniq-5.webp",
+    "model": "Hyundai Ioniq 5, 2022"
+  },
+  {
+    "key": "img/commerce/kia-carnival.webp",
+    "src": "img/commerce/kia-carnival.webp",
+    "model": "Kia Carnival, 2019"
+  },
+  {
+    "key": "img/commerce/kia-ev6.webp",
+    "src": "img/commerce/kia-ev6.webp",
+    "model": "Kia EV6, 2022"
+  },
+  {
+    "key": "img/commerce/kia-seltos.webp",
+    "src": "img/commerce/kia-seltos.webp",
+    "model": "Kia Seltos, 2019"
+  },
+  {
+    "key": "img/commerce/genesis-g70.webp",
+    "src": "img/commerce/genesis-g70.webp",
+    "model": "Genesis G70, 2019"
+  },
+  {
+    "key": "img/commerce/genesis-g90.webp",
+    "src": "img/commerce/genesis-g90.webp",
+    "model": "Genesis G90, 2019"
+  },
+  {
+    "key": "img/commerce/volkswagen-id-4.webp",
+    "src": "img/commerce/volkswagen-id-4.webp",
+    "model": "Volkswagen ID.4, 2019"
+  },
+  {
+    "key": "img/commerce/mazda-cx-30.webp",
+    "src": "img/commerce/mazda-cx-30.webp",
+    "model": "Mazda CX-30, 2019"
+  },
+  {
+    "key": "img/commerce/mazda-cx-60.webp",
+    "src": "img/commerce/mazda-cx-60.webp",
+    "model": "Mazda CX-60, 2022"
+  },
+  {
+    "key": "img/commerce/subaru-crosstrek.webp",
+    "src": "img/commerce/subaru-crosstrek.webp",
+    "model": "Subaru Crosstrek, 2023"
+  },
+  {
+    "key": "img/commerce/porsche-taycan.webp",
+    "src": "img/commerce/porsche-taycan.webp",
+    "model": "Porsche Taycan, 2019"
+  },
+  {
+    "key": "img/commerce/tesla-model-3.webp",
+    "src": "img/commerce/tesla-model-3.webp",
+    "model": "Tesla Model 3, 2019"
+  },
+  {
+    "key": "img/commerce/tesla-model-y.webp",
+    "src": "img/commerce/tesla-model-y.webp",
+    "model": "Tesla Model Y, 2022"
+  },
+  {
+    "key": "img/commerce/dealer-showroom-v1.webp#2,32,248,190",
+    "src": "img/commerce/dealer-showroom-v1.webp",
+    "region": [
+      2,
+      32,
+      248,
+      190
+    ],
+    "model": "Lada Vesta, 2025"
+  },
+  {
+    "key": "img/commerce/dealer-showroom-v1.webp#254,32,245,190",
+    "src": "img/commerce/dealer-showroom-v1.webp",
+    "region": [
+      254,
+      32,
+      245,
+      190
+    ],
+    "model": "Lada Iskra, 2025"
+  },
+  {
+    "key": "img/commerce/dealer-showroom-v1.webp#503,32,246,190",
+    "src": "img/commerce/dealer-showroom-v1.webp",
+    "region": [
+      503,
+      32,
+      246,
+      190
+    ],
+    "model": "Lada Aura, 2025"
+  },
+  {
+    "key": "img/commerce/dealer-showroom-v1.webp#753,32,247,190",
+    "src": "img/commerce/dealer-showroom-v1.webp",
+    "region": [
+      753,
+      32,
+      247,
+      190
+    ],
+    "model": "Lada Niva Travel, 2025"
+  },
+  {
+    "key": "img/commerce/dealer-showroom-v1.webp#1004,32,248,190",
+    "src": "img/commerce/dealer-showroom-v1.webp",
+    "region": [
+      1004,
+      32,
+      248,
+      190
+    ],
+    "model": "УАЗ Профи, 2026"
+  },
+  {
+    "key": "img/commerce/dealer-showroom-v1.webp#2,281,248,192",
+    "src": "img/commerce/dealer-showroom-v1.webp",
+    "region": [
+      2,
+      281,
+      248,
+      192
+    ],
+    "model": "Москвич 3, 2026"
+  },
+  {
+    "key": "img/commerce/dealer-showroom-v1.webp#254,281,245,192",
+    "src": "img/commerce/dealer-showroom-v1.webp",
+    "region": [
+      254,
+      281,
+      245,
+      192
+    ],
+    "model": "Москвич 6, 2026"
+  },
+  {
+    "key": "img/commerce/dealer-showroom-v1.webp#503,281,246,192",
+    "src": "img/commerce/dealer-showroom-v1.webp",
+    "region": [
+      503,
+      281,
+      246,
+      192
+    ],
+    "model": "Haval M6, 2026"
+  },
+  {
+    "key": "img/commerce/dealer-showroom-v1.webp#753,281,247,192",
+    "src": "img/commerce/dealer-showroom-v1.webp",
+    "region": [
+      753,
+      281,
+      247,
+      192
+    ],
+    "model": "Haval H3, 2026"
+  },
+  {
+    "key": "img/commerce/dealer-showroom-v1.webp#1004,281,248,192",
+    "src": "img/commerce/dealer-showroom-v1.webp",
+    "region": [
+      1004,
+      281,
+      248,
+      192
+    ],
+    "model": "Haval H5, 2026"
+  },
+  {
+    "key": "img/commerce/dealer-showroom-v1.webp#2,532,248,192",
+    "src": "img/commerce/dealer-showroom-v1.webp",
+    "region": [
+      2,
+      532,
+      248,
+      192
+    ],
+    "model": "Haval H7, 2026"
+  },
+  {
+    "key": "img/commerce/dealer-showroom-v1.webp#254,532,245,192",
+    "src": "img/commerce/dealer-showroom-v1.webp",
+    "region": [
+      254,
+      532,
+      245,
+      192
+    ],
+    "model": "Chery Arrizo 8, 2026"
+  },
+  {
+    "key": "img/commerce/dealer-showroom-v1.webp#503,532,246,192",
+    "src": "img/commerce/dealer-showroom-v1.webp",
+    "region": [
+      503,
+      532,
+      246,
+      192
+    ],
+    "model": "Chery Tiggo 9, 2026"
+  },
+  {
+    "key": "img/commerce/dealer-showroom-v1.webp#753,532,247,192",
+    "src": "img/commerce/dealer-showroom-v1.webp",
+    "region": [
+      753,
+      532,
+      247,
+      192
+    ],
+    "model": "Geely Monjaro, 2026"
+  },
+  {
+    "key": "img/commerce/dealer-showroom-v1.webp#1004,532,248,192",
+    "src": "img/commerce/dealer-showroom-v1.webp",
+    "region": [
+      1004,
+      532,
+      248,
+      192
+    ],
+    "model": "Geely Atlas, 2026"
+  },
+  {
+    "key": "img/commerce/dealer-showroom-v1.webp#2,783,248,179",
+    "src": "img/commerce/dealer-showroom-v1.webp",
+    "region": [
+      2,
+      783,
+      248,
+      179
+    ],
+    "model": "Geely Preface, 2026"
+  },
+  {
+    "key": "img/commerce/dealer-showroom-v1.webp#254,783,245,179",
+    "src": "img/commerce/dealer-showroom-v1.webp",
+    "region": [
+      254,
+      783,
+      245,
+      179
+    ],
+    "model": "Changan UNI-V, 2026"
+  },
+  {
+    "key": "img/commerce/dealer-showroom-v1.webp#503,783,246,179",
+    "src": "img/commerce/dealer-showroom-v1.webp",
+    "region": [
+      503,
+      783,
+      246,
+      179
+    ],
+    "model": "Changan UNI-K, 2026"
+  },
+  {
+    "key": "img/commerce/dealer-showroom-v1.webp#753,783,247,179",
+    "src": "img/commerce/dealer-showroom-v1.webp",
+    "region": [
+      753,
+      783,
+      247,
+      179
+    ],
+    "model": "Changan CS55 Plus, 2026"
+  },
+  {
+    "key": "img/commerce/dealer-showroom-v1.webp#1004,783,248,179",
+    "src": "img/commerce/dealer-showroom-v1.webp",
+    "region": [
+      1004,
+      783,
+      248,
+      179
+    ],
+    "model": "Omoda C5, 2026"
+  },
+  {
+    "key": "img/commerce/dealer-showroom-v1.webp#2,1021,248,206",
+    "src": "img/commerce/dealer-showroom-v1.webp",
+    "region": [
+      2,
+      1021,
+      248,
+      206
+    ],
+    "model": "Omoda S5, 2026"
+  },
+  {
+    "key": "img/commerce/dealer-showroom-v1.webp#254,1021,245,206",
+    "src": "img/commerce/dealer-showroom-v1.webp",
+    "region": [
+      254,
+      1021,
+      245,
+      206
+    ],
+    "model": "Jaecoo J7, 2026"
+  },
+  {
+    "key": "img/commerce/dealer-showroom-v1.webp#503,1021,246,206",
+    "src": "img/commerce/dealer-showroom-v1.webp",
+    "region": [
+      503,
+      1021,
+      246,
+      206
+    ],
+    "model": "Jaecoo J8, 2026"
+  },
+  {
+    "key": "img/commerce/dealer-showroom-v1.webp#753,1021,247,206",
+    "src": "img/commerce/dealer-showroom-v1.webp",
+    "region": [
+      753,
+      1021,
+      247,
+      206
+    ],
+    "model": "Exeed RX, 2026"
+  },
+  {
+    "key": "img/commerce/dealer-showroom-v1.webp#1004,1021,248,206",
+    "src": "img/commerce/dealer-showroom-v1.webp",
+    "region": [
+      1004,
+      1021,
+      248,
+      206
+    ],
+    "model": "Exeed TXL, 2026"
+  },
+  {
+    "key": "img/commerce/dealer-showroom-v2.webp#2,32,246,192",
+    "src": "img/commerce/dealer-showroom-v2.webp",
+    "region": [
+      2,
+      32,
+      246,
+      192
+    ],
+    "model": "Jetour Dashing, 2026"
+  },
+  {
+    "key": "img/commerce/dealer-showroom-v2.webp#252,32,248,192",
+    "src": "img/commerce/dealer-showroom-v2.webp",
+    "region": [
+      252,
+      32,
+      248,
+      192
+    ],
+    "model": "Jetour T2, 2026"
+  },
+  {
+    "key": "img/commerce/dealer-showroom-v2.webp#504,32,246,192",
+    "src": "img/commerce/dealer-showroom-v2.webp",
+    "region": [
+      504,
+      32,
+      246,
+      192
+    ],
+    "model": "Jetour X70 Plus, 2026"
+  },
+  {
+    "key": "img/commerce/dealer-showroom-v2.webp#754,32,247,192",
+    "src": "img/commerce/dealer-showroom-v2.webp",
+    "region": [
+      754,
+      32,
+      247,
+      192
+    ],
+    "model": "Tank 500, 2026"
+  },
+  {
+    "key": "img/commerce/dealer-showroom-v2.webp#1005,32,247,192",
+    "src": "img/commerce/dealer-showroom-v2.webp",
+    "region": [
+      1005,
+      32,
+      247,
+      192
+    ],
+    "model": "Tank 700, 2026"
+  },
+  {
+    "key": "img/commerce/dealer-showroom-v2.webp#2,283,246,192",
+    "src": "img/commerce/dealer-showroom-v2.webp",
+    "region": [
+      2,
+      283,
+      246,
+      192
+    ],
+    "model": "BAIC U5 Plus, 2026"
+  },
+  {
+    "key": "img/commerce/dealer-showroom-v2.webp#252,283,248,192",
+    "src": "img/commerce/dealer-showroom-v2.webp",
+    "region": [
+      252,
+      283,
+      248,
+      192
+    ],
+    "model": "BAIC X55, 2026"
+  },
+  {
+    "key": "img/commerce/dealer-showroom-v2.webp#504,283,246,192",
+    "src": "img/commerce/dealer-showroom-v2.webp",
+    "region": [
+      504,
+      283,
+      246,
+      192
+    ],
+    "model": "JAC JS6, 2026"
+  },
+  {
+    "key": "img/commerce/dealer-showroom-v2.webp#754,283,247,192",
+    "src": "img/commerce/dealer-showroom-v2.webp",
+    "region": [
+      754,
+      283,
+      247,
+      192
+    ],
+    "model": "Kaiyi E5, 2026"
+  },
+  {
+    "key": "img/commerce/dealer-showroom-v2.webp#1005,283,247,192",
+    "src": "img/commerce/dealer-showroom-v2.webp",
+    "region": [
+      1005,
+      283,
+      247,
+      192
+    ],
+    "model": "SWM G05, 2026"
+  },
+  {
+    "key": "img/commerce/dealer-showroom-v2.webp#2,534,246,192",
+    "src": "img/commerce/dealer-showroom-v2.webp",
+    "region": [
+      2,
+      534,
+      246,
+      192
+    ],
+    "model": "Dongfeng Shine Max, 2026"
+  },
+  {
+    "key": "img/commerce/dealer-showroom-v2.webp#252,534,248,192",
+    "src": "img/commerce/dealer-showroom-v2.webp",
+    "region": [
+      252,
+      534,
+      248,
+      192
+    ],
+    "model": "GAC GS3, 2026"
+  },
+  {
+    "key": "img/commerce/dealer-showroom-v2.webp#504,534,246,192",
+    "src": "img/commerce/dealer-showroom-v2.webp",
+    "region": [
+      504,
+      534,
+      246,
+      192
+    ],
+    "model": "Bestune B70, 2026"
+  },
+  {
+    "key": "img/commerce/dealer-showroom-v2.webp#754,534,247,192",
+    "src": "img/commerce/dealer-showroom-v2.webp",
+    "region": [
+      754,
+      534,
+      247,
+      192
+    ],
+    "model": "Sollers ST6, 2026"
+  },
+  {
+    "key": "img/commerce/dealer-showroom-v2.webp#1005,534,247,192",
+    "src": "img/commerce/dealer-showroom-v2.webp",
+    "region": [
+      1005,
+      534,
+      247,
+      192
+    ],
+    "model": "Evolute i-PRO, 2026"
+  },
+  {
+    "key": "img/commerce/dealer-showroom-v2.webp#2,785,246,179",
+    "src": "img/commerce/dealer-showroom-v2.webp",
+    "region": [
+      2,
+      785,
+      246,
+      179
+    ],
+    "model": "Belgee X70, 2026"
+  },
+  {
+    "key": "img/commerce/dealer-showroom-v2.webp#252,785,248,179",
+    "src": "img/commerce/dealer-showroom-v2.webp",
+    "region": [
+      252,
+      785,
+      248,
+      179
+    ],
+    "model": "Hongqi H5, 2026"
+  },
+  {
+    "key": "img/commerce/dealer-showroom-v2.webp#504,785,246,179",
+    "src": "img/commerce/dealer-showroom-v2.webp",
+    "region": [
+      504,
+      785,
+      246,
+      179
+    ],
+    "model": "Voyah Free, 2026"
+  },
+  {
+    "key": "img/commerce/dealer-showroom-v2.webp#754,785,247,179",
+    "src": "img/commerce/dealer-showroom-v2.webp",
+    "region": [
+      754,
+      785,
+      247,
+      179
+    ],
+    "model": "KGM Torres, 2026"
+  },
+  {
+    "key": "img/commerce/dealer-showroom-v2.webp#1005,785,247,179",
+    "src": "img/commerce/dealer-showroom-v2.webp",
+    "region": [
+      1005,
+      785,
+      247,
+      179
+    ],
+    "model": "Soueast S07, 2026"
+  },
+  {
+    "key": "img/commerce/dealer-showroom-v2.webp#2,1023,246,204",
+    "src": "img/commerce/dealer-showroom-v2.webp",
+    "region": [
+      2,
+      1023,
+      246,
+      204
+    ],
+    "model": "Livan X3 Pro, 2026"
+  },
+  {
+    "key": "img/commerce/dealer-showroom-v2.webp#252,1023,248,204",
+    "src": "img/commerce/dealer-showroom-v2.webp",
+    "region": [
+      252,
+      1023,
+      248,
+      204
+    ],
+    "model": "Forthing T5 Evo, 2026"
+  },
+  {
+    "key": "img/commerce/dealer-showroom-v2.webp#504,1023,246,204",
+    "src": "img/commerce/dealer-showroom-v2.webp",
+    "region": [
+      504,
+      1023,
+      246,
+      204
+    ],
+    "model": "DFSK 500, 2026"
+  },
+  {
+    "key": "img/commerce/dealer-showroom-v2.webp#754,1023,247,204",
+    "src": "img/commerce/dealer-showroom-v2.webp",
+    "region": [
+      754,
+      1023,
+      247,
+      204
+    ],
+    "model": "TENET T7, 2026"
+  },
+  {
+    "key": "img/commerce/import-illustrations-v1.webp#0,0,255,155",
+    "src": "img/commerce/import-illustrations-v1.webp",
+    "region": [
+      0,
+      0,
+      255,
+      155
+    ],
+    "model": "Toyota Raize, 2020"
+  },
+  {
+    "key": "img/commerce/import-illustrations-v1.webp#255,0,250,155",
+    "src": "img/commerce/import-illustrations-v1.webp",
+    "region": [
+      255,
+      0,
+      250,
+      155
+    ],
+    "model": "Toyota Yaris Cross, 2025"
+  },
+  {
+    "key": "img/commerce/import-illustrations-v1.webp#505,0,248,155",
+    "src": "img/commerce/import-illustrations-v1.webp",
+    "region": [
+      505,
+      0,
+      248,
+      155
+    ],
+    "model": "Toyota Corolla Cross, 2025"
+  },
+  {
+    "key": "img/commerce/import-illustrations-v1.webp#753,0,250,155",
+    "src": "img/commerce/import-illustrations-v1.webp",
+    "region": [
+      753,
+      0,
+      250,
+      155
+    ],
+    "model": "Toyota Vellfire, 2020"
+  },
+  {
+    "key": "img/commerce/import-illustrations-v1.webp#1003,0,251,155",
+    "src": "img/commerce/import-illustrations-v1.webp",
+    "region": [
+      1003,
+      0,
+      251,
+      155
+    ],
+    "model": "Toyota Noah, 2020"
+  },
+  {
+    "key": "img/commerce/import-illustrations-v1.webp#0,155,251,153",
+    "src": "img/commerce/import-illustrations-v1.webp",
+    "region": [
+      0,
+      155,
+      251,
+      153
+    ],
+    "model": "Toyota Voxy, 2020"
+  },
+  {
+    "key": "img/commerce/import-illustrations-v1.webp#251,155,258,153",
+    "src": "img/commerce/import-illustrations-v1.webp",
+    "region": [
+      251,
+      155,
+      258,
+      153
+    ],
+    "model": "Toyota Harrier, 2020"
+  },
+  {
+    "key": "img/commerce/import-illustrations-v1.webp#509,155,240,153",
+    "src": "img/commerce/import-illustrations-v1.webp",
+    "region": [
+      509,
+      155,
+      240,
+      153
+    ],
+    "model": "Toyota Sienta, 2020"
+  },
+  {
+    "key": "img/commerce/import-illustrations-v1.webp#749,155,254,153",
+    "src": "img/commerce/import-illustrations-v1.webp",
+    "region": [
+      749,
+      155,
+      254,
+      153
+    ],
+    "model": "Nissan Serena, 2020"
+  },
+  {
+    "key": "img/commerce/import-illustrations-v1.webp#1003,155,251,153",
+    "src": "img/commerce/import-illustrations-v1.webp",
+    "region": [
+      1003,
+      155,
+      251,
+      153
+    ],
+    "model": "Nissan Kicks, 2020"
+  },
+  {
+    "key": "img/commerce/import-illustrations-v1.webp#0,308,253,147",
+    "src": "img/commerce/import-illustrations-v1.webp",
+    "region": [
+      0,
+      308,
+      253,
+      147
+    ],
+    "model": "Nissan Ariya, 2025"
+  },
+  {
+    "key": "img/commerce/import-illustrations-v1.webp#253,308,256,147",
+    "src": "img/commerce/import-illustrations-v1.webp",
+    "region": [
+      253,
+      308,
+      256,
+      147
+    ],
+    "model": "Honda ZR-V, 2025"
+  },
+  {
+    "key": "img/commerce/import-illustrations-v1.webp#509,308,240,147",
+    "src": "img/commerce/import-illustrations-v1.webp",
+    "region": [
+      509,
+      308,
+      240,
+      147
+    ],
+    "model": "Honda Freed, 2020"
+  },
+  {
+    "key": "img/commerce/import-illustrations-v1.webp#749,308,253,147",
+    "src": "img/commerce/import-illustrations-v1.webp",
+    "region": [
+      749,
+      308,
+      253,
+      147
+    ],
+    "model": "Acura Integra, 2023"
+  },
+  {
+    "key": "img/commerce/import-illustrations-v1.webp#1002,308,252,147",
+    "src": "img/commerce/import-illustrations-v1.webp",
+    "region": [
+      1002,
+      308,
+      252,
+      147
+    ],
+    "model": "Lexus NX 300h, 2020"
+  },
+  {
+    "key": "img/commerce/import-illustrations-v1.webp#0,455,248,152",
+    "src": "img/commerce/import-illustrations-v1.webp",
+    "region": [
+      0,
+      455,
+      248,
+      152
+    ],
+    "model": "Lexus UX 250h, 2020"
+  },
+  {
+    "key": "img/commerce/import-illustrations-v1.webp#248,455,254,152",
+    "src": "img/commerce/import-illustrations-v1.webp",
+    "region": [
+      248,
+      455,
+      254,
+      152
+    ],
+    "model": "Lexus LM, 2025"
+  },
+  {
+    "key": "img/commerce/import-illustrations-v1.webp#502,455,247,152",
+    "src": "img/commerce/import-illustrations-v1.webp",
+    "region": [
+      502,
+      455,
+      247,
+      152
+    ],
+    "model": "BMW i4, 2025"
+  },
+  {
+    "key": "img/commerce/import-illustrations-v1.webp#749,455,255,152",
+    "src": "img/commerce/import-illustrations-v1.webp",
+    "region": [
+      749,
+      455,
+      255,
+      152
+    ],
+    "model": "BMW iX, 2025"
+  },
+  {
+    "key": "img/commerce/import-illustrations-v1.webp#1004,455,250,152",
+    "src": "img/commerce/import-illustrations-v1.webp",
+    "region": [
+      1004,
+      455,
+      250,
+      152
+    ],
+    "model": "Audi Q4 e-tron, 2025"
+  },
+  {
+    "key": "img/commerce/import-illustrations-v1.webp#0,607,254,157",
+    "src": "img/commerce/import-illustrations-v1.webp",
+    "region": [
+      0,
+      607,
+      254,
+      157
+    ],
+    "model": "Audi Q8, 2020"
+  },
+  {
+    "key": "img/commerce/import-illustrations-v1.webp#254,607,250,157",
+    "src": "img/commerce/import-illustrations-v1.webp",
+    "region": [
+      254,
+      607,
+      250,
+      157
+    ],
+    "model": "Mercedes-Benz GLB, 2020"
+  },
+  {
+    "key": "img/commerce/import-illustrations-v1.webp#504,607,245,157",
+    "src": "img/commerce/import-illustrations-v1.webp",
+    "region": [
+      504,
+      607,
+      245,
+      157
+    ],
+    "model": "Mercedes-Benz EQB, 2025"
+  },
+  {
+    "key": "img/commerce/import-illustrations-v1.webp#749,607,262,157",
+    "src": "img/commerce/import-illustrations-v1.webp",
+    "region": [
+      749,
+      607,
+      262,
+      157
+    ],
+    "model": "Hyundai Staria, 2025"
+  },
+  {
+    "key": "img/commerce/import-illustrations-v1.webp#1011,607,243,157",
+    "src": "img/commerce/import-illustrations-v1.webp",
+    "region": [
+      1011,
+      607,
+      243,
+      157
+    ],
+    "model": "Hyundai Casper, 2025"
+  },
+  {
+    "key": "img/commerce/import-illustrations-v1.webp#0,764,251,148",
+    "src": "img/commerce/import-illustrations-v1.webp",
+    "region": [
+      0,
+      764,
+      251,
+      148
+    ],
+    "model": "Hyundai Ioniq 5, 2025"
+  },
+  {
+    "key": "img/commerce/import-illustrations-v1.webp#251,764,252,148",
+    "src": "img/commerce/import-illustrations-v1.webp",
+    "region": [
+      251,
+      764,
+      252,
+      148
+    ],
+    "model": "Kia Carnival, 2020"
+  },
+  {
+    "key": "img/commerce/import-illustrations-v1.webp#503,764,247,148",
+    "src": "img/commerce/import-illustrations-v1.webp",
+    "region": [
+      503,
+      764,
+      247,
+      148
+    ],
+    "model": "Kia EV6, 2025"
+  },
+  {
+    "key": "img/commerce/import-illustrations-v1.webp#750,764,253,148",
+    "src": "img/commerce/import-illustrations-v1.webp",
+    "region": [
+      750,
+      764,
+      253,
+      148
+    ],
+    "model": "Kia Seltos, 2020"
+  },
+  {
+    "key": "img/commerce/import-illustrations-v1.webp#1003,764,251,148",
+    "src": "img/commerce/import-illustrations-v1.webp",
+    "region": [
+      1003,
+      764,
+      251,
+      148
+    ],
+    "model": "Genesis G70, 2020"
+  },
+  {
+    "key": "img/commerce/import-illustrations-v1.webp#0,912,257,153",
+    "src": "img/commerce/import-illustrations-v1.webp",
+    "region": [
+      0,
+      912,
+      257,
+      153
+    ],
+    "model": "Genesis G90, 2019"
+  },
+  {
+    "key": "img/commerce/import-illustrations-v1.webp#257,912,245,153",
+    "src": "img/commerce/import-illustrations-v1.webp",
+    "region": [
+      257,
+      912,
+      245,
+      153
+    ],
+    "model": "Volkswagen ID.4, 2019"
+  },
+  {
+    "key": "img/commerce/import-illustrations-v1.webp#502,912,250,153",
+    "src": "img/commerce/import-illustrations-v1.webp",
+    "region": [
+      502,
+      912,
+      250,
+      153
+    ],
+    "model": "Mazda CX-30, 2019"
+  },
+  {
+    "key": "img/commerce/import-illustrations-v1.webp#752,912,253,153",
+    "src": "img/commerce/import-illustrations-v1.webp",
+    "region": [
+      752,
+      912,
+      253,
+      153
+    ],
+    "model": "Mazda CX-60, 2024"
+  },
+  {
+    "key": "img/commerce/import-illustrations-v1.webp#1005,912,249,153",
+    "src": "img/commerce/import-illustrations-v1.webp",
+    "region": [
+      1005,
+      912,
+      249,
+      153
+    ],
+    "model": "Subaru Crosstrek, 2025"
+  },
+  {
+    "key": "img/commerce/import-illustrations-v1.webp#0,1065,259,189",
+    "src": "img/commerce/import-illustrations-v1.webp",
+    "region": [
+      0,
+      1065,
+      259,
+      189
+    ],
+    "model": "Porsche Taycan, 2019"
+  },
+  {
+    "key": "img/commerce/import-illustrations-v1.webp#259,1065,256,189",
+    "src": "img/commerce/import-illustrations-v1.webp",
+    "region": [
+      259,
+      1065,
+      256,
+      189
+    ],
+    "model": "Tesla Model 3, 2019"
+  },
+  {
+    "key": "img/commerce/import-illustrations-v1.webp#515,1065,252,189",
+    "src": "img/commerce/import-illustrations-v1.webp",
+    "region": [
+      515,
+      1065,
+      252,
+      189
+    ],
+    "model": "Tesla Model Y, 2024"
+  },
+  {
+    "key": "img/urban/import-moscow-1.webp#1,1,330,228",
+    "src": "img/urban/import-moscow-1.webp",
+    "region": [
+      1,
+      1,
+      330,
+      228
+    ],
+    "model": "toyota-raize"
+  },
+  {
+    "key": "img/urban/import-moscow-1.webp#339,1,325,228",
+    "src": "img/urban/import-moscow-1.webp",
+    "region": [
+      339,
+      1,
+      325,
+      228
+    ],
+    "model": "toyota-yaris-cross"
+  },
+  {
+    "key": "img/urban/import-moscow-1.webp#673,1,327,228",
+    "src": "img/urban/import-moscow-1.webp",
+    "region": [
+      673,
+      1,
+      327,
+      228
+    ],
+    "model": "toyota-corolla-cross"
+  },
+  {
+    "key": "img/urban/import-moscow-1.webp#1008,1,324,228",
+    "src": "img/urban/import-moscow-1.webp",
+    "region": [
+      1008,
+      1,
+      324,
+      228
+    ],
+    "model": "toyota-vellfire"
+  },
+  {
+    "key": "img/urban/import-moscow-1.webp#1341,1,330,228",
+    "src": "img/urban/import-moscow-1.webp",
+    "region": [
+      1341,
+      1,
+      330,
+      228
+    ],
+    "model": "toyota-noah"
+  },
+  {
+    "key": "img/urban/import-moscow-1.webp#1,236,330,228",
+    "src": "img/urban/import-moscow-1.webp",
+    "region": [
+      1,
+      236,
+      330,
+      228
+    ],
+    "model": "toyota-voxy"
+  },
+  {
+    "key": "img/urban/import-moscow-1.webp#339,236,325,228",
+    "src": "img/urban/import-moscow-1.webp",
+    "region": [
+      339,
+      236,
+      325,
+      228
+    ],
+    "model": "toyota-harrier"
+  },
+  {
+    "key": "img/urban/import-moscow-1.webp#673,236,327,228",
+    "src": "img/urban/import-moscow-1.webp",
+    "region": [
+      673,
+      236,
+      327,
+      228
+    ],
+    "model": "toyota-sienta"
+  },
+  {
+    "key": "img/urban/import-moscow-1.webp#1008,236,324,228",
+    "src": "img/urban/import-moscow-1.webp",
+    "region": [
+      1008,
+      236,
+      324,
+      228
+    ],
+    "model": "nissan-serena"
+  },
+  {
+    "key": "img/urban/import-moscow-1.webp#1341,236,330,228",
+    "src": "img/urban/import-moscow-1.webp",
+    "region": [
+      1341,
+      236,
+      330,
+      228
+    ],
+    "model": "nissan-kicks"
+  },
+  {
+    "key": "img/urban/import-moscow-1.webp#1,471,330,222",
+    "src": "img/urban/import-moscow-1.webp",
+    "region": [
+      1,
+      471,
+      330,
+      222
+    ],
+    "model": "nissan-ariya"
+  },
+  {
+    "key": "img/urban/import-moscow-1.webp#339,471,325,222",
+    "src": "img/urban/import-moscow-1.webp",
+    "region": [
+      339,
+      471,
+      325,
+      222
+    ],
+    "model": "honda-zr-v"
+  },
+  {
+    "key": "img/urban/import-moscow-1.webp#673,471,327,222",
+    "src": "img/urban/import-moscow-1.webp",
+    "region": [
+      673,
+      471,
+      327,
+      222
+    ],
+    "model": "honda-freed"
+  },
+  {
+    "key": "img/urban/import-moscow-1.webp#1008,471,324,222",
+    "src": "img/urban/import-moscow-1.webp",
+    "region": [
+      1008,
+      471,
+      324,
+      222
+    ],
+    "model": "acura-integra"
+  },
+  {
+    "key": "img/urban/import-moscow-1.webp#1341,471,330,222",
+    "src": "img/urban/import-moscow-1.webp",
+    "region": [
+      1341,
+      471,
+      330,
+      222
+    ],
+    "model": "lexus-nx"
+  },
+  {
+    "key": "img/urban/import-moscow-1.webp#1,700,330,240",
+    "src": "img/urban/import-moscow-1.webp",
+    "region": [
+      1,
+      700,
+      330,
+      240
+    ],
+    "model": "lexus-ux"
+  },
+  {
+    "key": "img/urban/import-moscow-1.webp#339,700,325,240",
+    "src": "img/urban/import-moscow-1.webp",
+    "region": [
+      339,
+      700,
+      325,
+      240
+    ],
+    "model": "lexus-lm"
+  },
+  {
+    "key": "img/urban/import-moscow-1.webp#673,700,327,240",
+    "src": "img/urban/import-moscow-1.webp",
+    "region": [
+      673,
+      700,
+      327,
+      240
+    ],
+    "model": "bmw-i4"
+  },
+  {
+    "key": "img/urban/import-moscow-1.webp#1008,700,324,240",
+    "src": "img/urban/import-moscow-1.webp",
+    "region": [
+      1008,
+      700,
+      324,
+      240
+    ],
+    "model": "bmw-ix"
+  },
+  {
+    "key": "img/urban/import-moscow-1.webp#1341,700,330,240",
+    "src": "img/urban/import-moscow-1.webp",
+    "region": [
+      1341,
+      700,
+      330,
+      240
+    ],
+    "model": "audi-q4-e-tron"
+  },
+  {
+    "key": "img/urban/import-moscow-2.webp#1,1,328,231",
+    "src": "img/urban/import-moscow-2.webp",
+    "region": [
+      1,
+      1,
+      328,
+      231
+    ],
+    "model": "audi-q8"
+  },
+  {
+    "key": "img/urban/import-moscow-2.webp#338,1,327,231",
+    "src": "img/urban/import-moscow-2.webp",
+    "region": [
+      338,
+      1,
+      327,
+      231
+    ],
+    "model": "mercedes-benz-glb"
+  },
+  {
+    "key": "img/urban/import-moscow-2.webp#674,1,326,231",
+    "src": "img/urban/import-moscow-2.webp",
+    "region": [
+      674,
+      1,
+      326,
+      231
+    ],
+    "model": "mercedes-benz-eqb"
+  },
+  {
+    "key": "img/urban/import-moscow-2.webp#1007,1,327,231",
+    "src": "img/urban/import-moscow-2.webp",
+    "region": [
+      1007,
+      1,
+      327,
+      231
+    ],
+    "model": "hyundai-staria"
+  },
+  {
+    "key": "img/urban/import-moscow-2.webp#1342,1,329,231",
+    "src": "img/urban/import-moscow-2.webp",
+    "region": [
+      1342,
+      1,
+      329,
+      231
+    ],
+    "model": "hyundai-casper"
+  },
+  {
+    "key": "img/urban/import-moscow-2.webp#1,240,328,225",
+    "src": "img/urban/import-moscow-2.webp",
+    "region": [
+      1,
+      240,
+      328,
+      225
+    ],
+    "model": "hyundai-ioniq-5"
+  },
+  {
+    "key": "img/urban/import-moscow-2.webp#338,240,327,225",
+    "src": "img/urban/import-moscow-2.webp",
+    "region": [
+      338,
+      240,
+      327,
+      225
+    ],
+    "model": "kia-carnival"
+  },
+  {
+    "key": "img/urban/import-moscow-2.webp#674,240,326,225",
+    "src": "img/urban/import-moscow-2.webp",
+    "region": [
+      674,
+      240,
+      326,
+      225
+    ],
+    "model": "kia-ev6"
+  },
+  {
+    "key": "img/urban/import-moscow-2.webp#1007,240,327,225",
+    "src": "img/urban/import-moscow-2.webp",
+    "region": [
+      1007,
+      240,
+      327,
+      225
+    ],
+    "model": "kia-seltos"
+  },
+  {
+    "key": "img/urban/import-moscow-2.webp#1342,240,329,225",
+    "src": "img/urban/import-moscow-2.webp",
+    "region": [
+      1342,
+      240,
+      329,
+      225
+    ],
+    "model": "genesis-g70"
+  },
+  {
+    "key": "img/urban/import-moscow-2.webp#1,472,328,215",
+    "src": "img/urban/import-moscow-2.webp",
+    "region": [
+      1,
+      472,
+      328,
+      215
+    ],
+    "model": "genesis-g90"
+  },
+  {
+    "key": "img/urban/import-moscow-2.webp#338,472,327,215",
+    "src": "img/urban/import-moscow-2.webp",
+    "region": [
+      338,
+      472,
+      327,
+      215
+    ],
+    "model": "volkswagen-id-4"
+  },
+  {
+    "key": "img/urban/import-moscow-2.webp#674,472,326,215",
+    "src": "img/urban/import-moscow-2.webp",
+    "region": [
+      674,
+      472,
+      326,
+      215
+    ],
+    "model": "mazda-cx-30"
+  },
+  {
+    "key": "img/urban/import-moscow-2.webp#1007,472,327,215",
+    "src": "img/urban/import-moscow-2.webp",
+    "region": [
+      1007,
+      472,
+      327,
+      215
+    ],
+    "model": "mazda-cx-60"
+  },
+  {
+    "key": "img/urban/import-moscow-2.webp#1342,472,329,215",
+    "src": "img/urban/import-moscow-2.webp",
+    "region": [
+      1342,
+      472,
+      329,
+      215
+    ],
+    "model": "subaru-crosstrek"
+  },
+  {
+    "key": "img/urban/import-moscow-2.webp#1,695,328,245",
+    "src": "img/urban/import-moscow-2.webp",
+    "region": [
+      1,
+      695,
+      328,
+      245
+    ],
+    "model": "porsche-taycan"
+  },
+  {
+    "key": "img/urban/import-moscow-2.webp#338,695,327,245",
+    "src": "img/urban/import-moscow-2.webp",
+    "region": [
+      338,
+      695,
+      327,
+      245
+    ],
+    "model": "tesla-model-3"
+  },
+  {
+    "key": "img/urban/import-moscow-2.webp#674,695,326,245",
+    "src": "img/urban/import-moscow-2.webp",
+    "region": [
+      674,
+      695,
+      326,
+      245
+    ],
+    "model": "tesla-model-y"
+  },
+  {
+    "key": "img/urban/legends-moscow-1.webp#1,1,413,311",
+    "src": "img/urban/legends-moscow-1.webp",
+    "region": [
+      1,
+      1,
+      413,
+      311
+    ],
+    "model": "mark-x90"
+  },
+  {
+    "key": "img/urban/legends-moscow-1.webp#421,1,411,311",
+    "src": "img/urban/legends-moscow-1.webp",
+    "region": [
+      421,
+      1,
+      411,
+      311
+    ],
+    "model": "chaser-x100"
+  },
+  {
+    "key": "img/urban/legends-moscow-1.webp#840,1,411,311",
+    "src": "img/urban/legends-moscow-1.webp",
+    "region": [
+      840,
+      1,
+      411,
+      311
+    ],
+    "model": "supra-a80"
+  },
+  {
+    "key": "img/urban/legends-moscow-1.webp#1258,1,413,311",
+    "src": "img/urban/legends-moscow-1.webp",
+    "region": [
+      1258,
+      1,
+      413,
+      311
+    ],
+    "model": "skyline-r34"
+  },
+  {
+    "key": "img/urban/legends-moscow-1.webp#1,320,413,302",
+    "src": "img/urban/legends-moscow-1.webp",
+    "region": [
+      1,
+      320,
+      413,
+      302
+    ],
+    "model": "rx7-fd"
+  },
+  {
+    "key": "img/urban/legends-moscow-1.webp#421,320,411,302",
+    "src": "img/urban/legends-moscow-1.webp",
+    "region": [
+      421,
+      320,
+      411,
+      302
+    ],
+    "model": "silvia-s15"
+  },
+  {
+    "key": "img/urban/legends-moscow-1.webp#840,320,411,302",
+    "src": "img/urban/legends-moscow-1.webp",
+    "region": [
+      840,
+      320,
+      411,
+      302
+    ],
+    "model": "evo-vi"
+  },
+  {
+    "key": "img/urban/legends-moscow-1.webp#1258,320,413,302",
+    "src": "img/urban/legends-moscow-1.webp",
+    "region": [
+      1258,
+      320,
+      413,
+      302
+    ],
+    "model": "m3-e30"
+  },
+  {
+    "key": "img/urban/legends-moscow-1.webp#1,629,413,311",
+    "src": "img/urban/legends-moscow-1.webp",
+    "region": [
+      1,
+      629,
+      413,
+      311
+    ],
+    "model": "bmw-e60"
+  },
+  {
+    "key": "img/urban/legends-moscow-1.webp#421,629,411,311",
+    "src": "img/urban/legends-moscow-1.webp",
+    "region": [
+      421,
+      629,
+      411,
+      311
+    ],
+    "model": "mercedes-w212"
+  },
+  {
+    "key": "img/urban/legends-moscow-1.webp#840,629,411,311",
+    "src": "img/urban/legends-moscow-1.webp",
+    "region": [
+      840,
+      629,
+      411,
+      311
+    ],
+    "model": "mercedes-w210"
+  },
+  {
+    "key": "img/urban/legends-moscow-1.webp#1258,629,413,311",
+    "src": "img/urban/legends-moscow-1.webp",
+    "region": [
+      1258,
+      629,
+      413,
+      311
+    ],
+    "model": "mercedes-w205"
+  },
+  {
+    "key": "img/urban/legends-moscow-2.webp#1,1,378,249",
+    "src": "img/urban/legends-moscow-2.webp",
+    "region": [
+      1,
+      1,
+      378,
+      249
+    ],
+    "model": "lexus-isf"
+  },
+  {
+    "key": "img/urban/legends-moscow-2.webp#387,1,377,249",
+    "src": "img/urban/legends-moscow-2.webp",
+    "region": [
+      387,
+      1,
+      377,
+      249
+    ],
+    "model": "silvia-s14"
+  },
+  {
+    "key": "img/urban/legends-moscow-2.webp#771,1,378,249",
+    "src": "img/urban/legends-moscow-2.webp",
+    "region": [
+      771,
+      1,
+      378,
+      249
+    ],
+    "model": "nsx"
+  },
+  {
+    "key": "img/urban/legends-moscow-2.webp#1157,1,378,249",
+    "src": "img/urban/legends-moscow-2.webp",
+    "region": [
+      1157,
+      1,
+      378,
+      249
+    ],
+    "model": "evo-ix"
+  },
+  {
+    "key": "img/urban/legends-moscow-2.webp#1,258,378,245",
+    "src": "img/urban/legends-moscow-2.webp",
+    "region": [
+      1,
+      258,
+      378,
+      245
+    ],
+    "model": "911-gt3"
+  },
+  {
+    "key": "img/urban/legends-moscow-2.webp#387,258,377,245",
+    "src": "img/urban/legends-moscow-2.webp",
+    "region": [
+      387,
+      258,
+      377,
+      245
+    ],
+    "model": "cls-c219"
+  },
+  {
+    "key": "img/urban/legends-moscow-2.webp#771,258,378,245",
+    "src": "img/urban/legends-moscow-2.webp",
+    "region": [
+      771,
+      258,
+      378,
+      245
+    ],
+    "model": "caldina"
+  },
+  {
+    "key": "img/urban/legends-moscow-2.webp#1157,258,378,245",
+    "src": "img/urban/legends-moscow-2.webp",
+    "region": [
+      1157,
+      258,
+      378,
+      245
+    ],
+    "model": "chiron"
+  },
+  {
+    "key": "img/urban/legends-moscow-2.webp#1,511,378,238",
+    "src": "img/urban/legends-moscow-2.webp",
+    "region": [
+      1,
+      511,
+      378,
+      238
+    ],
+    "model": "laurel"
+  },
+  {
+    "key": "img/urban/legends-moscow-2.webp#387,511,377,238",
+    "src": "img/urban/legends-moscow-2.webp",
+    "region": [
+      387,
+      511,
+      377,
+      238
+    ],
+    "model": "rx8"
+  },
+  {
+    "key": "img/urban/legends-moscow-2.webp#771,511,378,238",
+    "src": "img/urban/legends-moscow-2.webp",
+    "region": [
+      771,
+      511,
+      378,
+      238
+    ],
+    "model": "m3-g80"
+  },
+  {
+    "key": "img/urban/legends-moscow-2.webp#1157,511,378,238",
+    "src": "img/urban/legends-moscow-2.webp",
+    "region": [
+      1157,
+      511,
+      378,
+      238
+    ],
+    "model": "bmw-g20"
+  },
+  {
+    "key": "img/urban/legends-moscow-2.webp#1,757,378,266",
+    "src": "img/urban/legends-moscow-2.webp",
+    "region": [
+      1,
+      757,
+      378,
+      266
+    ],
+    "model": "g63"
+  },
+  {
+    "key": "img/urban/legends-moscow-2.webp#387,757,377,266",
+    "src": "img/urban/legends-moscow-2.webp",
+    "region": [
+      387,
+      757,
+      377,
+      266
+    ],
+    "model": "x6m"
+  },
+  {
+    "key": "img/urban/legends-moscow-2.webp#771,757,378,266",
+    "src": "img/urban/legends-moscow-2.webp",
+    "region": [
+      771,
+      757,
+      378,
+      266
+    ],
+    "model": "impreza"
+  },
+  {
+    "key": "img/urban/legends-moscow-2.webp#1157,757,378,266",
+    "src": "img/urban/legends-moscow-2.webp",
+    "region": [
+      1157,
+      757,
+      378,
+      266
+    ],
+    "model": "legacy-b4"
+  }
+]

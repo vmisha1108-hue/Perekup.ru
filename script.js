@@ -117,6 +117,7 @@ function carPhotoFrame(src,width,height,region,label,fill,extraClass){
     return '<svg class="car-photo-frame '+(extraClass || '')+'" viewBox="0 0 '+region[2]+' '+region[3]+'" preserveAspectRatio="xMidYMid '+(fill?'slice':'meet')+'" role="img" aria-label="'+esc(label)+'"><svg width="'+region[2]+'" height="'+region[3]+'" viewBox="'+region.join(' ')+'" overflow="hidden"><image href="'+esc(src)+'" width="'+width+'" height="'+height+'" onerror="this.closest(\'.car-visual\').classList.add(\'photo-unavailable\');this.closest(\'.car-photo-frame\').style.display=\'none\'" /></svg></svg>';
 }
 function carImg(car,appearance){
+    var localPhoto=cityVehiclePhoto(car,appearance);if(localPhoto)return localPhoto;
     var customized=vehicleAppearancePhoto(car,appearance);if(customized)return customized;
     if(car.illustration){
         var art=car.illustration,region=art.region || [art.column*art.width/art.columns,art.row*art.height/art.rows,art.width/art.columns,art.height/art.rows];
@@ -485,12 +486,7 @@ function saveMarketLocation(){
 }
 function updateLocationControls(){
     var city = CITY_BY_ID[filters.city];
-    $("fLocal").textContent = "Мой город · " + playerCity().name;
-    $("fLocal").setAttribute('aria-pressed',String(filters.city===playerCity().id && filters.radius==='0'));
-    if($("marketAllRussia")){
-        $("marketAllRussia").textContent='Вся Россия · '+CARS.length.toLocaleString('ru-RU');
-        $("marketAllRussia").setAttribute('aria-pressed',String(!filters.city || filters.radius==='all'));
-    }
+    $("fLocal").textContent = "Искать: " + playerCity().name;
     $("fCity").value = city ? city.label : "";
     $("fRadius").value = filters.radius;
     $("fRadius").disabled = !city;
@@ -537,17 +533,16 @@ function bindFilters(){
     $("fMax").addEventListener("input", function(){ filters.max = this.value; marketLimit = 60; refreshList(); });
     $("fMood").addEventListener("change", function(){ filters.mood = this.value; marketLimit = 60; refreshList(); });
     $("fAfford").addEventListener("change", function(){ filters.afford = this.checked; marketLimit = 60; refreshList(); });
-    $("fReset").addEventListener("click", function(){resetMarketFilters(playerCity().id);});
-    $("marketAllRussia").addEventListener("click", function(){resetMarketFilters("");});
-    $("marketShowAll").addEventListener("click", function(){marketLimit=availableMarketCars().length;showMarket();});
-}
-
-function resetMarketFilters(cityId){
-    filters={q:"",sort:"default",min:"",max:"",mood:"all",afford:false,city:cityId,radius:cityId?"0":"all"};
-    marketLimit=60;
-    $("fSearch").value="";$("fSort").value="default";$("fMin").value="";$("fMax").value="";
-    $("fMood").value="all";$("fAfford").checked=false;
-    saveMarketLocation();updateLocationControls();refreshList();
+    $("fReset").addEventListener("click", function(){
+        filters = {q:"", sort:"default", min:"", max:"", mood:"all", afford:false, city:playerCity().id, radius:"0"};
+        marketLimit = 60;
+        $("fSearch").value = ""; $("fSort").value = "default";
+        $("fMin").value = ""; $("fMax").value = "";
+        $("fMood").value = "all"; $("fAfford").checked = false;
+        saveMarketLocation();
+        updateLocationControls();
+        refreshList();
+    });
 }
 
 /* ================= РЫНОК ================= */
@@ -567,8 +562,6 @@ function setTabs(active){
     if($("fLocal")) $("fLocal").hidden = active !== "market";
     if($("fRadius")) $("fRadius").hidden = active !== "market";
     if($("marketMore")) $("marketMore").hidden = true;
-    if($("marketShowAll")) $("marketShowAll").hidden = true;
-    if($("marketAllRussia")) $("marketAllRussia").parentElement.hidden=active!=="market";
     updateLocationControls();
 }
 function showMarket(){
@@ -593,12 +586,10 @@ function showMarket(){
             '</div></article>';
     }).join("");
     if(!shown.length) $("content").innerHTML = noResults();
-    $("fCount").textContent='В каталоге: '+CARS.length+' · В продаже: '+available.length+' · Найдено: '+shown.length+' · Показано: '+pageCars.length;
-    if(pageCars.length<shown.length){
-        $("marketMore").hidden=false;
-        $("marketMore").textContent='Показать ещё '+Math.min(60,shown.length-pageCars.length)+' машин';
-        $("marketShowAll").hidden=false;
-        $("marketShowAll").textContent='Показать все найденные · '+shown.length;
+    updateResultCount(shown.length, available.length);
+    if(pageCars.length < shown.length){
+        $("fCount").textContent = "Найдено: " + shown.length + " из " + available.length + " · на экране " + pageCars.length;
+        $("marketMore").hidden = false;
     }
     updateStats();
 }

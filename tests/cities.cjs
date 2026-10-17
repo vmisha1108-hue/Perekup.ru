@@ -14,7 +14,7 @@ for(const file of ['cars.js', 'cities.js', 'regional-cars.js', 'custom-cars.js',
 }
 assert.equal(data.CITIES.length, 25);
 assert.equal(Object.keys(data.CITY_BY_LABEL).length, 25);
-assert.equal(data.CARS.length, 4000);
+assert.equal(data.CARS.length, 4200);
 assert.equal(data.CUSTOM_CARS.length, 69);
 assert.ok(data.CARS.every(car => car.fictional && typeof car.full === 'string' && car.full.length > 0));
 const generatedPhotos = JSON.parse(fs.readFileSync(path.join(root, 'data/fictional-photo-sources.json'))).photos;
@@ -63,7 +63,7 @@ assert.equal(data.cityFromLabel('Алдан · Республика Саха (Я
 assert.ok(data.CITIES.every(city => data.CARS.some(car => car.cityId === city.id)));
 async function decodedPhotoWidth(page){
     return page.locator('#carModalImg').evaluate(async root=>{
-        const element=root.querySelector('img,image');if(!element)throw new Error('Missing model illustration');
+        const element=root.querySelector('[data-vehicle-source]') || root.querySelector('img,image');if(!element)throw new Error('Missing model illustration');
         const photo=new Image();photo.src=element.tagName.toLowerCase()==='img'?element.src:element.getAttribute('href');
         await photo.decode();return photo.naturalWidth;
     });
@@ -82,7 +82,7 @@ assert.ok(data.distanceBetweenCities(magdagachi, aldan) > 500 && data.distanceBe
 assert.equal(data.locationMatches({cityId:aldan.id}, magdagachi.id, '500'), false);
 assert.equal(data.locationMatches({cityId:aldan.id}, magdagachi.id, '1000'), true);
 assert.equal(data.locationMatches({}, moscow.id, 'all'), false);
-console.log('PASS fictional catalogue: 4000 cars, 768 replacement illustrations, preserved regional models/prices, 25 populated places');
+console.log('PASS fictional catalogue: 4200 cars, 768 replacement illustrations, preserved regional models/prices, 25 populated places');
 
 const types = {'.html':'text/html', '.js':'text/javascript', '.css':'text/css', '.jpg':'image/jpeg', '.png':'image/png'};
 const server = http.createServer((req, res) => {

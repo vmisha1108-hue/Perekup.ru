@@ -131,7 +131,7 @@ var EXPANDED_CARS=(function(){
         // Photos are shared only with the exact source model, never a different brand.
         out.push({id:id,name:name,price:value,marketPrice:value,img:source.img,desc:desc,full:full,cityId:cityId,
             seller:{name:owner.name,avatar:owner.avatar,personality:['kind','neutral','evil'][(seed>>>12)%3]},
-            fictional:true,expanded:true,sourceCarId:source.id,trim:trim.name,condition:condition.key,
+            fictional:true,expanded:true,sourceCarId:source.id,sourceModelName:source.name,trim:trim.name,condition:condition.key,
             legend:!!(source.legend || legends.test(family)),rare:!!(source.legend || legends.test(family) || stylish.test(family) && condition.key==='collection'),
             story:{title:options.title || condition.label,text:owner.text+' '+reasons[(seed>>>8)%reasons.length],defect:defects,repair:repair},
             photoCaption:'Иллюстрация модели · состояние и оснащение — в описании'});
@@ -155,6 +155,14 @@ var EXPANDED_CARS=(function(){
             if(round>=4 && !stylish.test(model.family) && (mi+round)%3!==0)continue;
             var variant=(round%8)*8+(mi+round*3)%8;
             add(model.car,variant);
+        }
+    }
+    // Additional running luxury/sports configurations; previously assigned IDs stay intact.
+    for(var styleRound=0;out.length<3363;styleRound++){
+        for(var si=0;si<models.length && out.length<3363;si++){
+            if(!stylish.test(models[si].family))continue;
+            var styleVariant=[8,40,56,0,24][styleRound%5]+(si+styleRound*2)%8;
+            add(models[si].car,styleVariant);
         }
     }
     return out;
