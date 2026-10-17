@@ -143,9 +143,28 @@ function save(){
 }
 function currentGarage(){ return Object.assign({},GARAGES[garageLvl],{cap:GARAGES[garageLvl].cap+(career?CAREER_LEVELS[career.level].places:0)}); }
 function retireMarketCar(id){if(retiredMarketCars.indexOf(id)===-1)retiredMarketCars.push(id);}
+// Только десять объявлений из скриншотов: исходные модели остаются в каталоге
+// для гаража, истории сделок и других городов. Сброс игры не возвращает эти объявления.
+var WITHDRAWN_ALDAN_AD_IDS=new Set([
+    1300002805, // Audi S8 · Аудиопакет · На каждый день, 2019
+    1300002611, // Mitsubishi Lancer Evolution IX MR · Пакет Sport · Ухоженный, 2006
+    1300001809, // ЗАЗ-968М · Комфорт · Ухоженный, 1989
+    1000015423, // Ferrari F40 · Заводской стиль · После простоя, 1990
+    1300003731, // Lexus LX 570 · Заводской стиль · Проект под ремонт, 2016
+    1000015638, // Porsche Cayenne GTS без фары · Туринг-пакет · После ДТП, 2008
+    1300003239, // Toyota Land Cruiser 200 · Заводской стиль · После ДТП, 2016
+    1300002558, // Honda NSX Type S · Кожаный салон · Для ценителя, 2022
+    1300002847, // Audi S8 · Заводской стиль · После обслуживания, 2019
+    1000015443  // Ferrari F40 · Пакет Sport · После обслуживания, 1990
+]);
+function isWithdrawnAldanAd(id){
+    var car=carById(id);
+    return !!car && car.cityId==='29a64605-5441-48c5-bc08-117a72ebc843' && WITHDRAWN_ALDAN_AD_IDS.has(id);
+}
+function isRetiredMarketCar(id){return isWithdrawnAldanAd(id) || retiredMarketCars.indexOf(id)!==-1;}
 function availableMarketCars(){
     var excluded=new Set(garage.concat(retiredMarketCars));
-    return CARS.filter(function(car){return !excluded.has(car.id);});
+    return CARS.filter(function(car){return !excluded.has(car.id) && !isWithdrawnAldanAd(car.id);});
 }
 
 function migrateStartingBalance(){
@@ -745,7 +764,7 @@ function deleteChatByPid(pid){
 }
 function restoreChat(sv){
     var car = carById(sv.carId);
-    if(!car) return null;
+    if(!car || (sv.mode==='buy' && isWithdrawnAldanAd(car.id))) return null;
     return {mode: sv.mode, car: car, npc: sv.npc, ask: sv.ask, bid: sv.bid, log: sv.log.slice(), last: sv.last || "",
             done: false, stage: sv.stage, price: sv.price, event: sv.event || null,
             meet: sv.meet ? {when: new Date(sv.meet.whenMs), whenMs: sv.meet.whenMs, label: sv.meet.label} : null,
@@ -760,7 +779,7 @@ function openBuyChat(carId){
     if(!canOpenChat()) return;
     var car = carById(carId);
     if(!car || car.exchangeOnly) return;
-    if(retiredMarketCars.indexOf(carId)!==-1) return;
+    if(isRetiredMarketCar(carId)) return;
     if(garage.indexOf(carId) !== -1) return;
     if(pendingFor(carId)) return;
 
@@ -1137,7 +1156,7 @@ function finishBuy(price){
         return;
     }
 
-    if(garage.indexOf(chat.car.id) !== -1 || retiredMarketCars.indexOf(chat.car.id)!==-1){
+    if(garage.indexOf(chat.car.id) !== -1 || isRetiredMarketCar(chat.car.id)){
         sysSay("ℹ️ Это объявление уже снято с рынка.");
         chat.done = true;
         return;
@@ -1972,6 +1991,7 @@ function dealItems(){
         items.push({dir:"ads", html:function(){ return listingCard(listing); }});
     });
     pending.forEach(function(it){
+        if(it.mode === "buy" && isWithdrawnAldanAd(it.carId)) return;
         if(it.type === "ad" && !it.ready) return;
         items.push({dir: it.mode === "sell" ? "in" : "out", html: function(){ return dealCard(it); }});
     });
@@ -1979,7 +1999,7 @@ function dealItems(){
         var sv = chatStore[k];
         var car = sv ? carById(sv.carId) : null;
         if(!car || sv.mode !== "buy" || sv.pid) return;
-        if(garage.indexOf(sv.carId) !== -1 || retiredMarketCars.indexOf(sv.carId)!==-1 || pendingFor(sv.carId)) return;
+        if(garage.indexOf(sv.carId) !== -1 || isRetiredMarketCar(sv.carId) || pendingFor(sv.carId)) return;
         items.push({dir: "out", html: function(){ return chatCard(k, sv, car); }});
     });
     return items;

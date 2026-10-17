@@ -126,7 +126,7 @@ function signContract(){
     var draft=currentContract();if(!draft || chat.stage!=='contract')return false;
     var errors=contractErrors(draft);
     if(draft.carId!==chat.car.id || draft.price!==chat.price || !meetingHere(chat.mode,chat.car.id))errors.push({text:'Условия встречи изменились. Сделка не может быть подписана.'});
-    if(chat.mode==='buy' && (garage.indexOf(chat.car.id)!==-1 || retiredMarketCars.indexOf(chat.car.id)!==-1))errors.push({text:'Это объявление уже снято с рынка.'});
+    if(chat.mode==='buy' && (garage.indexOf(chat.car.id)!==-1 || isRetiredMarketCar(chat.car.id)))errors.push({text:'Это объявление уже снято с рынка.'});
     if(chat.mode==='sell' && garage.indexOf(chat.car.id)===-1)errors.push({text:'Автомобиль больше не принадлежит вашему персонажу.'});
     if(chat.mode==='buy' && !canAfford(draft.price))errors.push({text:'Не хватает денег на покупку. Пополните счёт и вернитесь к договору.'});
     if(chat.mode==='sell' && (!Number.isSafeInteger(balance+draft.price) || (!ADM.infMoney && balance+draft.price<parkingDebt(chat.car.id))))errors.push({text:'Нельзя провести расчёт: проверьте сумму и долг за парковку.'});
