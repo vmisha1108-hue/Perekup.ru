@@ -117,7 +117,6 @@ function carPhotoFrame(src,width,height,region,label,fill,extraClass){
     return '<svg class="car-photo-frame '+(extraClass || '')+'" viewBox="0 0 '+region[2]+' '+region[3]+'" preserveAspectRatio="xMidYMid '+(fill?'slice':'meet')+'" role="img" aria-label="'+esc(label)+'"><svg width="'+region[2]+'" height="'+region[3]+'" viewBox="'+region.join(' ')+'" overflow="hidden"><image href="'+esc(src)+'" width="'+width+'" height="'+height+'" onerror="this.closest(\'.car-visual\').classList.add(\'photo-unavailable\');this.closest(\'.car-photo-frame\').style.display=\'none\'" /></svg></svg>';
 }
 function carImg(car,appearance){
-    var localPhoto=cityVehiclePhoto(car,appearance);if(localPhoto)return localPhoto;
     var customized=vehicleAppearancePhoto(car,appearance);if(customized)return customized;
     if(car.illustration){
         var art=car.illustration,region=art.region || [art.column*art.width/art.columns,art.row*art.height/art.rows,art.width/art.columns,art.height/art.rows];

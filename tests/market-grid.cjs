@@ -38,9 +38,9 @@ const root=path.resolve(__dirname,'..'),server=http.createServer(async(req,res)=
    const before=await page.evaluate(()=>({balance,garage,purchasePrices,deals}));
    for(const width of [1280,320]){
     await page.setViewportSize({width,height:width===320?640:900});await page.evaluate(()=>{changeAppearance('os','windows');changeAppearance('theme','light');openWin('market');const original=visibleCars;visibleCars=()=>[28,29,30].map(carById);showMarket();visibleCars=original;});
-    assert.equal(await page.locator('#content .city-vehicle-photo').count(),3);await page.locator('#win-market').evaluate(el=>Promise.all(el.getAnimations().map(a=>a.finished)));await page.screenshot({path:'/workspace/scratch/3151c7eebd10/fixed-market-grid-'+width+'.png'});
+    assert.equal(await page.locator('#content .market-photo-frame').count(),3);await page.locator('#win-market').evaluate(el=>Promise.all(el.getAnimations().map(a=>a.finished)));await page.screenshot({path:'/workspace/scratch/3151c7eebd10/fixed-market-grid-'+width+'.png'});
    }
-   await page.evaluate(()=>openCarInfo(28));assert.equal(await page.locator('#carModalImg .city-vehicle-photo').count(),1);assert.deepEqual(await page.evaluate(()=>({balance,garage,purchasePrices,deals})),before);
+   await page.evaluate(()=>openCarInfo(28));assert.equal(await page.locator('#carModalImg .market-photo-frame').count(),1);assert.deepEqual(await page.evaluate(()=>({balance,garage,purchasePrices,deals})),before);
   });
   console.log(passed+' market image/grid scenarios passed');
  }finally{await browser.close();await new Promise(r=>server.close(r));}

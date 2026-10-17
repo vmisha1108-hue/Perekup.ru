@@ -500,14 +500,14 @@ const server = http.createServer(async (request, response) => {
             await page.evaluate(() => openWin('market'));
             assert.equal(await page.locator('#content .price-badge').count(), 0);
             const layout = await page.evaluate(() => Array.from(document.querySelectorAll('#content .card')).slice(0,3).map(card => {
-                const button = card.querySelector('.buy').getBoundingClientRect(), image = card.querySelector('.car-img .car-visual').getBoundingClientRect(), holder = card.querySelector('.car-img').getBoundingClientRect();
-                return {bottom:button.bottom, width:image.width, holder:holder.width, fit:card.querySelector('.city-vehicle-photo')?'contain':getComputedStyle(card.querySelector('img')).objectFit};
+                const button = card.querySelector('.buy').getBoundingClientRect(), image = card.querySelector('.car-img img').getBoundingClientRect(), holder = card.querySelector('.car-img').getBoundingClientRect();
+                return {bottom:button.bottom, width:image.width, holder:holder.width, fit:getComputedStyle(card.querySelector('img')).objectFit};
             }));
             assert.ok(layout.every(item => Math.abs(item.bottom - layout[0].bottom) < 1 && Math.abs(item.width - item.holder) < 1 && item.fit === 'contain'));
             for(const [mood, label] of [['kind','Ниже рынка'],['neutral','Хорошая цена'],['evil','Выше рынка']]){
                 const id = await page.evaluate(mood => { const car=CARS[0]; car.price=Math.round(car.marketPrice * ({kind:.9,neutral:1,evil:1.15}[mood])); openCarInfo(car.id); return car.id; }, mood);
                 assert.equal(await page.locator('#carModalBody .price-badge').textContent(), label);
-                assert.ok(await page.locator('#carModalImg [data-vehicle-source]').evaluate(async el=>{const image=new Image();image.src=el.getAttribute('href');await image.decode();return image.naturalWidth>0;}));
+                await page.waitForFunction(() => document.querySelector('#carModalImg img').naturalWidth > 0);
                 await page.evaluate(() => closeCarInfo());
             }
             await page.setViewportSize({width:390,height:844});

@@ -51,7 +51,7 @@ const server=http.createServer(async(req,res)=>{
             await page.evaluate(()=>openWin('market'));assert.equal(await page.locator('#fCity').inputValue(),'Москва');
             assert.ok(await page.evaluate(()=>Array.from(document.querySelectorAll('#content [data-info]')).every(el=>carCity(carById(+el.dataset.info)).id===playerCity().id)));
             await page.locator('#fCity').fill('Алдан');await page.locator('#fRadius').selectOption('0');assert.match(await page.locator('#content').textContent(),/Audi S8/);
-            const image=page.locator('[data-info="3000028"] [data-vehicle-source]');assert.match(await image.getAttribute('href'),/3000028-s8\.jpg/);await image.scrollIntoViewIfNeeded();assert.equal(await image.evaluate(async el=>{const photo=new Image();photo.src=el.getAttribute('href');await photo.decode();return photo.naturalWidth;}),768);
+            const image=page.locator('[data-info="3000028"] img');assert.match(await image.getAttribute('src'),/3000028-s8\.jpg/);await image.scrollIntoViewIfNeeded();await image.evaluate(el=>el.decode());assert.ok(await image.evaluate(el=>el.complete && el.naturalWidth===768));
             await page.locator('#fLocal').click();assert.equal(await page.locator('#fCity').inputValue(),'Москва');
             await page.evaluate(()=>{const to=cityNamed('Алдан').id;transport.trip={from:transport.cityId,to,label:'Поезд',arrivesAt:gameMs};tickTransport();closeArrival();});
             assert.match(await page.locator('#fCity').inputValue(),/^Алдан/);assert.match(await page.locator('#fLocal').textContent(),/Алдан/);
