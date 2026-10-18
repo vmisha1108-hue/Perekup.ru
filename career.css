@@ -15,3 +15,6 @@
 #garagePanel>.journey-note{color:var(--ui-secondary)}
 
 #garageBody .garage-repair-card{display:grid;grid-template-columns:76px minmax(0,1fr);gap:12px;padding:14px;align-items:start}#garageBody .garage-repair-card .vehicle-image{grid-column:1;grid-row:1/span 2;width:76px;height:68px;aspect-ratio:auto;border-radius:8px}#garageBody .garage-repair-card .vehicle-content{display:contents}.garage-repair-card h3,.garage-repair-card .vehicle-location{grid-column:2;margin:0}.garage-repair-card h3{font-size:16px;scroll-margin-top:68px}.garage-repair-card .vehicle-location{color:var(--ui-secondary);font-size:12px}.garage-repair-card .vehicle-condition,.garage-repair-card .garage-service-note{grid-column:1/-1;margin:0}.garage-repair-card .vehicle-condition p{color:var(--ui-secondary);line-height:1.5}.garage-repair-card button{max-width:100%;white-space:normal}#garageBody .garage-tabs{position:sticky;top:-1px;z-index:1;background:transparent;border-radius:12px;backdrop-filter:blur(16px);padding:8px 0}
+
+/* Aldan listing photos fill their frames without stretching the cars. */
+:is(.car-img,.car-modal-img,.commerce-photo,.vehicle-image,.trade-photo,#meetingCarImage) .car-visual.aldan-photo-fill>img{object-fit:cover}

@@ -122,12 +122,13 @@ function carImg(car,appearance){
         var art=car.illustration,region=art.region || [art.column*art.width/art.columns,art.row*art.height/art.rows,art.width/art.columns,art.height/art.rows];
         return '<span class="car-visual import-art-wrap'+(art.kind==='showroom'?' showroom-art-wrap':'')+'">'+carPhotoFrame(art.src,art.width,art.height,region,(car.modelFamily || car.name)+(art.kind==='showroom'?' — изображение в автосалоне':' — рисованная иллюстрация'),art.kind==='showroom','import-model-art')+'</span>';
     }
+    var fillPhoto=!!(CITY_BY_ID[car.cityId] && CITY_BY_ID[car.cityId].name==='Алдан');
     var repaired=career && career.vehicles[car.id] && career.vehicles[car.id].repaired;
     var cheap=!repaired && !car.newCar && (car.basePrice || car.price)<=100000;
     var src=car.id===1 && !repaired?'img/wear/lada-2114.webp':car.img;
     var crop=MARKET_PHOTO_CROPS[src];
-    var image=crop?carPhotoFrame(src+'?v=20261016-market-grid',crop[0],crop[1],crop.slice(2),car.name,false,'market-photo-frame'):src?'<img src="'+esc(src)+'?v=20261015-stock" alt="'+esc(car.name)+'"'+(car.fictional?' class="custom-car-photo"':'')+' loading="lazy" decoding="async" onerror="this.parentNode.classList.add(\'photo-unavailable\');this.hidden=true">':'<span class="photo-missing">Фотография модели пока недоступна</span>';
-    return '<span class="car-visual'+(cheap && car.id!==1?' car-wear'+((car.basePrice || car.price)<=40000?' car-wear-heavy':''):'')+'">'+image+'</span>';
+    var image=crop?carPhotoFrame(src+'?v=20261016-market-grid',crop[0],crop[1],crop.slice(2),car.name,fillPhoto,'market-photo-frame'):src?'<img src="'+esc(src)+'?v=20261015-stock" alt="'+esc(car.name)+'"'+(car.fictional?' class="custom-car-photo"':'')+' loading="lazy" decoding="async" onerror="this.parentNode.classList.add(\'photo-unavailable\');this.hidden=true">':'<span class="photo-missing">Фотография модели пока недоступна</span>';
+    return '<span class="car-visual'+(fillPhoto?' aldan-photo-fill':'')+(cheap && car.id!==1?' car-wear'+((car.basePrice || car.price)<=40000?' car-wear-heavy':''):'')+'">'+image+'</span>';
 }
 
 function save(){
