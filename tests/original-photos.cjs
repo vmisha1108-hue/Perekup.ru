@@ -14,5 +14,5 @@ const server=http.createServer((req,res)=>{const name=new URL(req.url,'http://lo
  for(const photo of actual){const baseline=expected.photos.find(p=>p.id===photo.id),rendered=photos.find(p=>p.id===photo.id);assert.ok(baseline);assert.equal(photo.source,baseline.source);assert.equal(photo.imageSha256,baseline.imageSha256);if(rendered.city==='Алдан')assert.ok(rendered.markup.includes(winter[photo.source] || photo.source));else assert.equal(photo.renderSha256,baseline.renderSha256);}
  console.log('PASS 837 source files remain unchanged; Aldan uses its winter photos; other cities retain baseline rendering');
  await page.evaluate(()=>{openWin('market');filters.city=cityNamed('Алдан').id;showMarket();});assert.equal(await page.locator('[data-city-backdrop],.city-vehicle-photo,#marketAllRussia,#marketShowAll').count(),0);
- assert.equal(await page.evaluate(()=>CARS.length),987);assert.deepEqual(errors,[]);console.log('PASS 987 listings retained, collage rendering removed, original local market layout preserved');
+ assert.equal(await page.evaluate(()=>CARS.length),1037);assert.deepEqual(errors,[]);console.log('PASS 1037 listings retained, collage rendering removed, original local market layout preserved');
 }finally{await browser.close();await new Promise(r=>server.close(r));}})().catch(e=>{console.error(e);process.exitCode=1;server.close();});

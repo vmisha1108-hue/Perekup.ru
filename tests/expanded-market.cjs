@@ -2,8 +2,8 @@
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),vm=require('node:vm');
 const root=path.resolve(__dirname,'..'),read=f=>fs.readFileSync(path.join(root,f),'utf8'),c=vm.createContext({});
 for(const f of ['cars.js','cities.js','regional-cars.js','custom-cars.js','expanded-cars.js','aldan-cars.js','blagoveshchensk-cars.js','city-market.js'])vm.runInContext(read(f),c);
-assert.equal(c.CARS.length,987);
-assert.equal(new Set(c.CARS.map(car=>car.id)).size,987);
+assert.equal(c.CARS.length,1037);
+assert.equal(new Set(c.CARS.map(car=>car.id)).size,1037);
 assert.ok(c.CARS.every(car=>!car.expanded));
 assert.equal(c.EXPANDED_CARS.length,3363);
 assert.ok(c.EXPANDED_CARS.every(car=>!c.CARS.some(original=>original.id===car.id)));
@@ -11,10 +11,10 @@ const script=read('script.js');
 vm.runInContext('var TRADE_CARS=[],COMMERCE_CARS=[];'+script.match(/var CAR_BY_ID=Object.create\(null\);[^]*?\nCARS.concat[^]*?\n/)[0],c);
 for(const name of ['carById','isWithdrawnAldanAd','availableMarketCars'])vm.runInContext(script.match(new RegExp('^function '+name+'\\([^]*?^\\}','m'))[0],c);
 vm.runInContext('var WITHDRAWN_ALDAN_AD_IDS=new Set(),garage=[],retiredMarketCars=[];',c);
-assert.equal(c.availableMarketCars().length,987);
+assert.equal(c.availableMarketCars().length,1037);
 for(const car of c.EXPANDED_CARS){assert.equal(c.carById(car.id),car);assert.equal(c.isWithdrawnAldanAd(car.id),true);}
 const original=c.CARS[0],legacy=c.EXPANDED_CARS[0];
-c.garage=[legacy.id];assert.equal(c.carById(legacy.id),legacy);assert.equal(c.availableMarketCars().length,987);
-c.garage=[original.id];assert.equal(c.availableMarketCars().length,986);
-c.garage=[];assert.equal(c.availableMarketCars().length,987);
-console.log('PASS 987 total listings (837 originals, 50 Aldan and 100 Blagoveshchensk additions); 3363 legacy vehicles remain resolvable but cannot be purchased anew');
+c.garage=[legacy.id];assert.equal(c.carById(legacy.id),legacy);assert.equal(c.availableMarketCars().length,1037);
+c.garage=[original.id];assert.equal(c.availableMarketCars().length,1036);
+c.garage=[];assert.equal(c.availableMarketCars().length,1037);
+console.log('PASS 1037 total listings (837 originals, 50 Aldan and 150 Blagoveshchensk additions); 3363 legacy vehicles remain resolvable but cannot be purchased anew');

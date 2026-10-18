@@ -1,16 +1,17 @@
 {
   "targetNewListings": 150,
-  "completedNewListings": 100,
+  "completedNewListings": 150,
   "batchSize": 50,
   "completedBatches": [
     1,
-    2
+    2,
+    3
   ],
-  "nextBatch": 3,
-  "nextId": 6200101,
+  "nextBatch": null,
+  "nextId": 6200151,
   "continueAutomatically": false,
-  "summerPhotos": 96,
-  "winterPhotos": 4,
+  "summerPhotos": 144,
+  "winterPhotos": 6,
   "winterPhotoBudgetUsed": true,
-  "note": "Stop after batch 2. A further 50 requires the next user request. Each completed batch has 48 summer and 2 winter photos, explicitly requested."
+  "note": "All three requested batches are complete. No automatic continuation. Batch 3: 30 executive cars, 20 luxury cars priced 7\u201315 million RUB; all photos at the Amur embankment."
 }

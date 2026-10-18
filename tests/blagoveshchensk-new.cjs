@@ -6,8 +6,8 @@ const added=c.BLAGOVESHCHENSK_CARS.filter(x=>x.id<=6200050),old=c.CARS.filter(x=
 const photos=JSON.parse(read('data/blagoveshchensk-photo-sources.json'));
 assert.equal(photos.length,50);assert.equal(photos.filter(x=>x.season==='summer').length,48);assert.equal(photos.filter(x=>x.season==='winter').length,2);
 for(const photo of photos){assert.ok(photo.prompt);assert.ok(added.some(x=>x.id===photo.id && x.img===photo.file));}
-assert.equal(c.CARS.length,987);assert.equal(old.length,887);assert.equal(added.length,50);assert.equal(c.CARS.filter(x=>x.cityId===city.id).length,116);
-assert.equal(new Set(c.CARS.map(x=>x.id)).size,987);
+assert.equal(c.CARS.length,1037);assert.equal(old.length,887);assert.equal(added.length,50);assert.equal(c.CARS.filter(x=>x.cityId===city.id).length,166);
+assert.equal(new Set(c.CARS.map(x=>x.id)).size,1037);
 assert.equal(added.filter(x=>x.name.includes('Mark II')).length,14);assert.equal(added.filter(x=>x.name.includes('Laurel')).length,12);
 for(const key of ['name','full','price','img'])assert.equal(new Set(added.map(x=>x[key])).size,50,key);
 for(const car of added){assert.equal(car.cityId,city.id);assert.ok(car.story.repair>0);assert.ok(!car.expanded);assert.ok(old.every(x=>x.name!==car.name));assert.ok(car.full.includes('Благовещенск'));assert.ok(car.desc.length<=120);assert.ok(fs.statSync(path.join(root,car.img)).size>10000);if(car.nonRunning)assert.match(car.full,/НЕ НА ХОДУ/);}
