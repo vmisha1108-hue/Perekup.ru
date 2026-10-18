@@ -9,7 +9,7 @@ const root = path.resolve(__dirname, '..');
 const storage = new Map();
 const state = {Math:Object.create(Math), localStorage:{getItem:key=>storage.get(key), setItem:(key,value)=>storage.set(key,value)}};
 state.Math.random = () => .9;
-for(const file of ['cars.js','cities.js','regional-cars.js','custom-cars.js','expanded-cars.js','city-market.js','storage.js']) vm.runInNewContext(fs.readFileSync(path.join(root,file),'utf8'),state);
+for(const file of ['cars.js','cities.js','regional-cars.js','custom-cars.js','expanded-cars.js','aldan-cars.js','city-market.js','storage.js']) vm.runInNewContext(fs.readFileSync(path.join(root,file),'utf8'),state);
 const original = new Map(state.CARS.map(c=>[c.id,c.price]));
 vm.runInNewContext(fs.readFileSync(path.join(root,'market-pricing.js'),'utf8'),state);
 for(let i=0;i<30;i++){

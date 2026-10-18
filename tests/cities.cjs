@@ -9,12 +9,12 @@ const { chromium } = require('playwright');
 
 const root = path.resolve(__dirname, '..');
 const data = {};
-for(const file of ['cars.js', 'cities.js', 'regional-cars.js', 'custom-cars.js', 'expanded-cars.js', 'city-market.js']){
+for(const file of ['cars.js', 'cities.js', 'regional-cars.js', 'custom-cars.js', 'expanded-cars.js', 'aldan-cars.js','city-market.js']){
     vm.runInNewContext(fs.readFileSync(path.join(root, file), 'utf8'), data);
 }
 assert.equal(data.CITIES.length, 25);
 assert.equal(Object.keys(data.CITY_BY_LABEL).length, 25);
-assert.equal(data.CARS.length, 837);
+assert.equal(data.CARS.length, 887);
 assert.equal(data.CUSTOM_CARS.length, 69);
 assert.ok(data.CARS.every(car => car.fictional && typeof car.full === 'string' && car.full.length > 0));
 const generatedPhotos = JSON.parse(fs.readFileSync(path.join(root, 'data/fictional-photo-sources.json'))).photos;
@@ -82,7 +82,7 @@ assert.ok(data.distanceBetweenCities(magdagachi, aldan) > 500 && data.distanceBe
 assert.equal(data.locationMatches({cityId:aldan.id}, magdagachi.id, '500'), false);
 assert.equal(data.locationMatches({cityId:aldan.id}, magdagachi.id, '1000'), true);
 assert.equal(data.locationMatches({}, moscow.id, 'all'), false);
-console.log('PASS fictional catalogue: 837 cars, 768 replacement illustrations, preserved regional models/prices, 25 populated places');
+console.log('PASS fictional catalogue: 887 cars, 768 replacement illustrations, preserved regional models/prices, 25 populated places');
 
 const types = {'.html':'text/html', '.js':'text/javascript', '.css':'text/css', '.jpg':'image/jpeg', '.png':'image/png'};
 const server = http.createServer((req, res) => {

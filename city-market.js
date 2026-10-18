@@ -15,7 +15,7 @@ CARS.forEach(function(car){
 });
 var catalogueCarIds = Object.create(null);
 CARS.forEach(function(car){ catalogueCarIds[car.id] = true; });
-REGIONAL_CARS.concat(CUSTOM_CARS).forEach(function(car){
+REGIONAL_CARS.concat(CUSTOM_CARS,typeof ALDAN_CARS!=='undefined'?ALDAN_CARS:[]).forEach(function(car){
     if(!catalogueCarIds[car.id] && knownCities[car.cityId]){
         catalogueCarIds[car.id] = true;
         CARS.push(car);
