@@ -1,10 +1,10 @@
 'use strict';
 const fs=require('node:fs'),path=require('node:path'),vm=require('node:vm'),assert=require('node:assert/strict');
 const root=path.resolve(__dirname,'..'),context=vm.createContext({});
-for(const file of ['cars.js','cities.js','regional-cars.js','custom-cars.js','expanded-cars.js','aldan-cars.js','city-market.js'])vm.runInContext(fs.readFileSync(path.join(root,file),'utf8'),context);
-const added=context.ALDAN_CARS,original=context.CARS.filter(c=>!c.aldanNew),aldan=context.CITIES.find(c=>c.name==='Алдан');
-assert.equal(added.length,50);assert.equal(original.length,837);assert.equal(context.CARS.length,887);
-assert.equal(new Set(context.CARS.map(c=>c.id)).size,887);
+for(const file of ['cars.js','cities.js','regional-cars.js','custom-cars.js','expanded-cars.js','aldan-cars.js','blagoveshchensk-cars.js','city-market.js'])vm.runInContext(fs.readFileSync(path.join(root,file),'utf8'),context);
+const added=context.ALDAN_CARS,original=context.CARS.filter(c=>!c.aldanNew && !c.blagNew),aldan=context.CITIES.find(c=>c.name==='Алдан');
+assert.equal(added.length,50);assert.equal(original.length,837);assert.equal(context.CARS.length,937);
+assert.equal(new Set(context.CARS.map(c=>c.id)).size,937);
 for(const field of ['name','full','img','price'])assert.equal(new Set(added.map(c=>c[field])).size,50,'unique '+field);
 assert.ok(new Set(added.map(c=>c.full.match(/Цвет — ([^.]+)/)[1])).size>=15);
 for(const car of added){

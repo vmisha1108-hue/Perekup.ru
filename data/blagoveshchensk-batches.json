@@ -1,0 +1,15 @@
+{
+  "targetNewListings": 150,
+  "completedNewListings": 50,
+  "batchSize": 50,
+  "completedBatches": [
+    1
+  ],
+  "nextBatch": 2,
+  "nextId": 6200051,
+  "continueAutomatically": false,
+  "summerPhotos": 48,
+  "winterPhotos": 2,
+  "winterPhotoBudgetUsed": true,
+  "note": "User requested stop after each 50. Only first 50 are added; further 100 require the next user request."
+}

@@ -115,7 +115,7 @@ function roadDistance(a,b){
 function localDrivingCars(){
     return garage.filter(function(id){
         var v = vehicleState(id), c = carById(id);
-        return v && v.cityId === transport.cityId && !vehicleMoving(id) && !/не на ходу/i.test(c.desc + " " + (c.full || ""));
+        return v && v.cityId === transport.cityId && !vehicleMoving(id) && (!/не на ходу/i.test(c.desc + " " + (c.full || "")) || (c.blagNew && career && careerVehicle(c).repaired));
     });
 }
 function routeOptions(targetId){
