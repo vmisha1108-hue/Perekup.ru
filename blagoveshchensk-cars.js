@@ -1253,7 +1253,7 @@ var BLAGOVESHCHENSK_CARS=[
   },
   {
     "id": 6200051,
-    "name": "Toyota Corolla Axio NZE141 · семейный, 2010",
+    "name": "Toyota Corolla Axio NZE141, 2010",
     "price": 645000,
     "marketPrice": 708000,
     "img": "img/blagoveshchensk-new/6200051.jpg",
@@ -1279,7 +1279,7 @@ var BLAGOVESHCHENSK_CARS=[
   },
   {
     "id": 6200052,
-    "name": "Toyota Corolla Fielder NZE161G · семейный, 2015",
+    "name": "Toyota Corolla Fielder NZE161G, 2015",
     "price": 1085000,
     "marketPrice": 1154000,
     "img": "img/blagoveshchensk-new/6200052.jpg",
@@ -1305,7 +1305,7 @@ var BLAGOVESHCHENSK_CARS=[
   },
   {
     "id": 6200053,
-    "name": "Toyota Sienta NCP81G · семейный, 2012",
+    "name": "Toyota Sienta NCP81G, 2012",
     "price": 785000,
     "marketPrice": 861000,
     "img": "img/blagoveshchensk-new/6200053.jpg",
@@ -1331,7 +1331,7 @@ var BLAGOVESHCHENSK_CARS=[
   },
   {
     "id": 6200054,
-    "name": "Toyota Sienta NSP170G · семейный, 2017",
+    "name": "Toyota Sienta NSP170G, 2017",
     "price": 1475000,
     "marketPrice": 1562000,
     "img": "img/blagoveshchensk-new/6200054.jpg",
@@ -1357,7 +1357,7 @@ var BLAGOVESHCHENSK_CARS=[
   },
   {
     "id": 6200055,
-    "name": "Toyota Raum NCZ20 · семейный, 2008",
+    "name": "Toyota Raum NCZ20, 2008",
     "price": 515000,
     "marketPrice": 575000,
     "img": "img/blagoveshchensk-new/6200055.jpg",
@@ -1383,7 +1383,7 @@ var BLAGOVESHCHENSK_CARS=[
   },
   {
     "id": 6200056,
-    "name": "Toyota Spacio NZE121N · семейный, 2006",
+    "name": "Toyota Spacio NZE121N, 2006",
     "price": 495000,
     "marketPrice": 568000,
     "img": "img/blagoveshchensk-new/6200056.jpg",
@@ -1409,7 +1409,7 @@ var BLAGOVESHCHENSK_CARS=[
   },
   {
     "id": 6200057,
-    "name": "Toyota Wish ZGE20G · семейный, 2013",
+    "name": "Toyota Wish ZGE20G, 2013",
     "price": 1165000,
     "marketPrice": 1232000,
     "img": "img/blagoveshchensk-new/6200057.jpg",
@@ -1435,7 +1435,7 @@ var BLAGOVESHCHENSK_CARS=[
   },
   {
     "id": 6200058,
-    "name": "Toyota Isis ZGM10G · семейный, 2014",
+    "name": "Toyota Isis ZGM10G, 2014",
     "price": 1225000,
     "marketPrice": 1305000,
     "img": "img/blagoveshchensk-new/6200058.jpg",
@@ -1461,7 +1461,7 @@ var BLAGOVESHCHENSK_CARS=[
   },
   {
     "id": 6200059,
-    "name": "Toyota Noah ZRR70G · семейный, 2011",
+    "name": "Toyota Noah ZRR70G, 2011",
     "price": 1195000,
     "marketPrice": 1266000,
     "img": "img/blagoveshchensk-new/6200059.jpg",
@@ -1487,7 +1487,7 @@ var BLAGOVESHCHENSK_CARS=[
   },
   {
     "id": 6200060,
-    "name": "Toyota Voxy ZRR80G · семейный, 2016",
+    "name": "Toyota Voxy ZRR80G, 2016",
     "price": 1935000,
     "marketPrice": 1999500,
     "img": "img/blagoveshchensk-new/6200060.jpg",
@@ -1513,7 +1513,7 @@ var BLAGOVESHCHENSK_CARS=[
   },
   {
     "id": 6200061,
-    "name": "Toyota Estima ACR50W · семейный, 2009",
+    "name": "Toyota Estima ACR50W, 2009",
     "price": 1325000,
     "marketPrice": 1389500,
     "img": "img/blagoveshchensk-new/6200061.jpg",
@@ -1539,7 +1539,7 @@ var BLAGOVESHCHENSK_CARS=[
   },
   {
     "id": 6200062,
-    "name": "Toyota Passo M700A · семейный, 2018",
+    "name": "Toyota Passo M700A, 2018",
     "price": 835000,
     "marketPrice": 905500,
     "img": "img/blagoveshchensk-new/6200062.jpg",
@@ -1565,7 +1565,7 @@ var BLAGOVESHCHENSK_CARS=[
   },
   {
     "id": 6200063,
-    "name": "Toyota Porte NSP140 · семейный, 2014",
+    "name": "Toyota Porte NSP140, 2014",
     "price": 805000,
     "marketPrice": 882500,
     "img": "img/blagoveshchensk-new/6200063.jpg",
@@ -1591,7 +1591,7 @@ var BLAGOVESHCHENSK_CARS=[
   },
   {
     "id": 6200064,
-    "name": "Toyota Ractis NCP120 · семейный, 2013",
+    "name": "Toyota Ractis NCP120, 2013",
     "price": 725000,
     "marketPrice": 813500,
     "img": "img/blagoveshchensk-new/6200064.jpg",
@@ -1617,7 +1617,7 @@ var BLAGOVESHCHENSK_CARS=[
   },
   {
     "id": 6200065,
-    "name": "Toyota Vitz KSP130 · семейный, 2016",
+    "name": "Toyota Vitz KSP130, 2016",
     "price": 865000,
     "marketPrice": 926500,
     "img": "img/blagoveshchensk-new/6200065.jpg",
@@ -1643,7 +1643,7 @@ var BLAGOVESHCHENSK_CARS=[
   },
   {
     "id": 6200066,
-    "name": "Toyota Premio NZT260 · семейный, 2012",
+    "name": "Toyota Premio NZT260, 2012",
     "price": 985000,
     "marketPrice": 1059500,
     "img": "img/blagoveshchensk-new/6200066.jpg",
@@ -1669,7 +1669,7 @@ var BLAGOVESHCHENSK_CARS=[
   },
   {
     "id": 6200067,
-    "name": "Toyota Allion ZRT260 · семейный, 2014",
+    "name": "Toyota Allion ZRT260, 2014",
     "price": 1245000,
     "marketPrice": 1313500,
     "img": "img/blagoveshchensk-new/6200067.jpg",
@@ -1695,7 +1695,7 @@ var BLAGOVESHCHENSK_CARS=[
   },
   {
     "id": 6200068,
-    "name": "Toyota Camry ACV40 · семейный, 2010",
+    "name": "Toyota Camry ACV40, 2010",
     "price": 1145000,
     "marketPrice": 1226500,
     "img": "img/blagoveshchensk-new/6200068.jpg",
@@ -1721,7 +1721,7 @@ var BLAGOVESHCHENSK_CARS=[
   },
   {
     "id": 6200069,
-    "name": "Toyota RAV4 ACA31W · семейный, 2011",
+    "name": "Toyota RAV4 ACA31W, 2011",
     "price": 1515000,
     "marketPrice": 1587500,
     "img": "img/blagoveshchensk-new/6200069.jpg",
@@ -1747,7 +1747,7 @@ var BLAGOVESHCHENSK_CARS=[
   },
   {
     "id": 6200070,
-    "name": "Toyota Vanguard ACA33W · семейный, 2010",
+    "name": "Toyota Vanguard ACA33W, 2010",
     "price": 1585000,
     "marketPrice": 1651000,
     "img": "img/blagoveshchensk-new/6200070.jpg",
@@ -1773,7 +1773,7 @@ var BLAGOVESHCHENSK_CARS=[
   },
   {
     "id": 6200071,
-    "name": "Honda Fit GE6 · семейный, 2012",
+    "name": "Honda Fit GE6, 2012",
     "price": 675000,
     "marketPrice": 741000,
     "img": "img/blagoveshchensk-new/6200071.jpg",
@@ -1799,7 +1799,7 @@ var BLAGOVESHCHENSK_CARS=[
   },
   {
     "id": 6200072,
-    "name": "Honda Fit GK3 · семейный, 2017",
+    "name": "Honda Fit GK3, 2017",
     "price": 1025000,
     "marketPrice": 1097000,
     "img": "img/blagoveshchensk-new/6200072.jpg",
@@ -1825,7 +1825,7 @@ var BLAGOVESHCHENSK_CARS=[
   },
   {
     "id": 6200073,
-    "name": "Honda Fit Shuttle GG7 · семейный, 2013",
+    "name": "Honda Fit Shuttle GG7, 2013",
     "price": 895000,
     "marketPrice": 974000,
     "img": "img/blagoveshchensk-new/6200073.jpg",
@@ -1851,7 +1851,7 @@ var BLAGOVESHCHENSK_CARS=[
   },
   {
     "id": 6200074,
-    "name": "Honda Freed GB3 · семейный, 2014",
+    "name": "Honda Freed GB3, 2014",
     "price": 1125000,
     "marketPrice": 1215000,
     "img": "img/blagoveshchensk-new/6200074.jpg",
@@ -1877,7 +1877,7 @@ var BLAGOVESHCHENSK_CARS=[
   },
   {
     "id": 6200075,
-    "name": "Honda Freed GB5 · семейный, 2018",
+    "name": "Honda Freed GB5, 2018",
     "price": 1765000,
     "marketPrice": 1828000,
     "img": "img/blagoveshchensk-new/6200075.jpg",
@@ -1903,7 +1903,7 @@ var BLAGOVESHCHENSK_CARS=[
   },
   {
     "id": 6200076,
-    "name": "Honda Stepwgn RK1 · семейный, 2012",
+    "name": "Honda Stepwgn RK1, 2012",
     "price": 1385000,
     "marketPrice": 1461000,
     "img": "img/blagoveshchensk-new/6200076.jpg",
@@ -1929,7 +1929,7 @@ var BLAGOVESHCHENSK_CARS=[
   },
   {
     "id": 6200077,
-    "name": "Honda Stream RN6 · семейный, 2010",
+    "name": "Honda Stream RN6, 2010",
     "price": 875000,
     "marketPrice": 945000,
     "img": "img/blagoveshchensk-new/6200077.jpg",
@@ -1955,7 +1955,7 @@ var BLAGOVESHCHENSK_CARS=[
   },
   {
     "id": 6200078,
-    "name": "Honda CR-V RE4 · семейный, 2011",
+    "name": "Honda CR-V RE4, 2011",
     "price": 1625000,
     "marketPrice": 1708000,
     "img": "img/blagoveshchensk-new/6200078.jpg",
@@ -1981,7 +1981,7 @@ var BLAGOVESHCHENSK_CARS=[
   },
   {
     "id": 6200079,
-    "name": "Honda Vezel RU1 · семейный, 2015",
+    "name": "Honda Vezel RU1, 2015",
     "price": 1675000,
     "marketPrice": 1749000,
     "img": "img/blagoveshchensk-new/6200079.jpg",
@@ -2007,7 +2007,7 @@ var BLAGOVESHCHENSK_CARS=[
   },
   {
     "id": 6200080,
-    "name": "Honda Grace GM6 · семейный, 2016",
+    "name": "Honda Grace GM6, 2016",
     "price": 1185000,
     "marketPrice": 1252500,
     "img": "img/blagoveshchensk-new/6200080.jpg",
@@ -2033,7 +2033,7 @@ var BLAGOVESHCHENSK_CARS=[
   },
   {
     "id": 6200081,
-    "name": "Nissan Note E12 · семейный, 2015",
+    "name": "Nissan Note E12, 2015",
     "price": 795000,
     "marketPrice": 862500,
     "img": "img/blagoveshchensk-new/6200081.jpg",
@@ -2059,7 +2059,7 @@ var BLAGOVESHCHENSK_CARS=[
   },
   {
     "id": 6200082,
-    "name": "Nissan Tiida C11 · семейный, 2011",
+    "name": "Nissan Tiida C11, 2011",
     "price": 615000,
     "marketPrice": 688500,
     "img": "img/blagoveshchensk-new/6200082.jpg",
@@ -2085,7 +2085,7 @@ var BLAGOVESHCHENSK_CARS=[
   },
   {
     "id": 6200083,
-    "name": "Nissan Wingroad Y12 · семейный, 2013",
+    "name": "Nissan Wingroad Y12, 2013",
     "price": 705000,
     "marketPrice": 785500,
     "img": "img/blagoveshchensk-new/6200083.jpg",
@@ -2111,7 +2111,7 @@ var BLAGOVESHCHENSK_CARS=[
   },
   {
     "id": 6200084,
-    "name": "Nissan Serena C26 · семейный, 2014",
+    "name": "Nissan Serena C26, 2014",
     "price": 1445000,
     "marketPrice": 1536500,
     "img": "img/blagoveshchensk-new/6200084.jpg",
@@ -2137,7 +2137,7 @@ var BLAGOVESHCHENSK_CARS=[
   },
   {
     "id": 6200085,
-    "name": "Nissan Lafesta B30 · семейный, 2010",
+    "name": "Nissan Lafesta B30, 2010",
     "price": 655000,
     "marketPrice": 719500,
     "img": "img/blagoveshchensk-new/6200085.jpg",
@@ -2163,7 +2163,7 @@ var BLAGOVESHCHENSK_CARS=[
   },
   {
     "id": 6200086,
-    "name": "Nissan X-Trail NT31 · семейный, 2012",
+    "name": "Nissan X-Trail NT31, 2012",
     "price": 1355000,
     "marketPrice": 1432500,
     "img": "img/blagoveshchensk-new/6200086.jpg",
@@ -2189,7 +2189,7 @@ var BLAGOVESHCHENSK_CARS=[
   },
   {
     "id": 6200087,
-    "name": "Nissan Dualis NJ10 · семейный, 2011",
+    "name": "Nissan Dualis NJ10, 2011",
     "price": 1065000,
     "marketPrice": 1136500,
     "img": "img/blagoveshchensk-new/6200087.jpg",
@@ -2215,7 +2215,7 @@ var BLAGOVESHCHENSK_CARS=[
   },
   {
     "id": 6200088,
-    "name": "Mazda Demio DE3FS · семейный, 2013",
+    "name": "Mazda Demio DE3FS, 2013",
     "price": 665000,
     "marketPrice": 749500,
     "img": "img/blagoveshchensk-new/6200088.jpg",
@@ -2241,7 +2241,7 @@ var BLAGOVESHCHENSK_CARS=[
   },
   {
     "id": 6200089,
-    "name": "Mazda Axela BM5FP · семейный, 2015",
+    "name": "Mazda Axela BM5FP, 2015",
     "price": 1265000,
     "marketPrice": 1340500,
     "img": "img/blagoveshchensk-new/6200089.jpg",
@@ -2267,7 +2267,7 @@ var BLAGOVESHCHENSK_CARS=[
   },
   {
     "id": 6200090,
-    "name": "Mazda Premacy CWEFW · семейный, 2012",
+    "name": "Mazda Premacy CWEFW, 2012",
     "price": 925000,
     "marketPrice": 994000,
     "img": "img/blagoveshchensk-new/6200090.jpg",
@@ -2293,7 +2293,7 @@ var BLAGOVESHCHENSK_CARS=[
   },
   {
     "id": 6200091,
-    "name": "Mazda Biante CCEFW · семейный, 2011",
+    "name": "Mazda Biante CCEFW, 2011",
     "price": 1055000,
     "marketPrice": 1124000,
     "img": "img/blagoveshchensk-new/6200091.jpg",
@@ -2319,7 +2319,7 @@ var BLAGOVESHCHENSK_CARS=[
   },
   {
     "id": 6200092,
-    "name": "Mazda CX-5 KEEFW · семейный, 2014",
+    "name": "Mazda CX-5 KEEFW, 2014",
     "price": 1725000,
     "marketPrice": 1800000,
     "img": "img/blagoveshchensk-new/6200092.jpg",
@@ -2345,7 +2345,7 @@ var BLAGOVESHCHENSK_CARS=[
   },
   {
     "id": 6200093,
-    "name": "Mitsubishi Outlander CW5W · семейный, 2011",
+    "name": "Mitsubishi Outlander CW5W, 2011",
     "price": 1285000,
     "marketPrice": 1367000,
     "img": "img/blagoveshchensk-new/6200093.jpg",
@@ -2371,7 +2371,7 @@ var BLAGOVESHCHENSK_CARS=[
   },
   {
     "id": 6200094,
-    "name": "Mitsubishi ASX GA3W · семейный, 2012",
+    "name": "Mitsubishi ASX GA3W, 2012",
     "price": 1175000,
     "marketPrice": 1268000,
     "img": "img/blagoveshchensk-new/6200094.jpg",
@@ -2397,7 +2397,7 @@ var BLAGOVESHCHENSK_CARS=[
   },
   {
     "id": 6200095,
-    "name": "Mitsubishi Delica D:2 MB15S · семейный, 2014",
+    "name": "Mitsubishi Delica D:2 MB15S, 2014",
     "price": 815000,
     "marketPrice": 881000,
     "img": "img/blagoveshchensk-new/6200095.jpg",
@@ -2423,7 +2423,7 @@ var BLAGOVESHCHENSK_CARS=[
   },
   {
     "id": 6200096,
-    "name": "Subaru Forester SH5 · семейный, 2011",
+    "name": "Subaru Forester SH5, 2011",
     "price": 1375000,
     "marketPrice": 1454000,
     "img": "img/blagoveshchensk-new/6200096.jpg",
@@ -2449,7 +2449,7 @@ var BLAGOVESHCHENSK_CARS=[
   },
   {
     "id": 6200097,
-    "name": "Subaru Exiga YA4 · семейный, 2010",
+    "name": "Subaru Exiga YA4, 2010",
     "price": 955000,
     "marketPrice": 1028000,
     "img": "img/blagoveshchensk-new/6200097.jpg",
@@ -2475,7 +2475,7 @@ var BLAGOVESHCHENSK_CARS=[
   },
   {
     "id": 6200098,
-    "name": "Suzuki Solio MA15S · семейный, 2013",
+    "name": "Suzuki Solio MA15S, 2013",
     "price": 755000,
     "marketPrice": 841000,
     "img": "img/blagoveshchensk-new/6200098.jpg",
@@ -2501,7 +2501,7 @@ var BLAGOVESHCHENSK_CARS=[
   },
   {
     "id": 6200099,
-    "name": "Suzuki SX4 YA11S · семейный, 2011",
+    "name": "Suzuki SX4 YA11S, 2011",
     "price": 765000,
     "marketPrice": 842000,
     "img": "img/blagoveshchensk-new/6200099.jpg",
@@ -2527,7 +2527,7 @@ var BLAGOVESHCHENSK_CARS=[
   },
   {
     "id": 6200100,
-    "name": "Daihatsu Boon M600S · семейный, 2014",
+    "name": "Daihatsu Boon M600S, 2014",
     "price": 585000,
     "marketPrice": 655500,
     "img": "img/blagoveshchensk-new/6200100.jpg",
