@@ -7,12 +7,12 @@ const root=path.resolve(__dirname,'..'),server=http.createServer(async(req,res)=
 });
 (async()=>{
  const data=vm.createContext({});for(const name of ['cars.js','cities.js','regional-cars.js','custom-cars.js','expanded-cars.js','aldan-cars.js','blagoveshchensk-cars.js','city-market.js'])vm.runInContext(await fs.readFile(path.join(root,name),'utf8'),data);
- assert.equal(data.CARS.length,937);for(const car of data.CARS)assert.ok((await fs.stat(path.join(root,car.img))).size>0,car.name+' has a local image');
+ assert.equal(data.CARS.length,987);for(const car of data.CARS)assert.ok((await fs.stat(path.join(root,car.img))).size>0,car.name+' has a local image');
  const manifest=JSON.parse(await fs.readFile(path.join(root,'data/market-photo-crops.json'),'utf8'));
  assert.equal(manifest.auditedVehicles,837);assert.equal(manifest.photos.length,87);
  for(const photo of manifest.photos){assert.equal(crypto.createHash('sha256').update(await fs.readFile(path.join(root,photo.img))).digest('hex'),photo.sha256);const [x,y,w,h]=photo.region;assert.ok(x>=0 && y>=0 && w>0 && h>0 && x+w<=photo.width && y+h<=photo.height);}
  for(const id of [28,29,30]){const crop=manifest.photos.find(p=>p.img==='img/fictional/'+id+'.jpg');assert.ok(crop && crop.region[1]+crop.region[3]<389,'Remove the divider and neighbouring frame from '+id);}
- console.log('PASS all 937 listings have model illustrations and all 87 reviewed corrections match their original files');
+ console.log('PASS all 987 listings have model illustrations and all 87 reviewed corrections match their original files');
  await new Promise(r=>server.listen(0,'127.0.0.1',r));const browser=await chromium.launch({executablePath:process.env.CHROMIUM_PATH||'/usr/bin/chromium',args:['--no-sandbox']}),url='http://127.0.0.1:'+server.address().port;let passed=1;
  async function scenario(name,run){const context=await browser.newContext({viewport:{width:1280,height:900}}),page=await context.newPage(),errors=[];installEntryContinue(page);page.on('pageerror',e=>errors.push(e.message));await page.addInitScript(()=>{localStorage.setItem('helpPromptSeen','1');localStorage.setItem('musicSettings','{"enabled":false}');Date.now=()=>new Date(2030,0,15,12).getTime();Math.random=()=>.9;});try{await page.goto(url,{waitUntil:'networkidle'});await run(page);assert.deepEqual(errors,[]);passed++;console.log('PASS '+name);}finally{await context.close();}}
  async function checkGrid(page){
@@ -26,11 +26,11 @@ const root=path.resolve(__dirname,'..'),server=http.createServer(async(req,res)=
    rows.forEach(row=>{for(const key of ['photo','title','price','button'])if(Math.max(...row.map(c=>c[key]))-Math.min(...row.map(c=>c[key]))>1)errors.push(row.map(c=>c.id).join(',')+':'+key);});
    return {count:cards.length,overflow:root.scrollWidth>root.clientWidth+1,errors};
   });
-  assert.equal(result.count,937);assert.equal(result.overflow,false);assert.deepEqual(result.errors,[]);
+  assert.equal(result.count,987);assert.equal(result.overflow,false);assert.deepEqual(result.errors,[]);
  }
  try{
   await scenario('every market card aligns photos, names, prices and actions in all desktop and phone themes',async page=>{
-   await page.evaluate(()=>{openWin('market');filters={q:'',sort:'default',min:'',max:'',mood:'all',afford:false,city:'',radius:'all'};marketLimit=937;showMarket();});
+   await page.evaluate(()=>{openWin('market');filters={q:'',sort:'default',min:'',max:'',mood:'all',afford:false,city:'',radius:'all'};marketLimit=987;showMarket();});
    for(const width of [1280,320]){await page.setViewportSize({width,height:width===320?640:900});for(const os of ['windows','macos','linux'])for(const theme of ['light','dark']){await page.evaluate(({os,theme})=>{changeAppearance('os',os);changeAppearance('theme',theme);},{os,theme});await page.mouse.move(0,0);await checkGrid(page);}}
    await page.setViewportSize({width:3200,height:700});await page.evaluate(()=>{Object.assign(document.getElementById('win-market').style,{width:'2800px',height:'450px',left:'0',top:'0'});});await checkGrid(page);
   });
