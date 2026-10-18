@@ -2,7 +2,7 @@
 
 // Каталог не меняет состав во время игры; индекс хранит ссылки на те же машины.
 var CAR_BY_ID=Object.create(null);
-CARS.concat(TRADE_CARS,COMMERCE_CARS).forEach(function(car){if(!CAR_BY_ID[car.id])CAR_BY_ID[car.id]=car;});
+CARS.concat(EXPANDED_CARS,TRADE_CARS,COMMERCE_CARS).forEach(function(car){if(!CAR_BY_ID[car.id])CAR_BY_ID[car.id]=car;});
 
 /* ================= ДАННЫЕ ================= */
 var BUYERS = [
@@ -146,8 +146,8 @@ function save(){
 }
 function currentGarage(){ return Object.assign({},GARAGES[garageLvl],{cap:GARAGES[garageLvl].cap+(career?CAREER_LEVELS[career.level].places:0)}); }
 function retireMarketCar(id){if(retiredMarketCars.indexOf(id)===-1)retiredMarketCars.push(id);}
-// Только десять объявлений из скриншотов: исходные модели остаются в каталоге
-// для гаража, истории сделок и других городов. Сброс игры не возвращает эти объявления.
+// Expanded listings are unavailable for new purchases. Their records remain
+// resolvable for saved garages, signed contracts and resale.
 var WITHDRAWN_ALDAN_AD_IDS=new Set([
     1300002805, // Audi S8 · Аудиопакет · На каждый день, 2019
     1300002611, // Mitsubishi Lancer Evolution IX MR · Пакет Sport · Ухоженный, 2006
@@ -162,7 +162,7 @@ var WITHDRAWN_ALDAN_AD_IDS=new Set([
 ]);
 function isWithdrawnAldanAd(id){
     var car=carById(id);
-    return !!car && car.cityId==='29a64605-5441-48c5-bc08-117a72ebc843' && WITHDRAWN_ALDAN_AD_IDS.has(id);
+    return !!car && (car.expanded===true || (car.cityId==='29a64605-5441-48c5-bc08-117a72ebc843' && WITHDRAWN_ALDAN_AD_IDS.has(id)));
 }
 function isRetiredMarketCar(id){return isWithdrawnAldanAd(id) || retiredMarketCars.indexOf(id)!==-1;}
 function availableMarketCars(){

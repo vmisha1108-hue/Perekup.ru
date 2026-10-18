@@ -12,5 +12,5 @@ const server=http.createServer((req,res)=>{const name=new URL(req.url,'http://lo
  const expected=JSON.parse(fs.readFileSync(path.join(root,'data/original-photo-baseline.json')));assert.deepEqual(actual,expected.photos);
  console.log('PASS all 837 original files and rendered photographs match the pre-city-background baseline');
  await page.evaluate(()=>{openWin('market');filters.city=cityNamed('Алдан').id;showMarket();});assert.equal(await page.locator('[data-city-backdrop],.city-vehicle-photo,#marketAllRussia,#marketShowAll').count(),0);
- assert.equal(await page.evaluate(()=>CARS.length),4200);assert.deepEqual(errors,[]);console.log('PASS 4200 listings retained, collage rendering removed, original local market layout preserved');
+ assert.equal(await page.evaluate(()=>CARS.length),837);assert.deepEqual(errors,[]);console.log('PASS 837 listings retained, collage rendering removed, original local market layout preserved');
 }finally{await browser.close();await new Promise(r=>server.close(r));}})().catch(e=>{console.error(e);process.exitCode=1;server.close();});

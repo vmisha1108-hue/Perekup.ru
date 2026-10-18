@@ -13,7 +13,7 @@ var MARKET_FAULTS=[
 function freshMarketRisks(){return {version:1,vehicles:{},seizures:[],notice:null};}
 function saveMarketRisks(){if(marketRisks)writeSaved('marketRisks',marketRisks);}
 function marketGameOver(){return !!(marketRisks && marketRisks.seizures.length>=5);}
-function privateMarketCar(car){return !!car && CARS.indexOf(car)!==-1;}
+function privateMarketCar(car){return !!car && (CARS.indexOf(car)!==-1 || car.expanded===true);}
 function rollMarketRisk(car){
     var stolen=Math.random()<.03,defect=Math.random()<.30,type=Math.floor(Math.random()*MARKET_FAULTS.length),fault=MARKET_FAULTS[type];
     return {stolen:stolen,defect:defect,type:type,repairCost:Math.max(fault.min,Math.min(350000,Math.round((car.basePrice || car.price)*fault.factor/500)*500)),
