@@ -1712,10 +1712,10 @@ function toast(text, onClick){
     var el = document.createElement("div");
     el.className = "toast";
     el.textContent = text;
-    el.addEventListener("click", function(){ if(onClick) onClick(); el.remove(); });
+    el.addEventListener("click", function(){ if(onClick) onClick(); if(typeof dismissToast==='function')dismissToast(el);else el.remove(); });
     box.appendChild(el);
     while(box.children && box.children.length > 4) box.removeChild(box.firstChild);
-    setTimeout(function(){ if(el.parentNode) el.remove(); }, 9000);
+    setTimeout(function(){ if(el.parentNode){if(typeof dismissToast==='function')dismissToast(el);else el.remove();} }, 9000);
 }
 function toastDeals(text, filter){
     toast(text, function(){ dealsFilter = filter || "in"; openWin("market"); showDeals(); });

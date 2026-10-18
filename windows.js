@@ -65,6 +65,8 @@ function openWin(id){
             w.style.top = top + "px";
         }
         w.dataset.hasPos = "1";
+        w.classList.remove("open");
+        void w.offsetWidth;
         w.style.visibility = "";
     }
 
@@ -94,6 +96,7 @@ function closeWin(id){
     if(id === "meeting" || id === "chat"){ closeChat(); return; }
     var w = $("win-" + id);
     if(!w) return;
+    if(w._geometryAnimation)w._geometryAnimation.cancel();
     w.classList.remove("open");
     delete openWindows[id];
     updateGameSpeed();
@@ -103,6 +106,7 @@ function closeWin(id){
 function minimizeWin(id){
     var w = $("win-" + id);
     if(!w) return;
+    if(w._geometryAnimation)w._geometryAnimation.cancel();
     w.classList.remove("open");
     w.classList.add("minimized");
     if(id==='chat')$('overlay').classList.remove('open');
@@ -179,11 +183,19 @@ function startWindowGesture(event){
     focusWin(id);
     if(button || (!direction && !event.target.closest(".win-head")))return;
     event.preventDefault();event.stopPropagation();win.dataset.hasPos="1";
+    if(win._geometryAnimation)win._geometryAnimation.cancel();
+    win.classList.add('gesturing');
     windowGesture={win:win,id:id,direction:direction,x:event.clientX,y:event.clientY,
         left:win.offsetLeft,top:win.offsetTop,width:win.offsetWidth,height:win.offsetHeight,desk:getDeskRect()};
     if(direction)document.body.style.cursor=windowCursor(direction);
 }
+var windowGestureFrame=0,windowGestureEvent=null;
 function moveWindowGesture(event){
+    if(!windowGesture){applyWindowGesture(event);return;}
+    event.preventDefault();windowGestureEvent=event;
+    if(!windowGestureFrame)windowGestureFrame=requestAnimationFrame(function(){windowGestureFrame=0;var latest=windowGestureEvent;windowGestureEvent=null;if(latest)applyWindowGesture(latest);});
+}
+function applyWindowGesture(event){
     var gesture=windowGesture;
     if(!gesture){
         var win=event.target.closest(".window");
@@ -215,6 +227,9 @@ function moveWindowGesture(event){
 }
 function finishWindowGesture(){
     if(!windowGesture)return;
+    if(windowGestureFrame)cancelAnimationFrame(windowGestureFrame);windowGestureFrame=0;
+    if(windowGestureEvent){applyWindowGesture(windowGestureEvent);windowGestureEvent=null;}
+    windowGesture.win.classList.remove('gesturing');
     saveWindowState(windowGesture.id,windowGesture.win);windowGesture=null;document.body.style.cursor="";
 }
 function initWindowManager(){

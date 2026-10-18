@@ -7,9 +7,15 @@ function windowControlSvg(kind){
 
 function toggleWindowMaximize(id){
     var win=$('win-'+id),desk=getDeskRect();if(!win)return;
+    var before=win.getBoundingClientRect();
+    if(win._geometryAnimation)win._geometryAnimation.cancel();
     if(win._restoreGeometry){Object.assign(win.style,win._restoreGeometry);delete win._restoreGeometry;win.classList.remove('maximized');}
     else{win._restoreGeometry={left:win.style.left,top:win.style.top,width:win.style.width,height:win.style.height};Object.assign(win.style,{left:'0px',top:'0px',width:desk.width+'px',height:desk.height+'px'});win.classList.add('maximized');}
     clampWindow(win);focusWin(id);
+    var after=win.getBoundingClientRect();
+    if(win.animate && !window.matchMedia('(prefers-reduced-motion: reduce)').matches && after.width && after.height){
+        win._geometryAnimation=win.animate([{transformOrigin:'0 0',transform:'translate('+(before.left-after.left)+'px,'+(before.top-after.top)+'px) scale('+(before.width/after.width)+','+(before.height/after.height)+')'},{transformOrigin:'0 0',transform:'none'}],{duration:340,easing:'cubic-bezier(.22,1,.36,1)'});
+    }
     var button=win.querySelector('[data-max]');if(button){button.title=win._restoreGeometry?'Восстановить размер':'Развернуть';button.setAttribute('aria-label',button.title);button.innerHTML=windowControlSvg(win._restoreGeometry?'restore':'max');}
 }
 function arrangeConversationWindows(){

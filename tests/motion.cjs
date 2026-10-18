@@ -1,0 +1,13 @@
+'use strict';
+const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict');
+let callback=null,cancelled=0,saved=null;
+const win={style:{},classList:{remove(){}}};
+const c=vm.createContext({requestAnimationFrame(fn){callback=fn;return 1;},cancelAnimationFrame(){cancelled++;callback=null;},clamp:(n,a,b)=>Math.max(a,Math.min(b,n)),document:{body:{style:{}}}});
+vm.runInContext(fs.readFileSync('windows.js','utf8'),c);
+c.saveWindowState=()=>{saved={...win.style};};
+c.windowGesture={win,id:'market',direction:'',x:0,y:0,left:20,top:30,width:300,height:200,desk:{width:1000,height:800}};
+const event=(x,y)=>({clientX:x,clientY:y,preventDefault(){}});
+c.moveWindowGesture(event(10,20));c.moveWindowGesture(event(40,60));
+assert.deepEqual(win.style,{});callback();assert.equal(win.style.left,'60px');assert.equal(win.style.top,'90px');
+c.moveWindowGesture(event(80,90));c.finishWindowGesture();assert.equal(cancelled,1);assert.equal(saved.left,'100px');assert.equal(saved.top,'120px');assert.equal(c.windowGesture,null);
+console.log('PASS drag batches pointer updates per frame and saves the final pending position');

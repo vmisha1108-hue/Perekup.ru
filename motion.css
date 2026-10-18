@@ -1,0 +1,24 @@
+/* Shared motion: short feedback, gentle entrances, no layout animation on hover. */
+:root{--motion-fast:180ms;--motion-panel:300ms;--motion-ease:cubic-bezier(.22,1,.36,1)}
+.window{transform:translateY(12px) scale(.975);transition:opacity var(--motion-panel) var(--motion-ease),transform var(--motion-panel) var(--motion-ease),visibility 0s linear var(--motion-panel)}
+.window.open{transform:translateY(0) scale(1);transition:opacity var(--motion-panel) var(--motion-ease),transform var(--motion-panel) var(--motion-ease),visibility 0s}
+.window.minimized{transform:translateY(26px) scale(.97)}
+.window.gesturing{transition:none;user-select:none}
+:is(button,input,select,textarea,.tab,.dtab,.filter-toggle,.task-icon){transition:background-color var(--motion-fast) ease,border-color var(--motion-fast) ease,color var(--motion-fast) ease,opacity var(--motion-fast) ease,transform var(--motion-fast) var(--motion-ease),box-shadow var(--motion-fast) ease}
+.task-btn{transition:transform 240ms var(--motion-ease),background-color var(--motion-fast) ease,border-color var(--motion-fast) ease}
+.desk-icon{transition:background-color var(--motion-fast) ease,border-color var(--motion-fast) ease,left 220ms var(--motion-ease),top 220ms var(--motion-ease)}
+.desk-icon.dragging{transition:background-color var(--motion-fast) ease,border-color var(--motion-fast) ease}
+.icon-ghost{transition:left 120ms var(--motion-ease),top 120ms var(--motion-ease)}
+.card,#win-market[data-view="market"] .card{transition:transform 240ms var(--motion-ease),border-color var(--motion-fast) ease,box-shadow 240ms ease}
+#moodFill{transition:width 450ms var(--motion-ease),background-color 240ms ease}
+.overlay:not(#overlay){transition:opacity 220ms ease,display 220ms allow-discrete;opacity:0}
+.overlay.open:not(#overlay){opacity:1}
+.overlay:not(#overlay)>:first-child{transform:translateY(0) scale(1);transition:transform var(--motion-panel) var(--motion-ease)}
+@starting-style{
+ .overlay.open:not(#overlay){opacity:0}
+ .overlay.open:not(#overlay)>:first-child{transform:translateY(10px) scale(.98)}
+}
+@media(hover:hover){button:not(:disabled):active{transform:translateY(1px)}.task-btn:active{transform:translateY(-1px)}}
+@media(prefers-reduced-motion:reduce){
+ *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition:none!important;scroll-behavior:auto!important}
+}
