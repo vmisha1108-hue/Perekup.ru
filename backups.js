@@ -1,7 +1,7 @@
 'use strict';
 
 var pendingBackup=null;
-var BACKUP_KEYS=['balance','garage','deals','garageLvl','notes','pending','purchasePrices','listings','retiredMarketCars','gameMs','bank','transport','commerce','career','marketRisks','contracts','chats','playerIdentity','appearance','musicSettings','helpPromptSeen','startingBalanceVersion','sellerSessionMoods','marketLocation','iconPos','iconLayoutVersion'];
+var BACKUP_KEYS=['balance','garage','deals','garageLvl','notes','pending','purchasePrices','listings','retiredMarketCars','gameMs','bank','transport','commerce','career','marketRisks','contracts','chats','playerIdentity','appearance','musicSettings','helpPromptSeen','startingBalanceVersion','sellerSessionMoods','marketLocation','iconPos','iconLayoutVersion','marketFavorites','perekupOSLayout'];
 function backupAllowed(key){return BACKUP_KEYS.indexOf(key)!==-1 || /^window_(market|shop|calc|calendar|clock|bank|travel|documents|garage|help|settings|import|dealer|business|chat)$/.test(key);}
 function gameBackup(){
     save();saveContracts();persistChats();
@@ -11,7 +11,7 @@ function gameBackup(){
 function validateGameBackup(value){
     if(!isRecord(value) || value.format!=='perekup-save' || value.version!==1 || !isRecord(value.data))throw new Error('Это не файл сохранения Perekup.ru поддерживаемой версии.');
     var data=value.data,decoded={};
-    Object.keys(data).forEach(function(key){if(!backupAllowed(key) || typeof data[key]!=='string')throw new Error('Недопустимый раздел сохранения.');try{decoded[key]=JSON.parse(data[key]);}catch(e){if(['helpPromptSeen','startingBalanceVersion','iconLayoutVersion'].indexOf(key)===-1)throw new Error('Повреждён раздел '+key+'.');}});
+    Object.keys(data).forEach(function(key){if(!backupAllowed(key) || typeof data[key]!=='string')throw new Error('Недопустимый раздел сохранения.');try{decoded[key]=JSON.parse(data[key]);}catch(e){if(['helpPromptSeen','startingBalanceVersion','iconLayoutVersion','perekupOSLayout'].indexOf(key)===-1)throw new Error('Повреждён раздел '+key+'.');}});
     if(!Number.isSafeInteger(decoded.balance) || decoded.balance<0 || !Array.isArray(decoded.garage) || decoded.garage.some(function(id){return !Number.isSafeInteger(id) || !carById(id);}) || new Set(decoded.garage).size!==decoded.garage.length)throw new Error('Повреждены баланс или список автомобилей.');
     if(!isRecord(decoded.playerIdentity) || decoded.playerIdentity.version!==1 || !validNickname(decoded.playerIdentity.nickname) || !validSignature(decoded.playerIdentity.signature))throw new Error('В копии нет корректного ника и подписи.');
     if(!Number.isSafeInteger(decoded.gameMs) || decoded.gameMs<0 || decoded.gameMs>4102444800000)throw new Error('Некорректная игровая дата.');

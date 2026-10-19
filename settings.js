@@ -1,13 +1,10 @@
 'use strict';
 
-var OS_STYLES={
-    windows:{label:'Windows',hint:'Оконный стиль',theme:'light',wallpapers:[{id:'ribbons',label:'Ленты'},{id:'aurora',label:'Сияние'}]},
-    macos:{label:'macOS',hint:'Мягкий стиль',theme:'light',wallpapers:[{id:'valley',label:'Долины'},{id:'dawn',label:'Рассвет'}]},
-    linux:{label:'Linux',hint:'Панельный стиль',theme:'dark',wallpapers:[{id:'facets',label:'Грани'},{id:'orbit',label:'Орбита'}]}
-};
+var OS_STYLES={perekup:{label:'Perekup OS',theme:'light',wallpapers:[{id:'embankment',label:'Набережная'},{id:'aurora',label:'Сияние'}]}};
 var appearance=readSaved('appearance',{}),settingsStrokes=[],settingsPointer=null;
 function normalizeAppearance(value){
-    var result={version:1,os:Object.prototype.hasOwnProperty.call(OS_STYLES,value.os)?value.os:'windows',themes:{},wallpapers:{}};
+    value=value && typeof value==='object'?value:{};
+    var result={version:2,os:'perekup',themes:{},wallpapers:{}};
     Object.keys(OS_STYLES).forEach(function(os){
         var style=OS_STYLES[os],theme=value.themes && value.themes[os],wall=value.wallpapers && value.wallpapers[os];
         result.themes[os]=['light','dark'].indexOf(theme)!==-1?theme:style.theme;
@@ -24,8 +21,7 @@ function applyAppearance(){
 }
 applyAppearance();
 function changeAppearance(kind,value){
-    if(kind==='os' && Object.prototype.hasOwnProperty.call(OS_STYLES,value))appearance.os=value;
-    else if(kind==='theme' && ['light','dark'].indexOf(value)!==-1)appearance.themes[appearance.os]=value;
+    if(kind==='theme' && ['light','dark'].indexOf(value)!==-1)appearance.themes[appearance.os]=value;
     else if(kind==='wallpaper' && OS_STYLES[appearance.os].wallpapers.some(function(item){return item.id===value;}))appearance.wallpapers[appearance.os]=value;
     else return;
     applyAppearance();writeSaved('appearance',appearance);renderAppearanceControls();
@@ -33,7 +29,6 @@ function changeAppearance(kind,value){
 }
 function renderAppearanceControls(){
     var os=appearance.os;
-    document.querySelectorAll('[name="settingsOS"]').forEach(function(input){input.checked=input.value===os;});
     document.querySelectorAll('[name="settingsTheme"]').forEach(function(input){input.checked=input.value===appearance.themes[os];});
     var grid=$('settingsWallpapers');
     if(grid.dataset.os!==os){
@@ -77,7 +72,7 @@ function finishSignatureEditing(){
 }
 function initSettings(){
     $('settingsAppearance').addEventListener('change',function(event){
-        var input=event.target;if(input.name==='settingsOS')changeAppearance('os',input.value);
+        var input=event.target;
         if(input.name==='settingsTheme')changeAppearance('theme',input.value);
         if(input.name==='settingsWallpaper')changeAppearance('wallpaper',input.value);
     });
@@ -137,14 +132,24 @@ var APP_ICON_ART={
 APP_ICON_ART.import=APP_ICON_ART.travel;
 APP_ICON_ART.dealer=APP_ICON_ART.shop;
 APP_ICON_ART.business=APP_ICON_ART.bank;
+Object.assign(APP_ICON_PATHS,{
+market:'<path d="m3 14 2-6h14l2 6v5h-3v-2H6v2H3zM5 12h14M7 8l1-3h8l1 3"/><circle cx="7" cy="14" r=".7"/><circle cx="17" cy="14" r=".7"/>',
+garage:'<path d="M3 20V9l9-6 9 6v11M7 20V11h10v9M8 15h8M8 18h8"/>',
+travel:'<path d="m3 5 6-2 6 2 6-2v16l-6 2-6-2-6 2zm6-2v16m6-14v16"/>',
+bank:'<path d="m3 8 9-5 9 5zM4 21h16M5 18h14M6 10v6m6-6v6m6-6v6"/>',
+documents:'<path d="M6 3h9l4 4v14H6zM14 3v5h5M9 12h7m-7 4h7"/>',
+settings:'<path d="m9 3-1 3-3 1-2 3 2 3v4l3 1 2 3h4l2-3 3-1v-4l2-3-2-3-3-1-1-3z"/><circle cx="12" cy="12" r="3"/>',
+calendar:'<rect x="4" y="5" width="16" height="16" rx="2"/><path d="M8 3v4m8-4v4M4 10h16m-11 5h6"/>',
+clock:'<circle cx="12" cy="12" r="9"/><path d="M12 6v6l4 2"/>',
+help:'<circle cx="12" cy="12" r="9"/><path d="M9 9a3 3 0 1 1 4 3c-1 1-1 1-1 3m0 3h.01"/>',
+calc:'<rect x="5" y="2" width="14" height="20" rx="2"/><path d="M8 6h8M8 11h1m6 0h1m-8 4h1m6 0h1m-8 4h1m6 0h1"/>',
+shop:'<path d="M4 10v11h16V10M2 10l3-7h14l3 7zM9 21v-7h6v7"/>',
+business:'<rect x="3" y="7" width="18" height="14" rx="2"/><path d="M8 7V3h8v4M3 12h18m-9-2v4"/>',
+import:'<path d="M4 14 2 18l10 4 10-4-2-4-8-3zM7 12V5h10v7M10 5V2h4v3"/>',
+dealer:'<path d="M3 21V7l9-4 9 4v14M7 10h3m4 0h3m-10 4h3m4 0h3m-8 7v-4h6v4"/>'
+});
 var appIconSequence=0;
 function appIconSvg(id){
-    if(APP_ICON_ART[id]){
-        // Each copy owns its paint IDs, so hiding a window cannot break another icon.
-        var prefix='app-icon-'+(++appIconSequence)+'-';
-        var art='<defs><linearGradient id="app-paper" x1="0" y1="0" x2=".7" y2="1"><stop stop-color="#fff"/><stop offset="1" stop-color="#e1e9ef"/></linearGradient><linearGradient id="app-metal" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#607787"/><stop offset="1" stop-color="#354959"/></linearGradient></defs>'+APP_ICON_ART[id];
-        return '<svg class="app-icon app-icon-art" viewBox="0 0 48 48" fill="none" aria-hidden="true">'+art.replace(/app-(paper|metal)/g,function(match){return prefix+match.slice(4);})+'</svg>';
-    }
     return '<svg class="app-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+(APP_ICON_PATHS[id] || '')+'</svg>';
 }
-function wallpaperPath(id){return 'wallpapers/'+id+(['ribbons','valley','facets'].indexOf(id)!==-1?'.jpg':'.svg');}
+function wallpaperPath(id){if(id==='embankment')return 'wallpapers/embankment.webp';return 'wallpapers/'+id+(['ribbons','valley','facets'].indexOf(id)!==-1?'.jpg':'.svg');}

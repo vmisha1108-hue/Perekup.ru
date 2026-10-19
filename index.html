@@ -12,6 +12,7 @@
 <link rel="stylesheet" href="tuning.css?v=20261018-blago50-3">
 <link rel="stylesheet" href="career.css?v=20261018-blago50-3">
 <link rel="stylesheet" href="motion.css?v=20261019-motion1">
+<link rel="stylesheet" href="perekup-os.css?v=20261019-os1">
 </head>
 <body>
 
@@ -29,14 +30,9 @@
     <div class="win-head"><div class="wi">⚙️</div><div class="win-title">Настройки</div><div class="win-btns"><button class="min" data-min="win-settings" title="Свернуть">—</button><button class="x" data-close="win-settings" title="Закрыть">✕</button></div></div>
     <div class="win-body settings-body">
         <header class="settings-profile"><div class="settings-avatar" id="settingsAvatar" aria-label="Аватарка игрока">?</div><div><h1 id="settingsPlayerName">Ваш профиль</h1><p>Ваш профиль в игре</p><button type="button" disabled>Смена аватарки — скоро</button></div></header>
-        <section class="settings-section" id="settingsAppearance"><h2>Оформление</h2><p class="settings-muted">Выберите стиль рабочего стола. Приложения и правила игры остаются теми же.</p>
-            <fieldset class="settings-options settings-os"><legend>Стиль ОС</legend>
-                <label class="os-choice"><input type="radio" name="settingsOS" value="windows"><span class="os-mini os-windows"><i></i><i></i></span><strong>Windows</strong><small>Оконный стиль</small></label>
-                <label class="os-choice"><input type="radio" name="settingsOS" value="macos"><span class="os-mini os-macos"><i></i><i></i></span><strong>macOS</strong><small>Мягкий стиль</small></label>
-                <label class="os-choice"><input type="radio" name="settingsOS" value="linux"><span class="os-mini os-linux"><i></i><i></i></span><strong>Linux</strong><small>Панельный стиль</small></label>
-            </fieldset>
+        <section class="settings-section" id="settingsAppearance"><h2>Оформление</h2><p class="settings-muted">Тема и обои Perekup OS.</p>
             <fieldset class="settings-options settings-modes"><legend>Тема</legend><label><input type="radio" name="settingsTheme" value="light"><span>☀ Светлая</span></label><label><input type="radio" name="settingsTheme" value="dark"><span>☾ Тёмная</span></label></fieldset>
-            <fieldset class="settings-options settings-wallpapers"><legend>Обои</legend><div id="settingsWallpapers"></div></fieldset><p class="settings-muted">Выберите обои для текущей системы.</p>
+            <fieldset class="settings-options settings-wallpapers"><legend>Обои</legend><div id="settingsWallpapers"></div></fieldset><p class="settings-muted">Выберите фон рабочего стола.</p>
         </section>
         <section class="settings-section"><h2>Ник и подпись</h2><p class="settings-muted">Изменения применяются к будущим договорам. Подписанные экземпляры сохраняют прежние данные.</p>
             <form id="settingsNicknameForm" novalidate><label for="settingsNickname">Ваш ник</label><div class="settings-input-row"><input id="settingsNickname" maxlength="32" autocomplete="off" required><button type="submit">Сохранить ник</button></div><p class="settings-error" id="settingsNicknameError" role="alert"></p></form>
@@ -543,7 +539,7 @@
 <!-- ЧАТ -->
 <div class="overlay" id="overlay">
     <div class="chat-modal window" id="win-chat" data-title="Переписка" data-icon="💬">
-        <div class="win-head chat-window-head"><div class="wi">💬</div><div class="win-title">Переписка</div><div class="win-btns"><button class="min" data-min="win-chat" title="Свернуть">—</button><button class="x" id="chatClose" title="Закрыть переписку">✕</button></div></div>
+        <div class="win-head chat-window-head"><div class="wi">💬</div><div class="win-title">Сделка</div><div class="win-btns"><button class="min" data-min="win-chat" title="Свернуть">—</button><button class="x" id="chatClose" title="Закрыть переписку">✕</button></div></div>
         <div class="chat-head">
             <div class="ava" id="npcAva">🧔</div>
             <div>
@@ -604,7 +600,7 @@
 <script src="city-market.js?v=20261018-blago50-3"></script>
 <script src="trade-cars.js?v=20261018-blago50-3"></script>
 <script src="storage.js?v=20261018-blago50-3"></script>
-<script src="settings.js?v=20261018-blago50-3"></script>
+<script src="settings.js?v=20261019-os1"></script>
 <audio id="backgroundMusic" src="audio/mevison-background.mp3" loop preload="none"></audio>
 <script src="music.js?v=20261018-blago50-3"></script>
 <script src="market-pricing.js?v=20261018-blago50-3"></script>
@@ -621,18 +617,19 @@
 <script src="identity.js?v=20261018-blago50-3"></script>
 <script src="contracts.js?v=20261018-blago50-3"></script>
 <script src="entry-reset.js?v=20261018-blago50-3"></script>
-<script src="windows.js?v=20261019-motion1"></script>
-<script src="desktop-visuals.js?v=20261019-motion1"></script>
+<script src="windows.js?v=20261019-os1"></script>
+<script src="desktop-visuals.js?v=20261019-os1"></script>
 <script src="career.js?v=20261018-blago50-3"></script>
 <script src="market-risks.js?v=20261018-blago50-3"></script>
-<script src="backups.js?v=20261018-blago50-3"></script>
+<script src="backups.js?v=20261019-os1"></script>
 <script src="commerce-models.js?v=20261018-blago50-3"></script>
 <script src="commerce-stock.js?v=20261018-blago50-3"></script>
 <script src="commerce.js?v=20261018-blago50-3"></script>
 <script src="vehicle-visuals.js?v=20261018-blago50-3"></script>
 <script src="tuning.js?v=20261018-blago50-3"></script>
 <script src="market-photo-crops.js?v=20261018-blago50-3"></script>
-<script src="script.js?v=20261019-motion1"></script>
+<script src="perekup-os.js?v=20261019-os1"></script>
+<script src="script.js?v=20261019-os1"></script>
 <script src="motion.js?v=20261019-motion1"></script>
 </body>
 </html>

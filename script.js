@@ -226,7 +226,7 @@ function saveIconPositions(p){ localStorage.setItem("iconPos", JSON.stringify(p)
 function buildIcons(){
     var desk = $("deskArea");
     if(!desk) return;
-    var saved = loadIconPositions();
+    var saved = localStorage.getItem('perekupOSLayout')==='1'?loadIconPositions():{};
     var hint = desk.querySelector(".desk-hint");
     desk.querySelectorAll(".desk-icon").forEach(function(el){ el.remove(); });
 
@@ -241,10 +241,8 @@ function buildIcons(){
         if(pos && typeof pos.x === "number"){
             x = pos.x; y = pos.y;
         }else{
-            var col = idx % 2;
-            var row = Math.floor(idx / 2);
-            x = 20 + col * 112;
-            y = 20 + row * 120;
+            var primary=['market','garage','travel','bank','documents'],row=primary.indexOf(item.id);
+            x=32; y=12+Math.max(0,row)*102;
         }
         el.style.left = x + "px";
         el.style.top  = y + "px";
@@ -302,7 +300,7 @@ var GRID = {w:112, h:120, x0:20, y0:20};
 
 function gridInfo(el){
     var desk = $("deskArea");
-    GRID.w=window.innerWidth<=600?96:112;GRID.h=window.innerWidth<=600?96:120;
+    GRID.w=window.innerWidth<=600?82:104;GRID.h=window.innerWidth<=600?84:102;
     var iw = el ? el.offsetWidth  : 104;
     var ih = el ? el.offsetHeight : 100;
     return {
@@ -322,7 +320,7 @@ function cellXY(c){
 function takenCells(except, g){
     var t = {};
     document.querySelectorAll(".desk-icon").forEach(function(el){
-        if(el === except) return;
+        if(el === except || getComputedStyle(el).display === "none") return;
         var c = cellOf(parseFloat(el.style.left) || 0, parseFloat(el.style.top) || 0, g);
         t[c.col + "," + c.row] = true;
     });
@@ -348,7 +346,7 @@ function placeIcon(el, c){
 }
 // выравнивает все иконки по сетке (при загрузке и при изменении размера окна браузера)
 function snapAllIcons(save){
-    var icons = document.querySelectorAll(".desk-icon");
+    var icons = Array.from(document.querySelectorAll(".desk-icon")).filter(function(el){return getComputedStyle(el).display!=="none";});
     if(!icons.length) return;
     var g = gridInfo(icons[0]);
     var taken = {};
@@ -421,7 +419,7 @@ function onIconUp(){
     }
     placeIcon(el, cell);
 
-    var saved = loadIconPositions();
+    var saved = localStorage.getItem('perekupOSLayout')==='1'?loadIconPositions():{};
     saved[el.dataset.app] = {
         x: parseFloat(el.style.left) || 0,
         y: parseFloat(el.style.top)  || 0
@@ -571,7 +569,8 @@ function setTabs(active){
     $('win-market').dataset.view=active;
     var tm = $("tabMarket");
     var tg = $("tabGarage");
-    if(tm) tm.classList.toggle("active", active === "market");
+    if(tm) tm.classList.toggle("active", active === "market" && !marketFavoritesOnly);
+    if($("tabFavorites"))$("tabFavorites").classList.toggle("active",active === "market" && marketFavoritesOnly);
     if(tg) tg.classList.toggle("active", active === "garage");
     var td = $("tabDeals");
     if(td) td.classList.toggle("active", active === "deals");
@@ -590,6 +589,7 @@ function showMarket(){
     setTabs("market");
     var available = availableMarketCars();
     var shown = visibleCars(available);
+    if(marketFavoritesOnly)shown=shown.filter(function(car){return marketFavorites.indexOf(car.id)!==-1;});
     var pageCars = shown.slice(0, marketLimit);
     $("content").innerHTML = pageCars.map(function(car){
         var owned = garage.indexOf(car.id) !== -1;
@@ -597,13 +597,13 @@ function showMarket(){
         return '<article class="card" data-info="' + car.id + '">' +
             '<div class="car-img">' + carImg(car) + '</div>' +
             '<div class="info">' +
-                '<div class="name">' + esc(car.name) + '</div>' +
+                '<div class="name">' + esc(car.name) + '</div>' + favoriteButton(car.id) +
                 '<div class="car-location">' + esc(carLocationText(car, filters.city)) + (car.legend ? ' · 🏁 Легенда' : car.rare ? ' · 💎 Редкая' : '') + '</div>' +
                 '<div class="meta">' + esc(shortDesc(vehicleDesc(car), 60)) + '</div>' +
                 '<div class="more">Подробнее ›</div>' +
                 '<div class="seller">' + car.seller.avatar + ' ' + car.seller.name + ' · ' + p.label + '</div>' +
                 '<div class="price">' + money(car.price) + '</div>' +
-                buyBtn(car, owned) +
+                '<button type="button" class="os-details" data-info="' + car.id + '">Подробнее →</button>' +
             '</div></article>';
     }).join("");
     if(!shown.length) $("content").innerHTML = noResults();
@@ -2668,7 +2668,7 @@ function bindUI(){
     }, true);
     $("openDealer").addEventListener("click", function(){openWin("dealer");});
     $("openImport").addEventListener("click", function(){openWin("import");});
-    if($("tabMarket")) $("tabMarket").addEventListener("click", showMarket);
+    if($("tabMarket")) $("tabMarket").addEventListener("click", function(){marketFavoritesOnly=false;showMarket();});
     if($("tabDeals")) $("tabDeals").addEventListener("click", showDeals);
     if($("tabGarage")) $("tabGarage").addEventListener("click", showGarage);
 
@@ -2772,6 +2772,7 @@ window.addEventListener("DOMContentLoaded", function(){
     initIdentity();
     initSettings();
     initDesktopVisuals();
+    initPerekupOS();
     migrateSaleListings();
     bindUI();
     initCalc();

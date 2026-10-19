@@ -31,40 +31,19 @@ const server=http.createServer(async(req,res)=>{
         const box=await page.locator('#settingsSignatureCanvas').boundingBox();await page.mouse.move(box.x+box.width*.1,box.y+box.height*.2);await page.mouse.down();await page.mouse.move(box.x+box.width*.8,box.y+box.height*.6,{steps:12});await page.mouse.up();
     }
     try{
-        await scenario('all six themes switch live, preserve open windows and gameplay, and load their own wallpapers',async page=>{
+        await scenario('single Perekup OS has no platform selector and remembers theme and wallpaper',async page=>{
             await page.locator('#taskList [data-app="settings"]').click();
-            assert.deepEqual(await page.locator('[name="settingsOS"]').evaluateAll(els=>els.map(el=>el.value)),['windows','macos','linux']);
-            const before=await page.evaluate(()=>JSON.stringify({balance,garage,pending,gameMs,contractBook,playerIdentity}));
-            const pictures=new Set();
-            for(const os of ['windows','macos','linux']){
-                await page.locator('[name="settingsOS"][value="'+os+'"]').check();
-                for(const theme of ['light','dark']){
-                    await page.locator('[name="settingsTheme"][value="'+theme+'"]').check();
-                    assert.equal(await page.locator('html').getAttribute('data-os'),os);assert.equal(await page.locator('html').getAttribute('data-theme'),theme);
-                    assert.ok(await page.locator('#win-settings').isVisible());
-                    const image=await page.evaluate(()=>getComputedStyle(document.documentElement).getPropertyValue('--wallpaper-image'));pictures.add(image);
-                    assert.equal((await page.request.get(new URL(/"([^\"]+)"/.exec(image)[1],url).href)).status(),200);
-                    await page.evaluate(()=>openWin('bank'));
-                    const contrast=await page.locator('#bankCreditAmount').evaluate(el=>{
-                        const s=getComputedStyle(el);
-                        function luminance(color){const c=color.match(/[\d.]+/g).slice(0,3).map(v=>{v=Number(v)/255;return v<=.04045?v/12.92:Math.pow((v+.055)/1.055,2.4);});return .2126*c[0]+.7152*c[1]+.0722*c[2];}
-                        const a=luminance(s.color),b=luminance(s.backgroundColor);return (Math.max(a,b)+.05)/(Math.min(a,b)+.05);
-                    });assert.ok(contrast>=4.5,os+' '+theme+' bank field must remain readable');await page.evaluate(()=>closeWin('bank'));
-                    await page.evaluate(()=>{openWin('market');document.getElementById('toasts').innerHTML='';});
-                    await page.locator('#win-market').evaluate(el=>Promise.all(el.getAnimations().map(a=>a.finished)));
-                    await page.screenshot({path:'/workspace/scratch/3151c7eebd10/theme-'+os+'-'+theme+'.png'});await page.evaluate(()=>closeWin('market'));
-                }
-            }
-            assert.equal(pictures.size,3);assert.equal(await page.evaluate(()=>JSON.stringify({balance,garage,pending,gameMs,contractBook,playerIdentity})),before);
+            assert.equal(await page.locator('[name="settingsOS"]').count(),0);
+            assert.equal(await page.locator('html').getAttribute('data-os'),'perekup');
+            const before=await page.evaluate(()=>JSON.stringify({balance,garage,pending,contractBook,playerIdentity}));
+            await page.locator('[name="settingsTheme"][value="dark"]').check();
+            await page.locator('[name="settingsWallpaper"][value="aurora"]').check();
+            await page.reload({waitUntil:'networkidle'});
+            assert.equal(await page.locator('html').getAttribute('data-os'),'perekup');
+            assert.equal(await page.locator('html').getAttribute('data-theme'),'dark');
+            assert.equal(await page.locator('html').getAttribute('data-wallpaper'),'aurora');
+            assert.equal(await page.evaluate(()=>JSON.stringify({balance,garage,pending,contractBook,playerIdentity})),before);
             assert.equal(await page.locator('#taskList button').count(),6);
-        });
-        await scenario('theme and wallpaper are remembered separately for each OS and survive reload',async page=>{
-            await page.evaluate(()=>openWin('settings'));
-            await page.locator('[name="settingsTheme"][value="dark"]').check();await page.locator('[name="settingsWallpaper"][value="aurora"]').check();
-            await page.locator('[name="settingsOS"][value="macos"]').check();await page.locator('[name="settingsWallpaper"][value="dawn"]').check();
-            await page.locator('[name="settingsOS"][value="windows"]').check();assert.ok(await page.locator('[name="settingsTheme"][value="dark"]').isChecked());assert.ok(await page.locator('[name="settingsWallpaper"][value="aurora"]').isChecked());
-            await page.reload({waitUntil:'networkidle'});assert.equal(await page.locator('html').getAttribute('data-wallpaper'),'aurora');assert.equal(await page.locator('html').getAttribute('data-theme'),'dark');
-            await page.evaluate(()=>openWin('settings'));await page.locator('[name="settingsOS"][value="macos"]').check();assert.ok(await page.locator('[name="settingsTheme"][value="light"]').isChecked());assert.ok(await page.locator('[name="settingsWallpaper"][value="dawn"]').isChecked());
         });
         await scenario('nickname and signature edits update an open draft while signed documents remain immutable',async page=>{
             await draft(page);await signContract(page);const signed=await page.evaluate(()=>JSON.stringify(contractBook.records[0]));
@@ -91,33 +70,25 @@ const server=http.createServer(async(req,res)=>{
         });
         await scenario('malformed appearance settings fall back safely without resetting game progress',async page=>{
             await page.evaluate(()=>{balance=654321;save();localStorage.setItem('appearance','{"os":"__proto__","themes":{"windows":"bad"},"wallpapers":{"windows":"../../bad"}}');});await page.reload({waitUntil:'networkidle'});
-            assert.equal(await page.locator('html').getAttribute('data-os'),'windows');assert.equal(await page.locator('html').getAttribute('data-theme'),'light');assert.equal(await page.locator('html').getAttribute('data-wallpaper'),'ribbons');assert.equal(await page.evaluate(()=>balance),654321);
+            assert.equal(await page.locator('html').getAttribute('data-os'),'perekup');assert.equal(await page.locator('html').getAttribute('data-theme'),'light');assert.equal(await page.locator('html').getAttribute('data-wallpaper'),'embankment');assert.equal(await page.evaluate(()=>balance),654321);
         });
-        await scenario('all styles and six dock controls fit a narrow phone and signature drawing supports touch',async page=>{
+        await scenario('single OS dock and settings fit a narrow phone and signature drawing supports touch',async page=>{
             await page.locator('#taskList [data-app="settings"]').tap();
-            for(const os of ['windows','macos','linux']){await page.locator('[name="settingsOS"][value="'+os+'"]').check();assert.ok(await page.locator('#taskList').evaluate(el=>el.scrollWidth<=el.clientWidth));assert.ok(await page.locator('.settings-body').evaluate(el=>el.scrollWidth<=el.clientWidth));}
-            const boxes=await page.locator('.desk-icon').evaluateAll(els=>els.map(el=>({x:el.offsetLeft,y:el.offsetTop,w:el.offsetWidth,h:el.offsetHeight})));for(let i=0;i<boxes.length;i++)for(let j=i+1;j<boxes.length;j++){const a=boxes[i],b=boxes[j];assert.ok(a.x+a.w<=b.x || b.x+b.w<=a.x || a.y+a.h<=b.y || b.y+b.h<=a.y);}
+            assert.equal(await page.locator('[name="settingsOS"]').count(),0);
+            assert.ok(await page.locator('#taskbar').evaluate(el=>el.getBoundingClientRect().right<=innerWidth));
+            assert.ok(await page.locator('.settings-body').evaluate(el=>el.scrollWidth<=el.clientWidth));
             await page.locator('#settingsEditSignature').tap();await page.locator('#settingsSignatureCanvas').scrollIntoViewIfNeeded();
             const b=await page.locator('#settingsSignatureCanvas').boundingBox(),session=await page.context().newCDPSession(page);await session.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{x:b.x+b.width*.1,y:b.y+b.height*.3}]});for(let i=1;i<=8;i++)await session.send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[{x:b.x+b.width*(.1+.7*i/8),y:b.y+b.height*(.3+.3*i/8)}]});await session.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});await session.detach();
             await page.locator('#settingsSaveSignature').tap();assert.ok(await page.locator('#settingsSignatureEditor').isHidden());assert.ok(await page.evaluate(()=>validSignature(playerIdentity.signature)));
             await page.evaluate(()=>{document.getElementById('toasts').innerHTML='';document.querySelector('.settings-body').scrollTop=0;});await page.locator('#win-settings').evaluate(el=>Promise.all(el.getAnimations().map(a=>a.finished)));await page.screenshot({path:'/workspace/scratch/3151c7eebd10/settings-mobile.png'});
         },{viewport:{width:320,height:640},isMobile:true,hasTouch:true});
-        await scenario('removed live wallpaper choices fall back to static backgrounds without losing the profile or themes',async page=>{
-            const before=await page.evaluate(()=>({identity:playerIdentity,balance}));
-            await page.evaluate(()=>localStorage.setItem('appearance',JSON.stringify({os:'linux',themes:{windows:'dark',macos:'dark',linux:'light'},wallpapers:{windows:'winter-night',macos:'winter-night',linux:'winter-night'}})));
+        await scenario('old OS preferences migrate without losing profile or balance',async page=>{
+            const before=await page.evaluate(()=>JSON.stringify({identity:playerIdentity,balance}));
+            await page.evaluate(()=>localStorage.setItem('appearance',JSON.stringify({os:'linux',themes:{linux:'dark'},wallpapers:{linux:'winter-night'}})));
             await page.reload({waitUntil:'networkidle'});
-            assert.equal(await page.locator('video').count(),0);
-            assert.deepEqual(await page.evaluate(()=>appearance.wallpapers),{windows:'ribbons',macos:'valley',linux:'facets'});
-            assert.deepEqual(await page.evaluate(()=>({identity:playerIdentity,balance})),before);
-            await page.evaluate(()=>openWin('settings'));
-            for(const os of ['windows','macos','linux']){
-                await page.locator('[name="settingsOS"][value="'+os+'"]').check();
-                assert.equal(await page.locator('[name="settingsWallpaper"]').count(),2);
-                assert.equal(await page.locator('#settingsWallpapers img').count(),2);
-                await page.waitForFunction(()=>Array.from(document.querySelectorAll('#settingsWallpapers img')).every(img=>img.complete && img.naturalWidth>0));
-                assert.equal(await page.locator('html').getAttribute('data-theme'),os==='linux'?'light':'dark');
-            }
-            await page.screenshot({path:'/workspace/scratch/3151c7eebd10/static-wallpaper-settings.png'});
+            assert.equal(await page.locator('html').getAttribute('data-os'),'perekup');
+            assert.equal(await page.locator('html').getAttribute('data-wallpaper'),'embankment');
+            assert.equal(await page.evaluate(()=>JSON.stringify({identity:playerIdentity,balance})),before);
         });
         console.log(passed+' settings scenarios passed');
     }finally{await browser.close();await new Promise(resolve=>server.close(resolve));}

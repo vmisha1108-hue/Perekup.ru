@@ -20,15 +20,15 @@ function toggleWindowMaximize(id){
 }
 function arrangeConversationWindows(){
     if(innerWidth<1100)return;
-    var desk=getDeskRect(),talk=$('win-chat'),market=$('win-market'),gap=24;
-    var side=Math.min(440,Math.max(350,desk.width*.28));
-    var height=Math.min(640,desk.height-32),left=(desk.width-side)/2,top=Math.max(16,(desk.height-height)/2);
+    var desk=getDeskRect(),talk=$('win-chat'),market=$('win-market'),gap=16;
+    var side=Math.min(310,Math.max(280,desk.width*.2));
+    var height=Math.min(600,desk.height-64),left=(desk.width-side)/2,top=Math.max(16,(desk.height-height)/2);
     if(market.classList.contains('open') && !market._restoreGeometry){
         // Keep the user's smaller size and cap old, oversized saved windows.
-        var width=Math.min(market.offsetWidth,850,desk.width-244-side-gap*2);
+        var width=Math.min(1120,desk.width-145-side-gap*2);
         var marketHeight=Math.min(market.offsetHeight,desk.height-32);
         var groupWidth=width+gap+side;
-        var marketLeft=Math.min(Math.max(244,(desk.width-groupWidth)/2),desk.width-groupWidth-gap);
+        var marketLeft=Math.min(Math.max(130,(desk.width-groupWidth)/2),desk.width-groupWidth-gap);
         top=Math.max(16,(desk.height-Math.max(height,marketHeight))/2);left=marketLeft+width+gap;
         Object.assign(market.style,{left:marketLeft+'px',top:top+'px',width:width+'px',height:marketHeight+'px'});market.dataset.hasPos='1';
         clampWindow(market);saveWindowState('market',market);

@@ -48,7 +48,7 @@ function openWin(id){
     var desk = getDeskRect();
 
     if(!w.dataset.hasPos){
-        var saved = getWindowState(id);
+        var saved = localStorage.getItem('perekupOSLayout')==='1'?getWindowState(id):null;
         w.classList.add("open");
         w.classList.remove("minimized");
         w.style.visibility = "hidden";
@@ -147,7 +147,7 @@ function focusWin(id){
 function renderTaskbar(){
     var list=$("taskList");
     if(!list.children.length){
-        ["market","help","calc","calendar","clock","settings"].forEach(function(id){
+        ["market","garage","travel","bank","documents","settings"].forEach(function(id){
             var icon=ICONS.find(function(item){return item.id===id;}),button=document.createElement("button");
             button.type="button";button.dataset.app=id;button.title=icon.label;
             button.setAttribute("aria-label",icon.label);button.innerHTML='<span class="task-icon">'+appIconSvg(id)+'</span><span class="task-label">'+icon.label+'</span>';list.appendChild(button);
