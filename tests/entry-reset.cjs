@@ -28,7 +28,7 @@ const server=http.createServer(async(req,res)=>{
             assert.equal(await page.evaluate(()=>startupResetPending),false);
             await page.evaluate(()=>{garage=[1];purchasePrices[1]=95000;changeBalance(650000,'Доход','income');save();});
             await page.reload({waitUntil:'networkidle'});
-            assert.ok(!await page.locator('#entryResetOverlay').isVisible());assert.equal(await page.evaluate(()=>startupResetPending),false);
+            await page.locator('#entryResetOverlay').waitFor({state:'hidden'});assert.equal(await page.evaluate(()=>startupResetPending),false);
             assert.equal(await page.evaluate(()=>balance),750000);assert.deepEqual(await page.evaluate(()=>garage),[1]);assert.equal(await page.evaluate(()=>purchasePrices[1]),95000);
             await page.evaluate(()=>{testNow+=1000;tickGame();});assert.equal(await page.evaluate(()=>gameMs),await page.evaluate(()=>Number(localStorage.getItem('gameMs'))+60000));
         },{noPrompt:true});
@@ -57,23 +57,23 @@ const server=http.createServer(async(req,res)=>{
             await page.reload({waitUntil:'networkidle'});assert.ok(await page.locator('#collectorOverlay').isVisible());await page.locator('#entryReset').click();await completeIdentity(page);
             const data=await page.evaluate(()=>({balance,garage,deals,garageLvl,notes,pending,loans:bank.loans,docs:contractBook.records,retired:retiredMarketCars,city:transport.cityId,moscow:moscowCity.id,gameMs,now:Date.now(),collector:bank.collectors.active}));
             assert.equal(data.balance,100000);assert.deepEqual(data.garage,[]);assert.equal(data.deals,0);assert.equal(data.garageLvl,0);assert.deepEqual(data.notes,{});assert.deepEqual(data.pending,[]);assert.deepEqual(data.loans,[]);assert.deepEqual(data.docs,[]);assert.deepEqual(data.retired,[]);assert.equal(data.city,data.moscow);assert.equal(data.gameMs,data.now);assert.equal(data.collector,false);
-            assert.ok(!await page.locator('#collectorOverlay').isVisible());assert.ok(!await page.locator('#entryResetOverlay').isVisible());
+            await page.locator('#collectorOverlay').waitFor({state:'hidden'});await page.locator('#entryResetOverlay').waitFor({state:'hidden'});
             await page.reload({waitUntil:'networkidle'});assert.ok(await page.locator('#entryResetOverlay').isVisible());assert.equal(await page.evaluate(()=>balance),100000);
         });
         await scenario('Escape continues safely and never hangs up a saved collector call underneath the entry dialog',async page=>{
             await page.locator('#entryContinue').click();await completeIdentity(page);await collectorFixture(page);const before=await page.evaluate(()=>({gameMs,call:bank.collectors.call}));
-            await page.reload({waitUntil:'networkidle'});await page.keyboard.press('Escape');assert.ok(!await page.locator('#entryResetOverlay').isVisible());assert.ok(await page.locator('#collectorOverlay').isVisible());
+            await page.reload({waitUntil:'networkidle'});await page.keyboard.press('Escape');await page.locator('#entryResetOverlay').waitFor({state:'hidden'});assert.ok(await page.locator('#collectorOverlay').isVisible());
             assert.equal(await page.evaluate(()=>gameMs),before.gameMs);assert.deepEqual(await page.evaluate(()=>bank.collectors.call),before.call);assert.equal(await page.evaluate(()=>document.activeElement.id),'collectorHangup');
-            await page.keyboard.press('Escape');assert.ok(!await page.locator('#collectorOverlay').isVisible());assert.equal(await page.evaluate(()=>gameMs),before.gameMs+before.call.minutes*60000);
+            await page.keyboard.press('Escape');await page.locator('#collectorOverlay').waitFor({state:'hidden'});assert.equal(await page.evaluate(()=>gameMs),before.gameMs+before.call.minutes*60000);
         });
         await scenario('the new-player help appears after the reset offer and is not repeated on later entries',async page=>{
-            assert.ok(!await page.locator('#welcomeOverlay').isVisible());await page.locator('#entryContinue').click();await completeIdentity(page);assert.ok(await page.locator('#welcomeOverlay').isVisible());await page.locator('#welcomeLater').click();
-            await page.reload({waitUntil:'networkidle'});assert.ok(await page.locator('#entryResetOverlay').isVisible());await page.locator('#entryContinue').click();await completeIdentity(page);assert.ok(!await page.locator('#welcomeOverlay').isVisible());
+            await page.locator('#welcomeOverlay').waitFor({state:'hidden'});await page.locator('#entryContinue').click();await completeIdentity(page);assert.ok(await page.locator('#welcomeOverlay').isVisible());await page.locator('#welcomeLater').click();
+            await page.reload({waitUntil:'networkidle'});assert.ok(await page.locator('#entryResetOverlay').isVisible());await page.locator('#entryContinue').click();await completeIdentity(page);await page.locator('#welcomeOverlay').waitFor({state:'hidden'});
         },{firstVisit:true});
         await scenario('the entry dialog fits a phone, traps focus and defaults to keeping the save',async page=>{
             const box=await page.locator('.entry-reset-card').boundingBox();assert.ok(box.x>=0 && box.x+box.width<=321 && box.y>=0 && box.y+box.height<=641);
             assert.ok(await page.locator('.entry-reset-card').evaluate(el=>el.scrollWidth<=el.clientWidth));await page.keyboard.press('Shift+Tab');assert.equal(await page.evaluate(()=>document.activeElement.id),'entryReset');await page.keyboard.press('Tab');assert.equal(await page.evaluate(()=>document.activeElement.id),'entryContinue');
-            await page.screenshot({path:'/workspace/scratch/3151c7eebd10/entry-reset-mobile.png'});await page.keyboard.press('Enter');assert.ok(!await page.locator('#entryResetOverlay').isVisible());assert.equal(await page.evaluate(()=>balance),100000);
+            await page.screenshot({path:'/workspace/scratch/3151c7eebd10/entry-reset-mobile.png'});await page.keyboard.press('Enter');await page.locator('#entryResetOverlay').waitFor({state:'hidden'});assert.equal(await page.evaluate(()=>balance),100000);
         },{viewport:{width:320,height:640}});
         console.log(passed+' entry reset scenarios passed');
     }finally{await browser.close();await new Promise(resolve=>server.close(resolve));}

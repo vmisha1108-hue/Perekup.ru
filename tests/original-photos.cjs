@@ -1,7 +1,7 @@
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),http=require('node:http'),crypto=require('node:crypto');
 const {chromium}=require('playwright'),{installEntryContinue}=require('./helpers/entry.cjs');
 const root=path.resolve(__dirname,'..');
-const server=http.createServer((req,res)=>{const name=new URL(req.url,'http://local').pathname,file=path.resolve(root,'.'+(name==='/'?'/index.html':name));if(!file.startsWith(root+path.sep))return res.writeHead(403).end();try{res.writeHead(200,{'Content-Type':({'.html':'text/html','.js':'text/javascript','.css':'text/css','.webp':'image/webp','.jpg':'image/jpeg'})[path.extname(file)]||'application/octet-stream'}).end(fs.readFileSync(file));}catch{res.writeHead(404).end();}});
+const server=require('./helpers/static-server.cjs').createStaticServer(root);
 (async()=>{await new Promise(r=>server.listen(0,'127.0.0.1',r));const browser=await chromium.launch({executablePath:process.env.CHROMIUM_PATH||'/usr/bin/chromium',args:['--no-sandbox']});try{
  const page=await browser.newPage(),errors=[];installEntryContinue(page);page.on('pageerror',e=>errors.push(e.message));await page.addInitScript(()=>{localStorage.setItem('helpPromptSeen','1');localStorage.setItem('musicSettings','{"enabled":false}');Math.random=()=>.9;});await page.goto('http://127.0.0.1:'+server.address().port,{waitUntil:'networkidle'});
  const photos=await page.evaluate(()=>CARS.filter(c=>!c.expanded && !c.aldanNew && !c.blagNew).map(c=>({id:c.id,src:c.img,city:CITY_BY_ID[c.cityId].name,markup:carImg(c)})));

@@ -1,10 +1,6 @@
 const assert=require('node:assert/strict'),fs=require('node:fs/promises'),path=require('node:path'),http=require('node:http');
 const {chromium}=require('playwright'),{installEntryContinue}=require('./helpers/entry.cjs'),{signContract}=require('./helpers/contracts.cjs');
-const root=path.resolve(__dirname,'..'),server=http.createServer(async(req,res)=>{
- const name=new URL(req.url,'http://local').pathname,file=path.resolve(root,'.'+(name==='/'?'/index.html':name));
- if(!file.startsWith(root+path.sep))return res.writeHead(403).end();
- try{res.writeHead(200,{'Content-Type':({'.html':'text/html','.js':'text/javascript','.css':'text/css','.webp':'image/webp'})[path.extname(file)]||'application/octet-stream'}).end(await fs.readFile(file));}catch{res.writeHead(404).end();}
-});
+const root=path.resolve(__dirname,'..'),server=require('./helpers/static-server.cjs').createStaticServer(root);
 (async()=>{await new Promise(r=>server.listen(0,'127.0.0.1',r));const browser=await chromium.launch({executablePath:process.env.CHROMIUM_PATH||'/usr/bin/chromium',args:['--no-sandbox']}),url='http://127.0.0.1:'+server.address().port;let passed=0;
  async function scenario(name,run,viewport={width:1280,height:900}){const context=await browser.newContext({viewport}),page=await context.newPage(),errors=[];installEntryContinue(page);page.on('pageerror',e=>errors.push(e.message));await page.addInitScript(()=>{localStorage.setItem('helpPromptSeen','1');localStorage.setItem('musicSettings','{"enabled":false}');Date.now=()=>new Date(2030,0,15,12).getTime();Math.random=()=>.9;});try{await page.goto(url,{waitUntil:'networkidle'});await run(page);assert.deepEqual(errors,[]);passed++;console.log('PASS '+name);}finally{await context.close();}}
  async function meeting(page,changes={},id=1){await page.evaluate(({changes,id})=>{

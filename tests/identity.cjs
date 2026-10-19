@@ -27,8 +27,8 @@ const server=http.createServer(async(req,res)=>{
             const before=await page.evaluate(()=>gameMs);await page.evaluate(()=>{testNow+=60000;tickGame();tickPending();});assert.equal(await page.evaluate(()=>gameMs),before);
             await page.locator('#identitySave').click();assert.match(await page.locator('#identityError').textContent(),/ник/);await page.locator('#identityNickname').fill('Перекуп_77');await page.locator('#identitySave').click();assert.match(await page.locator('#identityError').textContent(),/Нарисуйте/);
             await page.keyboard.press('Escape');assert.ok(await page.locator('#identityOverlay').isVisible());assert.equal(await page.evaluate(()=>playerIdentity),null);
-            await completeIdentity(page,'Перекуп_77');assert.ok(!await page.locator('#identityOverlay').isVisible());assert.equal(await page.evaluate(()=>playerIdentity.nickname),'Перекуп_77');assert.ok(await page.evaluate(()=>validSignature(playerIdentity.signature)));
-            await page.reload({waitUntil:'networkidle'});assert.ok(!await page.locator('#identityOverlay').isVisible());assert.equal(await page.evaluate(()=>startupResetPending),false);
+            await completeIdentity(page,'Перекуп_77');await page.locator('#identityOverlay').waitFor({state:'hidden'});assert.equal(await page.evaluate(()=>playerIdentity.nickname),'Перекуп_77');assert.ok(await page.evaluate(()=>validSignature(playerIdentity.signature)));
+            await page.reload({waitUntil:'networkidle'});await page.locator('#identityOverlay').waitFor({state:'hidden'});assert.equal(await page.evaluate(()=>startupResetPending),false);
         });
         await scenario('nickname and signature are used for both buying and selling and retained in signed documents',async page=>{
             await completeIdentity(page,'Перекуп_77');const identity=await page.evaluate(()=>playerIdentity);
@@ -39,7 +39,7 @@ const server=http.createServer(async(req,res)=>{
         });
         await scenario('resetting game progress never erases or reopens the saved player identity',async page=>{
             await completeIdentity(page,'Водитель_9');const identity=await page.evaluate(()=>playerIdentity);page.once('dialog',d=>d.accept());await page.evaluate(()=>admReset());assert.deepEqual(await page.evaluate(()=>playerIdentity),identity);assert.equal(await page.evaluate(()=>contractBook.profile.fullName),'Водитель_9');
-            await page.reload({waitUntil:'networkidle'});assert.ok(!await page.locator('#identityOverlay').isVisible());assert.deepEqual(await page.evaluate(()=>playerIdentity),identity);
+            await page.reload({waitUntil:'networkidle'});await page.locator('#identityOverlay').waitFor({state:'hidden'});assert.deepEqual(await page.evaluate(()=>playerIdentity),identity);
             await page.evaluate(()=>{document.getElementById('identityNickname').value='Другой';savePlayerIdentity();});assert.deepEqual(await page.evaluate(()=>playerIdentity),identity);
         });
         await scenario('returning players choose their identity without losing existing cash and ownership',async page=>{
@@ -71,7 +71,7 @@ const server=http.createServer(async(req,res)=>{
             assert.equal(await page.locator('#taskList').evaluate(el=>el.scrollWidth<=el.clientWidth),true);
             for(const app of apps){const button=page.locator('#taskList [data-app="'+app+'"]');await button.tap();assert.ok(await page.locator('#win-'+app).isVisible());await page.locator('#win-'+app+' [data-min]').tap();await button.tap();assert.ok(await page.locator('#win-'+app).isVisible());await page.locator('#win-'+app+' [data-close]').tap();}
             await page.locator('.desk-icon[data-app="bank"]').tap();assert.ok(await page.locator('#win-bank').isVisible());assert.equal(await page.locator('#taskList button').count(),6);
-            await page.reload({waitUntil:'networkidle'});assert.ok(!await page.locator('#identityOverlay').isVisible());assert.equal(await page.evaluate(()=>playerIdentity.nickname),'Телефон_77');
+            await page.reload({waitUntil:'networkidle'});await page.locator('#identityOverlay').waitFor({state:'hidden'});assert.equal(await page.evaluate(()=>playerIdentity.nickname),'Телефон_77');
         },{width:320,height:640},undefined,{isMobile:true,hasTouch:true,deviceScaleFactor:3,userAgent:'Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/154.0.0.0 Mobile Safari/537.36'});
         console.log(passed+' identity scenarios passed');
     }finally{await browser.close();await new Promise(resolve=>server.close(resolve));}

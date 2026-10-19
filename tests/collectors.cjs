@@ -79,7 +79,7 @@ const server=http.createServer(async(req,res)=>{
             await page.evaluate(()=>{Math.random=()=>0;bank.collectors.nextEventAt=gameMs;tickPending();});
             assert.ok(await page.locator('#collectorOverlay').isVisible());
             await page.evaluate(()=>{changeBalance(loanDebt(bankActive('micro'))+1,'Продажа машины','sale');tickPending();});
-            assert.equal(await page.evaluate(()=>bankActive('micro')),null);assert.ok(!await page.locator('#collectorOverlay').isVisible());
+            assert.equal(await page.evaluate(()=>bankActive('micro')),null);await page.locator('#collectorOverlay').waitFor({state:'hidden'});
             assert.equal(await page.evaluate(()=>balance),1);assert.equal(await page.evaluate(()=>collectorBuyerMultiplier()),1);
             assert.equal(await page.evaluate(()=>bank.entries.filter(e=>e.kind==='repayment').length),1);
         });
@@ -127,7 +127,7 @@ const server=http.createServer(async(req,res)=>{
             assert.match(await page.locator('.collector-panel').textContent(),/Постоянное давление/);
             page.once('dialog',d=>d.accept());await page.evaluate(()=>admReset());
             assert.ok(!await page.evaluate(()=>bank.collectors.active));assert.equal(await page.evaluate(()=>bank.collectors.log.length),0);
-            assert.ok(!await page.locator('#collectorOverlay').isVisible());
+            await page.locator('#collectorOverlay').waitFor({state:'hidden'});
         });
         await scenario('both overdue loan kinds keep pressure until all aged arrears are cleared',async page=>{
             await page.evaluate(()=>{
@@ -153,7 +153,7 @@ const server=http.createServer(async(req,res)=>{
             await page.keyboard.press('Shift+Tab');assert.equal(await page.evaluate(()=>document.activeElement.id),'collectorOpenBank');
             await page.keyboard.press('Tab');assert.equal(await page.evaluate(()=>document.activeElement.id),'collectorHangup');
             await page.screenshot({path:'/workspace/scratch/3151c7eebd10/collector-mobile.png'});
-            await page.keyboard.press('Escape');assert.ok(!await page.locator('#collectorOverlay').isVisible());
+            await page.keyboard.press('Escape');await page.locator('#collectorOverlay').waitFor({state:'hidden'});
             assert.ok(await page.evaluate(()=>findPending('mobile-meet')));assert.ok(await page.evaluate(()=>chat.met && !chat.done));
         },{width:390,height:844});
         console.log(passed+' collector scenarios passed');

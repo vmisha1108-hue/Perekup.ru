@@ -156,7 +156,8 @@ const server = http.createServer((req, res) => {
         await page.locator('#fRadius').selectOption('0');
         assert.equal(await page.locator('#content .card').count(), 60);
         await page.locator('#marketMore').click();
-        assert.equal(await page.locator('#content .card').count(), 120);
+        const moscowCount=data.CARS.filter(car=>car.cityId===moscow.id).length;
+        assert.equal(await page.locator('#content .card').count(), Math.min(120,moscowCount));
         await page.locator('#fRadius').selectOption('500');
         await page.locator('#fSort').selectOption('distance_asc');
         await page.locator('#marketMore').click();

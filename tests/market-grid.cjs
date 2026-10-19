@@ -1,10 +1,6 @@
 const assert=require('node:assert/strict'),fs=require('node:fs/promises'),path=require('node:path'),http=require('node:http'),vm=require('node:vm'),crypto=require('node:crypto');
 const {chromium}=require('playwright'),{installEntryContinue}=require('./helpers/entry.cjs');
-const root=path.resolve(__dirname,'..'),server=http.createServer(async(req,res)=>{
- const name=new URL(req.url,'http://local').pathname,file=path.resolve(root,'.'+(name==='/'?'/index.html':name));
- if(!file.startsWith(root+path.sep))return res.writeHead(403).end();
- try{res.writeHead(200,{'Content-Type':({'.html':'text/html','.css':'text/css','.js':'text/javascript','.jpg':'image/jpeg','.webp':'image/webp'})[path.extname(file)]||'application/octet-stream'}).end(await fs.readFile(file));}catch{res.writeHead(404).end();}
-});
+const root=path.resolve(__dirname,'..'),server=require('./helpers/static-server.cjs').createStaticServer(root);
 (async()=>{
  const data=vm.createContext({});for(const name of ['cars.js','cities.js','regional-cars.js','custom-cars.js','expanded-cars.js','aldan-cars.js','blagoveshchensk-cars.js','city-market.js'])vm.runInContext(await fs.readFile(path.join(root,name),'utf8'),data);
  assert.equal(data.CARS.length,1037);for(const car of data.CARS)assert.ok((await fs.stat(path.join(root,car.img))).size>0,car.name+' has a local image');
