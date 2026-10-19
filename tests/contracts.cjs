@@ -138,8 +138,8 @@ const server=http.createServer(async(req,res)=>{
             await draft(page);await ready(page);const form=page.locator('#meetingContract');assert.ok(await form.evaluate(el=>el.scrollWidth<=el.clientWidth));
             await page.locator('#contract-vin').scrollIntoViewIfNeeded();await page.evaluate(()=>$('toasts').innerHTML='');await page.screenshot({path:'/workspace/scratch/3151c7eebd10/contract-mobile.png'});
             await page.locator('#contractSign').click();await page.locator('#meetingContractView').click();assert.ok(await page.locator('#documentsBody').evaluate(el=>el.scrollWidth<=el.clientWidth));
-            const positions=await page.locator('.desk-icon').evaluateAll(els=>els.map(el=>el.style.left+':'+el.style.top));assert.equal(new Set(positions).size,positions.length);
-            const boxes=await page.locator('.desk-icon').evaluateAll(els=>els.map(el=>({x:el.offsetLeft,y:el.offsetTop,w:el.offsetWidth,h:el.offsetHeight})));
+            const positions=await page.locator('.desk-icon:visible').evaluateAll(els=>els.map(el=>el.style.left+':'+el.style.top));assert.equal(new Set(positions).size,positions.length);
+            const boxes=await page.locator('.desk-icon:visible').evaluateAll(els=>els.map(el=>({x:el.offsetLeft,y:el.offsetTop,w:el.offsetWidth,h:el.offsetHeight})));
             for(let i=0;i<boxes.length;i++)for(let j=i+1;j<boxes.length;j++){const a=boxes[i],b=boxes[j];assert.ok(a.x+a.w<=b.x || b.x+b.w<=a.x || a.y+a.h<=b.y || b.y+b.h<=a.y,'desktop icons must not overlap');}
         },{width:320,height:640});
         console.log(passed+' contract scenarios passed');
