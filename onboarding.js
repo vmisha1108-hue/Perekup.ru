@@ -11,6 +11,7 @@ var TUTORIAL_STEPS=[
  {title:'Вы готовы к первой сделке',icon:'clock',target:'#taskbar',text:'Калькулятор поможет посчитать расходы. В часах можно следить за игровым временем и спать ночью. В настройках меняются ник и подпись, там же можно скачать копию прогресса.',note:'Справка и повтор обучения всегда доступны через меню P. Удачной первой сделки!'}
 ];
 function showStartWelcome(){
+    if(firstVisit && !tutorialState())writeSaved('tutorialProgress',{version:1,status:'active',step:0});
     startupResetPending=true;lastRealMs=Date.now();$('identityOverlay').classList.remove('open');$('welcomeOverlay').classList.add('open');updateGameSpeed();
     $('welcomeHelp').focus({preventScroll:true});
 }

@@ -12,6 +12,10 @@ try{
   const before=await p.evaluate(()=>JSON.stringify({balance,garage,pending,gameMs,contractBook}));await p.evaluate(()=>{advanceGameTime(Date.now()+90000);tickGame();tickPending();});assert.equal(await p.evaluate(()=>JSON.stringify({balance,garage,pending,gameMs,contractBook})),before);
   await p.keyboard.press('Escape');assert.ok(await p.locator('#tutorialOverlay').isHidden());assert.equal(await p.evaluate(()=>document.getElementById('desktop').inert),false);await p.reload({waitUntil:'networkidle'});assert.ok(await p.locator('#welcomeOverlay').isHidden());assert.ok(await p.locator('#identityOverlay').isHidden());assert.ok(await p.locator('#tutorialOverlay').isHidden());
  });
+ await scenario('reload during welcome or profile still leads to the first tutorial after identity is saved',async p=>{
+  await p.reload({waitUntil:'networkidle'});assert.ok(await p.locator('#welcomeOverlay').isVisible());await p.locator('#welcomeHelp').click();await p.locator('#identityOverlay.open').waitFor({state:'visible'});
+  await p.reload({waitUntil:'networkidle'});assert.ok(await p.locator('#welcomeOverlay').isHidden());assert.ok(await p.locator('#identityOverlay').isVisible());await p.locator('#identityNickname').fill('Продолжение');await p.locator('#identitySignature').fill('TEST');await p.locator('#identitySave').click();assert.ok(await p.locator('#tutorialOverlay').isVisible());assert.equal(await p.evaluate(()=>tutorialIndex),0);await p.locator('#tutorialSkip').click();
+ });
  await scenario('all eight steps finish without transferring cars or money; interrupted step resumes on reload',async p=>{
   await profile(p);await p.locator('#tutorialNext').click();await p.locator('#tutorialNext').click();assert.equal(await p.evaluate(()=>tutorialIndex),2);await p.reload({waitUntil:'networkidle'});assert.equal(await p.evaluate(()=>tutorialIndex),2);assert.ok(await p.locator('#tutorialOverlay').isVisible());
   await p.locator('#tutorialBack').click();assert.equal(await p.evaluate(()=>tutorialIndex),1);
