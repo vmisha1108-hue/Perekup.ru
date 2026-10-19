@@ -1,0 +1,112 @@
+{
+  "filename": "Perekup-Portable-Windows-x64.zip",
+  "size": 481549489,
+  "sha256": "13aa2e2a9b40a2ae23a087f8e6a33c2bb42392e0e476af6a055e8d78bb96246c",
+  "parts": [
+    {
+      "name": "Perekup-Portable-Windows-x64.zip.part01",
+      "offset": 0,
+      "size": 33554432,
+      "sha256": "0976b29ed0c2aba38334d3f4d3c03499db2d3573ded489275409c080de037e59",
+      "git_blob_sha": "9809af647d607c63add488eb79bf3d6f18b05141"
+    },
+    {
+      "name": "Perekup-Portable-Windows-x64.zip.part02",
+      "offset": 33554432,
+      "size": 33554432,
+      "sha256": "dbd1d65052a6547c70c0261acc3edf806fb398b936b05d87f52806607897b271",
+      "git_blob_sha": "d696bbf048f91b42cc8b583c36124c9fe9a91865"
+    },
+    {
+      "name": "Perekup-Portable-Windows-x64.zip.part03",
+      "offset": 67108864,
+      "size": 33554432,
+      "sha256": "f1645261971182a1c1c0a63ec2aed9e721b9a76d51e14eab67e3d1d9b48e8cf0",
+      "git_blob_sha": "180ac7f2cbbc0550004f6de8766c9488a42b4fb2"
+    },
+    {
+      "name": "Perekup-Portable-Windows-x64.zip.part04",
+      "offset": 100663296,
+      "size": 33554432,
+      "sha256": "3eb513519c03df33a62900b4a7eea90bc136ad24e1c2f701efc41544d29e97f2",
+      "git_blob_sha": "d882676aa12ef20b8a31e383ad88d03921ac01fc"
+    },
+    {
+      "name": "Perekup-Portable-Windows-x64.zip.part05",
+      "offset": 134217728,
+      "size": 33554432,
+      "sha256": "92fbcbaf3469c8bc413664da2025c1709114f3f7105b27e6967ec6f8c485d114",
+      "git_blob_sha": "8c5e947eef3b6af1a6d32368437d7f9f5e8cb3bf"
+    },
+    {
+      "name": "Perekup-Portable-Windows-x64.zip.part06",
+      "offset": 167772160,
+      "size": 33554432,
+      "sha256": "263888b7711e6f12f713a19fcefe208e2f8fe9260f43f061839fce7ab24b503b",
+      "git_blob_sha": "9b811dc2d95f39aa839a986e854ff08c15c9f384"
+    },
+    {
+      "name": "Perekup-Portable-Windows-x64.zip.part07",
+      "offset": 201326592,
+      "size": 33554432,
+      "sha256": "e12374738203946828cb38343c9141e5e853fc45c7a3858efcded074bf7cc606",
+      "git_blob_sha": "4a1d45c3c95b7d8380c9ef8bc15f0f6a3e5edf55"
+    },
+    {
+      "name": "Perekup-Portable-Windows-x64.zip.part08",
+      "offset": 234881024,
+      "size": 33554432,
+      "sha256": "7284d292b9ac52e156fdafc25776ac39276c888fc77e289ccfff4bc8e4e913d9",
+      "git_blob_sha": "3ddf237287bcdeb07649183b4796e732c24a3690"
+    },
+    {
+      "name": "Perekup-Portable-Windows-x64.zip.part09",
+      "offset": 268435456,
+      "size": 33554432,
+      "sha256": "b3973fdc64f30e1b2ea74644ef5d9993dfc386a03ccb0b686b7d2d3c2507a408",
+      "git_blob_sha": "7f1c3d649abba3dc641c7fd3325a225d65015255"
+    },
+    {
+      "name": "Perekup-Portable-Windows-x64.zip.part10",
+      "offset": 301989888,
+      "size": 33554432,
+      "sha256": "fb54c1370b6834942800c3e11a92fd2c618bf4d5dbcb55a905ff6bb23722d756",
+      "git_blob_sha": "a023193e84390de010b4197a849decc549f8459b"
+    },
+    {
+      "name": "Perekup-Portable-Windows-x64.zip.part11",
+      "offset": 335544320,
+      "size": 33554432,
+      "sha256": "8ce8cee4addb128096b6365c7ccc6d8c9021cae5d291df4378403e9f55b3dbed",
+      "git_blob_sha": "2fd5df48e431df0ad2bf489fdbf16738748e5fb7"
+    },
+    {
+      "name": "Perekup-Portable-Windows-x64.zip.part12",
+      "offset": 369098752,
+      "size": 33554432,
+      "sha256": "b101b2474932b19181cc53d4eba2a285d49735b18c7b47d60ab0046f1fc22fe1",
+      "git_blob_sha": "aa8b18c1ba8d9119845ba04f4607d0b380a9fb24"
+    },
+    {
+      "name": "Perekup-Portable-Windows-x64.zip.part13",
+      "offset": 402653184,
+      "size": 33554432,
+      "sha256": "a4664ce6fd156c8cc8729a06a5c77cebc33682e6ea8e6d2b966ef6d590f6ced5",
+      "git_blob_sha": "4a9f1badec83558fd3bcaf341fddd09376e1624b"
+    },
+    {
+      "name": "Perekup-Portable-Windows-x64.zip.part14",
+      "offset": 436207616,
+      "size": 33554432,
+      "sha256": "ba25c77d5ff924ba8f380a3784c12ae3b62ae6b5afeed6797891ebd158e08280",
+      "git_blob_sha": "91acc28a236247621df812dad2b5d411c9d5eac0"
+    },
+    {
+      "name": "Perekup-Portable-Windows-x64.zip.part15",
+      "offset": 469762048,
+      "size": 11787441,
+      "sha256": "358e493eb33828ee77c1c180f364a847cc7cb6314b67d5b6bcbcab246d1826d1",
+      "git_blob_sha": "e9b646f53669ba81e3ddf71ef39242ad75dc78b2"
+    }
+  ]
+}
