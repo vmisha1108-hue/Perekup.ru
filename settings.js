@@ -1,7 +1,7 @@
 'use strict';
 
 var OS_STYLES={perekup:{label:'Perekup OS',theme:'light',wallpapers:[{id:'embankment',label:'Набережная'},{id:'aurora',label:'Сияние'}]}};
-var appearance=readSaved('appearance',{}),settingsStrokes=[],settingsPointer=null;
+var appearance=readSaved('appearance',{});
 function normalizeAppearance(value){
     value=value && typeof value==='object'?value:{};
     var result={version:2,os:'perekup',themes:{},wallpapers:{}};
@@ -48,7 +48,7 @@ function renderSettings(){
 function editPlayerIdentity(nickname,signature){
     nickname=String(nickname).trim().replace(/\s+/g,' ');
     if(!hasPlayerIdentity() || !validNickname(nickname))return 'Ник должен содержать от 2 до 32 символов.';
-    if(!validSignature(signature))return 'Нарисуйте подпись — одного нажатия недостаточно.';
+    if(!validSignature(signature))return 'Подпись — ровно 4 заглавные латинские буквы.';
     var identity={version:1,nickname:nickname,signature:JSON.parse(JSON.stringify(signature))};
     try{writeSaved('playerIdentity',identity);}catch(e){return 'Не удалось сохранить профиль. Проверьте хранилище браузера.';}
     playerIdentity=identity;
@@ -60,15 +60,8 @@ function editPlayerIdentity(nickname,signature){
     if(chat && chat.stage==='contract')renderContractForm(true);
     return '';
 }
-function redrawSettingsSignature(){
-    var canvas=$('settingsSignatureCanvas'),ctx=canvas.getContext('2d');ctx.clearRect(0,0,canvas.width,canvas.height);
-    ctx.strokeStyle='#173c63';ctx.lineWidth=4;ctx.lineCap='round';ctx.lineJoin='round';
-    settingsStrokes.forEach(function(line){ctx.beginPath();line.forEach(function(p,i){if(i)ctx.lineTo(p[0]*640,p[1]*240);else ctx.moveTo(p[0]*640,p[1]*240);});ctx.stroke();});
-}
 function finishSignatureEditing(){
-    var canvas=$('settingsSignatureCanvas');
-    if(settingsPointer!==null && canvas.hasPointerCapture(settingsPointer))canvas.releasePointerCapture(settingsPointer);
-    settingsPointer=null;settingsStrokes=[];redrawSettingsSignature();$('settingsSignatureEditor').hidden=true;$('settingsSignatureError').textContent='';
+    $('settingsSignatureWord').value='';$('settingsSignatureEditor').hidden=true;$('settingsSignatureError').textContent='';
 }
 function initSettings(){
     $('settingsAppearance').addEventListener('change',function(event){
@@ -81,24 +74,14 @@ function initSettings(){
         if(!error)toast('Ник сохранён. Подписанные договоры сохранили прежние данные.');
     });
     $('settingsEditSignature').addEventListener('click',function(){finishSignatureEditing();$('settingsSignatureEditor').hidden=false;});
-    var canvas=$('settingsSignatureCanvas');
-    function point(event){var r=canvas.getBoundingClientRect();return [clamp((event.clientX-r.left)/r.width,0,1),clamp((event.clientY-r.top)/r.height,0,1)];}
-    canvas.addEventListener('pointerdown',function(event){
-        if(settingsPointer!==null || (event.pointerType==='mouse' && event.button!==0) || settingsStrokes.length>=50)return;
-        event.preventDefault();settingsPointer=event.pointerId;canvas.setPointerCapture(event.pointerId);settingsStrokes.push([point(event)]);$('settingsSignatureError').textContent='';
-    });
-    canvas.addEventListener('pointermove',function(event){
-        if(event.pointerId!==settingsPointer)return;event.preventDefault();var line=settingsStrokes[settingsStrokes.length-1];if(line.length<2500)line.push(point(event));redrawSettingsSignature();
-    });
-    function end(event){if(event.pointerId!==settingsPointer)return;settingsPointer=null;settingsStrokes=settingsStrokes.filter(function(line){return line.length>=2;});redrawSettingsSignature();}
-    canvas.addEventListener('pointerup',end);canvas.addEventListener('pointercancel',end);canvas.addEventListener('lostpointercapture',end);
-    $('settingsClearSignature').addEventListener('click',function(){if(settingsPointer!==null && canvas.hasPointerCapture(settingsPointer))canvas.releasePointerCapture(settingsPointer);settingsPointer=null;settingsStrokes=[];redrawSettingsSignature();$('settingsSignatureError').textContent='';});
+    bindWordSignature($('settingsSignatureWord'));
     $('settingsCancelSignature').addEventListener('click',finishSignatureEditing);
+    $('settingsClearSignature').addEventListener('click',function(){$('settingsSignatureWord').value='';$('settingsSignatureWord').focus();});
     $('settingsSignatureForm').addEventListener('submit',function(event){
-        event.preventDefault();var error=editPlayerIdentity(playerIdentity.nickname,settingsStrokes);$('settingsSignatureError').textContent=error;
+        event.preventDefault();var signature=$('settingsSignatureWord').value.toUpperCase();
+        var error=validWordSignature(signature)?editPlayerIdentity(playerIdentity.nickname,signature):'Подпись — ровно 4 заглавные латинские буквы, например MIKE.';$('settingsSignatureError').textContent=error;
         if(!error){finishSignatureEditing();toast('Новая подпись сохранена для следующих договоров.');}
     });
-    $('settingsSaveSignature').addEventListener('pointerup',function(event){if(event.pointerType==='touch'){event.preventDefault();$('settingsSignatureForm').requestSubmit();}});
     $('settingsReset').addEventListener('click',function(){
         if(!confirm('Сбросить игровой прогресс? Деньги, машины, долги, встречи и договоры будут удалены. Ник, подпись, оформление и музыка сохранятся.'))return;
         resetGameProgress(true);finishSignatureEditing();renderSettings();toast('Прогресс сброшен. Вы начинаете со 100 000 ₽.');

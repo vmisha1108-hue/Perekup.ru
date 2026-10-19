@@ -2101,7 +2101,7 @@ function showDeals(){
 
 // проверяется каждый тик игрового времени
 function tickPending(){
-    if(startupResetPending || marketGameOver())return;
+    if(startupResetPending || onboardingActive || marketGameOver())return;
     tickTransport();
     tickBank();
     tickCommerce();
@@ -2328,16 +2328,12 @@ function closeWelcome(){
     updateGameSpeed();
 }
 function offerFirstVisitHelp(){
-    if(localStorage.getItem("helpPromptSeen")) return;
-    localStorage.setItem("helpPromptSeen", "1");
-    if(!firstVisit) return;
-    $("welcomeOverlay").classList.add("open");
-    updateGameSpeed("welcome");
-    $("welcomeHelp").focus();
+    offerStartTutorial();
+    localStorage.setItem('helpPromptSeen','1');
 }
 
 function advanceGameTime(now){
-    if(startupResetPending || marketGameOver()){lastRealMs=now;return;}
+    if(startupResetPending || onboardingActive || marketGameOver()){lastRealMs=now;return;}
     var delta = now - lastRealMs;
     lastRealMs = now;
     if(delta < 0) delta = 0;
@@ -2399,7 +2395,7 @@ function renderGameTime(){
 
 function tickGame(){
     var now = Date.now();
-    if(startupResetPending){lastRealMs=now;return;}
+    if(startupResetPending || onboardingActive){lastRealMs=now;return;}
     advanceGameTime(now);
     renderGameTime();
     if(chat && chat.stage === "schedule" && !meetingTimeEdited) setMeetingDefaults();
@@ -2650,11 +2646,6 @@ function bindAdmin(){
 function bindUI(){
     bindAdmin();
     $("sleepBtn").addEventListener("click", sleepUntilMorning);
-    $("welcomeHelp").addEventListener("click", function(){ closeWelcome(); openWin("help"); });
-    $("welcomeLater").addEventListener("click", closeWelcome);
-    document.addEventListener("keydown", function(e){
-        if(e.key === "Escape" && $("welcomeOverlay").classList.contains("open")) closeWelcome();
-    });
 
     buildIcons();
     attachIconHandlers();
@@ -2771,6 +2762,7 @@ window.addEventListener("DOMContentLoaded", function(){
     initTuning();
     initBackups();
     initEntryReset();
+    initOnboarding();
     initIdentity();
     initSettings();
     initDesktopVisuals();

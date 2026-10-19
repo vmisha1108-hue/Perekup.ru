@@ -365,20 +365,15 @@ const server = http.createServer(async (request, response) => {
             assert.deepEqual(await page.evaluate(() => garage), [1]);
             assert.equal(await page.evaluate(() => balance), 100000);
         });
-        await scenario('first visit suggests Help once and opens it', async page => {
-            await page.locator('#welcomeOverlay').waitFor({state:'visible'});
-            await page.locator('#welcomeHelp').click();
-            assert.equal(await page.locator('#win-help').evaluate(el => el.classList.contains('open')), true);
-            assert.ok((await page.locator('#win-help').textContent()).includes('22:00'));
-            assert.ok((await page.locator('#win-help').textContent()).includes('три игровых часа'));
-            await page.reload({ waitUntil: 'networkidle' });
-            assert.equal(await page.locator('#welcomeOverlay').evaluate(el => el.classList.contains('open')), false);
-        }, {firstVisit:true});
-        await scenario('first visit may skip Help and existing players are not prompted', async page => {
-            await page.locator('#welcomeLater').click();
-            assert.equal(await page.locator('#welcomeOverlay').evaluate(el => el.classList.contains('open')), false);
-            assert.equal(await page.locator('#win-help').evaluate(el => el.classList.contains('open')), false);
-        }, {firstVisit:true});
+        await scenario('first visit tutorial can be replayed from Help and does not reopen after reload',async page=>{
+            assert.equal(await page.evaluate(()=>tutorialState().status),'skipped');
+            await page.evaluate(()=>openWin('help'));await page.locator('#tutorialReplay').click();
+            assert.ok(await page.locator('#tutorialOverlay').isVisible());await page.locator('#tutorialSkip').click();
+            await page.reload({waitUntil:'networkidle'});assert.ok(await page.locator('#tutorialOverlay').isHidden());
+        },{firstVisit:true});
+        await scenario('first visit may skip the tutorial without losing its starting balance',async page=>{
+            assert.equal(await page.evaluate(()=>tutorialState().status),'skipped');assert.equal(await page.evaluate(()=>balance),100000);assert.ok(await page.locator('#tutorialOverlay').isHidden());
+        },{firstVisit:true});
         await scenario('existing saved game does not show first-visit prompt', async page => {
             assert.equal(await page.locator('#welcomeOverlay').evaluate(el => el.classList.contains('open')), false);
         }, {firstVisit:true, returningPlayer:true});

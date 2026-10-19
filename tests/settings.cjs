@@ -27,9 +27,8 @@ const server=http.createServer(async(req,res)=>{
             renderChat();scheduleMeeting();gameMs=chat.meet.whenMs;lastRealMs=Date.now();goToMeeting();gameMs=findPending(chat.pid).flow.inspectionUntil;tickPending();agreeEvent();
         },mode);
     }
-    async function draw(page){
-        const box=await page.locator('#settingsSignatureCanvas').boundingBox();await page.mouse.move(box.x+box.width*.1,box.y+box.height*.2);await page.mouse.down();await page.mouse.move(box.x+box.width*.8,box.y+box.height*.6,{steps:12});await page.mouse.up();
-    }
+    async function draw(page){await page.locator('#settingsSignatureWord').fill('NOVA');}
+
     try{
         await scenario('single Perekup OS has no platform selector and remembers theme and wallpaper',async page=>{
             await page.locator('#taskList [data-app="settings"]').click();
@@ -45,7 +44,7 @@ const server=http.createServer(async(req,res)=>{
             assert.equal(await page.evaluate(()=>JSON.stringify({balance,garage,pending,contractBook,playerIdentity})),before);
             assert.equal(await page.locator('#taskList button').count(),6);
         });
-        await scenario('nickname and signature edits update an open draft while signed documents remain immutable',async page=>{
+        await scenario('nickname and word signature edits update an open draft while signed documents remain immutable',async page=>{
             await draft(page);await signContract(page);const signed=await page.evaluate(()=>JSON.stringify(contractBook.records[0]));
             await page.evaluate(()=>closeChat());await draft(page,'sell');await page.locator('#contractAutofill').click();await page.locator('#contractConfirm').check();
             await page.evaluate(()=>openWin('settings'));await page.locator('#settingsNickname').fill('НовыйПерекуп');await page.locator('#settingsNicknameForm button').click();
@@ -55,11 +54,11 @@ const server=http.createServer(async(req,res)=>{
             await page.evaluate(()=>closeWin('settings'));await signContract(page);assert.equal(await page.evaluate(()=>contractBook.records[0].seller.fullName),'НовыйПерекуп');assert.deepEqual(await page.evaluate(()=>contractBook.records[0].seller.signature),identity.signature);
             await page.reload({waitUntil:'networkidle'});assert.deepEqual(await page.evaluate(()=>playerIdentity),identity);assert.equal(await page.evaluate(()=>JSON.stringify(contractBook.records[1])),signed);
         });
-        await scenario('invalid edits and cancelled signature drawings preserve the current identity',async page=>{
+        await scenario('invalid edits and cancelled word signature edits preserve the current identity',async page=>{
             await page.evaluate(()=>openWin('settings'));const before=await page.evaluate(()=>playerIdentity);
             await page.locator('#settingsNickname').fill('x');await page.locator('#settingsNicknameForm button').click();assert.match(await page.locator('#settingsNicknameError').textContent(),/2 до 32/);
-            await page.locator('#settingsEditSignature').click();await page.locator('#settingsSaveSignature').click();assert.match(await page.locator('#settingsSignatureError').textContent(),/Нарисуйте/);
-            await draw(page);await page.locator('#settingsCancelSignature').click();assert.deepEqual(await page.evaluate(()=>playerIdentity),before);await page.locator('#settingsEditSignature').click();assert.deepEqual(await page.evaluate(()=>settingsStrokes),[]);
+            await page.locator('#settingsEditSignature').click();await page.locator('#settingsSaveSignature').click();assert.match(await page.locator('#settingsSignatureError').textContent(),/4 заглавные латинские/);
+            await draw(page);await page.locator('#settingsCancelSignature').click();assert.deepEqual(await page.evaluate(()=>playerIdentity),before);await page.locator('#settingsEditSignature').click();assert.equal(await page.locator('#settingsSignatureWord').inputValue(),'');
         });
         await scenario('reset requires confirmation, clears progress and preserves identity, appearance and music preferences',async page=>{
             await draft(page);await signContract(page);await page.evaluate(()=>{closeChat();openWin('settings');changeAppearance('os','linux');changeAppearance('wallpaper','orbit');localStorage.setItem('musicSettings','{"enabled":false}');});
@@ -72,13 +71,12 @@ const server=http.createServer(async(req,res)=>{
             await page.evaluate(()=>{balance=654321;save();localStorage.setItem('appearance','{"os":"__proto__","themes":{"windows":"bad"},"wallpapers":{"windows":"../../bad"}}');});await page.reload({waitUntil:'networkidle'});
             assert.equal(await page.locator('html').getAttribute('data-os'),'perekup');assert.equal(await page.locator('html').getAttribute('data-theme'),'light');assert.equal(await page.locator('html').getAttribute('data-wallpaper'),'embankment');assert.equal(await page.evaluate(()=>balance),654321);
         });
-        await scenario('single OS dock and settings fit a narrow phone and signature drawing supports touch',async page=>{
+        await scenario('single OS dock and settings fit a narrow phone and word signatures support touch',async page=>{
             await page.locator('#taskList [data-app="settings"]').tap();
             assert.equal(await page.locator('[name="settingsOS"]').count(),0);
             assert.ok(await page.locator('#taskbar').evaluate(el=>el.getBoundingClientRect().right<=innerWidth));
             assert.ok(await page.locator('.settings-body').evaluate(el=>el.scrollWidth<=el.clientWidth));
-            await page.locator('#settingsEditSignature').tap();await page.locator('#settingsSignatureCanvas').scrollIntoViewIfNeeded();
-            const b=await page.locator('#settingsSignatureCanvas').boundingBox(),session=await page.context().newCDPSession(page);await session.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{x:b.x+b.width*.1,y:b.y+b.height*.3}]});for(let i=1;i<=8;i++)await session.send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[{x:b.x+b.width*(.1+.7*i/8),y:b.y+b.height*(.3+.3*i/8)}]});await session.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});await session.detach();
+            await page.locator('#settingsEditSignature').tap();await page.locator('#settingsSignatureWord').fill('WORD');
             await page.locator('#settingsSaveSignature').tap();assert.ok(await page.locator('#settingsSignatureEditor').isHidden());assert.ok(await page.evaluate(()=>validSignature(playerIdentity.signature)));
             await page.evaluate(()=>{document.getElementById('toasts').innerHTML='';document.querySelector('.settings-body').scrollTop=0;});await page.locator('#win-settings').evaluate(el=>Promise.all(el.getAnimations().map(a=>a.finished)));await page.screenshot({path:'/workspace/scratch/3151c7eebd10/settings-mobile.png'});
         },{viewport:{width:320,height:640},isMobile:true,hasTouch:true});

@@ -67,7 +67,7 @@ const server=http.createServer(async(req,res)=>{
             await page.keyboard.press('Escape');await page.locator('#collectorOverlay').waitFor({state:'hidden'});assert.equal(await page.evaluate(()=>gameMs),before.gameMs+before.call.minutes*60000);
         });
         await scenario('the new-player help appears after the reset offer and is not repeated on later entries',async page=>{
-            await page.locator('#welcomeOverlay').waitFor({state:'hidden'});await page.locator('#entryContinue').click();await completeIdentity(page);assert.ok(await page.locator('#welcomeOverlay').isVisible());await page.locator('#welcomeLater').click();
+            await page.locator('#welcomeOverlay').waitFor({state:'hidden'});await page.locator('#entryContinue').click();assert.ok(await page.locator('#welcomeOverlay').isVisible());await completeIdentity(page);assert.equal(await page.evaluate(()=>tutorialState().status),'skipped');
             await page.reload({waitUntil:'networkidle'});assert.ok(await page.locator('#entryResetOverlay').isVisible());await page.locator('#entryContinue').click();await completeIdentity(page);await page.locator('#welcomeOverlay').waitFor({state:'hidden'});
         },{firstVisit:true});
         await scenario('the entry dialog fits a phone, traps focus and defaults to keeping the save',async page=>{

@@ -8,15 +8,15 @@ function installEntryContinue(page){
     }
 }
 async function completeIdentity(page,nickname='Иванов Алексей Сергеевич'){
+    if(await page.locator('#welcomeOverlay.open').count()){await page.locator('#welcomeHelp').click();await page.locator('#identityOverlay.open').waitFor({state:'visible'});}
     const overlay=page.locator('#identityOverlay');
-    // A fading-out dialog can still be visible after its logical state closed.
-    if(!await page.locator('#identityOverlay.open').count()){await overlay.waitFor({state:'hidden'});return;}
-    await page.locator('#identityNickname').fill(nickname);
-    const box=await page.locator('#identityCanvas').boundingBox();
-    await page.mouse.move(box.x+box.width*.15,box.y+box.height*.55);await page.mouse.down();
-    await page.mouse.move(box.x+box.width*.35,box.y+box.height*.2,{steps:8});await page.mouse.move(box.x+box.width*.65,box.y+box.height*.7,{steps:8});await page.mouse.up();
-    await page.locator('#identitySave').click();
+    if(await page.locator('#identityOverlay.open').count()){
+        await page.locator('#identityNickname').fill(nickname);
+        await page.locator('#identitySignature').fill('TEST');
+        await page.locator('#identitySave').click();
+    }
     await overlay.waitFor({state:'hidden'});
+    if(await page.locator('#tutorialOverlay').isVisible())await page.locator('#tutorialSkip').click();
 }
 // Catalogue regression scenarios exercise the secondary controls explicitly.
 function installExpandedFilters(page){

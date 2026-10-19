@@ -87,7 +87,7 @@ function renderContractForm(force){
             contractField('plate','Государственный номер','Перепишите номер без изменения букв и цифр.','Номер из игровых документов',draft)+
             contractField('pts','Серия и номер ПТС','Паспорт транспортного средства — документ на машину.','ПТС из игровых документов',draft)+
             contractField('sts','Серия и номер СТС','Свидетельство о регистрации автомобиля.','СТС из игровых документов',draft)+'</div></fieldset>'+
-            '<div id="contractPreview">'+renderContractPreview(draft)+'</div><fieldset><legend>3. Ваша подпись</legend>'+signatureHtml(hasPlayerIdentity()?playerIdentity.signature:[], 'Сохранённая подпись игрока')+'<p class="signature-owner">'+esc(hasPlayerIdentity()?playerIdentity.nickname:'')+' · подпись, нарисованная при первом входе</p>'+
+            '<div id="contractPreview">'+renderContractPreview(draft)+'</div><fieldset><legend>3. Ваша подпись</legend>'+signatureHtml(hasPlayerIdentity()?playerIdentity.signature:[], 'Сохранённая подпись игрока')+'<p class="signature-owner">'+esc(hasPlayerIdentity()?playerIdentity.nickname:'')+' · ваша сохранённая подпись</p>'+
             '<label class="contract-confirm"><input type="checkbox" id="contractConfirm"'+(draft.acknowledged?' checked':'')+'>Я проверил данные и согласен с передачей автомобиля и суммы '+money(draft.price)+'.</label><p class="contract-muted">'+(draft.mode==='buy'?'Продавец':'Покупатель')+' '+esc(draft.other.fullName)+' подпишет договор вместе с вами.</p></fieldset>'+
             '<div class="contract-errors" id="contractErrors" role="alert" hidden></div><p id="contractFunds" class="contract-muted"></p><div class="contract-actions"><button type="submit" id="contractSign">Подписать и '+(draft.mode==='buy'?'купить':'продать')+' за '+money(draft.price)+'</button><button type="button" id="contractCancel">Отказаться от сделки</button></div><p class="contract-muted">Черновик сохраняется автоматически. Можно свернуть окно встречи. Закрытие встречи отменяет сделку.</p></form>';
     }
@@ -109,7 +109,7 @@ function contractErrors(draft){
     if(!/^\d{10}$/.test(contractNormal(f.passport).replace(/\s+/g,'')))errors.push({field:'passport',text:'В паспорте нужны 4 цифры серии и 6 цифр номера. Например: 4501 123456.'});
     if(contractNormal(f.address).length<8)errors.push({field:'address',text:'Допишите адрес регистрации персонажа: город, улицу и дом.'});
     ['vin','plate','pts','sts'].forEach(function(key){if(contractCode(f[key])!==contractCode(draft.vehicle[key]))errors.push({field:key,text:({vin:'VIN',plate:'Госномер',pts:'ПТС',sts:'СТС'})[key]+' не совпадает с игровыми документами автомобиля. Сверьте поле или воспользуйтесь помощью.'});});
-    if(!hasPlayerIdentity() || !validSignature(playerIdentity.signature))errors.push({text:'Для договора нужна сохранённая нарисованная подпись.'});
+    if(!hasPlayerIdentity() || !validSignature(playerIdentity.signature))errors.push({text:'Для договора нужна сохранённая подпись игрока.'});
     if(!draft.acknowledged)errors.push({field:'confirm',text:'Подтвердите, что проверили данные и согласны с условиями сделки.'});
     return errors;
 }
