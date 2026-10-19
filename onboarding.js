@@ -1,5 +1,6 @@
 'use strict';
 var onboardingActive=false,tutorialIndex=0,tutorialSaved=null,tutorialFocus=null,tutorialFrame=0;
+APP_ICON_PATHS.music='<path d="M9 18V5l11-2v13M9 9l11-2"/><ellipse cx="6" cy="18" rx="3" ry="2"/><ellipse cx="17" cy="16" rx="3" ry="2"/>';
 var TUTORIAL_STEPS=[
  {title:'Ваш рабочий стол',icon:'settings',target:'#taskbar',text:'Все приложения живут в Perekup OS. Внизу закреплены авторынок, гараж, календарь, калькулятор, часы и настройки. Кнопка P открывает полный список приложений.',note:'Обучение можно пропустить и пройти снова из справки.'},
  {title:'Найдите первую машину',icon:'market',app:'market',target:'.os-market-toolbar',text:'На авторынке выберите город, найдите марку или модель и откройте фильтры. Сравните цену, пробег и состояние. Сердечко сохраняет объявление в избранном.',note:'У вас 100 000 ₽ на старте. Оставляйте запас на осмотр, дорогу и возможный ремонт.'},
@@ -8,6 +9,7 @@ var TUTORIAL_STEPS=[
  {title:'Не опоздайте на встречу',icon:'calendar',app:'calendar',target:'.cal-head',text:'В календаре появятся назначенные встречи. Проверьте дату, время и город, затем отправляйтесь на осмотр. Для поездок в другой город откройте «Переезд» через меню P.',note:'В игре время идёт быстрее реального. Пока вы проходите обучение, оно остановлено.'},
  {title:'Осмотр и подпись',icon:'documents',app:'documents',target:'#win-documents .win-head',text:'На встрече осмотрите автомобиль и проверьте условия. Перед подписанием ДКП сверьте цену и данные машины. Деньги и автомобиль передаются после подписания, а договор сохраняется в «Документах».',demo:'signature',note:'Можно отказаться до подписания. В игре встречаются скрытые неисправности и угнанные машины.'},
  {title:'Подготовьте машину к продаже',icon:'garage',app:'garage',target:'#win-garage .win-head',text:'Купленная машина появится в гараже. Посмотрите её состояние и расходы, подготовьте к продаже и разместите объявление. Прибыль — это выручка за вычетом покупки и остальных затрат.',note:'Честно указывайте известные неисправности: это влияет на репутацию и дальнейшие сделки.'},
+ {title:'Музыка — по вашему желанию',icon:'music',target:'#musicToggle',text:'Кнопка ♪ в нижней панели включает и выключает фоновую музыку. Выбор сохраняется после перезагрузки. Попробуйте переключить её прямо здесь.',demo:'music',note:'Музыка запускается после вашего нажатия. Если звука нет, проверьте громкость устройства и разрешение звука в браузере.'},
  {title:'Вы готовы к первой сделке',icon:'clock',target:'#taskbar',text:'Калькулятор поможет посчитать расходы. В часах можно следить за игровым временем и спать ночью. В настройках меняются ник и подпись, там же можно скачать копию прогресса.',note:'Справка и повтор обучения всегда доступны через меню P. Удачной первой сделки!'}
 ];
 function showStartWelcome(){
@@ -43,7 +45,8 @@ function renderTutorial(){
     $('tutorialIcon').innerHTML=appIconSvg(step.icon);$('tutorialTitle').textContent=step.title;$('tutorialText').textContent=step.text;$('tutorialNote').textContent=step.note;
     $('tutorialProgress').value=tutorialIndex+1;$('tutorialProgress').max=TUTORIAL_STEPS.length;
     $('tutorialBack').disabled=tutorialIndex===0;$('tutorialNext').textContent=tutorialIndex===TUTORIAL_STEPS.length-1?'Начать играть →':'Далее →';
-    var demo=$('tutorialDemo');demo.hidden=!step.demo;demo.innerHTML=step.demo==='chat'?'<span class="tutorial-demo-label">ПРИМЕР · БЕЗ СДЕЛКИ</span><div class="tutorial-bubble">Здравствуйте! Машина ещё продаётся?</div><div class="tutorial-bubble seller">Да. Что хотите узнать?</div>':step.demo==='signature'?'<span class="tutorial-demo-label">ВАША ПОДПИСЬ В ДКП</span>'+signatureHtml(playerIdentity.signature,'Пример вашей подписи в договоре'):'';
+    var demo=$('tutorialDemo');demo.hidden=!step.demo;demo.innerHTML=step.demo==='chat'?'<span class="tutorial-demo-label">ПРИМЕР · БЕЗ СДЕЛКИ</span><div class="tutorial-bubble">Здравствуйте! Машина ещё продаётся?</div><div class="tutorial-bubble seller">Да. Что хотите узнать?</div>':step.demo==='music'?'<button type="button" id="tutorialMusicToggle" class="tutorial-music-toggle"></button>':step.demo==='signature'?'<span class="tutorial-demo-label">ВАША ПОДПИСЬ В ДКП</span>'+signatureHtml(playerIdentity.signature,'Пример вашей подписи в договоре'):'';
+    var musicButton=$('tutorialMusicToggle');if(musicButton){syncTutorialMusic();musicButton.addEventListener('click',function(){$('musicToggle').click();syncTutorialMusic();});}
     writeSaved('tutorialProgress',{version:1,status:'active',step:tutorialIndex});
     positionTutorialHighlight();requestAnimationFrame(positionTutorialHighlight);
     var win=step.app && $('win-'+step.app);if(win)Promise.all(win.getAnimations().map(function(a){return a.finished.catch(function(){});})).then(positionTutorialHighlight);
@@ -66,7 +69,9 @@ function finishTutorial(skipped){
     else $('taskList').querySelector('button').focus({preventScroll:true});
     tutorialSaved=null;
 }
+function syncTutorialMusic(){var button=$('tutorialMusicToggle');if(!button)return;var on=$('musicToggle').getAttribute('aria-pressed')==='true';button.textContent=on?'♪ Выключить музыку':'♪ Включить музыку';button.setAttribute('aria-pressed',String(on));}
 function initOnboarding(){
+    new MutationObserver(syncTutorialMusic).observe($('musicToggle'),{attributes:true,attributeFilter:['aria-pressed']});
     var root=document.createElement('section');root.id='tutorialOverlay';root.hidden=true;root.setAttribute('role','dialog');root.setAttribute('aria-modal','true');root.setAttribute('aria-labelledby','tutorialTitle');root.setAttribute('aria-describedby','tutorialText');
     root.innerHTML='<div class="tutorial-shade"></div><div id="tutorialHighlight" hidden></div><div class="tutorial-panel"><div class="tutorial-top"><span id="tutorialCounter" aria-live="polite"></span><button type="button" id="tutorialSkip">Пропустить</button></div><progress id="tutorialProgress" aria-label="Прогресс обучения"></progress><div class="tutorial-copy"><div id="tutorialIcon"></div><h2 id="tutorialTitle"></h2><p id="tutorialText"></p><div id="tutorialDemo" hidden></div><p id="tutorialNote"></p></div><div class="tutorial-actions"><button type="button" id="tutorialBack">← Назад</button><button type="button" id="tutorialNext">Далее →</button></div></div>';
     document.body.appendChild(root);

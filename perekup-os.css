@@ -54,3 +54,7 @@ html[data-os="perekup"] .taskbar{position:absolute;left:50%!important;transform:
 :root[data-os="perekup"] .cal-day.today{background:#19796f;color:#fff;border-color:#19796f}
 :root[data-os="perekup"] #bankBody .bank-tabs button.active{background:#19796f;color:#fff;border-color:#19796f}
 :root[data-os="perekup"] .os-app-layout .win-body :is(button,input,select,textarea){font-family:inherit}
+
+/* Music remains reachable beside the pinned apps on phones. */
+@media(max-width:650px){.os-dock-status{display:flex;flex:none;padding-left:5px}.os-dock-status .tb-music{display:grid;place-items:center;width:28px;height:34px;flex:none}}
+@media(max-width:360px){.os-dock-status .tb-clock{display:none}}

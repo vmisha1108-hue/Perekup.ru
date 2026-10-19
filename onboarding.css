@@ -8,3 +8,5 @@
 .tutorial-replay-bar{padding:9px 18px;background:var(--ui-window);border-bottom:1px solid var(--ui-line);flex:none}.tutorial-replay-bar #tutorialReplay{margin:0;padding:7px 12px;min-height:32px}
 
 .tutorial-panel{display:flex;flex-direction:column;overflow:hidden}.tutorial-copy{min-height:0;overflow:auto;flex:1 1 auto;padding-right:3px}.tutorial-top,#tutorialProgress,.tutorial-actions{flex:none}.tutorial-actions{padding-top:15px;border-top:1px solid var(--ui-line);margin-top:3px}#tutorialNote{margin-bottom:17px}#welcomeHelp{font-family:inherit}.tutorial-copy::-webkit-scrollbar{width:4px}.tutorial-copy::-webkit-scrollbar-thumb{background:var(--ui-line);border-radius:4px}
+
+.tutorial-music-toggle{min-height:40px;padding:10px 14px;border:1px solid var(--ui-accent);border-radius:5px;background:var(--ui-accent);color:var(--ui-on-accent);font:inherit;font-size:13px;cursor:pointer}
