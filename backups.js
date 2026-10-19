@@ -1,7 +1,7 @@
 'use strict';
 
 var pendingBackup=null;
-var BACKUP_KEYS=['balance','garage','deals','garageLvl','notes','pending','purchasePrices','listings','retiredMarketCars','gameMs','bank','transport','commerce','career','marketRisks','contracts','chats','playerIdentity','appearance','musicSettings','helpPromptSeen','startingBalanceVersion','sellerSessionMoods','marketLocation','iconPos','iconLayoutVersion','marketFavorites','perekupOSLayout'];
+var BACKUP_KEYS=['balance','garage','deals','garageLvl','notes','pending','purchasePrices','listings','retiredMarketCars','gameMs','bank','transport','commerce','career','marketRisks','contracts','chats','playerIdentity','appearance','musicSettings','helpPromptSeen','startingBalanceVersion','sellerSessionMoods','marketLocation','iconPos','iconLayoutVersion','marketFavorites','perekupOSLayout','perekupShortcutLayout'];
 function backupAllowed(key){return BACKUP_KEYS.indexOf(key)!==-1 || /^window_(market|shop|calc|calendar|clock|bank|travel|documents|garage|help|settings|import|dealer|business|chat)$/.test(key);}
 function gameBackup(){
     save();saveContracts();persistChats();

@@ -226,7 +226,7 @@ function saveIconPositions(p){ localStorage.setItem("iconPos", JSON.stringify(p)
 function buildIcons(){
     var desk = $("deskArea");
     if(!desk) return;
-    var saved = localStorage.getItem('perekupOSLayout')==='1'?loadIconPositions():{};
+    var saved = localStorage.getItem('perekupShortcutLayout')==='2'?loadIconPositions():{};
     var hint = desk.querySelector(".desk-hint");
     desk.querySelectorAll(".desk-icon").forEach(function(el){ el.remove(); });
 
@@ -241,8 +241,9 @@ function buildIcons(){
         if(pos && typeof pos.x === "number"){
             x = pos.x; y = pos.y;
         }else{
-            var primary=['market','garage','travel','bank','documents'],row=primary.indexOf(item.id);
-            x=32; y=12+Math.max(0,row)*102;
+            var primary=['market','garage','travel','bank','documents','calendar','calc','clock'],slot=Math.max(0,primary.indexOf(item.id));
+            var rows=Math.max(1,Math.floor(($('deskArea').clientHeight-20)/(innerWidth<=600?84:102)));
+            x=20+Math.floor(slot/rows)*(innerWidth<=600?82:104); y=20+(slot%rows)*(innerWidth<=600?84:102);
         }
         el.style.left = x + "px";
         el.style.top  = y + "px";
@@ -361,6 +362,7 @@ function snapAllIcons(save){
         p[el.dataset.app] = { x: parseFloat(el.style.left) || 0, y: parseFloat(el.style.top) || 0 };
     });
     saveIconPositions(p);
+    localStorage.setItem('perekupShortcutLayout','2');
 }
 
 function onIconMove(e){
@@ -419,7 +421,7 @@ function onIconUp(){
     }
     placeIcon(el, cell);
 
-    var saved = localStorage.getItem('perekupOSLayout')==='1'?loadIconPositions():{};
+    var saved = localStorage.getItem('perekupShortcutLayout')==='2'?loadIconPositions():{};
     saved[el.dataset.app] = {
         x: parseFloat(el.style.left) || 0,
         y: parseFloat(el.style.top)  || 0
