@@ -154,9 +154,10 @@ function renderTaskbar(){
             button.setAttribute("aria-label",icon.label);button.innerHTML='<span class="task-icon">'+appIconSvg(id)+'</span><span class="task-label">'+icon.label+'</span>';list.appendChild(button);
         });
     }
+    var frontZ=Math.max.apply(null,Object.keys(openWindows).map(function(id){var win=$("win-"+id);return win && !win.classList.contains("minimized")?Number(win.style.zIndex):0;}));
     Array.from(list.children).forEach(function(button){
         var id=button.dataset.app,win=$("win-"+id),running=!!openWindows[id];
-        var className="task-btn"+(running?" running":"")+(running && !win.classList.contains("minimized")?" active":"");
+        var className="task-btn"+(running?" running":"")+(running && !win.classList.contains("minimized") && Number(win.style.zIndex)===frontZ?" active":"");
         if(button.className!==className)button.className=className;
     });
 }
