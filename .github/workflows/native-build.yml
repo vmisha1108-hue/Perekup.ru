@@ -1,0 +1,40 @@
+name: Native C++ development checks
+on:
+  push:
+    branches: [codex/native-cpp-build]
+    paths: [native-source.zip, .github/workflows/native-build.yml]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  linux-qt:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            native-source.zip
+          sparse-checkout-cone-mode: false
+      - name: Install build dependencies
+        run: sudo apt-get update && sudo apt-get install -y qtbase5-dev libssl-dev cmake ninja-build
+      - name: Extract development source
+        run: python3 -m zipfile -e native-source.zip native
+      - name: Configure native UI and tests
+        run: cmake -S native -B build -G Ninja -DCMAKE_BUILD_TYPE=Release -DPEREKUP_BUILD_UI=ON
+      - name: Compile
+        run: cmake --build build --parallel 2
+      - name: Core integration tests
+        run: ctest --test-dir build --output-on-failure
+      - name: Original-game differential tests
+        shell: bash
+        run: |
+          for module in bank market travel snake transport meeting commerce negotiation; do
+            target="perekup_${module}_reference"
+            if [ "$module" = bank ]; then target=perekup_reference; fi
+            node "native/tests/${module}-parity.cjs" native/tests/original-game "build/$target"
+          done
+      - name: Native UI smoke test
+        env:
+          QT_QPA_PLATFORM: offscreen
+        run: timeout 30 build/perekup_native_desktop "$PWD/build" --smoke-test
