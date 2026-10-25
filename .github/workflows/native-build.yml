@@ -38,3 +38,33 @@ jobs:
         env:
           QT_QPA_PLATFORM: offscreen
         run: timeout 30 build/perekup_native_desktop "$PWD/build" --smoke-test
+
+  windows-qt:
+    runs-on: windows-2022
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            native-source.zip
+          sparse-checkout-cone-mode: false
+      - uses: jurplel/install-qt-action@v4
+        with:
+          version: '6.8.3'
+          arch: win64_msvc2022_64
+          cache: true
+      - name: Extract development source
+        run: python -m zipfile -e native-source.zip native
+      - name: Configure native Windows UI
+        run: cmake -S native -B build -G "Visual Studio 17 2022" -A x64 -DPEREKUP_BUILD_UI=ON
+      - name: Compile
+        run: cmake --build build --config Release --parallel 2
+      - name: Core integration and Windows save tests
+        run: ctest --test-dir build -C Release --output-on-failure
+      - name: Native UI smoke test
+        env:
+          QT_QPA_PLATFORM: offscreen
+        run: |
+          $process = Start-Process -FilePath build/Release/perekup_native_desktop.exe -ArgumentList @("$pwd/build/Release", "--smoke-test") -PassThru
+          if (-not $process.WaitForExit(30000)) { $process.Kill(); throw "UI smoke test timed out" }
+          if ($process.ExitCode -ne 0) { throw "UI smoke test failed: $($process.ExitCode)" }
