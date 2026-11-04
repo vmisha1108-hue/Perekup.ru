@@ -24,3 +24,22 @@ ctest --test-dir build-native --output-on-failure
 For a Windows portable build, run `native/tools/windows/build-v7.ps1`
 with the Qt installation path and matching compiler bin directory.
 See `V7-README.md` for game installation instructions.
+
+## Music and first purchase
+
+The music app searches the Apple catalogue for tracks, artists and albums.
+Catalogue results open the provider page for full playback with the user's
+account. The app also opens Spotify playlist search and recognises links to
+the supported services. Start playback in the official player. On Windows,
+the game can monitor and control providers that publish a Windows media session.
+
+Direct permitted audio URLs and supported open playlists play in Qt Multimedia.
+“My Music” saves favourites, local-player history and custom queues. Ctrl+Shift+Space
+toggles playback. Ctrl+Shift+Left and Ctrl+Shift+Right change tracks.
+
+After the overview, the purchase walkthrough follows the normal market, chat,
+meeting, inspection and contract screens. It detects a newly signed purchase
+and shows the garage. The walkthrough resumes from the save and can be dismissed.
+
+The negotiation UI uses ten complete phrases recovered from the reference APK.
+The rest of the original dialogue system remains available.

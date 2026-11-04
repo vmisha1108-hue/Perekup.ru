@@ -7,8 +7,12 @@
 #include <QRegularExpression>
 #include <QTextDocumentFragment>
 #include "desktop_music.hpp"
+inline bool isMusicWebLink(const QUrl& url) {
+    return url.isValid() && !url.host().isEmpty() && url.userInfo().isEmpty() &&
+        (url.scheme() == "https" || url.scheme() == "http");
+}
 struct MusicLinkResult{QList<DesktopTrack> tracks;QString error;bool hls=false;};
-inline QString musicService(const QUrl& url){auto h=url.host().toLower();for(const auto& pair:QList<QPair<QString,QString>>{{"spotify.com","Spotify"},{"music.yandex.ru",QStringLiteral("Яндекс Музыка")},{"music.yandex.com",QStringLiteral("Яндекс Музыка")},{"vk.com",QStringLiteral("VK Музыка")},{"vk.ru",QStringLiteral("VK Музыка")},{"youtube.com","YouTube"},{"youtu.be","YouTube"},{"soundcloud.com","SoundCloud"}})if(h==pair.first||h.endsWith("."+pair.first))return pair.second;return {};}
+inline QString musicService(const QUrl& url){auto h=url.host().toLower();for(const auto& pair:QList<QPair<QString,QString>>{{"spotify.com","Spotify"},{"music.yandex.ru",QStringLiteral("Яндекс Музыка")},{"music.yandex.com",QStringLiteral("Яндекс Музыка")},{"vk.com",QStringLiteral("VK Музыка")},{"vk.ru",QStringLiteral("VK Музыка")},{"music.youtube.com","YouTube Music"},{"youtube.com","YouTube"},{"youtu.be","YouTube"},{"soundcloud.com","SoundCloud"},{"music.apple.com","Apple Music"},{"itunes.apple.com","Apple Music"},{"deezer.com","Deezer"},{"deezer.page.link","Deezer"},{"dzr.page.link","Deezer"}})if(h==pair.first||h.endsWith("."+pair.first))return pair.second;return {};}
 inline MusicLinkResult parseMusicLink(const QUrl& base,const QByteArray& bytes,const QString& mime={}){
  MusicLinkResult result;auto raw=QString::fromUtf8(bytes);auto trimmed=raw.trimmed();QSet<QString> seen;
  auto add=[&](QString target,QString title={},QString artist={}){target=QTextDocumentFragment::fromHtml(target.trimmed()).toPlainText();auto url=base.resolved(QUrl(target));if(target.isEmpty()||!musicUrlError(url).isEmpty()||result.tracks.size()>=500)return;auto key=url.adjusted(QUrl::RemoveFragment).toString();if(seen.contains(key))return;seen.insert(key);if(title.trimmed().isEmpty())title=url.fileName().isEmpty()?url.host():url.fileName();result.tracks.append({url,title.trimmed().left(300),artist.isEmpty()?QStringLiteral("Онлайн · ")+url.host():artist.left(300),{},false});};
