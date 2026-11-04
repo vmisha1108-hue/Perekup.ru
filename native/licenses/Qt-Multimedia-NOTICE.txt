@@ -1,0 +1,5 @@
+This update dynamically links Qt Multimedia 6.4.2 (The Qt Company and contributors), under LGPL-3.0, with the Windows Media Foundation plugin from the official Qt SDK.
+LGPL-3.0 and its referenced GPL-3.0 text accompany this update. Users may replace the dynamically loaded Qt libraries with compatible builds and modify/rebuild this game's supplied sources.
+Qt source archive: https://download.qt.io/archive/qt/6.4/6.4.2/submodules/qtmultimedia-everywhere-src-6.4.2.tar.xz
+Qt licensing: https://www.qt.io/licensing/open-source-lgpl-obligations
+No Chromium, Qt WebEngine or FFmpeg Windows binaries are distributed by this update.

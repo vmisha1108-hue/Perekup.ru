@@ -1,0 +1,6 @@
+{
+  "passed": true,
+  "scenarios": 96,
+  "steps": 960,
+  "scope": "departure, arrival, mileage, parking debt, carrier, garage allocation; excludes loading malformed saves and UI"
+}

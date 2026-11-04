@@ -1,0 +1,4 @@
+#include "meeting.hpp"
+#include "contracts.hpp"
+#include <iostream>
+int main(){using namespace perekup;std::string line;while(std::getline(std::cin,line)){try{auto q=Json::parse(line);std::size_t index=0;auto random=[&]{auto& values=q.at("random");return values.at(index++%values.size()).get<double>();};Json result;auto op=q.value("op","");if(op=="event")result=meetingPriceEvent(q.at("chat"),random);else if(op=="discount")result=negotiationDiscount(q.at("price"),random);else if(op=="documents")result=contractDocumentIds(q.at("id"),q.at("moscow"));else if(op=="errors")result=contractErrors(q.at("draft"),q.at("identity"));else if(op=="identity")result={{"nickname",validNickname(q["nickname"])},{"signature",validSignature(q["signature"])}};else throw std::runtime_error("Unknown operation");std::cout<<result.dump()<<'\n';}catch(const std::exception& e){std::cout<<Json({{"error",e.what()}}).dump()<<'\n';}}}

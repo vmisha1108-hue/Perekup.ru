@@ -1,0 +1,6 @@
+{
+  "passed": true,
+  "scenarios": 165,
+  "steps": 2673,
+  "scope": "bank domain comparisons only; UI, loading and collectors not covered"
+}

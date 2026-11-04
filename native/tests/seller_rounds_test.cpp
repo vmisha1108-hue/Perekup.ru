@@ -1,0 +1,6 @@
+#include "negotiation.hpp"
+#include <cassert>
+#include <iostream>
+int main(){using namespace perekup;auto fresh=[](){return Json{{"mode","buy"},{"stage","talk"},{"ask",500000},{"referencePrice",500000},{"npc",{{"personality","kind"},{"mood",72}}}};};auto rng=[]{return .5;};auto c=fresh();assert(negotiate(c,300000,1000000,rng).price==475000);c=Json::parse(c.dump());assert(negotiate(c,300000,1000000,rng).price==469000);assert(negotiate(c,300000,1000000,rng).price==468000);assert(negotiate(c,300000,1000000,rng).action=="rejected");assert(negotiate(c,468000,1000000,rng).action=="agreed");c=fresh();assert(negotiate(c,499700,1000000,rng).price==499700);c=fresh();assert(negotiate(c,600000,1000000,rng).price==600000);assert(c["price"]==600000);
+c=fresh();assert(negotiate(c,300000,1000000,rng).price==475000);assert(negotiate(c,480000,1000000,rng).price==480000);assert(c["price"]==480000);
+c=fresh();auto before=c;assert(negotiate(c,510000,500000,rng).action=="unaffordable");assert(c==before);c=fresh();assert(negotiate(c,1,1000000,rng).action=="lowball-warning");assert(!c.contains("sellerConcessionRound"));std::cout<<"PASS staged concessions, save/reload, small requests, overbids and exhaustion\n";}

@@ -1,0 +1,4 @@
+#include "admin_time.hpp"
+#include <cassert>
+#include <iostream>
+int main(){using namespace perekup;Json initial={{"gameMs",1},{"bank",Json::object()},{"marketRisks",{{"seizures",Json::array()}}}};auto s=initial;int ticks=0;auto r=skipNativeDay(s,[&](Json& d,Money t){d["gameMs"]=t;++ticks;});assert(r.completed&&r.advanced==day&&ticks==96);s=initial;r=skipNativeDay(s,[](Json& d,Money t){d["gameMs"]=t;d["bank"]["collectors"]["call"]={{"minutes",15}};});assert(!r.completed&&r.advanced==900000&&r.blocked=="call");auto before=s;r=skipNativeDay(s,[](Json&,Money){assert(false);});assert(r.advanced==0&&s==before);s=initial;bool failed=false;try{skipNativeDay(s,[](Json& d,Money t){d["gameMs"]=t;throw std::runtime_error("error");});}catch(...){failed=true;}assert(failed&&s==initial);std::cout<<"PASS day skip: 96 ticks, stop at call, pending call guard and atomic failure\n";}

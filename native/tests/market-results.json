@@ -1,0 +1,10 @@
+{
+  "passed": true,
+  "scenarios": 21,
+  "catalogueCars": 1037,
+  "estimates": 1037,
+  "riskRolls": 9333,
+  "sessionCarUpdates": 3111,
+  "inspectionSteps": 32,
+  "scope": "market valuation, session pricing, random risks, inspection; purchase/repair integration and UI excluded"
+}

@@ -1,0 +1,7 @@
+#include "snapshot_writer.hpp"
+#include <iostream>
+#include <vector>
+#define CHECK(...) do {if(!(__VA_ARGS__))throw std::runtime_error("check failed at line "+std::to_string(__LINE__));}while(false)
+int main(){using namespace perekup;using Json=nlohmann::json;std::mutex mutex;std::condition_variable entered;bool started=false;std::promise<void> release;auto gate=release.get_future().share();std::vector<int> order;std::shared_future<void> last;
+ {SnapshotWriter writer([&](const Json& s){int id=s.at("id");if(id==1){{std::lock_guard<std::mutex> lock(mutex);started=true;}entered.notify_one();gate.wait();}order.push_back(id);if(id==3)throw std::runtime_error("disk full");});Json live={{"id",1}};auto first=writer.submit(live);live["id"]=99;{std::unique_lock<std::mutex> lock(mutex);CHECK(entered.wait_for(lock,std::chrono::seconds(5),[&]{return started;}));}auto second=writer.submit({{"id",2}});auto failure=writer.submit({{"id",3}});last=writer.submit({{"id",4}});CHECK(first.wait_for(std::chrono::milliseconds(0))!=std::future_status::ready);CHECK(last.wait_for(std::chrono::milliseconds(0))!=std::future_status::ready);release.set_value();first.get();second.get();bool failed=false;try{failure.get();}catch(...){failed=true;}CHECK(failed);
+ }last.get();CHECK(order==std::vector<int>({1,2,3,4}));std::cout<<"PASS: immutable snapshots, ordered writes, individual errors, final save drained on exit\n";}

@@ -1,0 +1,14 @@
+#include "ui/desktop_music.hpp"
+#include <QCoreApplication>
+#include <QTemporaryDir>
+#include <iostream>
+#include <stdexcept>
+int main(int argc,char** argv){QCoreApplication app(argc,argv);try{
+ auto require=[](bool v,const char* why){if(!v)throw std::runtime_error(why);};QTemporaryDir temp;require(temp.isValid(),"Temp directory");QDir().mkpath(temp.path()+"/nested");
+ auto write=[](const QString& p,const QByteArray& bytes){QFile f(p);if(!f.open(QIODevice::WriteOnly)||f.write(bytes)!=bytes.size())throw std::runtime_error("Fixture write");};
+ auto frame=[](const char* id,const QByteArray& text){QByteArray out(id,4);quint32 n=text.size();for(int shift:{24,16,8,0})out.append(char((n>>shift)&255));out.append('\0');out.append('\0');out+=text;return out;};
+ auto tags=frame("TIT2",QByteArray(1,char(3))+QStringLiteral("Ночной город").toUtf8())+frame("TPE1",QByteArray(1,char(3))+QStringLiteral("Исполнитель").toUtf8());QByteArray mp3("ID3\3\0\0",6);int n=tags.size();for(int shift:{21,14,7,0})mp3.append(char((n>>shift)&127));mp3+=tags;write(temp.path()+"/nested/song.mp3",mp3);write(temp.path()+"/nested/second.WAV","fixture");write(temp.path()+"/nested/ignore.txt","not music");write(temp.path()+"/nested/cover.jpg","image ref");
+ auto tracks=scanMusicFolders({temp.path(),temp.path()+"/nested"});require(tracks.size()==2,"Recursive scan de-duplicates overlapping folders and matches extension case");bool tagged=false;for(const auto& t:tracks)if(t.url.toLocalFile().endsWith(".mp3")){tagged=t.title==QStringLiteral("Ночной город")&&t.artist==QStringLiteral("Исполнитель");require(t.cover.endsWith("cover.jpg"),"Folder cover fallback");}require(tagged,"ID3 title and artist parsed as UTF8");
+ require(!musicUrlError(QUrl("file:///etc/passwd")).isEmpty(),"Remote URLs reject local schemes");require(!musicUrlError(QUrl("https://user:password@example.org/song.mp3")).isEmpty(),"Embedded credentials rejected");require(!musicUrlError(QUrl("https://open.spotify.com/track/1")).isEmpty(),"Service pages explicitly unsupported");require(!musicUrlError(QUrl("https://music.yandex.ru/album/1")).isEmpty(),"Yandex page is not a stream");require(musicUrlError(QUrl("https://example.org/song.mp3")).isEmpty(),"Direct HTTPS audio allowed");require(musicUrlError(QUrl("http://127.0.0.1:8000/radio")).isEmpty(),"Direct radio endpoint allowed without extension");require(id3MusicText(QByteArray(1,char(0))+"Artist\0")=="Artist","Latin1 ID3 text");
+ write(temp.path()+"/nested/broken.mp3",QByteArray("ID3\3\0\0\x7f\x7f\x7f\x7f",10));require(scanMusicFolders({temp.path()}).size()==3,"Malformed tag lengths stay bounded and scan continues");require(musicReadImage(temp.path()+"/nested/cover.jpg").isNull(),"Invalid artwork fails safely");std::cout<<"PASS music library rules\n";return 0;
+ }catch(const std::exception& e){std::cerr<<e.what()<<'\n';return 1;}}

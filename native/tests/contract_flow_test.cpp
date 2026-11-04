@@ -1,0 +1,27 @@
+#include "meeting.hpp"
+#include "contract_signing.hpp"
+#include "signature_reminder.hpp"
+#include <iostream>
+#define CHECK(...) do {if(!(__VA_ARGS__))throw std::runtime_error("check failed at line "+std::to_string(__LINE__));}while(false)
+int main(){using namespace perekup;Json cities={{"home",{{"id","home"},{"name","Москва"},{"lat",55},{"lon",37}}}},cars={{"1",{{"id",1},{"cityId","home"},{"name","Тест"},{"price",50000},{"desc","На ходу"}}}};
+ Deals deals(cities,cars,"home",[]{return .9;});auto live=deals.fresh(1000000);live["playerIdentity"]={{"version",1},{"nickname","Игрок"},{"signature","TEST"}};live["career"]=freshCareer(1000000);live["contracts"]=freshContracts(live["playerIdentity"]);
+ Json chat={{"pid","p1"},{"mode","buy"},{"car",cars["1"]},{"price",50000},{"stage","go"},{"done",false},{"met",false},{"npc",{{"personality","neutral"},{"mood",50}}}},pending={{"id","p1"},{"type","meet"},{"mode","buy"},{"carId",1},{"price",50000},{"when",1000000},{"noShow",false}};
+ Meeting meeting([]{return .9;});CHECK(!meeting.arrive(chat,pending,999999,true));CHECK(!meeting.arrive(chat,pending,1000000,false));CHECK(meeting.arrive(chat,pending,1000000,true));int inspected=0;CHECK(!meeting.tick(chat,pending,1000000,[&]{inspected++;}));CHECK(meeting.tick(chat,pending,4000000,[&]{inspected++;}));CHECK(chat["stage"]=="event"&&inspected==1);CHECK(!meeting.tick(chat,pending,5000000,[&]{inspected++;}));CHECK(inspected==1);CHECK(meeting.agree(chat,[](Money){return true;}));
+ auto vehicle=contractDocumentIds(1,true);vehicle["name"]="Тест";vehicle["year"]=2000;vehicle["color"]="белый";vehicle["description"]="На ходу";Json other={{"fullName","Соколов Сергей Александрович"},{"passport","4501 123456"},{"address","г. Москва, дом 1"}};
+ CHECK(beginContract(chat,pending,live["contracts"],live["playerIdentity"],cities["home"],vehicle,other,4000000));fillContractAssist(pending["contract"],live["contracts"],live["playerIdentity"]);live["chat"]=chat;live["pending"].push_back(pending);CHECK(live["pending"][0]["contract"]["fields"]["signature"]=="");auto before=live;CHECK(!signContract(live,deals,cars,[](const Json&){}).empty());CHECK(live==before);
+ live["pending"][0]["contract"]["acknowledged"]=true;
+ for(const auto& invalid:{"","test","TES","TESTT","AБCD","FAIL"}){live["pending"][0]["contract"]["fields"]["signature"]=invalid;auto unchanged=live;CHECK(!signContract(live,deals,cars,[](const Json&){}).empty());CHECK(live==unchanged);}
+ live["pending"][0]["contract"]["fields"]["signature"]="";
+ auto poor=live;poor["balance"]=9999;auto poorBefore=poor;auto denied=remindContractSignature(poor,[](const Json&){});CHECK(!denied.ok&&denied.signature.empty()&&poor==poorBefore);
+ auto noDisk=live;auto noDiskBefore=noDisk;bool reminderFailed=false;try{remindContractSignature(noDisk,[](const Json&){throw std::runtime_error("disk full");});}catch(...){reminderFailed=true;}CHECK(reminderFailed&&noDisk==noDiskBefore);
+ auto reminderState=live;Json persistedReminder;auto reminder=remindContractSignature(reminderState,[&](const Json& s){persistedReminder=s;});CHECK(reminder.ok&&reminder.charged&&reminder.signature=="TEST");CHECK(reminderState["balance"]==90000&&persistedReminder==reminderState);CHECK(reminderState["pending"][0]["contract"]["fields"]["signature"]=="");
+ auto reloaded=Json::parse(persistedReminder.dump());auto second=remindContractSignature(reloaded,[](const Json&){throw std::runtime_error("must not write twice");});CHECK(second.ok&&!second.charged&&second.signature=="TEST"&&reloaded["balance"]==90000);
+ // Each new contract has its own fee; low funds after reminder still block buying.
+ reloaded["pending"][0]["contract"]["id"]="dkp-p2";auto next=remindContractSignature(reloaded,[](const Json&){});CHECK(next.ok&&next.charged&&reloaded["balance"]==80000);
+ auto barely=live;barely["balance"]=55000;CHECK(remindContractSignature(barely,[](const Json&){}).ok);barely["pending"][0]["contract"]["fields"]["signature"]="TEST";auto barelyBefore=barely;CHECK(!signContract(barely,deals,cars,[](const Json&){}).empty()&&barely==barelyBefore);
+ live["pending"][0]["contract"]["fields"]["signature"]="TEST";before=live;bool failed=false;try{signContract(live,deals,cars,[](const Json&){throw std::runtime_error("disk full");});}catch(...){failed=true;}CHECK(failed&&live==before);
+ Json saved;CHECK(signContract(live,deals,cars,[&](const Json& s){saved=s;}).empty());CHECK(live==saved);CHECK(live["pending"].empty()&&live["chat"]["pid"].is_null());CHECK(live["balance"]==50000&&live["garage"]==Json::array({1}));CHECK(live["contracts"]["records"].size()==1&&live["chat"]["meetingOutcome"]=="success");before=live;CHECK(!signContract(live,deals,cars,[](const Json&){}).empty());CHECK(live==before);
+ auto noShow=pending;noShow["noShow"]=true;noShow["flow"]["stage"]="waiting";auto waiting=chat;waiting["done"]=false;waiting["stage"]="waiting";CHECK(meeting.tick(waiting,noShow,5000000,[]{throw std::runtime_error("unexpected inspection");}));CHECK(waiting["meetingOutcome"]=="no-show");
+ auto cancelled=chat;cancelled["stage"]="event";cancelled["done"]=false;cancelled["event"]=meetingConfirmation(cancelled);CHECK(!meeting.refuse(cancelled));CHECK(cancelled["meetingOutcome"]=="cancelled");CHECK(live==before);
+ std::cout<<"PASS: arrival guards, inspection once, cancellation/no-show, contract validation, atomic sign/save, duplicate sign rejected, manual signature and paid reminder\n";
+}

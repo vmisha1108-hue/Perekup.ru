@@ -1,0 +1,6 @@
+#include "session.hpp"
+#include "collectors.hpp"
+#include "runtime.hpp"
+#include <cassert>
+#include <iostream>
+int main(){using namespace perekup;Json cities={{"home",{{"id","home"}}}},cars=Json::object();Deals deals(cities,cars,"home",[]{return .5;});auto s=deals.fresh(40*day);s["career"]=freshCareer(40*day);s["commerce"]=freshCommerce();s["bank"]["loans"].push_back({{"id","loan"},{"kind","micro"},{"status","active"},{"principalCents",10000},{"interestCents",0},{"feesCents",0},{"arrearsCents",10000},{"nextDueAt",nullptr},{"overdueAt",1},{"lastAccruedAt",40*day},{"dailyRate",0},{"nextPenaltyAt",100*day}});s["balance"]=0;syncNativeCollectors(s);s["bank"]["collectors"]["call"]={{"minutes",30}};int meetingTicks=0;RuntimeHooks hooks;hooks.collectors=[](Json& d){tickNativeCollectors(d,[]{return 0.;},true);};hooks.meeting=[&](Json&){++meetingTicks;};auto start=num(s,"gameMs");assert(dismissNativeCollectorCall(s,[&](Json& d,Money next){tickRuntime(d,next,cities,cars,Json::object(),"home",hooks);},[]{return .5;}));assert(num(s,"gameMs")==start+1800000);assert(meetingTicks==2);assert(s["bank"]["collectors"]["call"].is_null());std::cout<<"PASS call advances runtime twice, ticks meetings and suppresses nested calls\n";}

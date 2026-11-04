@@ -1,0 +1,14 @@
+#include "session.hpp"
+#include "onboarding.hpp"
+#include "music.hpp"
+#include <cassert>
+#include <iostream>
+using namespace perekup;
+int main(int argc,char** argv){Json cities={{"home",{{"id","home"},{"name","Москва"}}}},cars=Json::object();auto root=fs::temp_directory_path()/("perekup-tutorial-"+std::to_string(std::chrono::steady_clock::now().time_since_epoch().count()));try{
+ {Session s(root,cities,cars,"home");s.create("Игрок","TEST",1000000);auto draft=s.state,financial=draft;assert(nativeTutorialProgress(draft)["status"]=="active");auto persist=[&](const Json& v){s.commit(v);};assert(nativeTutorialAction(draft,"start",0,persist));assert(!nativeTutorialAction(draft,"finish",0,persist));assert(!nativeTutorialAction(draft,"step",-1,persist));assert(nativeTutorialAction(draft,"step",4,persist));auto before=draft;bool failed=false;try{nativeTutorialAction(draft,"skip",0,[](const Json&){throw std::runtime_error("disk");});}catch(...){failed=true;}assert(failed&&draft==before);for(const char* field:{"balance","bank","garage","pending","contracts","gameMs","playerIdentity"})assert(draft.at(field)==financial.at(field));}
+ {Session s(root,cities,cars,"home");assert(s.load().status==LoadStatus::Loaded);auto d=s.state;assert(nativeTutorialProgress(d)["step"]==4);assert(nativeTutorialAction(d,"step",8,[&](const Json& v){s.commit(v);}));assert(nativeTutorialAction(d,"finish",0,[&](const Json& v){s.commit(v);}));assert(d["onboardingComplete"]==true&&nativeTutorialProgress(d)["status"]=="done");assert(nativeTutorialAction(d,"start",0,[&](const Json& v){s.commit(v);}));assert(nativeTutorialAction(d,"skip",0,[&](const Json& v){s.commit(v);}));assert(nativeTutorialProgress(d)["status"]=="skipped");d["tutorialProgress"]={{"version",1},{"status","active"},{"step","bad"}};assert(nativeTutorialProgress(d)["step"]==0);}
+ fs::remove_all(root);
+ std::vector<unsigned char> bytes={'R','I','F','F',40,0,0,0,'W','A','V','E','f','m','t',' ',16,0,0,0,1,0,1,0,0x40,0x1f,0,0,0x80,0x3e,0,0,2,0,16,0,'d','a','t','a',4,0,0,0,0xe0,0xb1,0x20,0x4e};auto w=WaveTrack::decode(bytes);assert(w.rate==8000&&w.channels==1&&w.samples[0]==-20000&&w.samples[1]==20000);auto quiet=w.scaled(.2);assert(quiet[0]==-4000&&quiet[1]==4000);bool bad=false;try{w.scaled(2);}catch(...){bad=true;}assert(bad);bytes.pop_back();bad=false;try{WaveTrack::decode(bytes);}catch(...){bad=true;}assert(bad);
+ if(argc>1){auto track=WaveTrack::load(fs::u8path(argv[1]));assert(track.channels==2&&track.rate==44100&&track.seconds()>63.9&&track.seconds()<64.1);int peak=0;for(auto v:track.scaled(.2))peak=std::max(peak,std::abs(int(v)));assert(peak>100&&peak<=6554);std::cout<<"Original music PCM verified: "<<track.seconds()<<" seconds, 20% gain, peak "<<peak<<'\n';}
+ std::cout<<"PASS tutorial persistence/resume/back/finish/skip/replay, unchanged finances, failed-write rollback, malformed progress and PCM decoding/gain\n";
+ }catch(...){fs::remove_all(root);throw;}}
