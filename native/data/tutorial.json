@@ -1,0 +1,146 @@
+[
+  {
+    "title": {
+      "ru": "Ваш рабочий стол",
+      "en": "Your desktop"
+    },
+    "text": {
+      "ru": "Все приложения находятся в Perekyp OS. В нижней панели открываются авторынок, гараж, банк, бизнес, календарь, калькулятор, часы и настройки.",
+      "en": "Your apps live in Perekyp OS. Use the bottom panel to open the car market, garage, bank, business, calendar, calculator, clock and settings."
+    },
+    "note": {
+      "ru": "Обучение можно пропустить и повторить из настроек.",
+      "en": "You can skip this tutorial and replay it from Settings."
+    },
+    "app": "",
+    "demo": ""
+  },
+  {
+    "title": {
+      "ru": "Найдите первую машину",
+      "en": "Find your first car"
+    },
+    "text": {
+      "ru": "Выберите город и найдите марку или модель. Сравните цену и состояние машины до покупки.",
+      "en": "Choose a city and search for a make or model. Compare prices and vehicle condition before buying."
+    },
+    "note": {
+      "ru": "На старте у вас 100 000 ₽. Оставляйте запас на дорогу, осмотр и ремонт.",
+      "en": "You start with ₽100,000. Keep a reserve for travel, inspections and repairs."
+    },
+    "app": "market",
+    "demo": ""
+  },
+  {
+    "title": {
+      "ru": "Прочитайте объявление",
+      "en": "Read the listing"
+    },
+    "text": {
+      "ru": "Нажмите «Подробнее», изучите описание и историю машины, затем свяжитесь с продавцом. Низкая цена может означать серьёзные недостатки.",
+      "en": "Open Details, read the description and vehicle history, then contact the seller. A low price may mean serious problems."
+    },
+    "note": {
+      "ru": "В обучении мы ничего не покупаем и не тратим ваши деньги.",
+      "en": "This tutorial does not buy anything or spend your money."
+    },
+    "app": "market",
+    "demo": ""
+  },
+  {
+    "title": {
+      "ru": "Договоритесь с продавцом",
+      "en": "Negotiate with the seller"
+    },
+    "text": {
+      "ru": "Предлагайте цену в переписке. Продавец может уступить несколько раз, но каждая следующая уступка меньше. После согласования выберите время встречи.",
+      "en": "Make offers in the chat. Sellers may make several concessions, with each one smaller than the previous one. After agreeing on a price, choose a meeting time."
+    },
+    "note": {
+      "ru": "Это пример переписки, а не настоящая сделка.",
+      "en": "This is a chat example, not a real deal."
+    },
+    "app": "",
+    "demo": "chat"
+  },
+  {
+    "title": {
+      "ru": "Не опоздайте на встречу",
+      "en": "Be on time"
+    },
+    "text": {
+      "ru": "В календаре проверьте дату, время и город встречи. Для осмотра нужно приехать в нужный город. Поездки и встречи идут по игровому времени.",
+      "en": "Check the meeting date, time and city in the calendar. Travel to the correct city to inspect the car. Trips and meetings use game time."
+    },
+    "note": {
+      "ru": "Пока идёт обучение, игровые часы, платежи и события приостановлены.",
+      "en": "Game time, payments and events are paused during this tutorial."
+    },
+    "app": "calendar",
+    "demo": ""
+  },
+  {
+    "title": {
+      "ru": "Осмотр и подпись",
+      "en": "Inspect and sign"
+    },
+    "text": {
+      "ru": "До подписания ДКП проверьте автомобиль, VIN, цену и документы. Подпись — четыре заглавные латинские буквы, которые вы вводите самостоятельно по памяти.",
+      "en": "Check the car, VIN, price and documents before signing. Your signature is four uppercase Latin letters that you must enter yourself from memory."
+    },
+    "note": {
+      "ru": "Забыли подпись — напоминание стоит 10 000 ₽. Ошибка ввода сама по себе денег не списывает.",
+      "en": "Forgot your signature? A reminder costs ₽10,000. A typing mistake does not charge you."
+    },
+    "app": "documents",
+    "demo": "signature"
+  },
+  {
+    "title": {
+      "ru": "Подготовьте машину к продаже",
+      "en": "Prepare the car for sale"
+    },
+    "text": {
+      "ru": "В гараже доступны диагностика за 1 500 ₽ и ремонт выявленных недостатков. Расходы входят в себестоимость. Затем разместите объявление и дождитесь покупателей.",
+      "en": "The garage offers diagnosis for ₽1,500 and repairs for identified faults. These costs are included in your cost basis. List the car for sale and wait for buyers."
+    },
+    "note": {
+      "ru": "Указывайте известные неисправности: сокрытие влияет на репутацию и может привести к претензии.",
+      "en": "Disclose known faults: hiding them affects reputation and may result in a claim."
+    },
+    "app": "garage",
+    "demo": ""
+  },
+  {
+    "title": {
+      "ru": "Музыка — по вашему желанию",
+      "en": "Music is optional"
+    },
+    "text": {
+      "ru": "Кнопка ♪ в нижней панели включает и выключает исходную музыку Mevison. Выбор сохраняется. Музыка не влияет на игровое время.",
+      "en": "The ♪ button in the bottom panel toggles the original music by Mevison. Your choice is saved. Music does not affect game time."
+    },
+    "note": {
+      "ru": "Попробуйте переключить музыку здесь. Громкость воспроизведения — 20%.",
+      "en": "Try the music button here. Playback volume is 20%."
+    },
+    "app": "",
+    "demo": "music"
+  },
+  {
+    "title": {
+      "ru": "Вы готовы к первой сделке",
+      "en": "Ready for your first deal"
+    },
+    "text": {
+      "ru": "Следите за себестоимостью и прибылью. В «Бизнесе» находятся карьерные цели, заказы клиентов, репутация и доступ к автосалону и импорту.",
+      "en": "Keep track of costs and profit. Business contains career goals, client orders, reputation, and access to the dealership and imports."
+    },
+    "note": {
+      "ru": "Банк выдаёт кредиты, но просрочка обходится дорого. Обучение всегда можно повторить в настройках.",
+      "en": "The bank offers loans, but missed payments are costly. You can replay this tutorial in Settings."
+    },
+    "app": "business",
+    "demo": ""
+  }
+]

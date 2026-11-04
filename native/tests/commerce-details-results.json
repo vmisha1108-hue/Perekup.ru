@@ -1,0 +1,5 @@
+{
+  "passed": true,
+  "scenarios": 957,
+  "scope": "exact manager/broker replies, allowed topics, Moscow/travel checks, repeated question replacement, storage answers, history limit, clock/balance invariants"
+}

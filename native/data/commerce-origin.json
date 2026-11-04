@@ -1,0 +1,10 @@
+{
+  "hashes": {
+    "commerce-stock.js": "7f6dba97fe973b695b408932c4626bb549a37826a8701c09da6202be845fb932",
+    "commerce.js": "e5670f3623cc953834801c59865834396582f03240b263afa21651faacdff773"
+  },
+  "cars": 1007,
+  "offers": 1007,
+  "active": 87,
+  "photosVerified": false
+}

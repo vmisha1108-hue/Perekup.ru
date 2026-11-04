@@ -1,0 +1,10 @@
+#pragma once
+#include "market.hpp"
+namespace perekup {
+struct FactoryColor {const char* id;const char* name;const char* hex;double r,g,b,offset;};
+inline constexpr FactoryColor factoryColors[]={{"silver","Серебристый","#aeb8c5",1,1,1,0},{"white","Белый","#f2f3f0",1.18,1.19,1.17,.08},{"black","Чёрный","#202630",.27,.30,.36,.015},{"blue","Синий","#245ca4",.16,.43,.88,.01},{"red","Красный","#b5323b",.88,.12,.17,.015},{"green","Зелёный","#246351",.12,.48,.34,.015}};
+inline const FactoryColor* nativeFactoryColorInfo(const std::string& id){for(const auto& c:factoryColors)if(id==c.id)return &c;return nullptr;}
+inline std::string nativeDescriptionColor(const Json& car){auto text=lowerCatalogue(car.value("full",""));for(const auto& word:std::vector<std::pair<const char*,const char*>>{{"бел","white"},{"чёрн","black"},{"черн","black"},{"красн","red"},{"син","blue"},{"зелён","green"},{"зелен","green"}})if(text.find(word.first)!=std::string::npos)return word.second;return "silver";}
+inline std::string nativeFactoryColor(const Json& s,const Json& car,const Json& offers){auto id=car.value("commerceOffer","");const auto& b=s.at("commerce");for(const auto& o:b.at("orders"))if(o.value("offerId","")==id){auto color=o.value("factoryColor","");return nativeFactoryColorInfo(color)?color:nativeDescriptionColor(car);}if(offers.contains(id)&&offers.at(id).value("kind","")=="import"&&!offers.at(id).value("legacy",false)){auto color=b.at("colors").value(id,"silver");return nativeFactoryColorInfo(color)?color:"silver";}return nativeDescriptionColor(car);}
+inline bool selectNativeFactoryColor(Json& s,const std::string& id,const std::string& color,const Json& offers,const std::function<void(const Json&)>& persist){if(!nativeFactoryColorInfo(color)||!offers.contains(id)||offers.at(id).value("kind","")!="import"||offers.at(id).value("legacy",false)||s.at("marketRisks").at("seizures").size()>=5)return false;for(const auto& o:s.at("commerce").at("orders"))if(o.value("offerId","")==id)return false;Json d=s;d["commerce"]["colors"][id]=color;d["commerce"]["revision"]=num(d["commerce"],"revision")+1;persist(d);s.swap(d);return true;}
+}

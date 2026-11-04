@@ -1,0 +1,6 @@
+{
+  "passed": true,
+  "cityPairs": 625,
+  "scenarios": 1250,
+  "scope": "route and shipment quotes only; departure, arrival, parking and UI excluded"
+}

@@ -1,0 +1,26 @@
+/* Soft acceleration and a long settling tail, inspired by the supplied reference. */
+:root{--motion-fast:170ms;--motion-panel:420ms;--motion-ease:cubic-bezier(.16,1,.3,1)}
+.window{transform:translateY(16px) scale(.96);transition:opacity var(--motion-panel) var(--motion-ease),transform var(--motion-panel) var(--motion-ease),visibility 0s linear var(--motion-panel)}
+.window.open{transform:none;transition:opacity var(--motion-panel) var(--motion-ease),transform var(--motion-panel) var(--motion-ease),visibility 0s}
+.window.minimized{transform:translateY(36px) scale(.9)}
+.window.motion-managed{transform:none;transition:none}
+.window.gesturing{transition:none;user-select:none}
+:is(button,input,select,textarea,.tab,.dtab,.filter-toggle,.task-icon){transition:background-color var(--motion-fast) ease,border-color var(--motion-fast) ease,color var(--motion-fast) ease,opacity var(--motion-fast) ease,transform 260ms var(--motion-ease),box-shadow var(--motion-fast) ease}
+.task-btn{transition:transform 300ms var(--motion-ease),background-color var(--motion-fast) ease,border-color var(--motion-fast) ease}
+.desk-icon{transition:background-color var(--motion-fast) ease,border-color var(--motion-fast) ease,left 280ms var(--motion-ease),top 280ms var(--motion-ease)}
+.desk-icon.dragging{transition:background-color var(--motion-fast) ease,border-color var(--motion-fast) ease}
+.icon-ghost{transition:left 120ms var(--motion-ease),top 120ms var(--motion-ease)}
+.card,#win-market[data-view="market"] .card{transition:transform 320ms var(--motion-ease),border-color var(--motion-fast) ease,box-shadow 320ms ease}
+#moodFill{transition:width 480ms var(--motion-ease),background-color 260ms ease}
+:is(.overlay:not(#overlay),.portable-modal){transition:opacity 260ms ease,display 260ms allow-discrete;opacity:0}
+.overlay.open:not(#overlay),.portable-modal:not([hidden]){opacity:1}
+:is(.overlay:not(#overlay)>:first-child,.portable-dialog,.os-app-menu,.tutorial-panel){transform:none;transition:transform var(--motion-panel) var(--motion-ease),opacity 260ms ease,display 260ms allow-discrete,overlay 260ms allow-discrete}
+.os-app-menu{transform-origin:bottom center;opacity:1}
+@starting-style{
+ .overlay.open:not(#overlay),.portable-modal:not([hidden]),.os-app-menu:not([hidden]){opacity:0}
+ .overlay.open:not(#overlay)>:first-child,.portable-modal:not([hidden]) .portable-dialog,.tutorial-panel{transform:translateY(20px) scale(.95)}
+ .os-app-menu:not([hidden]){transform:translateY(14px) scale(.94)}
+}
+@media(hover:hover){button:not(:disabled):active{transform:scale(.975)}.task-btn:hover{transform:translateY(-3px)}.task-btn:active{transform:translateY(-1px) scale(.94)}}
+.settings-language select,.startup-language select{max-width:100%;padding:9px 12px;background:var(--ui-panel);border:1px solid var(--ui-line);border-radius:5px;color:var(--ui-text);font:inherit}.startup-language{display:flex;align-items:center;justify-content:space-between;gap:16px;margin:12px 0 18px;font-size:12px}.settings-language p{line-height:1.6}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition:none!important;scroll-behavior:auto!important}}

@@ -1,0 +1,21 @@
+{
+  "hashes": {
+    "cars.js": "1cb468ed2ad373d7af3983aafed5c9ab9dc439fc542bff4b1809101b457a0661",
+    "cities.js": "247f1fc21f74b254bbc7c39ff14198e4c3c7b9c5777c3f8781297631afb03d51",
+    "regional-cars.js": "916a0bc96d1333f4510deb24ba28f9343f8ccc7c12bee0d6e5b2482033c0f7a9",
+    "custom-cars.js": "a947148495b227619c2c877160c562a6b7f7c1f38bdb47558a1464d31b37a680",
+    "expanded-cars.js": "50df28c1c129176dbdfa75a13b80d4fdbac9da827157b112f7c764cf5c1cb06e",
+    "aldan-cars.js": "a728720d3000b57aa08910b302866da910822600a8482de9311666f70e51eaf4",
+    "blagoveshchensk-cars.js": "a2ab0324e251e5144c79197d01685120305b57a478e9e4da0d37aa683f63ee45",
+    "city-market.js": "2d591709c068d4dbd08f2783e7a532309c4f865533c2660a4bfbe5cfc5d3120f",
+    "trade-cars.js": "503263012c1469d696f1c484503a9ef6c05d080fe770ac5412213c79fe5bf883",
+    "commerce-models.js": "f24ef4527d8ce2ce23c2200afab9a3ab7999be8aa026914db33982cfc6d47e45"
+  },
+  "counts": {
+    "cars": 1037,
+    "cities": 25,
+    "commerceModels": 87,
+    "tradeCars": 40
+  },
+  "missingPhotos": []
+}

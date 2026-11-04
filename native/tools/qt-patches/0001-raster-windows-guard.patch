@@ -1,0 +1,11 @@
+--- a/src/plugins/platforms/windows/qwindowswindow.cpp
++++ b/src/plugins/platforms/windows/qwindowswindow.cpp
+@@ -2293,7 +2293,7 @@
+ 
+ static inline bool isSoftwareGl()
+ {
+-#if QT_CONFIG(dynamicgl)
++#if QT_CONFIG(dynamicgl) && QT_CONFIG(opengl)
+     return QOpenGLStaticContext::opengl32.moduleIsNotOpengl32()
+         && QOpenGLContext::openGLModuleType() == QOpenGLContext::LibGL;
+ #else

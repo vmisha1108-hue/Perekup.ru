@@ -1,0 +1,5 @@
+{
+  "passed": true,
+  "scenarios": 1470,
+  "scope": "meeting price events, document IDs, identity and contract validation; excludes full UI/dialogue and signing"
+}

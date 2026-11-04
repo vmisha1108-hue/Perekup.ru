@@ -1,0 +1,8 @@
+/assets/
+/build*/
+/v7-output/
+/saves/
+/Music/
+/third-party/webp-runtime/*.dll
+/third-party/webp-runtime/*.tar.gz
+*.exe

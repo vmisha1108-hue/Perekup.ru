@@ -1,0 +1,5 @@
+{
+  "passed": true,
+  "scenarios": 3024,
+  "scope": "offer acceptance/counter, price limits, affordability; excludes natural-language intent, mood updates and dialogue phrases"
+}

@@ -1,0 +1,5 @@
+{
+  "passed": true,
+  "scenarios": 348,
+  "scope": "dealer/import quotes, deposit, stage progression, late customs storage/payment; excludes delivery acceptance/UI/contracts"
+}

@@ -1,0 +1,8 @@
+{
+  "passed": true,
+  "scenarios": 80,
+  "steps": 14320,
+  "statesAfterEating": 699,
+  "statesAfterGameOver": 923,
+  "scope": "snake rules, frame timing, turn queue, pause/resume and score; rendering excluded"
+}
